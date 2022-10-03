@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.11",
     "@nextui-org/react": "^1.0.0-beta.10",
     "@types/styled-components": "^5.1.26",
     "flowbite": "^1.5.3",

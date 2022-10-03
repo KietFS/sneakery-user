@@ -4,11 +4,10 @@ import {
   DetailedHTMLProps,
   InputHTMLAttributes,
   useEffect,
-  useState,
 } from "react";
 
-import FormControlErrorHelper from "../FormControlErrorHelper";
-import FormControlLabel from "../FormControlLabel";
+//icons
+import { PhoneIcon } from "@heroicons/react/20/solid";
 
 interface IInputPhoneNumberProps
   extends DetailedHTMLProps<
@@ -78,16 +77,24 @@ const InputPhoneNumber: React.FC<IInputPhoneNumberProps> = (props) => {
           </div>
         )}
       </div>
-
-      <input
-        placeholder="+XX XXX XXX XXX"
-        {...(rest as any)}
-        {...field}
-        onChange={(e) => onValueChange(e.target.value)}
-        className="px-2 py-1  bg-gray-100 text-black rounded-lg w-72 h-10 text-sm"
-      />
+      <div
+        className={`flex w-80 items-center bg-gray-100 px-2 py-1 rounded-lg h-10 ${
+          meta.touched && ""
+        }`}
+      >
+        <div className="border-r border-gray-500 pr-2">
+          <PhoneIcon width={20} height={20} color="gray" />
+        </div>
+        <input
+          placeholder="+XX XXX XXX XXX"
+          {...(rest as any)}
+          {...field}
+          onChange={(e) => onValueChange(e.target.value)}
+          className=" bg-gray-100 text-black  w-80 h-10 text-sm ml-1 px-1"
+        />
+      </div>
       {isError && (
-        <FormControlErrorHelper>{meta?.error}</FormControlErrorHelper>
+        <p className="text-red-500 text-xs font-semibold mt-1">{meta.error}</p>
       )}
     </div>
   );

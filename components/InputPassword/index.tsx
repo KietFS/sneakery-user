@@ -6,10 +6,8 @@ import {
   useEffect,
   useState,
 } from "react";
-
-import FormControlErrorHelper from "../FormControlErrorHelper";
-import FormControlLabel from "../FormControlLabel";
-
+//icons
+import { LockClosedIcon } from "@heroicons/react/20/solid";
 interface IInputPasswordProps
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
@@ -78,17 +76,21 @@ const InputPassword: React.FC<IInputPasswordProps> = (props) => {
           </div>
         )}
       </div>
-
-      <input
-        placeholder="*********"
-        {...(rest as any)}
-        {...field}
-        onChange={(e) => onValueChange(e.target.value)}
-        className="px-2 py-1  bg-gray-100 text-black rounded-lg w-72 h-10 text-sm"
-      />
+      <div className="flex w-80 items-center bg-gray-100 px-2 py-1 rounded-lg h-10">
+        <div className="border-r border-gray-500 pr-2">
+          <LockClosedIcon width={20} height={20} color="gray" />
+        </div>
+        <input
+          placeholder="*********"
+          {...(rest as any)}
+          {...field}
+          onChange={(e) => onValueChange(e.target.value)}
+          className="px-2 py-1  bg-gray-100 text-black rounded-lg w-80 h-10 text-sm"
+        />
+      </div>
 
       {isError && (
-        <FormControlErrorHelper>{meta?.error}</FormControlErrorHelper>
+        <p className="text-red-500 text-xs font-semibold mt-1">{meta.error}</p>
       )}
     </div>
   );
