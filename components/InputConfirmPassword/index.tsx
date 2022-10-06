@@ -7,8 +7,8 @@ import {
   useState,
 } from "react";
 //icons
-import { LockClosedIcon } from "@heroicons/react/20/solid";
-interface IInputPasswordProps
+import { CheckBadgeIcon } from "@heroicons/react/20/solid";
+interface IInputConfirmPasswordProps
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -28,7 +28,7 @@ interface IInputPasswordProps
   readonly onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputPassword: React.FC<IInputPasswordProps> = (props) => {
+const InputConfirmPassword: React.FC<IInputConfirmPasswordProps> = (props) => {
   const {
     name,
     className,
@@ -80,7 +80,7 @@ const InputPassword: React.FC<IInputPasswordProps> = (props) => {
         className={`flex w-80 items-center bg-gray-100 px-2 py-1 rounded-lg h-10 focus-within:bg-red-50`}
       >
         <div className="border-r border-gray-500 pr-2">
-          <LockClosedIcon width={20} height={20} color="gray" />
+          <CheckBadgeIcon width={20} height={20} color="gray" />
         </div>
         <input
           placeholder="*********"
@@ -98,4 +98,4 @@ const InputPassword: React.FC<IInputPasswordProps> = (props) => {
   );
 };
 
-export default InputPassword;
+export default InputConfirmPassword;

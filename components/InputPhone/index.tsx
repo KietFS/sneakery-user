@@ -78,19 +78,17 @@ const InputPhoneNumber: React.FC<IInputPhoneNumberProps> = (props) => {
         )}
       </div>
       <div
-        className={`flex w-80 items-center bg-gray-100 px-2 py-1 rounded-lg h-10 ${
-          meta.touched && ""
-        }`}
+        className={`flex w-80 items-center bg-gray-100 px-2 py-1 rounded-lg h-10 focus-within:bg-red-50`}
       >
         <div className="border-r border-gray-500 pr-2">
           <PhoneIcon width={20} height={20} color="gray" />
         </div>
         <input
-          placeholder="+XX XXX XXX XXX"
+          placeholder="+84 123 456 789"
           {...(rest as any)}
           {...field}
           onChange={(e) => onValueChange(e.target.value)}
-          className=" bg-gray-100 text-black  w-80 h-10 text-sm ml-1 px-1"
+          className={`bg-gray-100 text-black  w-80 h-10 text-sm ml-1 px-1 focus:bg-red-50`}
         />
       </div>
       {isError && (

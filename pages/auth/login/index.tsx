@@ -36,7 +36,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
   return (
     <>
       <Head>
-        <title>Login</title>
+        <title>Sneakry - Đăng nhập</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="h-screen w-screen flex flex-col laptop:flex laptop:flex-row justify-center  items-center px-4 laptop:px-20 laptop:space-x-20">
@@ -59,7 +59,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
             <div className="space-x-1">
               <h1 className="text-center text-red-600">Sneakery</h1>
               <p className="text-sm text-center text-gray-600">
-                Trang đấu giá về giày hàng đầu VN
+                Trang đấu giá về giày hàng đầu Việt Nam
               </p>
             </div>
             <div className="space-y-5">
@@ -72,7 +72,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
             </div>
             <button
               type="submit"
-              className="bg-gray-200 font-bold text-black rounded-lg w-80 h-10"
+              className="bg-red-500 font-bold text-white  rounded-lg w-80 h-10"
             >
               Đăng nhập
             </button>
@@ -98,7 +98,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
             <div className="space-y-2">
               <div className="flex justify-center">
                 <p className="text-xs text-black">Chưa có tài khoản?</p>
-                <p className="text-xs text-red-500 underline font-bold ml-1">
+                <p className="text-xs text-red-500 underline font-bold ml-1 cursor-pointer">
                   Đăng ký ngay
                 </p>
               </div>
@@ -106,7 +106,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                 <p className="text-xs text-black">
                   Với việc đăng nhập bạn đã đồng ý với
                 </p>
-                <p className="text-xs text-red-500 underline font-bold ml-1">
+                <p className="text-xs text-red-500 underline font-bold ml-1 cursor-pointer">
                   {" "}
                   chính sách bảo mật
                 </p>
