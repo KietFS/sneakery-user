@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
   swcMinify: true,
   images: {
     domains: [
@@ -12,6 +13,14 @@ const nextConfig = {
       "encrypted-tbn0.gstatic.com",
       "img.freepik.com",
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/auth/login",
+        destination: "http://teachers-values.at.ply.gg:46996/api/auth/signup",
+      },
+    ];
   },
 };
 

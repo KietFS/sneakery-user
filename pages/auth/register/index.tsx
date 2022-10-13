@@ -10,18 +10,19 @@ import InputPhoneNumber from "../../../components/InputPhone";
 import InputConfirmPassword from "../../../components/InputConfirmPassword";
 import { Spinner } from "flowbite-react";
 import InputText from "../../../components/InputName";
+import InputEmail from "../../../components/InputEmail";
 
 interface ILoginPageProps {}
 
 interface IFormValue {
-  phoneNumber: string;
+  email: string;
   fullName: string;
   password: string;
   confirmPassword: string;
 }
 
 const validationSchema = yup.object().shape<{ [k in keyof IFormValue]: any }>({
-  phoneNumber: yup.string().required("Vui lòng nhập số điện thoại của bạn"),
+  email: yup.string().required("Vui lòng nhập số điện thoại của bạn"),
   password: yup
     .string()
     .min(6, "Mật khẩu phải lớn hơn 6 kí tự")
@@ -33,7 +34,7 @@ const validationSchema = yup.object().shape<{ [k in keyof IFormValue]: any }>({
 });
 const RegisterPage: React.FC<ILoginPageProps> = () => {
   const [initialValues, setInitialValues] = useState<IFormValue>({
-    phoneNumber: "",
+    email: "",
     password: "",
     confirmPassword: "",
     fullName: "",
@@ -74,11 +75,7 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
             </div>
             <div className="space-y-5">
               <InputText name="fullName" label="Tên đầy đủ" required />
-              <InputPhoneNumber
-                name="phoneNumber"
-                label="Số điện thoại"
-                required
-              />
+              <InputEmail name="email" label="Email" required />
               <InputPassword name="password" label="Mật khẩu" required />
               <InputConfirmPassword
                 name="confirmPassword"

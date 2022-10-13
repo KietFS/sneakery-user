@@ -4,11 +4,12 @@ import {
   DetailedHTMLProps,
   InputHTMLAttributes,
   useEffect,
-  useState,
 } from "react";
+
 //icons
-import { LockClosedIcon } from "@heroicons/react/20/solid";
-interface IInputPasswordProps
+import { EnvelopeIcon } from "@heroicons/react/20/solid";
+
+interface IInputEmailProps
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -28,7 +29,7 @@ interface IInputPasswordProps
   readonly onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputPassword: React.FC<IInputPasswordProps> = (props) => {
+const InputEmail: React.FC<IInputEmailProps> = (props) => {
   const {
     name,
     className,
@@ -80,17 +81,16 @@ const InputPassword: React.FC<IInputPasswordProps> = (props) => {
         className={`flex w-80 items-center bg-gray-100 px-2 py-1 rounded-lg h-10 focus-within:bg-red-50`}
       >
         <div className="border-r border-gray-500 pr-2">
-          <LockClosedIcon width={20} height={20} color="gray" />
+          <EnvelopeIcon width={20} height={20} color="gray" />
         </div>
         <input
-          placeholder="*********"
+          placeholder="abcdefg@gmail.com"
           {...(rest as any)}
           {...field}
           onChange={(e) => onValueChange(e.target.value)}
-          className="px-2 py-1  bg-gray-100 text-black rounded-lg w-80 h-10 text-sm focus:bg-red-50 outline-current"
+          className={`bg-gray-100 text-black  w-80 h-10 text-sm ml-1 px-1 focus:bg-red-50`}
         />
       </div>
-
       {isError && (
         <p className="text-red-500 text-xs font-semibold mt-1">{meta.error}</p>
       )}
@@ -98,4 +98,4 @@ const InputPassword: React.FC<IInputPasswordProps> = (props) => {
   );
 };
 
-export default InputPassword;
+export default InputEmail;
