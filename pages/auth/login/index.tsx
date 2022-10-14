@@ -114,7 +114,10 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                 <div className="space-y-2">
                   <div className="flex justify-center">
                     <p className="text-xs text-black">Chưa có tài khoản?</p>
-                    <p className="text-xs text-primary-500 underline font-bold ml-1 cursor-pointer">
+                    <p
+                      className="text-xs text-primary-500 underline font-bold ml-1 cursor-pointer"
+                      onClick={() => router.push("/auth/register")}
+                    >
                       Đăng ký ngay
                     </p>
                   </div>

@@ -13,9 +13,18 @@ import { useAppDispatch, useAppSelector } from "./useRedux";
 export const useAuth = () => {
   const [loginWithGoogle, googleUser] = useSignInWithGoogle(auth);
   const [loginWithFacebook] = useSignInWithFacebook(auth);
-  const [loginError, setLoginError] = useState<any>();
+
+  //login
+  const [loginError, setLoginError] = useState<string>();
   const [loginLoading, setLoginLoading] = useState<boolean>(false);
+
+  //register
+  const [registerError, setRegisterError] = useState<any>();
+  const [regsiterLoading, setRegisterLoading] = useState<boolean>(false);
+
+  //checkExisted
   const [existed, setExisted] = useState<boolean | null>(null);
+
   const { user } = useAppSelector((state: IRootState) => state.auth);
 
   const dispatch = useAppDispatch();
@@ -31,16 +40,33 @@ export const useAuth = () => {
       }
     } catch (error) {
       console.log(error);
-      setLoginError(error);
+      setLoginError(error as string);
     } finally {
       setLoginLoading(false);
+    }
+  };
+
+  const register = async (
+    email: string,
+    password: string,
+    username: string
+  ) => {
+    try {
+      setRegisterLoading(true);
+      const data = await registerService(email, password, username);
+      if (data) {
+        router.push("/auth/login");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setRegisterLoading(false);
     }
   };
 
   useEffect(() => {
     user && localStorage.setItem("token", user.accessToken);
     user && localStorage.setItem("user", JSON.stringify(user));
-    console.log("User is  ", user);
   }, [user]);
 
   useEffect(() => {
@@ -82,8 +108,13 @@ export const useAuth = () => {
     login,
     loginError,
     googleLogin,
+
     loginLoading,
     loginWithFacebook,
     loginWithGoogle,
+
+    register,
+    registerError,
+    regsiterLoading,
   };
 };

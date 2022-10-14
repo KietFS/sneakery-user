@@ -3,6 +3,7 @@ import Image from "next/image";
 import Head from "next/head";
 import * as yup from "yup";
 import { Formik } from "formik";
+import LoginBackground from "../../../assets/images/LoginBackground.png";
 
 //components
 import InputPassword from "../../../components/InputPassword";
@@ -11,6 +12,9 @@ import InputConfirmPassword from "../../../components/InputConfirmPassword";
 import { Spinner } from "flowbite-react";
 import InputText from "../../../components/InputName";
 import InputEmail from "../../../components/InputEmail";
+import { useRouter } from "next/router";
+
+import { useAuth } from "../../../hooks/useAuth";
 
 interface ILoginPageProps {}
 
@@ -41,8 +45,13 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
   });
 
   const handleSubmit = (values: IFormValue) => {
-    console.log(values);
+    const { email, fullName, password } = values;
+    register(email, password, fullName);
   };
+
+  const { register, registerError, regsiterLoading } = useAuth();
+
+  const router = useRouter();
 
   return (
     <>
@@ -53,7 +62,7 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
       <div className="h-screen w-screen flex flex-col laptop:flex laptop:flex-row justify-center  items-center px-4 laptop:px-20 laptop:space-x-20">
         <div className="hidden laptop:block h-screen bg-gray-50 items-center pt-36">
           <Image
-            src="https://cdni.iconscout.com/illustration/premium/thumb/auction-in-art-gallery-5594249-4668330.png"
+            src={LoginBackground}
             width={450}
             height={450}
             className="my-auto"
@@ -68,7 +77,7 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
         >
           <div className="space-y-7">
             <div className="space-x-1">
-              <h1 className="text-center text-red-600">Sneakery</h1>
+              <h1 className="text-center text-primary-600">Sneakery</h1>
               <p className="text-sm text-center text-gray-600">
                 Trang đấu giá về giày hàng đầu Việt Nam
               </p>
@@ -85,9 +94,9 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
             </div>
             <button
               type="submit"
-              className="bg-red-500 font-bold text-white  rounded-lg w-80 h-10"
+              className="bg-primary-500 font-bold text-white  rounded-lg w-80 h-10"
             >
-              Đăng ký ngay
+              {regsiterLoading ? <Spinner color="failure" /> : "Đăng ký ngay"}
             </button>
             <div className="space-y-3">
               <p className="text-black text-xs">Hoặc đăng nhập với</p>
@@ -111,7 +120,10 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
             <div className="space-y-2">
               <div className="flex justify-center">
                 <p className="text-xs text-black">Bạn đã có tài khoản</p>
-                <p className="text-xs text-red-500 underline font-bold ml-1 cursor-pointer">
+                <p
+                  className="text-xs text-primary-500 underline font-bold ml-1 cursor-pointer"
+                  onClick={() => router.push("/auth/login")}
+                >
                   Đăng nhập ngay
                 </p>
               </div>
@@ -119,7 +131,7 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
                 <p className="text-xs text-black">
                   Với việc đăng ký bạn đã đồng ý với
                 </p>
-                <p className="text-xs text-red-500 underline font-bold ml-1 cursor-pointer">
+                <p className="text-xs text-primary-500 underline font-bold ml-1 cursor-pointer">
                   {" "}
                   chính sách bảo mật
                 </p>

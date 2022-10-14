@@ -15,7 +15,9 @@ const Home: NextPage = () => {
   }, []);
   const { user } = useAppSelector((state: IRootState) => state.auth);
   return (
-    <h1 onClick={() => router.push("/cart")}>Xin chào {user?.username}</h1>
+    <h1 onClick={() => router.push("/cart")}>
+      Xin chào {user?.user?.username}
+    </h1>
   );
 };
 
