@@ -3,7 +3,7 @@ import axios from "axios";
 export const loginService = async (email: string, password: string) => {
   try {
     const data = await axios.post(
-      "http://teachers-values.at.ply.gg:46996/api/auth/signin",
+      "https://sneakery.herokuapp.com/api/auth/signin",
       {
         email,
         password,
@@ -22,7 +22,7 @@ export const registerService = async (
 ) => {
   try {
     const data = await axios.post(
-      "http://teachers-values.at.ply.gg:46996/api/auth/signup",
+      "https://sneakery.herokuapp.com/api/auth/signup",
       {
         username,
         email,
@@ -38,7 +38,7 @@ export const registerService = async (
 export const isExistedEmail = async (email: string) => {
   try {
     const isExisted = await axios.post(
-      "http://teachers-values.at.ply.gg:46996/api/auth/checkemail",
+      "https://sneakery.herokuapp.com/api/auth/checkemail",
       {
         email: email,
       }

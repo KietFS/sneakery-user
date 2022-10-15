@@ -47,7 +47,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
         <title>Sneakry - Đăng nhập</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="h-screen w-screen flex flex-col laptop:flex laptop:flex-row justify-center  items-center px-4 laptop:px-20 laptop:space-x-20">
+      <div className="h-screen w-screen flex flex-col laptop:flex laptop:flex-row justify-center items-center px-4 laptop:px-20 laptop:space-x-20">
         <div className="hidden laptop:block h-screen bg-gray-50 items-center pt-36">
           <Image
             src={LoginBackground}

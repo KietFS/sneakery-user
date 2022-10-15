@@ -12,15 +12,9 @@ const nextConfig = {
       "storage.googleapis.com",
       "encrypted-tbn0.gstatic.com",
       "img.freepik.com",
+      "drake.vn",
+      "theme.hstatic.net",
     ],
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/auth/login",
-        destination: "http://teachers-values.at.ply.gg:46996/api/auth/signup",
-      },
-    ];
   },
 };
 
