@@ -48,7 +48,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="h-screen w-screen flex flex-col laptop:flex laptop:flex-row justify-center items-center px-4 laptop:px-20 laptop:space-x-20">
-        <div className="hidden laptop:block h-screen bg-gray-50 items-center pt-36">
+        <div className="hidden laptop:block h-screen items-center pt-36">
           <Image
             src={LoginBackground}
             width={450}
@@ -67,14 +67,14 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
             return (
               <div className="space-y-7">
                 <div className="space-x-1">
-                  <h1 className="text-center text-primary-600">Sneakery</h1>
+                  <h1 className="text-center text-blue-600">Sneakery</h1>
                   <p className="text-sm text-center text-gray-600">
                     Trang đấu giá về giày hàng đầu Việt Nam
                   </p>
                 </div>
                 <div className="space-y-5">
                   {loginError && (
-                    <p className="text-primary-500">Đã có lỗi xảy ra</p>
+                    <p className="text-blue-500">Đã có lỗi xảy ra</p>
                   )}
                   <InputEmail name="email" label="Email" required />
                   <InputPassword name="password" label="Mật khẩu" required />
@@ -82,9 +82,9 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                 <button
                   type="submit"
                   onClick={submitForm}
-                  className="bg-primary-500 font-bold text-white  rounded-lg w-80 h-10"
+                  className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
                 >
-                  {loginLoading ? <Spinner color="failure" /> : "Đăng nhập"}
+                  {loginLoading ? <Spinner color="info" /> : "Đăng nhập"}
                 </button>
                 <div className="space-y-3">
                   <p className="text-black text-xs">Hoặc đăng nhập với</p>
@@ -115,7 +115,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                   <div className="flex justify-center">
                     <p className="text-xs text-black">Chưa có tài khoản?</p>
                     <p
-                      className="text-xs text-primary-500 underline font-bold ml-1 cursor-pointer"
+                      className="text-xs text-blue-500 underline font-bold ml-1 cursor-pointer"
                       onClick={() => router.push("/auth/register")}
                     >
                       Đăng ký ngay
@@ -125,7 +125,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                     <p className="text-xs text-black">
                       Với việc đăng nhập bạn đã đồng ý với
                     </p>
-                    <p className="text-xs text-primary-500 underline font-bold ml-1 cursor-pointer">
+                    <p className="text-xs text-blue-500 underline font-bold ml-1 cursor-pointer">
                       {" "}
                       chính sách bảo mật
                     </p>

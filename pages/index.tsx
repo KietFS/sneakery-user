@@ -5,10 +5,16 @@ import { IRootState } from "../redux";
 import React from "react";
 import { setUser } from "../redux/slices/auth";
 import Head from "next/head";
-import HomeHeader from "../containers/home/Header";
-import NavigationBar from "../containers/home/NavBar";
-import Carousel from "../containers/home/Carousel";
-import ProductCarousel from "../components/ProductCarousel";
+
+import HeaderV2 from "../containers/home/HeaderV2";
+import HeroSection from "../containers/home/Hero";
+import TopSlider from "../containers/home/TopSlider";
+import ProductGrid from "../containers/home/ProductGrid";
+import VideoSection from "../containers/home/VideoSection";
+import StepSection from "../containers/home/StepSection";
+import PartnerSection from "../containers/home/PartnerSection";
+import ContactSection from "../containers/home/ContactSection";
+import FooterSection from "../containers/home/FooterSection";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -24,21 +30,20 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>Trang chủ - Sneakery</title>
-        <link
-          rel="icon"
-          href="https://cdn-icons-png.flaticon.com/512/1275/1275421.png"
-        />
+        <link rel="icon" />
       </Head>
       <div className="pb-32">
-        <HomeHeader />
-        <NavigationBar />
-        <div className="w-11/12 mx-auto">
-          <Carousel />
-          <ProductCarousel />
-          <ProductCarousel />
-          <ProductCarousel />
-          <ProductCarousel />
+        <HeaderV2 />
+        <HeroSection />
+        <div className="w-5/6 mx-auto space-y-20">
+          <TopSlider />
+          <ProductGrid />
+          <VideoSection />
+          <StepSection />
+          <PartnerSection />
+          <ContactSection />
         </div>
+        <FooterSection />
       </div>
     </>
   );

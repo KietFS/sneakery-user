@@ -58,13 +58,13 @@ const InputPhoneNumber: React.FC<IInputPhoneNumberProps> = (props) => {
   return (
     <div
       className={`w-full rounded-sm ${
-        isError ? "text-red-500" : "text-neutral-300"
+        isError ? "text-blue-500" : "text-neutral-300"
       }`}
     >
       <div className="flex items-center justify-between">
         <div className="flex">
           <p className="text-md font-bold text-black mr-1">{label}</p>
-          {required && <p className="text-red-500 font-bold">*</p>}
+          {required && <p className="text-blue-500 font-bold">*</p>}
         </div>
         {hasEvent && (
           <div
@@ -78,7 +78,7 @@ const InputPhoneNumber: React.FC<IInputPhoneNumberProps> = (props) => {
         )}
       </div>
       <div
-        className={`flex w-80 items-center bg-gray-100 px-2 py-1 rounded-lg h-10 focus-within:bg-red-50`}
+        className={`flex w-80 items-center bg-gray-100 px-2 py-1 rounded-lg h-10 focus-within:bg-blue-50 ${className}`}
       >
         <div className="border-r border-gray-500 pr-2">
           <PhoneIcon width={20} height={20} color="gray" />
@@ -88,11 +88,11 @@ const InputPhoneNumber: React.FC<IInputPhoneNumberProps> = (props) => {
           {...(rest as any)}
           {...field}
           onChange={(e) => onValueChange(e.target.value)}
-          className={`bg-gray-100 text-black  w-80 h-10 text-sm ml-1 px-1 focus:bg-red-50`}
+          className={`bg-gray-100 text-black  w-80 h-10 text-sm ml-1 px-1 focus:bg-blue-50 rounded-lg`}
         />
       </div>
       {isError && (
-        <p className="text-red-500 text-xs font-semibold mt-1">{meta.error}</p>
+        <p className="text-blue-500 text-xs font-semibold mt-1">{meta.error}</p>
       )}
     </div>
   );

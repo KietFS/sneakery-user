@@ -13,7 +13,7 @@ const InputSearch: React.FC<IInputSearchProps> = (props) => {
         className="h-8 w-full bg-gray-100"
         placeholder="Tìm kiếm theo tên giày, thương hiệu,..."
       />
-      <MagnifyingGlassIcon className="h-6 w-6 text-secondary-500" />
+      <MagnifyingGlassIcon className="h-6 w-6 text-secondary-500 " />
     </div>
   );
 };

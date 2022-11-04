@@ -11,9 +11,7 @@ const nextConfig = {
       "play-lh.googleusercontent.com",
       "storage.googleapis.com",
       "encrypted-tbn0.gstatic.com",
-      "img.freepik.com",
-      "drake.vn",
-      "theme.hstatic.net",
+      "sneakerdaily.vn",
     ],
   },
 };
