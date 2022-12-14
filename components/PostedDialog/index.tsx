@@ -24,13 +24,9 @@ const PostedDialog: React.FC<IPostedDialogProps> = (props) => {
             <h1 className="text-gray-600 font-bold text-2xl mb-2">
               Sản phẩm bạn đã đăng
             </h1>
-            <Tooltip
-              onClick={() => onClose()}
-              children={
-                <XMarkIcon className="w-8    h-8 p-1 hover:bg-gray-200 rounded-full cursor-pointer" />
-              }
-              title="Đóng"
-            />
+            <Tooltip onClick={() => onClose()} title="Đóng">
+              <XMarkIcon className="w-8    h-8 p-1 hover:bg-gray-200 rounded-full cursor-pointer" />
+            </Tooltip>
           </div>
           <div className="flex flex-col gap-y-5">
             <PostedCard title="Air Jordan Dior Travis Scott" status="pending" />
