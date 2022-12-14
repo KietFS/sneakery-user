@@ -3,7 +3,7 @@ import GHTKLogo from "../../../assets/images/GHTKLogo.webp";
 import AhamoveLogo from "../../../assets/images/AhamoveLogo.png";
 import GHNLogo from "../../../assets/images/GHNLogo.png";
 import GrabExpressLogo from "../../../assets/images/GrabExpressLogo.png";
-import EbayLogo from "../../../assets/images/EbayLogo.png";
+import PaypalLogo from "../../../assets/images/PayPalLogo.png";
 import Image from "next/image";
 
 interface IPartnetSection {}
@@ -34,7 +34,7 @@ const PartnerSection: React.FC<IPartnetSection> = (props) => {
           <Image src={GrabExpressLogo} />
         </div>
         <div className="border border-gray-200 rounded-xl px-2 flex justify-center items-center cursor-pointer hover:bg-gray-100">
-          <Image src={EbayLogo} />
+          <Image src={PaypalLogo} />
         </div>
       </div>
     </div>

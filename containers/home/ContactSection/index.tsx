@@ -1,8 +1,8 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
 import * as yup from "yup";
-import InputEmail from "../../../components/InputEmail";
-import InputPhoneNumber from "../../../components/InputPhone";
+import InputEmail from "../../../designs/InputEmail";
+import InputPhoneNumber from "../../../designs/InputPhone";
 
 interface IContactSectionProps {}
 

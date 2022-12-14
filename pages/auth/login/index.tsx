@@ -6,9 +6,8 @@ import { Formik } from "formik";
 import LoginBackground from "../../../assets/images/LoginBackground.png";
 
 //components
-import InputPassword from "../../../components/InputPassword";
-import InputEmail from "../../../components/InputEmail";
-import { Spinner } from "flowbite-react";
+import InputPassword from "../../../designs/InputPassword";
+import InputEmail from "../../../designs/InputEmail";
 import { useAuth } from "../../../hooks/useAuth";
 import { useAppSelector } from "../../../hooks/useRedux";
 import { IRootState } from "../../../redux";
@@ -41,6 +40,10 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
     login(values.email, values.password);
   };
 
+  useEffect(() => {
+    user && router.push("/");
+  }, [user]);
+
   return (
     <>
       <Head>
@@ -67,8 +70,10 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
             return (
               <div className="space-y-7">
                 <div className="space-x-1">
-                  <h1 className="text-center text-blue-600">Sneakery</h1>
-                  <p className="text-sm text-center text-gray-600">
+                  <h1 className="text-center text-blue-600 text-4xl font-bold">
+                    Sneakery
+                  </h1>
+                  <p className="text-sm text-center text-gray-600 mt-2">
                     Trang đấu giá về giày hàng đầu Việt Nam
                   </p>
                 </div>
@@ -84,10 +89,10 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                   onClick={submitForm}
                   className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
                 >
-                  {loginLoading ? <Spinner color="info" /> : "Đăng nhập"}
+                  {loginLoading ? "..." : "Đăng nhập"}
                 </button>
                 <div className="space-y-3">
-                  <p className="text-black text-xs">Hoặc đăng nhập với</p>
+                  <p className="text-gray-700 text-xs">Hoặc đăng nhập với</p>
                   <div className="flex items-center">
                     <div
                       className="mr-3 cursor-pointer"
@@ -113,7 +118,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-center">
-                    <p className="text-xs text-black">Chưa có tài khoản?</p>
+                    <p className="text-xs text-gray-700">Chưa có tài khoản?</p>
                     <p
                       className="text-xs text-blue-500 underline font-bold ml-1 cursor-pointer"
                       onClick={() => router.push("/auth/register")}
@@ -122,7 +127,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                     </p>
                   </div>
                   <div className="flex justify-center">
-                    <p className="text-xs text-black">
+                    <p className="text-xs text-gray-700">
                       Với việc đăng nhập bạn đã đồng ý với
                     </p>
                     <p className="text-xs text-blue-500 underline font-bold ml-1 cursor-pointer">

@@ -1,33 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
+import { useRouter } from "next/router";
 
-interface IProductGridProps {}
+interface IProductGridProps {
+  listProducts: IProductHomePageResponse[];
+}
 
 const ProductGrid: React.FC<IProductGridProps> = (props) => {
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const getProductHomePage = async () => {
-    try {
-      setLoading(true);
-      const data = await axios.get(
-        "http://sneakery.herokuapp.com/api/products/homepage"
-      );
-      if (data) {
-        setProducts(data as unknown as IProduct[]);
-      }
-    } catch (error) {
-      console.log("Product Home page error", { error });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getProductHomePage();
-  }, []);
-
+  const { listProducts } = props;
+  const router = useRouter();
   return (
     <div className="flex flex-col space-y-10 items-center justify-center">
       <div className="space-y-2">
@@ -43,26 +25,34 @@ const ProductGrid: React.FC<IProductGridProps> = (props) => {
       </div>
 
       <div className="grid grid-flow-row grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 w-full gap-x-5 gap-y-10">
-        {products.map((item, index) => {
+        {listProducts?.map((item, index) => {
           return (
             <div
-              className="h-fit py-4 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
+              className="h-fit py-10 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer shadow-md"
               key={index.toString()}
+              onClick={() => router.push(`/products/${item.id}`)}
             >
-              <Image
-                src="https://sneakerdaily.vn/wp-content/uploads/2022/04/giay-air-jordan-1-retro-high-obsidian-unc-575441-140-10.png.webp"
-                width={200}
-                height={200}
-              />
+              <Image src={item.imagePath} width={200} height={150} />
               <div className="justify-center px-4 space-y-1 mx-auto">
-                <h1 className="text-lg text-gray-600 font-bold text-center my-auto">
-                  {item.name}
+                <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
+                  {item.name.truncate(30)}
                 </h1>
-                <p className="text-sm text-gray-500 font-normal text-center">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-                  repudiandae molestias dicta ipsa architecto velit tenetur
-                  sequi
-                </p>
+                <div className="flex items-center justify-center">
+                  <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                    Được bán bởi:{" "}
+                  </p>
+                  <p className="text-xs font-semibold text-blue-500">
+                    {item.username}
+                  </p>
+                </div>
+                <div className="flex items-center justify-center">
+                  <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                    Giá khởi điểm:{" "}
+                  </p>
+                  <p className="text-xs font-bold text-gray-500">
+                    {item.startPrice.toString().prettyMoney()}đ
+                  </p>
+                </div>
               </div>
             </div>
           );

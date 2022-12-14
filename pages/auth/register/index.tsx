@@ -6,12 +6,11 @@ import { Formik } from "formik";
 import LoginBackground from "../../../assets/images/LoginBackground.png";
 
 //components
-import InputPassword from "../../../components/InputPassword";
-import InputPhoneNumber from "../../../components/InputPhone";
-import InputConfirmPassword from "../../../components/InputConfirmPassword";
-import { Spinner } from "flowbite-react";
-import InputText from "../../../components/InputName";
-import InputEmail from "../../../components/InputEmail";
+import InputPassword from "../../../designs/InputPassword";
+import InputPhoneNumber from "../../../designs/InputPhone";
+import InputConfirmPassword from "../../../designs/InputConfirmPassword";
+import InputText from "../../../designs/InputName";
+import InputEmail from "../../../designs/InputEmail";
 import { useRouter } from "next/router";
 
 import { useAuth } from "../../../hooks/useAuth";
@@ -77,8 +76,10 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
         >
           <div className="space-y-7">
             <div className="space-x-1">
-              <h1 className="text-center text-blue-600">Sneakery</h1>
-              <p className="text-sm text-center text-gray-600">
+              <h1 className="text-center text-blue-600 text-4xl font-bold">
+                Sneakery
+              </h1>
+              <p className="text-sm text-center text-gray-600 mt-2">
                 Trang đấu giá về giày hàng đầu Việt Nam
               </p>
             </div>
@@ -96,10 +97,10 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
               type="submit"
               className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
             >
-              {regsiterLoading ? <Spinner color="failure" /> : "Đăng ký ngay"}
+              {regsiterLoading ? "..." : "Đăng ký ngay"}
             </button>
             <div className="space-y-3">
-              <p className="text-black text-xs">Hoặc đăng nhập với</p>
+              <p className="text-gray-700 text-xs">Hoặc đăng nhập với</p>
               <div className="flex items-center">
                 <div className="mr-3 cursor-pointer">
                   <Image
@@ -119,7 +120,7 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
             </div>
             <div className="space-y-2">
               <div className="flex justify-center">
-                <p className="text-xs text-black">Bạn đã có tài khoản</p>
+                <p className="text-xs text-gray-700">Bạn đã có tài khoản</p>
                 <p
                   className="text-xs text-blue-500 underline font-bold ml-1 cursor-pointer"
                   onClick={() => router.push("/auth/login")}
@@ -128,7 +129,7 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
                 </p>
               </div>
               <div className="flex justify-center">
-                <p className="text-xs text-black">
+                <p className="text-xs text-gray-700">
                   Với việc đăng ký bạn đã đồng ý với
                 </p>
                 <p className="text-xs text-blue-500 underline font-bold ml-1 cursor-pointer">

@@ -1,15 +1,16 @@
 type IRole = "ROLE_USER";
 
-interface IUser {
+export interface IUser {
   id: string;
   username: string;
   email: string;
   roles: IRole[];
+  token: string;
 }
 
-interface ILoginResponse {
-  user: IUser;
-  accessToken: string;
+export interface IAddress {
+  city: string;
+  district: string;
+  ward: string;
+  addressDetail: string;
 }
-
-

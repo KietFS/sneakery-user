@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IUser } from "../../types/user";
 
 export type IInputMode = "INPUT_OTP" | "INPUT_PHONE_NUMBER";
 interface IInitialState {
-  isDoneFirstTime: boolean;
-  user: ILoginResponse | null;
+  isAuth: boolean;
+  user: IUser | null;
 }
 
 const initialState: IInitialState = {
-  isDoneFirstTime: false,
+  isAuth: false,
   user: null,
 };
 
@@ -15,14 +16,14 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setIsFirstTime: (state, actions: PayloadAction<boolean>) => {
-      state.isDoneFirstTime = actions.payload;
+    setAuth: (state, actions: PayloadAction<boolean>) => {
+      state.isAuth = actions.payload;
     },
-    setUser: (state, actions: PayloadAction<ILoginResponse | null>) => {
+    setUser: (state, actions: PayloadAction<IUser | null>) => {
       state.user = actions.payload;
     },
   },
 });
 
-export const { setIsFirstTime, setUser } = authSlice.actions;
+export const { setAuth, setUser } = authSlice.actions;
 export default authSlice.reducer;

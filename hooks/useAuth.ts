@@ -1,13 +1,16 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useSignInWithGoogle,
   useSignInWithFacebook,
 } from "react-firebase-hooks/auth";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { auth } from "../common/config/firebase";
 import { IRootState } from "../redux";
-import { setUser } from "../redux/slices/auth";
+import { setAuth, setUser } from "../redux/slices/auth";
 import { isExistedEmail, loginService, registerService } from "../services/api";
+import { IUser } from "../types/user";
 import { useAppDispatch, useAppSelector } from "./useRedux";
 
 export const useAuth = () => {
@@ -27,7 +30,7 @@ export const useAuth = () => {
 
   const { user } = useAppSelector((state: IRootState) => state.auth);
 
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const login = async (email: string, password: string) => {
@@ -35,8 +38,21 @@ export const useAuth = () => {
       setLoginLoading(true);
       const data = await loginService(email, password);
       if (data) {
-        dispatch(setUser(data.data));
-        router.push("/");
+        toast.success("Đăng nhập thành công", {
+          position: "top-right",
+          autoClose: 0,
+          theme: "colored",
+          hideProgressBar: true,
+        });
+        console.log("LOGIN RESPONSE", data.data);
+        dispatch(setUser(data?.data as IUser));
+        dispatch(setAuth(true));
+      } else {
+        toast.error("Tên đăng nhập hoặc mật khẩu không đúng", {
+          position: "top-right",
+          theme: "colored",
+          hideProgressBar: true,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -65,7 +81,6 @@ export const useAuth = () => {
   };
 
   useEffect(() => {
-    user && localStorage.setItem("token", user.accessToken);
     user && localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 

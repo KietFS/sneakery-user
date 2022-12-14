@@ -39,8 +39,13 @@ export const isExistedEmail = async (email: string) => {
   try {
     const isExisted = await axios.post(
       "https://sneakery.herokuapp.com/api/auth/checkemail",
+
       {
         email: email,
+      },
+      {
+        withCredentials: true,
+        headers: { "X-Requested-With": "XMLHttpRequest" },
       }
     );
     return isExisted;
