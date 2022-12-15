@@ -10,6 +10,9 @@ import InputText from "../../../designs/InputText";
 import UploadImage from "../../../designs/UploadImage";
 import Image from "next/image";
 import MultipleUploadImage from "../../../designs/MultipleUploadImage";
+import axios from "axios";
+import { useAppSelector } from "../../../hooks/useRedux";
+import { IRootState } from "../../../redux";
 
 interface ILeftSideProps {}
 
@@ -37,6 +40,7 @@ interface IColor {
 }
 
 const LeftSide: React.FC<ILeftSideProps> = (props) => {
+  const { user } = useAppSelector((state: IRootState) => state.auth);
   const [initialValues, setInitialValues] = useState<IFormValue>({
     productName: "",
     brand: "",
@@ -216,7 +220,10 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
   );
   const [sizeSelected, setSizeSelected] = useState<IOption | null>(null);
   const [colorSelected, setColorSelected] = useState<IColor | null>(null);
-  const [thumbnailSelected, setThumbnailSelected] = useState<any | null>(null);
+  const [thumbnailSelected, setThumbnailSelected] = useState<any[] | null>(
+    null
+  );
+  const [imagesSelected, setImagesSelected] = useState<any[] | null>(null);
 
   const [brandError, setBrandError] = useState<string>("");
   const [categoryError, setCategoryError] = useState<string>("");
@@ -241,7 +248,52 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
       setSizeError("vui lòng chọn size");
     }
     console.log("SUBMIT IS", { values });
-    console.log("THUMBNAIL IS", thumbnailSelected?.[0]);
+    if (
+      brandSelected === null ||
+      categorySelected === null ||
+      colorSelected === null ||
+      conditionSelected === null ||
+      sizeSelected === null
+    ) {
+    } else {
+      const payload = {
+        name: values.productName,
+        condition: conditionSelected?.id.toUpperCase(),
+        category: categorySelected?.id,
+        brand: brandSelected?.name,
+        size: Number(sizeSelected.id),
+        bidClosingDateTime: values.bidClosingDate,
+        priceStart: Number(values.priceStart?.split(",").join("")),
+        stepBid: Number(values.stepBid?.split(",").join("")),
+      };
+      let formData = new FormData();
+      const json = JSON.stringify(payload);
+
+      const blob = new Blob([json], {
+        type: "application/json",
+      });
+
+      formData.append("thumbnail", thumbnailSelected?.[0]);
+      imagesSelected?.map((image) => formData.append("images", image));
+      formData.append("bidCreateRequest", blob);
+
+      try {
+        const data = await axios({
+          method: "post",
+          url: "https://sneakery.herokuapp.com/api/bids/create",
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user?.token}`,
+          },
+          data: formData,
+        });
+        data && console.log("SUCCESS");
+      } catch (error) {
+        console.log("CREATE BID ERROR", { error });
+      }
+
+      console.log("PAYLOAD IS", payload);
+    }
   };
 
   return (
@@ -348,12 +400,14 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 label="Chọn ngày kết thúc đấu giá"
                 name="bidClosingDate"
               />
-              {/* <div className="col-span-2 mt-2">
-            <UploadImage
-              onSelect={(listImage) => setThumbnailSelected(listImage)}
-            />
-            <MultipleUploadImage />
-          </div> */}
+              <div className="col-span-2 mt-2">
+                <UploadImage
+                  onSelect={(listImage) => setThumbnailSelected(listImage)}
+                />
+                <MultipleUploadImage
+                  onSelect={(listImage) => setImagesSelected(listImage)}
+                />
+              </div>
 
               <div className="col-span-2 mt-2">
                 <Button

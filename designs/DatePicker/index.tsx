@@ -5,6 +5,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { makeStyles } from "@mui/material";
 import { useField, useFormikContext } from "formik";
+import { useEffect } from "react";
 
 interface IDatePickerProps {
   defaultValue?: string;
@@ -18,11 +19,26 @@ const DatePicker: React.FC<IDatePickerProps> = (props) => {
   const [field, meta] = useField(props.name);
 
   const [value, setValue] = React.useState<Dayjs | null>(
-    dayjs("2014-08-18T21:11:54")
+    dayjs("2022-12-31T21:11:54")
   );
 
+  useEffect(() => {
+    value &&
+      setFieldValue(
+        name,
+        value?.format("YYYY-MM-DD hh:mm:ss").toString().replace(" ", "T")
+      );
+  }, [value]);
+
   const handleChange = (newValue: Dayjs | null) => {
-    setFieldValue(name, newValue?.toString());
+    setFieldValue(
+      name,
+      newValue?.format("YYYY-MM-DD hh:mm:ss").toString().replace(" ", "T")
+    );
+    console.log(
+      "DAY VALUE",
+      newValue?.format("YYYY-MM-DD hh:mm:ss").toString()
+    );
     setValue(newValue);
   };
 

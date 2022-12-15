@@ -45,7 +45,7 @@ export const useAuth = () => {
           hideProgressBar: true,
         });
         console.log("LOGIN RESPONSE", data.data);
-        dispatch(setUser(data?.data as IUser));
+        dispatch(setUser(data?.data?.data as IUser));
         dispatch(setAuth(true));
       } else {
         toast.error("Tên đăng nhập hoặc mật khẩu không đúng", {

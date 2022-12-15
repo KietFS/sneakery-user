@@ -15,6 +15,7 @@ import {
   ClockIcon,
   MapPinIcon,
   UserIcon,
+  WalletIcon,
 } from "@heroicons/react/24/outline";
 import AddressDialog from "../AddressDialog";
 import AccountDialog from "../AccountDialog";
@@ -23,6 +24,7 @@ import LogoutConfirmDialog from "../LogoutConfirmDialog";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import PostedDialog from "../PostedDialog";
+import WalletDialog from "../WalletDialog";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -77,6 +79,7 @@ export default function MultipleSelectPlaceholder() {
     React.useState<boolean>(false);
   const [openPostedDialog, setOpenPostedDialog] =
     React.useState<boolean>(false);
+  const [walletDialog, setWalletDialo] = React.useState<boolean>(false);
 
   return (
     <div>
@@ -148,6 +151,15 @@ export default function MultipleSelectPlaceholder() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
+              setWalletDialo(true);
+            }}
+          >
+            <p className="text-gray-500 text-sm ">Quản lý số dư</p>
+            <WalletIcon className="h-5 w-5 text-gray-500" />
+          </div>
+          <div
+            className="py-2 px-4 cursor-pointer flex justify-between items-center"
+            onClick={() => {
               setOpenLogoutDialog(true);
             }}
           >
@@ -177,6 +189,7 @@ export default function MultipleSelectPlaceholder() {
         open={openPostedDialog}
         onClose={() => setOpenPostedDialog(false)}
       />
+      <WalletDialog open={walletDialog} onClose={() => setWalletDialo(false)} />
     </div>
   );
 }

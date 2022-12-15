@@ -3,11 +3,14 @@ import Image from "next/image";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 import { Tooltip } from "@mui/material";
 
-interface IUploadImageProps {}
+interface IUploadImageProps {
+  onSelect: (listImage: any[]) => void;
+}
 
 const UploadImage: React.FC<IUploadImageProps> = (props) => {
   const [baseImage, setBaseImage] = useState<any[]>([]);
   const [imgShow, setImgShow] = useState<any[]>([]);
+  const { onSelect } = props;
 
   const uploadImage = async (e: any) => {
     console.log("E is", { e });
@@ -20,6 +23,7 @@ const UploadImage: React.FC<IUploadImageProps> = (props) => {
     console.log("BASE 64", base64);
     console.log(base64);
     setBaseImage([...baseImage, listFile]);
+    onSelect(listFile);
     setImgShow(base64);
   };
 
