@@ -22,9 +22,6 @@ const Cart: React.FC<ICartPageProps> = (props) => {
           <CartList />
           <CartPayment />
         </div>
-        <div className="w-5/6 mx-auto flex">
-          <SimilarProduct />
-        </div>
       </div>
       <FooterSection />
     </div>

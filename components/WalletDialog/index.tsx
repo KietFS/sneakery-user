@@ -1,7 +1,9 @@
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { Dialog, DialogContent, DialogTitle, Tooltip } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { NumericFormat } from "react-number-format";
 import Button from "../../designs/Button";
 import OrderCard from "../../designs/OrderCard";
 import { useAppSelector } from "../../hooks/useRedux";
@@ -21,6 +23,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
   const [createSuccess, setCreateSuccess] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [actionCharge, setActionCharge] = useState<boolean>(false);
+  const [chargeAmount, setChargeAmount] = useState<string | null>(null);
 
   const getWallet = async () => {
     try {
@@ -71,15 +74,28 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
         "https://sneakery.herokuapp.com/api/paypal/deposit",
         {
           userId: Number(user?.id),
-          amount: 5,
+          amount: Number(chargeAmount?.split(",").join("")),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
         }
       );
-    } catch (error) {}
+      if (data) {
+        console.log("CHARGE DATA", data);
+        window.open(data.data.message);
+      }
+    } catch (error) {
+      console.log("CHARGE ERROR", error);
+    } finally {
+      setActionCharge(false);
+    }
   };
 
   useEffect(() => {
-    console.log("EXISTED", isExisted);
-  }, [isExisted]);
+    chargeAmount && localStorage.setItem("currentCharge", chargeAmount);
+  }, [chargeAmount]);
 
   useEffect(() => {
     getWallet();
@@ -123,9 +139,35 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
                     <p className="text-sm font-semibold px-2 py-1 bg-blue-50 text-blue-900 rounded-full">
                       {money}$
                     </p>
+                    <Tooltip
+                      onClick={() => getWallet()}
+                      title="Refresh"
+                      className="ml-1 p-1 hover:bg-gray-100 hover:rounded-full cursor-pointer"
+                    >
+                      <ArrowPathIcon className="w-8 h-8 text-gray-500" />
+                    </Tooltip>
                   </div>
-                  <p className="text-sm font-semibold px-4 py-1 bg-blue-500 text-white rounded-full mt-2 cursor-pointer hover:opacity-80">
-                    Nạp thêm tiền
+                  {actionCharge && (
+                    <NumericFormat
+                      placeholder="Nhập số tiền"
+                      allowLeadingZeros
+                      thousandSeparator=","
+                      onChange={(e) => setChargeAmount(e.target.value)}
+                      type="text"
+                      className={`bg-gray-100 text-gray-700  w-[200px] my-2 h-8 px-2 text-sm ml-1 outline-none ring-0 outline-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent focus:bg-blue-50 rounded-lg`}
+                    />
+                  )}
+                  <p
+                    className="text-sm font-semibold px-4 py-1 bg-blue-500 text-white rounded-full mt-2 cursor-pointer hover:opacity-80"
+                    onClick={() => {
+                      if (actionCharge === false) {
+                        setActionCharge(true);
+                      } else {
+                        charge();
+                      }
+                    }}
+                  >
+                    {actionCharge ? "Nạp ngay" : "Nạp thêm tiền"}
                   </p>
                 </>
               ) : (

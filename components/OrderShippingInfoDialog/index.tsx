@@ -1,14 +1,6 @@
 import * as React from "react";
 import Dialog from "@mui/material/Dialog";
-import {
-  DialogContent,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { DialogContent } from "@mui/material";
 import * as yup from "yup";
 import { Formik } from "formik";
 import InputText from "../../designs/InputText";
@@ -17,6 +9,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import SelectComponent from "../Select";
 import RichTextInput from "../../designs/RichTextInput";
+import GHNLogo from "../../assets/images/GHNLogo.png";
+import Image from "next/image";
 
 interface IFormValue {
   name: string;
@@ -24,6 +18,7 @@ interface IFormValue {
   ward?: string;
   district?: string;
   addressDetail: string;
+  expressClient?: string;
 }
 
 export interface IOrderShippingInfoDialog {
@@ -60,6 +55,19 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const [wardSelected, setWardSelected] = React.useState<IWard | null>(null);
   const [districtError, setDistrictError] = React.useState<string>("");
   const [wardError, setWardError] = React.useState<string>("");
+
+  const clients = [
+    {
+      id: "giao-hang-nhanh",
+      name: "Giao hàng nhanh",
+      logo: GHNLogo,
+    },
+  ];
+  const [clientSelected, setClientSelected] = React.useState<{
+    id: string;
+    name: string;
+    logo: any;
+  }>(clients?.[0]);
 
   const validationSchema = yup
     .object()
@@ -194,6 +202,27 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                     label="Số nhà,tên đường"
                     placeholder="Nhập địa chỉ cụ thể của bạn"
                   />
+                  <div className="col-span-2">
+                    <SelectComponent
+                      name="expressClient"
+                      options={clients}
+                      optionSelected={clientSelected}
+                      onSelect={(option) => setClientSelected(option)}
+                      label="Chọn đơn vị vận chuyển"
+                      placeholder="Chọn đơn vị vận chuyển đơn hàng của bạn"
+                      renderOption={(options) => {
+                        return options.map((option) => (
+                          <div
+                            className="w-full flex items-center justify-between px-4 cursor-pointer hover:opacity-80 hover:bg-gray-100"
+                            onClick={() => setClientSelected(option)}
+                          >
+                            <p>{option.name}</p>
+                            <Image src={option.logo} width={100} height={50} />
+                          </div>
+                        ));
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="flex justify-between items-center">
                   <div></div>

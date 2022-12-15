@@ -3,19 +3,30 @@ import PaypalLogo from "../../../assets/images/PayPalLogo.png";
 import ZaloPayLogo from "../../../assets/images/ZaloPayLogo.png";
 import MomoLogo from "../../../assets/images/MomoLogo.png";
 import Image from "next/image";
+import axios from "axios";
+import { useAppSelector } from "../../../hooks/useRedux";
+import { IRootState } from "../../../redux";
 
 interface IRightSideProps {
   product: IProduct;
   onPlaceBid: () => void;
 }
 
+interface IProductBidHistoryItem {
+  bidAmount: number;
+  createdAt: string;
+  userName: string;
+}
+
 const RightSide: React.FC<IRightSideProps> = (props) => {
   const { product, onPlaceBid } = props;
+  const { user } = useAppSelector((state: IRootState) => state.auth);
   let newBidClosingDate = new Date(product?.bidClosingDate);
   const [textDay, setTextDay] = useState<string>("");
   const [textHour, setTextHour] = useState<string>("");
   const [textMinute, setTextMinute] = useState<string>("");
   const [textSecond, setTextSecond] = useState<string>("");
+  const [bids, setBids] = useState<IProductBidHistoryItem[]>([]);
 
   const countdown = () => {
     const countDate = newBidClosingDate.getTime();
@@ -36,6 +47,28 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
   };
 
   setInterval(countdown, 1000);
+
+  const getBidHistory = async () => {
+    try {
+      const response = await axios.get(
+        "https://sneakery.herokuapp.com/api/bid_history/10",
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      if (response) {
+        setBids(response?.data?.data);
+      }
+    } catch (error) {
+      console.log("BID HISTORY ERROR", error);
+    }
+  };
+
+  useEffect(() => {
+    getBidHistory();
+  }, []);
 
   return (
     <div className="px-8 py-4">
@@ -109,17 +142,30 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
         </div>
         <div className="mt-4 max-w-[90%]">
           <h3 className="text-gray-400 text-lg leading-0">
-            Chi tiết vận chuyển :{" "}
+            Các lượt bid gần đây :{" "}
           </h3>
-          <p className="text-gray-500 text-sm cursor-pointer italic">
-            Ước tính đơn hàng được dự kiến giao từ ngày 17/12/2022 đến ngày
-            19/12/2022
-          </p>
-          <p className="text-gray-500 text-sm cursor-pointer italic  ">
-            Xin lưu ý rằng khoảng thời gian có thể chênh lệch từ 1 đến 10 ngày.
-            Mọi thắc mắc về vận chuyển xin vui lòng liên hệ chúng tôi qua đường
-            dây nóng 1900 0899
-          </p>
+          <div className="flex flex-col gap-y-2 mt-2 w-fit">
+            {bids.map((item, index) => (
+              <div
+                className="flex justify-between items-center"
+                key={index.toString()}
+              >
+                <p className="text-gray-500 text-sm cursor-pointer italic mr-1">
+                  Người dùng {item.userName} -
+                </p>
+                <p className="text-blue-500 font-bold text-sm cursor-pointer mr-1 ">
+                  {item.bidAmount.toString().prettyMoney()}$ -
+                </p>
+                <p className="text-gray-600 text-sm cursor-pointer">
+                  {item.createdAt.toString().replace("T", " ")}
+                </p>
+              </div>
+            ))}
+          </div>
+          {/* <p className="text-sm font-semibold px-4 py-1 bg-blue-200 text-blue-900 w-fit rounded-full mt-4 cursor-pointer hover:opacity-80">
+            Xem thêm
+          </p> */}
+          ...
         </div>
       </div>
     </div>

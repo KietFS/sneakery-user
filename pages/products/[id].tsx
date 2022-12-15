@@ -42,7 +42,11 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </div>
         </div>
         <div className="w-5/6 mx-auto flex">
-          <SimilarProduct />
+          <SimilarProduct
+            brand={props.product.brand}
+            category={props.product.category}
+            currentProductId={Number(props.product.id)}
+          />
         </div>
         <FooterSection />
       </div>
@@ -83,7 +87,7 @@ export const getStaticProps: GetStaticProps<{
     props: {
       product,
     },
-    revalidate: 1,
+    revalidate: 10,
   };
 };
 
