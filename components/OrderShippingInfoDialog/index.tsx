@@ -211,8 +211,9 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                       label="Chọn đơn vị vận chuyển"
                       placeholder="Chọn đơn vị vận chuyển đơn hàng của bạn"
                       renderOption={(options) => {
-                        return options.map((option) => (
+                        return options.map((option, index) => (
                           <div
+                            key={index.toString()}
                             className="w-full flex items-center justify-between px-4 cursor-pointer hover:opacity-80 hover:bg-gray-100"
                             onClick={() => setClientSelected(option)}
                           >

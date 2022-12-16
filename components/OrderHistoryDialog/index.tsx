@@ -27,6 +27,10 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = (props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { user } = useAppSelector((state: IRootState) => state.auth);
 
+  useEffect(() => {
+    getBidHistory();
+  });
+
   const getBidHistory = async () => {
     try {
       setLoading(true);
@@ -48,10 +52,6 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = (props) => {
     }
   };
 
-  useEffect(() => {
-    getBidHistory();
-  }, []);
-
   return (
     <Dialog
       onClose={onClose}
@@ -71,8 +71,8 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = (props) => {
             </Tooltip>
           </div>
           <div className="flex flex-col gap-y-5">
-            {bids.map((item) => (
-              <OrderCard order={item} />
+            {bids.map((item, index) => (
+              <OrderCard order={item} key={index.toString()} />
             ))}
           </div>
         </div>
