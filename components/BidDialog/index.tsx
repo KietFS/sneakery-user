@@ -23,19 +23,28 @@ export interface IBidDialogProps {
 function BidDialog(props: IBidDialogProps) {
   const { open, onClose, product } = props;
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
-    amount: product.startPrice.toString(),
+    amount: product.currentPrice.toString(),
   });
+  console.log("STEP BID", { product });
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>("");
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+  const { user, balance } = useAppSelector((state: IRootState) => state.auth);
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({});
 
   const handleSubmit = async (values: IFormValue) => {
-    console.log("Submitted");
-    if (Number(values?.amount) < product.startPrice) {
-      setError("Vui lòng nhập bid cao hơn mức bid hiện tại !");
+    if (
+      Number(values?.amount?.split(",").join("")) <
+      Number(product.currentPrice + product.bidIncrement)
+    ) {
+      setError(
+        "Vui lòng nhập bid cao hơn mức bid hiện tại cộng với bước giá !"
+      );
+    } else if (
+      Number(balance) < Number(product?.currentPrice + product.bidIncrement)
+    ) {
+      setError("Tài khoản của bạn không đủ để thực hiện lượt bid này");
     } else {
       try {
         setLoading(true);

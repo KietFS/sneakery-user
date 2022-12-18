@@ -13,44 +13,57 @@ interface IOrderHistoryDialogProps {
 
 type IOrderStatus = "success" | "pending" | "failed";
 
-export interface IBidHistoryItem {
-  productName: string;
+export interface ICart {
+  orderId: number;
+  product: IProductInCart;
+  amount: number;
+}
+
+interface IProductInCart {
+  id: string;
+  name: string;
+  condition: IProductCondition;
+  startPrice: number;
+  currentPrice: number;
   imagePath: string;
-  price: number;
-  createdAt: string;
-  status: IOrderStatus;
+  category: ICategoryProps;
+  brand: string;
+  color: string;
+  username: string;
+  size: string;
+  bidIncrement: number;
+  bidClosingDate: string;
 }
 
 const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = (props) => {
   const { open, onClose } = props;
-  const [bids, setBids] = useState<IBidHistoryItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [items, setItems] = useState<ICart[]>([]);
   const { user } = useAppSelector((state: IRootState) => state.auth);
 
-  useEffect(() => {
-    getBidHistory();
-  });
-
-  const getBidHistory = async () => {
+  const getAllItems = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/bid_history/user/${user?.id}`,
+        "https://sneakery.herokuapp.com/api/bid_history/user",
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
         }
       );
-      if (response) {
-        setBids(response.data.data);
-      }
+      response && setItems(response.data.data);
+      console.log("DaTa", response.data.data);
     } catch (error) {
-      console.log("BID HISTORY ERRORS", { error });
+      console.log("GET ALL ITEMS", error);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    getAllItems();
+  }, []);
 
   return (
     <Dialog
@@ -71,7 +84,7 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = (props) => {
             </Tooltip>
           </div>
           <div className="flex flex-col gap-y-5">
-            {bids.map((item, index) => (
+            {items.map((item, index) => (
               <OrderCard order={item} key={index.toString()} />
             ))}
           </div>

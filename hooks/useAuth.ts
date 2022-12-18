@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { auth } from "../common/config/firebase";
 import { IRootState } from "../redux";
-import { setAuth, setUser } from "../redux/slices/auth";
+import { setAuth, setOpenEmailSentDialog, setUser } from "../redux/slices/auth";
 import { isExistedEmail, loginService, registerService } from "../services/api";
 import { IUser } from "../types/user";
 import { useAppDispatch, useAppSelector } from "./useRedux";
@@ -47,12 +47,6 @@ export const useAuth = () => {
         console.log("LOGIN RESPONSE", data.data);
         dispatch(setUser(data?.data?.data as IUser));
         dispatch(setAuth(true));
-      } else {
-        toast.error("Tên đăng nhập hoặc mật khẩu không đúng", {
-          position: "top-right",
-          theme: "colored",
-          hideProgressBar: true,
-        });
       }
     } catch (error) {
       console.log(error);
@@ -70,11 +64,12 @@ export const useAuth = () => {
     try {
       setRegisterLoading(true);
       const data = await registerService(email, password, username);
-      if (data) {
-        router.push("/auth/login");
+
+      if (data?.data.success === true) {
+        dispatch(setOpenEmailSentDialog(true));
+        console.log("REGISTER DATA", data);
       }
     } catch (error) {
-      console.log(error);
     } finally {
       setRegisterLoading(false);
     }
@@ -97,17 +92,23 @@ export const useAuth = () => {
         );
       } else {
         registerService(
+          googleUser.user.uid as string,
           googleUser.user.displayName as string,
-          googleUser.user.email as string,
-          googleUser.user.uid
+          googleUser.user.email as string
         );
       }
     }
-  }, [googleUser, existed]);
+  }, [existed]);
 
   const checkIsFirstTimeWithGoogle = async (email: string) => {
-    const isExisted = await isExistedEmail(email);
-    isExisted ? setExisted(true) : setExisted(false);
+    try {
+      const isExisted = await isExistedEmail(email);
+      isExisted && setExisted(true);
+      isExisted && console.log("EXISTED EMAIL", isExisted);
+    } catch (error) {
+      setExisted(false);
+      console.log("EXISTED ERROR", error);
+    }
   };
 
   const googleLogin = async () => {

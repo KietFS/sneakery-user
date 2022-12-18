@@ -135,6 +135,13 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                       chính sách bảo mật
                     </p>
                   </div>
+                  <p
+                    className="text-xs text-red-500 underline font-bold ml-1 cursor-pointer text-center"
+                    onClick={() => router.push("/")}
+                  >
+                    {" "}
+                    Quay về trang chủ
+                  </p>
                 </div>
               </div>
             );

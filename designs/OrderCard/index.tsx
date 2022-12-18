@@ -1,10 +1,10 @@
 import React from "react";
 import Image from "next/image";
-import { ClockIcon } from "@heroicons/react/24/outline";
-import { IBidHistoryItem } from "../../components/OrderHistoryDialog";
+import { WalletIcon } from "@heroicons/react/24/outline";
+import { ICart } from "../../components/OrderHistoryDialog";
 
 interface IOrderCardProps {
-  order: IBidHistoryItem;
+  order: ICart;
 }
 
 const OrderCard: React.FC<IOrderCardProps> = (props) => {
@@ -12,18 +12,27 @@ const OrderCard: React.FC<IOrderCardProps> = (props) => {
   return (
     <div className="rounded-lg border border-gray-200 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80">
       <div className="flex gap-x-3 items-center">
-        <Image src={order.imagePath} width={80} height={80} />
+        <Image
+          src={order.product.imagePath as string}
+          width={120}
+          height={80}
+        />
         <div className="flex flex-col gap-y-2">
           <p className="text-sm text-gray-600 font-semibold">
-            {order.productName}
+            {order.product.name}
           </p>
           <div className="flex gap-x-1 items-center">
-            <ClockIcon className="w-4 h-4 text-gray-600" />
             <p className="text-xs text-gray-600">
-              {order.createdAt?.toString().prettyDate()}
+              Mức đặt: {order.amount?.toString().prettyMoney()}$
             </p>
           </div>
-          {order.status === "success" && (
+          <div className="flex gap-x-1 items-center">
+            <p className="text-xs text-gray-600">Bán bởi: </p>
+            <div className="rounded-full bg-blue-200 text-blue-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
+              {order.product.username}
+            </div>
+          </div>
+          {/* {order.status === "success" && (
             <div className="rounded-full bg-green-200 text-green-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
               Thành công
             </div>
@@ -37,7 +46,7 @@ const OrderCard: React.FC<IOrderCardProps> = (props) => {
             <div className="rounded-full bg-red-200 text-red-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
               Thất bại
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

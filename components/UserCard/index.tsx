@@ -102,9 +102,10 @@ export default function MultipleSelectPlaceholder() {
           renderValue={() => (
             <div className="flex justify-between items-center py-4">
               <p className="w-8 h-8 p-2 rounded-full  border-1 border-gray-200 bg-blue-500 text-white font-semibold items-center justify-center flex text-lg mr-2">
-                K
+                {user?.username?.[0].toUpperCase()}
               </p>
-              <p className="text-gray-600 font-semibold">
+
+              <p className="text-gray-600 font-semibold hidden laptop:flex">
                 {user?.username || "Tuan Kiet"}
               </p>
             </div>

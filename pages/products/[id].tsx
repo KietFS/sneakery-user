@@ -3,7 +3,9 @@ import axios from "axios";
 import Head from "next/head";
 import HeaderV2 from "../../components/HeaderV2";
 import LeftSide from "../../containers/products/LeftSide";
-import RightSide from "../../containers/products/RightSide";
+import RightSide, {
+  IProductBidHistoryItem,
+} from "../../containers/products/RightSide";
 import FooterSection from "../../components/FooterSection";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import SimilarProduct from "../../containers/cart/SimilarProduct";
@@ -35,6 +37,7 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
             </div>
             <div className=" w-full laptop:w-2/5 desktop:w-1/2">
               <RightSide
+                bidHistory={props.bidHistory}
                 product={props.product}
                 onPlaceBid={() => setOpenDialog(true)}
               />
@@ -77,17 +80,24 @@ export const getStaticPaths: GetStaticPaths<{}> = async () => {
 
 export const getStaticProps: GetStaticProps<{
   product: IProduct;
+  bidHistory: IProductBidHistoryItem[];
 }> = async ({ params }: any) => {
   const data = await axios.get(
     `https://sneakery.herokuapp.com/api/products/${params.id}`
   );
+
+  const bidHistory = await axios.get(
+    `https://sneakery.herokuapp.com/api/bid_history/product/${params.id}`
+  );
+
   const product = data.data.data;
 
   return {
     props: {
       product,
+      bidHistory: bidHistory?.data?.data,
     },
-    revalidate: 10,
+    revalidate: 5,
   };
 };
 

@@ -6,13 +6,15 @@ import Image from "next/image";
 import axios from "axios";
 import { useAppSelector } from "../../../hooks/useRedux";
 import { IRootState } from "../../../redux";
+import ProductBidHistoryDialog from "../../../components/ProductBidHistoryDialog";
 
 interface IRightSideProps {
   product: IProduct;
+  bidHistory: IProductBidHistoryItem[];
   onPlaceBid: () => void;
 }
 
-interface IProductBidHistoryItem {
+export interface IProductBidHistoryItem {
   bidAmount: number;
   createdAt: string;
   userName: string;
@@ -26,7 +28,7 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
   const [textHour, setTextHour] = useState<string>("");
   const [textMinute, setTextMinute] = useState<string>("");
   const [textSecond, setTextSecond] = useState<string>("");
-  const [bids, setBids] = useState<IProductBidHistoryItem[]>([]);
+  const [openHistoryDialog, setOpenHistoryDialog] = useState<boolean>(false);
 
   const countdown = () => {
     const countDate = newBidClosingDate.getTime();
@@ -48,28 +50,6 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
 
   setInterval(countdown, 1000);
 
-  const getBidHistory = async () => {
-    try {
-      const response = await axios.get(
-        "https://sneakery.herokuapp.com/api/bid_history/10",
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
-      if (response) {
-        setBids(response?.data?.data);
-      }
-    } catch (error) {
-      console.log("BID HISTORY ERROR", error);
-    }
-  };
-
-  useEffect(() => {
-    getBidHistory();
-  }, []);
-
   return (
     <div className="px-8 py-4">
       <h1 className="text-gray-600 font-bold text-4xl">{product?.name}</h1>
@@ -80,19 +60,19 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Giá khởi điểm : </h3>
         <h3 className="text-gray-500 text-lg ml-1  cursor-pointer">
-          {product?.startPrice.toString().prettyMoney()} VND
+          {product?.startPrice.toString().prettyMoney()}$
         </h3>
       </div>
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Bước giá : </h3>
         <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
-          {(product?.bidIncrement).toString().prettyMoney()} VND
+          {(product?.bidIncrement).toString().prettyMoney()}$
         </h3>
       </div>
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Giá hiện tại : </h3>
         <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
-          {(product?.currentPrice).toString().prettyMoney()} VND
+          {(product?.currentPrice).toString().prettyMoney()}$
         </h3>
       </div>
       <div className="mt-2 flex items-center">
@@ -145,29 +125,41 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
             Các lượt bid gần đây :{" "}
           </h3>
           <div className="flex flex-col gap-y-2 mt-2 w-fit">
-            {bids.map((item, index) => (
-              <div
-                className="flex justify-between items-center"
-                key={index.toString()}
-              >
-                <p className="text-gray-500 text-sm cursor-pointer italic mr-1">
-                  Người dùng {item.userName} -
-                </p>
-                <p className="text-blue-500 font-bold text-sm cursor-pointer mr-1 ">
-                  {item.bidAmount.toString().prettyMoney()}$ -
-                </p>
-                <p className="text-gray-600 text-sm cursor-pointer">
-                  {item.createdAt.toString().replace("T", " ")}
-                </p>
-              </div>
-            ))}
+            {props.bidHistory.map((item, index) => {
+              if (index <= 2)
+                return (
+                  <div
+                    className="flex justify-between items-center"
+                    key={index.toString()}
+                  >
+                    <p className="text-gray-500 text-sm cursor-pointer italic mr-1">
+                      Người dùng {item.userName} -
+                    </p>
+                    <p className="text-blue-500 font-bold text-sm cursor-pointer mr-1 ">
+                      {item.bidAmount.toString().prettyMoney()}$ -
+                    </p>
+                    <p className="text-gray-600 text-sm cursor-pointer">
+                      {item.createdAt.toString().replace("T", " ")}
+                    </p>
+                  </div>
+                );
+            })}
           </div>
-          {/* <p className="text-sm font-semibold px-4 py-1 bg-blue-200 text-blue-900 w-fit rounded-full mt-4 cursor-pointer hover:opacity-80">
+          <p
+            className="text-sm font-semibold px-4 py-1 bg-blue-200 text-blue-900 w-fit rounded-full mt-4 cursor-pointer hover:opacity-80"
+            onClick={() => setOpenHistoryDialog(true)}
+          >
             Xem thêm
-          </p> */}
-          ...
+          </p>
         </div>
       </div>
+      <ProductBidHistoryDialog
+        open={openHistoryDialog}
+        onClose={() => {
+          setOpenHistoryDialog(false);
+        }}
+        bidHistory={props.bidHistory}
+      />
     </div>
   );
 };

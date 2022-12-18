@@ -23,6 +23,7 @@ interface IProductHomePageResponse {
   id: string;
   name: string;
   startPrice: number;
+  currentPrice: number;
   imagePath: string;
   username: string;
 }
