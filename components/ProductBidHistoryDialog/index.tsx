@@ -34,7 +34,10 @@ const ProductBidHistoryDialog: React.FC<IProductBidHistoryDialogProps> = (
           </div>
           <div className="flex flex-col gap-y-5">
             {props.bidHistory.map((item, index) => (
-              <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between">
+              <div
+                className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between"
+                key={index.toString()}
+              >
                 <p className="text-lg text-gray-500 font-bold">
                   {item.userName}
                 </p>
