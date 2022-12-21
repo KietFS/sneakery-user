@@ -71,9 +71,8 @@ export const getStaticPaths: GetStaticPaths<{}> = async () => {
 
   return {
     paths,
-
     // fallback: false // bat ki path nao k returned boi getStaticPaths se toi trang 404
-    fallback: false, // path nao k returned ngay lap tuc se show trang "tam thoi" => doi getStaticProps chay
+    fallback: "blocking", // path nao k returned ngay lap tuc se show trang "tam thoi" => doi getStaticProps chay
     // => getStaticProps chay xong => return trang hoan chinh
   };
 };
