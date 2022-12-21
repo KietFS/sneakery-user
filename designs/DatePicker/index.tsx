@@ -23,23 +23,44 @@ const DatePicker: React.FC<IDatePickerProps> = (props) => {
   );
 
   useEffect(() => {
-    value &&
-      setFieldValue(
-        name,
-        value?.format("YYYY-MM-DD hh:mm:ss").toString().replace(" ", "T")
-      );
+    if (value) {
+      const temp = value?.format("YYYY-MM-DD hh:mm:ss A").toString().split(" ");
+
+      if (temp?.[2] === "AM") {
+        setFieldValue(
+          name,
+          value?.format("YYYY-MM-DD hh:mm:ss").toString().replace(" ", "T")
+        );
+      } else {
+        let hourString = temp?.[1].split(":");
+        let newHour = Number(hourString?.[0]) + 12;
+        let finalHourString = `${newHour}:${hourString?.[1]}:${hourString?.[2]}`;
+        console.log("FINAL TEST", `${temp?.[0]}T${finalHourString}`);
+        setFieldValue(name, `${temp?.[0]}T${finalHourString}`);
+      }
+    }
   }, [value]);
 
   const handleChange = (newValue: Dayjs | null) => {
-    setFieldValue(
-      name,
-      newValue?.format("YYYY-MM-DD hh:mm:ss").toString().replace(" ", "T")
-    );
-    console.log(
-      "DAY VALUE",
-      newValue?.format("YYYY-MM-DD hh:mm:ss").toString()
-    );
-    setValue(newValue);
+    const temp = newValue
+      ?.format("YYYY-MM-DD hh:mm:ss A")
+      .toString()
+      .split(" ");
+
+    if (temp?.[2] === "AM") {
+      setFieldValue(
+        name,
+        newValue?.format("YYYY-MM-DD hh:mm:ss").toString().replace(" ", "T")
+      );
+      setValue(newValue);
+    } else {
+      let hourString = temp?.[1].split(":");
+      let newHour = Number(hourString?.[0]) + 12;
+      let finalHourString = `${newHour}:${hourString?.[1]}:${hourString?.[2]}`;
+      console.log("FINAL TEST", `${temp?.[0]}T${finalHourString}`);
+      setFieldValue(name, `${temp?.[0]}T${finalHourString}`);
+      setValue(newValue);
+    }
   };
 
   return (

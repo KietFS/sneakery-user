@@ -17,7 +17,8 @@ export function withAuthorization<T>(
     //   (authorization) => authorization === “manager”
 
     useEffect(() => {
-      if (user === null) {
+      const isExited = localStorage.getItem("user");
+      if (user === null && !isExited) {
         router.push("/auth/login");
       }
     }, [user]);

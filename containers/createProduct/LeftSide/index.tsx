@@ -1,6 +1,6 @@
 import { MenuItem } from "@mui/material";
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import SelectComponent from "../../../components/Select";
 import Button from "../../../designs/Button";
@@ -13,6 +13,8 @@ import MultipleUploadImage from "../../../designs/MultipleUploadImage";
 import axios from "axios";
 import { useAppSelector } from "../../../hooks/useRedux";
 import { IRootState } from "../../../redux";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 interface ILeftSideProps {}
 
@@ -38,6 +40,20 @@ interface IColor {
   name: string;
   bg: string;
 }
+
+export interface IAddressResponse {
+  addressId: number;
+  homeNumber: string;
+  cityName: string;
+  district: IOption;
+  ward: IOption;
+}
+
+const validationSchema = yup.object().shape<{ [k in keyof IFormValue]: any }>({
+  productName: yup.string().required("Vui lòng nhập tên sản phẩm"),
+  priceStart: yup.string().required("Vui lòng giá khởi điển"),
+  stepBid: yup.string().required("Vui lòng nhập bước giá"),
+});
 
 const LeftSide: React.FC<ILeftSideProps> = (props) => {
   const { user } = useAppSelector((state: IRootState) => state.auth);
@@ -231,68 +247,126 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
   const [conditionError, setConditionError] = useState<string>("");
   const [sizeError, setSizeError] = useState<string>("");
 
+  const [createLoading, setCreateLoading] = useState<boolean>(false);
+
+  const router = useRouter();
+
   const handleSubmit = async (values: IFormValue) => {
-    if (brandSelected === null) {
-      setBrandError("Vui lòng chọn thương hiệu");
-    }
-    if (categorySelected === null) {
-      setCategoryError("Vui lòng chọn danh mục");
-    }
-    if (colorSelected === null) {
-      setColorError("Vui lòng chọn màu");
-    }
-    if (conditionSelected === null) {
-      setConditionError("Vui lòng chọn tình trạng");
-    }
-    if (sizeSelected === null) {
-      setSizeError("vui lòng chọn size");
-    }
-    console.log("SUBMIT IS", { values });
-    if (
-      brandSelected === null ||
-      categorySelected === null ||
-      colorSelected === null ||
-      conditionSelected === null ||
-      sizeSelected === null
-    ) {
-    } else {
-      const payload = {
-        name: values.productName,
-        condition: conditionSelected?.id.toUpperCase(),
-        category: categorySelected?.id,
-        brand: brandSelected?.name,
-        size: Number(sizeSelected.id),
-        bidClosingDateTime: values.bidClosingDate,
-        priceStart: Number(values.priceStart?.split(",").join("")),
-        stepBid: Number(values.stepBid?.split(",").join("")),
-      };
-      let formData = new FormData();
-      const json = JSON.stringify(payload);
-
-      const blob = new Blob([json], {
-        type: "application/json",
+    if (address.length === 0) {
+      toast.error("Vui lòng cập nhật địa chỉ của bạn", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
       });
+    } else {
+      const newDate = values.bidClosingDate?.split("T");
+      let isAM = newDate?.[1].slice(-2);
+      console.log("IS AM", isAM);
+      console.log("TEMP HOUR");
+      if (brandSelected === null) {
+        setBrandError("Vui lòng chọn thương hiệu");
+      }
+      if (categorySelected === null) {
+        setCategoryError("Vui lòng chọn danh mục");
+      }
+      if (colorSelected === null) {
+        setColorError("Vui lòng chọn màu");
+      }
+      if (conditionSelected === null) {
+        setConditionError("Vui lòng chọn tình trạng");
+      }
+      if (sizeSelected === null) {
+        setSizeError("vui lòng chọn size");
+      }
+      console.log("SUBMIT IS", { values });
+      if (
+        brandSelected === null ||
+        categorySelected === null ||
+        colorSelected === null ||
+        conditionSelected === null ||
+        sizeSelected === null
+      ) {
+      } else {
+        const payload = {
+          name: values.productName,
+          condition: conditionSelected?.id.toUpperCase(),
+          category: categorySelected?.id,
+          brand: brandSelected?.name,
+          size: Number(sizeSelected.id),
+          bidClosingDateTime: values.bidClosingDate,
+          priceStart: Number(values.priceStart?.split(",").join("")),
+          stepBid: Number(values.stepBid?.split(",").join("")),
+        };
+        let formData = new FormData();
+        const json = JSON.stringify(payload);
+        console.log("PAYLOAD HERE", payload);
 
-      formData.append("thumbnail", thumbnailSelected?.[0]);
-      imagesSelected?.map((image) => formData.append("images", image));
-      formData.append("bidCreateRequest", blob);
+        const blob = new Blob([json], {
+          type: "application/json",
+        });
 
-      try {
-        const data = await axios({
-          method: "post",
-          url: "https://sneakery.herokuapp.com/api/bids/create",
+        formData.append("thumbnail", thumbnailSelected?.[0]);
+        imagesSelected?.map((image) => formData.append("images", image));
+        formData.append("bidCreateRequest", blob);
+
+        try {
+          setCreateLoading(true);
+          const data = await axios({
+            method: "post",
+            url: "https://sneakery.herokuapp.com/api/bids/create",
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${user?.token}`,
+            },
+            data: formData,
+          });
+          data && console.log("SUCCESS");
+          data &&
+            toast.success("Bid sản phẩm thành công", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          data && router.push("/");
+        } catch (error) {
+          console.log("CREATE BID ERROR", { error });
+        } finally {
+          setCreateLoading(false);
+        }
+      }
+    }
+  };
+
+  const [address, setAddress] = useState<IAddressResponse[]>([]);
+
+  useEffect(() => {
+    getUserAddress();
+  }, []);
+
+  const getUserAddress = async () => {
+    try {
+      const response = await axios.get(
+        `https://sneakery.herokuapp.com/api/address/get_all`,
+        {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${user?.token}`,
           },
-          data: formData,
-        });
-        data && console.log("SUCCESS");
-      } catch (error) {
-        console.log("CREATE BID ERROR", { error });
-      }
-
-      console.log("PAYLOAD IS", payload);
+        }
+      );
+      response && setAddress(response.data.data);
+      response && console.log("ADDRESS RESPONBSE", response);
+    } catch (error) {
+      console.log("GET USER ADDRESS ERROR", error);
     }
   };
 
@@ -305,6 +379,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
         initialValues={initialValues}
         enableReinitialize
         onSubmit={handleSubmit}
+        validationSchema={validationSchema}
       >
         {({ handleSubmit, submitForm, errors }) => {
           console.log("ERRORS", { errors });
@@ -325,8 +400,8 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 label="Chọn thương hiệu"
                 placeholder=""
                 onSelect={(brand) => setBrandSelected(brand)}
+                error={brandError}
               />
-
               <SelectComponent
                 keyLabel="name"
                 keyValue="id"
@@ -336,6 +411,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 label="Chọn tình trạng hiệu"
                 placeholder=""
                 onSelect={(condition) => setConditionSelected(condition)}
+                error={conditionError}
               />
               <SelectComponent
                 keyLabel="name"
@@ -346,6 +422,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 label="Chọn danh mục"
                 placeholder=""
                 onSelect={(category) => setCategorySelected(category)}
+                error={categoryError}
               />
               <SelectComponent
                 keyLabel="name"
@@ -356,6 +433,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 label="Chọn size"
                 placeholder=""
                 onSelect={(size) => setSizeSelected(size)}
+                error={sizeError}
               />
               <SelectComponent
                 keyLabel="name"
@@ -364,6 +442,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 optionSelected={colorSelected}
                 options={colors}
                 label="Chọn màu"
+                error={colorError}
                 placeholder=""
                 onSelect={(size) => setSizeSelected(size)}
                 renderOption={(options) => {
@@ -412,6 +491,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
               <div className="col-span-2 mt-2">
                 <Button
                   variant="primary"
+                  isLoading={createLoading}
                   type="submit"
                   title="Đăng sản phẩm"
                   onClick={() => handleSubmit(initialValues as any)}

@@ -10,6 +10,7 @@ import SelectComponent from "../Select";
 import RichTextInput from "../../designs/RichTextInput";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
+import { IAddressResponse } from "../../containers/createProduct/LeftSide";
 
 interface IFormValue {
   ward?: string;
@@ -49,6 +50,9 @@ function AddressDialog(props: IAddressDialogProps) {
   const [districtError, setDistrictError] = React.useState<string>("");
   const [wardError, setWardError] = React.useState<string>("");
   const { user } = useAppSelector((state: IRootState) => state.auth);
+  const [address, setAddress] = React.useState<IAddressResponse[]>([]);
+  const [isInitialAddress, setIsInitialAddress] =
+    React.useState<boolean>(false);
 
   const validationSchema = yup
     .object()
@@ -121,16 +125,46 @@ function AddressDialog(props: IAddressDialogProps) {
     }
   };
 
+  const getUserAddress = async () => {
+    try {
+      const response = await axios.get(
+        `https://sneakery.herokuapp.com/api/address/get_all`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      response && setAddress(response.data.data);
+      response && console.log("ADDRESS RESPONBSE", response);
+    } catch (error) {
+      console.log("GET USER ADDRESS ERROR", error);
+    }
+  };
+
   React.useEffect(() => {
     getListDistricts();
+    getUserAddress();
   }, []);
 
   React.useEffect(() => {
-    if (districtSelected) {
+    if (districtSelected && isInitialAddress === false) {
       getListWars(districtSelected.id as string);
       setWardSelected(null);
     }
   }, [districtSelected]);
+
+  React.useEffect(() => {
+    if (address) {
+      setIsInitialAddress(true);
+      setInitialValues({
+        addressDetail: address?.[0]?.homeNumber,
+      });
+      console.log("ADDRESS", { address });
+      setWardSelected(address?.[0]?.ward);
+      setDistrictSelected(address?.[0]?.district);
+    }
+  }, [address]);
 
   return (
     <Dialog

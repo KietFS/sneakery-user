@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../../hooks/useRedux";
 import { IRootState } from "../../../redux";
 import * as yup from "yup";
@@ -8,6 +8,8 @@ import SelectComponent from "../../../components/Select";
 import RichTextInput from "../../../designs/RichTextInput";
 import Button from "../../../designs/Button";
 import InputText from "../../../designs/InputText";
+import { IAddressResponse } from "../LeftSide";
+import { toast } from "react-toastify";
 
 interface ILeftSideProps {}
 
@@ -47,6 +49,7 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
   const [districtError, setDistrictError] = React.useState<string>("");
   const [wardError, setWardError] = React.useState<string>("");
   const { user } = useAppSelector((state: IRootState) => state.auth);
+  const [isInitialAddress, setIsInitialAddress] = useState<boolean>(false);
 
   const validationSchema = yup
     .object()
@@ -84,6 +87,17 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
           },
         }
       );
+      data &&
+        toast.success("Cập nhật địa chỉ của bạn thành công", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
     } catch (error) {
       console.log(error);
     } finally {
@@ -119,16 +133,49 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
     }
   };
 
+  const [address, setAddress] = useState<IAddressResponse[]>([]);
+
+  const getUserAddress = async () => {
+    try {
+      const response = await axios.get(
+        `https://sneakery.herokuapp.com/api/address/get_all`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      response && setAddress(response.data.data);
+      response && console.log("ADDRESS RESPONBSE", response);
+    } catch (error) {
+      console.log("GET USER ADDRESS ERROR", error);
+    }
+  };
+
   React.useEffect(() => {
-    getListDistricts();
+    Promise.all([getListDistricts(), getUserAddress()]);
   }, []);
 
   React.useEffect(() => {
-    if (districtSelected) {
+    if (districtSelected && isInitialAddress === false) {
       getListWars(districtSelected.id as string);
       setWardSelected(null);
     }
   }, [districtSelected]);
+
+  useEffect(() => {
+    if (address) {
+      setIsInitialAddress(true);
+      setInitialValues({
+        addressDetail: address?.[0]?.homeNumber,
+
+        phoneNumber: "",
+      });
+      console.log("ADDRESS", { address });
+      setWardSelected(address?.[0]?.ward);
+      setDistrictSelected(address?.[0]?.district);
+    }
+  }, [address]);
 
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-4">
