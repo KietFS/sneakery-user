@@ -297,6 +297,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
           condition: conditionSelected?.id.toUpperCase(),
           category: categorySelected?.id,
           brand: brandSelected?.name,
+          color: colorSelected?.id as string,
           size: Number(sizeSelected.id),
           bidClosingDateTime: values.bidClosingDate,
           priceStart: Number(values.priceStart?.split(",").join("")),
@@ -327,7 +328,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
           });
           data && console.log("SUCCESS");
           data &&
-            toast.success("Bid sản phẩm thành công", {
+            toast.success("Tạo sản phẩm thành công", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: false,
