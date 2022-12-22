@@ -54,10 +54,7 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
         .required("Vui lòng nhập mật khẩu của bạn"),
       confirmPassword: yup
         .string()
-        .equals(
-          [initialValues.confirmPassword as string],
-          "Xác nhận mật khẩu không khớp"
-        )
+        .oneOf([yup.ref("password"), null], "Xác nhận mật khẩu phải khớp")
         .required("Vui lòng xác xác nhận mật khẩu của bạn"),
       fullName: yup.string().required("Vui lòng nhập tên của bạn"),
     });
