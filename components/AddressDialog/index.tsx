@@ -80,9 +80,9 @@ function AddressDialog(props: IAddressDialogProps) {
         "https://sneakery.herokuapp.com/api/address/create",
         {
           homeNumber: values.addressDetail,
-          cityName: "Thành phố Hồ Chí Minh",
-          district: districtSelected?.id,
-          ward: wardSelected?.id,
+          cityId: 1,
+          districtId: districtSelected?.id,
+          wardId: wardSelected?.id,
         },
         {
           headers: {

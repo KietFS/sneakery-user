@@ -77,9 +77,9 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
         "https://sneakery.herokuapp.com/api/address/create",
         {
           homeNumber: values.addressDetail,
-          cityName: "Thành phố Hồ Chí Minh",
-          districtName: districtSelected?.name,
-          wardName: wardSelected?.name,
+          cityId: 1,
+          districtId: districtSelected?.id,
+          wardId: wardSelected?.id,
         },
         {
           headers: {
