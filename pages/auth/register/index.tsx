@@ -30,17 +30,6 @@ interface IFormValue {
   confirmPassword: string;
 }
 
-const validationSchema = yup.object().shape<{ [k in keyof IFormValue]: any }>({
-  email: yup.string().required("Vui lòng nhập số điện thoại của bạn"),
-  password: yup
-    .string()
-    .min(6, "Mật khẩu phải lớn hơn 6 kí tự")
-    .required("Vui lòng nhập mật khẩu của bạn"),
-  confirmPassword: yup
-    .string()
-    .required("Vui lòng xác xác nhận mật khẩu của bạn"),
-  fullName: yup.string().required("Vui lòng nhập tên của bạn"),
-});
 const RegisterPage: React.FC<ILoginPageProps> = () => {
   const [initialValues, setInitialValues] = useState<IFormValue>({
     email: "",
@@ -51,6 +40,27 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
   const { openEmailSentDialog } = useAppSelector(
     (state: IRootState) => state.auth
   );
+
+  const validationSchema = yup
+    .object()
+    .shape<{ [k in keyof IFormValue]: any }>({
+      email: yup
+        .string()
+        .email("Vui lòng nhập đúng định dạng email")
+        .required("Vui lòng nhập số điện thoại của bạn"),
+      password: yup
+        .string()
+        .min(6, "Mật khẩu phải lớn hơn 6 kí tự")
+        .required("Vui lòng nhập mật khẩu của bạn"),
+      confirmPassword: yup
+        .string()
+        .equals(
+          [initialValues.confirmPassword as string],
+          "Xác nhận mật khẩu không khớp"
+        )
+        .required("Vui lòng xác xác nhận mật khẩu của bạn"),
+      fullName: yup.string().required("Vui lòng nhập tên của bạn"),
+    });
 
   const handleSubmit = async (values: IFormValue) => {
     try {

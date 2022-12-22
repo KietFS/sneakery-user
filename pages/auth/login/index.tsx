@@ -21,7 +21,10 @@ interface IFormValue {
 }
 
 const validationSchema = yup.object().shape<{ [k in keyof IFormValue]: any }>({
-  email: yup.string().required("Vui lòng nhập email của bạn"),
+  email: yup
+    .string()
+    .email("Vui lòng nhập đúng định dạng email")
+    .required("Vui lòng nhập email của bạn"),
   password: yup
     .string()
     .min(6, "Mật khẩu phải lớn hơn 6 kí tự")
