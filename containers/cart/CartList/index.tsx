@@ -11,7 +11,7 @@ import { setGlobalCartItems } from "../../../redux/slices/cart";
 interface ICartList {}
 
 export interface ICartItem {
-  orderId: string;
+  orderId: number;
   product: {
     id: number;
     name: string;
@@ -87,8 +87,8 @@ const CartList: React.FC<ICartList> = (props) => {
             <div className="flex laptop:flex">
               <Image
                 src={item.product.imagePath}
-                width={70}
-                height={80}
+                width={80}
+                height={60}
                 layout="fixed"
                 className="mx-auto"
               />

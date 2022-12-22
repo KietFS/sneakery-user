@@ -105,11 +105,16 @@ const Category = (props: IProductProps) => {
           </div>
           <div className="w-3/4">
             <div className="w-full justify-between flex mb-4 items-center">
-              <div></div>
+              {keyWord !== null && (
+                <div className="text-gray-500 font-bold text-xl">
+                  Kết quả tìm kiếm theo từ khóa "{keyWord}"
+                </div>
+              )}
+
               <SelectSortType />
             </div>
             {loading ? (
-              <div className="w-full flex justify-center items-center h-[500px]">
+              <div className="w-full flex justify-center items-center h-[500px] font-bold">
                 <Spinner />
               </div>
             ) : (

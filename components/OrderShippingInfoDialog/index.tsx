@@ -14,6 +14,7 @@ import Image from "next/image";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import { IAddressResponse } from "../../containers/createProduct/LeftSide";
+import { useEffect } from "react";
 
 interface IFormValue {
   name?: string;
@@ -42,7 +43,7 @@ interface IWard {
 
 function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const { open, onClose, product } = props;
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+  const { user, balance } = useAppSelector((state: IRootState) => state.auth);
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
     name: user?.username as string,
     phoneNumber: "0819190777",
@@ -62,6 +63,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const [address, setAddress] = React.useState<IAddressResponse[]>([]);
   const [isInitialAddress, setIsInitialAddress] =
     React.useState<boolean>(false);
+  const [shippingFee, setShippingFee] = React.useState<number>(50000);
 
   const clients = [
     {
@@ -99,24 +101,28 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
         setWardError("");
       }
       setLoading(true);
-      const data = await axios.get(
-        `https://jsonplaceholder.typicode.com/todos/1`
-      );
-      data &&
-        toast.success("Đặt hàng thành công", {
-          position: "top-right",
-          hideProgressBar: true,
-          theme: "colored",
-        });
+      if (balance >= shippingFee) {
+        const data = await axios.get(
+          `https://jsonplaceholder.typicode.com/todos/1`
+        );
+
+        data &&
+          toast.success("Đặt hàng thành công", {
+            position: "top-right",
+            hideProgressBar: true,
+            theme: "colored",
+          });
+        onClose();
+      } else {
+        toast.error(
+          "Tài khoản bạn không đủ chi trả cho phí vận chuyển, vui lòng nạp thêm tiền"
+        );
+      }
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const loadingFunction = () => {
-    setLoading(false);
   };
 
   const getListDistricts = async () => {
@@ -147,6 +153,19 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
     }
   };
 
+  const temp = "Thành phố Thủ Đức";
+
+  const calculateShippingFee = async () => {
+    try {
+      const response = await axios.get(
+        `https://sneakery.herokuapp.com/api/shipping_fee/get?originDistrict=${temp}&destinationDistrict=${districtSelected?.name}`
+      );
+      response && setShippingFee(response.data.data.fee);
+    } catch (error) {
+      console.log("SHIPPING FEE ERROR", error);
+    }
+  };
+
   React.useEffect(() => {
     getListDistricts();
     getUserAddress();
@@ -157,6 +176,10 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
       getListWars(districtSelected.id as string);
       setWardSelected(null);
     }
+  }, [districtSelected]);
+
+  React.useEffect(() => {
+    districtSelected !== null && calculateShippingFee();
   }, [districtSelected]);
 
   const getUserAddress = async () => {
@@ -277,6 +300,14 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                         ));
                       }}
                     />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm text-gray-600 font-bold">
+                      Phí giao hàng
+                    </div>
+                    <div className="text-sm text-red-500 font-bold">
+                      {shippingFee.toString().prettyMoney()}$
+                    </div>
                   </div>
                 </div>
                 <div className="flex justify-between items-center">

@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React from "react";
+import { withAuthorization } from "../../common/config/HOC/withAuth";
 import FooterSection from "../../components/FooterSection";
 import HeaderV2 from "../../components/HeaderV2";
 import LeftSide from "../../containers/createProduct/LeftSide";
@@ -32,4 +33,4 @@ const CreateProduct: React.FC<ICreateProductProps> = (props) => {
   );
 };
 
-export default CreateProduct;
+export default withAuthorization(CreateProduct);
