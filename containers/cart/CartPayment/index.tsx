@@ -60,6 +60,8 @@ const CartPayment: React.FC<ICartPaymentProps> = (props) => {
         </div>
       </div>
       <OrderShippingDetailDialog
+        orderId={items[0]?.id as unknown as string}
+        totalProduct={items?.[0]?.priceWin as number}
         open={openDialog}
         onClose={() => setOpenDialog(false)}
       />

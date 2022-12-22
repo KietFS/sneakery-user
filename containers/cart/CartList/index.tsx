@@ -11,7 +11,7 @@ import { setGlobalCartItems } from "../../../redux/slices/cart";
 interface ICartList {}
 
 export interface ICartItem {
-  orderId: number;
+  id: number;
   product: {
     id: number;
     name: string;

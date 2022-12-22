@@ -13,23 +13,23 @@ const TopSlider: React.FC<ITopSliderProps> = (props) => {
     {
       title: "Giá cả hợp lý",
       subTitle:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit.Perferendis quis velit iure at, doloribus eum veritatis tempora",
+        "Giá cả của những đôi giày có trên sàn chúng tôi đều đã được các chuyên gia xem xét và kiểm duyệt rất khắt khe",
       icon: (
         <BanknotesIcon className="text-blue-500 h-12 w-12 tablet:h-20 tablet:w-20 laptop:h-32 laptop:w-32 mx-auto" />
       ),
     },
     {
-      title: "Giá cả hợp lý",
+      title: "Đảm bảo chất lượng",
       subTitle:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit.Perferendis quis velit iure at, doloribus eum veritatis tempora",
+        "Chất lượng luôn là tiêu chí hàng đầu vì thế trước khi đến tay khách hàng những đôi giày đã qua sự kiểm duyệt rất khắt khe từ người bán",
       icon: (
         <CheckBadgeIcon className="text-blue-500 h-12 w-12 tablet:h-20 tablet:w-20 laptop:h-32 laptop:w-32 mx-auto" />
       ),
     },
     {
-      title: "Giá cả hợp lý",
+      title: "Vận chuyển nhanh chóng",
       subTitle:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit.Perferendis quis velit iure at, doloribus eum veritatis tempora",
+        "Đội ngũ logistics chuyên nghiệp hàng đầu Việt Nam luôn đảm bảo sản phẩm đến tay khách hàng đúng giờ và an toàn",
       icon: (
         <TruckIcon className="text-blue-500 h-12 w-12 tablet:h-20 tablet:w-20 laptop:h-32 laptop:w-32 mx-auto" />
       ),

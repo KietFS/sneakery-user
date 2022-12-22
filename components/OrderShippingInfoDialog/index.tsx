@@ -14,7 +14,7 @@ import Image from "next/image";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import { IAddressResponse } from "../../containers/createProduct/LeftSide";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 interface IFormValue {
   name?: string;
@@ -29,6 +29,8 @@ export interface IOrderShippingInfoDialog {
   open: boolean;
   onClose: () => void;
   product?: IProduct;
+  orderId: string;
+  totalProduct: number;
 }
 
 interface IDistrict {
@@ -63,7 +65,8 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const [address, setAddress] = React.useState<IAddressResponse[]>([]);
   const [isInitialAddress, setIsInitialAddress] =
     React.useState<boolean>(false);
-  const [shippingFee, setShippingFee] = React.useState<number>(50000);
+  const [shippingFee, setShippingFee] = React.useState<number>(0);
+  const router = useRouter();
 
   const clients = [
     {
@@ -101,11 +104,20 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
         setWardError("");
       }
       setLoading(true);
-      if (balance >= shippingFee) {
-        const data = await axios.get(
-          `https://jsonplaceholder.typicode.com/todos/1`
-        );
 
+      if (balance >= Number((shippingFee / 23000).toFixed(0))) {
+        const data = await axios.get(
+          `https://sneakery.herokuapp.com/api/transaction/paid?orderId=${
+            props.orderId
+          }&shippingFee=${(shippingFee / 23000).toFixed(0)}&subtotal=${
+            props.totalProduct + Number((shippingFee / 23000).toFixed(0))
+          }`,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          }
+        );
         data &&
           toast.success("Đặt hàng thành công", {
             position: "top-right",
@@ -113,6 +125,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
             theme: "colored",
           });
         onClose();
+        router.push("/orderStatus");
       } else {
         toast.error(
           "Tài khoản bạn không đủ chi trả cho phí vận chuyển, vui lòng nạp thêm tiền"
@@ -158,7 +171,12 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const calculateShippingFee = async () => {
     try {
       const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/shipping_fee/get?originDistrict=${temp}&destinationDistrict=${districtSelected?.name}`
+        `https://sneakery.herokuapp.com/api/shipping_fee/get?originDistrict=${temp}&destinationDistrict=${districtSelected?.name}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
       );
       response && setShippingFee(response.data.data.fee);
     } catch (error) {
@@ -169,6 +187,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   React.useEffect(() => {
     getListDistricts();
     getUserAddress();
+    calculateShippingFee();
   }, []);
 
   React.useEffect(() => {
@@ -306,7 +325,11 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                       Phí giao hàng
                     </div>
                     <div className="text-sm text-red-500 font-bold">
-                      {shippingFee.toString().prettyMoney()}$
+                      {(shippingFee / 23000)
+                        .toFixed(0)
+                        .toString()
+                        .prettyMoney()}
+                      $
                     </div>
                   </div>
                 </div>
