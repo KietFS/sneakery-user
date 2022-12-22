@@ -107,7 +107,7 @@ const Category = (props: IProductProps) => {
             <div className="w-full justify-between flex mb-4 items-center">
               {keyWord !== null && (
                 <div className="text-gray-500 font-bold text-xl">
-                  Kết quả tìm kiếm theo từ khóa "{keyWord}"
+                  Kết quả tìm kiếm theo từ khóa {keyWord}
                 </div>
               )}
 
