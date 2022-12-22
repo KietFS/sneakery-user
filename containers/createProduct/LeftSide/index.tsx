@@ -351,8 +351,8 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
   const [address, setAddress] = useState<IAddressResponse[]>([]);
 
   useEffect(() => {
-    getUserAddress();
-  }, []);
+    user && getUserAddress();
+  }, [user]);
 
   const getUserAddress = async () => {
     try {
