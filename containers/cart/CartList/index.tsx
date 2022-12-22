@@ -47,8 +47,8 @@ const CartList: React.FC<ICartList> = (props) => {
   };
 
   useEffect(() => {
-    getItems();
-  }, []);
+    user && getItems();
+  }, [user]);
 
   return (
     <div className="h-fit laptop:min-h-[600px] laptop:w-4/5 w-full bg-white rounded-lg border border-gray-200 shadow-lg px-8 py-4">
