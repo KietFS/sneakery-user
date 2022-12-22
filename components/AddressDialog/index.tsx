@@ -11,6 +11,7 @@ import RichTextInput from "../../designs/RichTextInput";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import { IAddressResponse } from "../../containers/createProduct/LeftSide";
+import { toast } from "react-toastify";
 
 interface IFormValue {
   ward?: string;
@@ -80,8 +81,8 @@ function AddressDialog(props: IAddressDialogProps) {
         {
           homeNumber: values.addressDetail,
           cityName: "Thành phố Hồ Chí Minh",
-          districtName: districtSelected?.name,
-          wardName: wardSelected?.name,
+          district: districtSelected?.id,
+          ward: wardSelected?.id,
         },
         {
           headers: {
@@ -89,6 +90,7 @@ function AddressDialog(props: IAddressDialogProps) {
           },
         }
       );
+      data && toast.success("Cập nhật địa chỉ thành công");
     } catch (error) {
       console.log(error);
     } finally {
@@ -155,7 +157,7 @@ function AddressDialog(props: IAddressDialogProps) {
   }, [districtSelected]);
 
   React.useEffect(() => {
-    if (address) {
+    if (address.length >= 1) {
       setIsInitialAddress(true);
       setInitialValues({
         addressDetail: address?.[0]?.homeNumber,
@@ -196,8 +198,8 @@ function AddressDialog(props: IAddressDialogProps) {
                       label="Chọn quận"
                       optionSelected={districtSelected}
                       onSelect={(option) => {
-                        setIsInitialAddress(false);
                         setDistrictSelected(option);
+                        setIsInitialAddress(false);
                       }}
                       options={listDistrict}
                       placeholder="Chọn quận bạn muốn giao hàng đến"
