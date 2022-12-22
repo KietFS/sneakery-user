@@ -153,8 +153,12 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
   };
 
   React.useEffect(() => {
-    Promise.all([getListDistricts(), getUserAddress()]);
+    getListDistricts();
   }, []);
+
+  React.useEffect(() => {
+    user && getUserAddress();
+  }, [user]);
 
   React.useEffect(() => {
     if (districtSelected && isInitialAddress === false) {

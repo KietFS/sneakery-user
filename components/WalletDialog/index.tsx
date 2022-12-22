@@ -128,8 +128,12 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
   }, [chargeAmount]);
 
   useEffect(() => {
-    Promise.all([getWallet(), getTransactionHistory()]);
+    getWallet();
   }, []);
+
+  useEffect(() => {
+    user && getTransactionHistory();
+  }, [user]);
 
   return (
     <Dialog

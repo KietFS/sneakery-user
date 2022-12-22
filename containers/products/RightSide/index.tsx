@@ -7,6 +7,8 @@ import axios from "axios";
 import { useAppSelector } from "../../../hooks/useRedux";
 import { IRootState } from "../../../redux";
 import ProductBidHistoryDialog from "../../../components/ProductBidHistoryDialog";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 interface IRightSideProps {
   product: IProduct;
@@ -29,6 +31,7 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
   const [textMinute, setTextMinute] = useState<string>("");
   const [textSecond, setTextSecond] = useState<string>("");
   const [openHistoryDialog, setOpenHistoryDialog] = useState<boolean>(false);
+  const router = useRouter();
 
   const countdown = () => {
     const countDate = newBidClosingDate.getTime();
@@ -47,6 +50,15 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
     const textSecond = Math.floor((gap % minute) / second);
     setTextSecond(textSecond.toString());
   };
+
+  useEffect(() => {
+    if (textSecond.includes("-")) {
+      router.push("/");
+      toast.success(
+        "Sản phẩm đã hết phiên đấu giá, xin vui lòng kiểm tra giỏ hàng hoặc email để biết bạn có thắng hay không"
+      );
+    }
+  }, []);
 
   setInterval(countdown, 1000);
 
