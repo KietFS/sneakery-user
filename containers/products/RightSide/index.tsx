@@ -52,15 +52,12 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
   };
 
   useEffect(() => {
-    if (textSecond.includes("-")) {
+    if (Date.now() > newBidClosingDate.getTime()) {
       router.push("/");
-      toast.success(
-        "Sản phẩm đã hết phiên đấu giá, xin vui lòng kiểm tra giỏ hàng hoặc email để biết bạn có thắng hay không"
-      );
     }
-  }, []);
+  }, [textSecond]);
 
-  setInterval(countdown, 1000);
+  setInterval(countdown, 1);
 
   return (
     <div className="px-8 py-4">

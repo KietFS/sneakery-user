@@ -7,6 +7,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import {
+  ArrowsRightLeftIcon,
   BanknotesIcon,
   ChevronRightIcon,
   ClipboardDocumentCheckIcon,
@@ -25,13 +26,14 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import PostedDialog from "../PostedDialog";
 import WalletDialog from "../WalletDialog";
+import WithDrawDialog from "../WithDrawDialog";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
     style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      maxHeight: ITEM_HEIGHT * 6 + ITEM_PADDING_TOP,
       width: 200,
     },
   },
@@ -80,6 +82,7 @@ export default function MultipleSelectPlaceholder() {
   const [openPostedDialog, setOpenPostedDialog] =
     React.useState<boolean>(false);
   const [walletDialog, setWalletDialo] = React.useState<boolean>(false);
+  const [openWithDraw, setOpenWithDraw] = React.useState<boolean>(false);
 
   return (
     <div>
@@ -93,6 +96,7 @@ export default function MultipleSelectPlaceholder() {
           style={{
             border: 0,
             height: 45,
+
             borderWidth: 0,
             borderColor: "transparent",
 
@@ -155,8 +159,17 @@ export default function MultipleSelectPlaceholder() {
               setWalletDialo(true);
             }}
           >
-            <p className="text-gray-500 text-sm ">Quản lý số dư</p>
+            <p className="text-gray-500 text-sm ">Nạp tiền vào ví</p>
             <WalletIcon className="h-5 w-5 text-gray-500" />
+          </div>
+          <div
+            className="py-2 px-4 cursor-pointer flex justify-between items-center"
+            onClick={() => {
+              setOpenWithDraw(true);
+            }}
+          >
+            <p className="text-gray-500 text-sm ">Rút tiền</p>
+            <ArrowsRightLeftIcon className="h-5 w-5 text-gray-500" />
           </div>
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
@@ -191,6 +204,10 @@ export default function MultipleSelectPlaceholder() {
         onClose={() => setOpenPostedDialog(false)}
       />
       <WalletDialog open={walletDialog} onClose={() => setWalletDialo(false)} />
+      <WithDrawDialog
+        open={openWithDraw}
+        onClose={() => setOpenWithDraw(false)}
+      />
     </div>
   );
 }
