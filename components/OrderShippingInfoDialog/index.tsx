@@ -11,10 +11,13 @@ import SelectComponent from "../Select";
 import RichTextInput from "../../designs/RichTextInput";
 import GHNLogo from "../../assets/images/GHNLogo.png";
 import Image from "next/image";
+import { useAppSelector } from "../../hooks/useRedux";
+import { IRootState } from "../../redux";
+import { IAddressResponse } from "../../containers/createProduct/LeftSide";
 
 interface IFormValue {
-  name: string;
-  phoneNumber: string;
+  name?: string;
+  phoneNumber?: string;
   ward?: string;
   district?: string;
   addressDetail: string;
@@ -39,9 +42,10 @@ interface IWard {
 
 function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const { open, onClose, product } = props;
+  const { user } = useAppSelector((state: IRootState) => state.auth);
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
-    name: "",
-    phoneNumber: "",
+    name: user?.username as string,
+    phoneNumber: "0819190777",
     ward: "",
     district: "",
     addressDetail: "",
@@ -55,6 +59,9 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const [wardSelected, setWardSelected] = React.useState<IWard | null>(null);
   const [districtError, setDistrictError] = React.useState<string>("");
   const [wardError, setWardError] = React.useState<string>("");
+  const [address, setAddress] = React.useState<IAddressResponse[]>([]);
+  const [isInitialAddress, setIsInitialAddress] =
+    React.useState<boolean>(false);
 
   const clients = [
     {
@@ -92,12 +99,24 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
         setWardError("");
       }
       setLoading(true);
-      console.log("VALUES HERE", values);
+      const data = await axios.get(
+        `https://jsonplaceholder.typicode.com/todos/1`
+      );
+      data &&
+        toast.success("Đặt hàng thành công", {
+          position: "top-right",
+          hideProgressBar: true,
+          theme: "colored",
+        });
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadingFunction = () => {
+    setLoading(false);
   };
 
   const getListDistricts = async () => {
@@ -130,14 +149,45 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
 
   React.useEffect(() => {
     getListDistricts();
+    getUserAddress();
   }, []);
 
   React.useEffect(() => {
-    if (districtSelected) {
+    if (districtSelected && isInitialAddress === false) {
       getListWars(districtSelected.id as string);
       setWardSelected(null);
     }
   }, [districtSelected]);
+
+  const getUserAddress = async () => {
+    try {
+      const response = await axios.get(
+        `https://sneakery.herokuapp.com/api/address/get_all`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      response && setAddress(response.data.data);
+      response && console.log("ADDRESS RESPONBSE", response);
+    } catch (error) {
+      console.log("GET USER ADDRESS ERROR", error);
+    }
+  };
+
+  React.useEffect(() => {
+    if (address) {
+      setIsInitialAddress(true);
+      setInitialValues({
+        ...initialValues,
+        addressDetail: address?.[0]?.homeNumber,
+      });
+      console.log("ADDRESS", { address });
+      setWardSelected(address?.[0]?.ward);
+      setDistrictSelected(address?.[0]?.district);
+    }
+  }, [address]);
 
   return (
     <Dialog
@@ -154,7 +204,8 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
           onSubmit={handleSubmit}
           enableReinitialize
         >
-          {({ submitForm, values, handleSubmit }) => {
+          {({ submitForm, values, handleSubmit, errors }) => {
+            console.log("ERROR FORM", { errors });
             return (
               <div className="flex flex-col space-y-10">
                 <div className="flex flex-col space-y-5">
@@ -181,7 +232,10 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                       name="district"
                       label="Chọn quận"
                       optionSelected={districtSelected}
-                      onSelect={(option) => setDistrictSelected(option)}
+                      onSelect={(option) => {
+                        setIsInitialAddress(false);
+                        setDistrictSelected(option);
+                      }}
                       options={listDistrict}
                       placeholder="Chọn quận bạn muốn giao hàng đến"
                       error={districtError}

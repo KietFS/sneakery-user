@@ -5,10 +5,8 @@ import * as yup from "yup";
 import { Formik } from "formik";
 import InputText from "../../designs/InputText";
 import Button from "../../designs/Button";
-import axios from "axios";
-import { toast } from "react-toastify";
-import SelectComponent from "../Select";
-import RichTextInput from "../../designs/RichTextInput";
+import { useAppSelector } from "../../hooks/useRedux";
+import { IRootState } from "../../redux";
 
 interface IFormValue {
   name: string;
@@ -23,9 +21,10 @@ export interface IAccountDialogProps {
 
 function OrderShippingInfoDialog(props: IAccountDialogProps) {
   const { open, onClose, product } = props;
+  const { user } = useAppSelector((state: IRootState) => state.auth);
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
-    name: "",
-    phoneNumber: "",
+    name: user?.username as string,
+    phoneNumber: "0819190227",
   });
   const [loading, setLoading] = React.useState<boolean>(false);
   const [initialLoading, setInitialLoading] = React.useState<boolean>(false);

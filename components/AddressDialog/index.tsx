@@ -195,7 +195,10 @@ function AddressDialog(props: IAddressDialogProps) {
                       name="district"
                       label="Chọn quận"
                       optionSelected={districtSelected}
-                      onSelect={(option) => setDistrictSelected(option)}
+                      onSelect={(option) => {
+                        setIsInitialAddress(false);
+                        setDistrictSelected(option);
+                      }}
                       options={listDistrict}
                       placeholder="Chọn quận bạn muốn giao hàng đến"
                       error={districtError}

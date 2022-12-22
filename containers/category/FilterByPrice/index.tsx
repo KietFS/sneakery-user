@@ -24,15 +24,15 @@ export default function RangeSlider() {
     },
     {
       value: 20,
-      label: "20Tr",
+      label: "20k$",
     },
     {
       value: 50,
-      label: "50Tr",
+      label: "50k$",
     },
     {
       value: 100,
-      label: "100Tr",
+      label: "100k$",
     },
   ];
 
@@ -42,12 +42,12 @@ export default function RangeSlider() {
     if (value[0] === 0) {
       dispatch(setPriceStart("0"));
     } else {
-      dispatch(setPriceStart(`${value[0].toString()}000000`));
+      dispatch(setPriceStart(`${value[0].toString()}000`));
     }
     if (value[1] === 0) {
       dispatch(setPriceEnd("0"));
     } else {
-      dispatch(setPriceEnd(`${value[1].toString()}000000`));
+      dispatch(setPriceEnd(`${value[1].toString()}000`));
     }
   }, [value]);
 

@@ -169,7 +169,7 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
       setInitialValues({
         addressDetail: address?.[0]?.homeNumber,
 
-        phoneNumber: "",
+        phoneNumber: "0819190777",
       });
       console.log("ADDRESS", { address });
       setWardSelected(address?.[0]?.ward);
@@ -206,7 +206,10 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
                     name="district"
                     label="Chọn quận"
                     optionSelected={districtSelected}
-                    onSelect={(option) => setDistrictSelected(option)}
+                    onSelect={(option) => {
+                      setIsInitialAddress(false);
+                      setDistrictSelected(option);
+                    }}
                     options={listDistrict}
                     placeholder="Chọn quận bạn muốn giao hàng đến"
                     error={districtError}

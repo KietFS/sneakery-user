@@ -1,15 +1,58 @@
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Dialog, DialogContent, DialogTitle, Tooltip } from "@mui/material";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import PostedCard from "../../designs/PostedCard";
+import { useAppSelector } from "../../hooks/useRedux";
+import { IRootState } from "../../redux";
 
 interface IPostedDialogProps {
   open: boolean;
   onClose: () => void;
 }
 
+interface IPostedProduct {
+  bidId: string;
+  bidStartingDate: string;
+  priceStart: number;
+  stepBid: number;
+  priceWin: number | null;
+  product: {
+    id: number;
+    name: string;
+    startPrice: number;
+    imagePath: string;
+    username: string;
+    bidClosingDate: string;
+  };
+}
+
 const PostedDialog: React.FC<IPostedDialogProps> = (props) => {
   const { open, onClose } = props;
+  const [items, setItems] = useState<IPostedProduct[]>([]);
+  const { user } = useAppSelector((state: IRootState) => state.auth);
+
+  const getPostedItems = async () => {
+    try {
+      const response = await axios.get(
+        "https://sneakery.herokuapp.com/api/bids/get_uploaded_products",
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      response && setItems(response?.data?.data);
+      response && console.log("REPONSE", response);
+    } catch (error) {
+      console.log("POSTED ITEMS ERROR", error);
+    }
+  };
+
+  useEffect(() => {
+    getPostedItems();
+  }, []);
+
   return (
     <Dialog
       onClose={onClose}
@@ -29,14 +72,14 @@ const PostedDialog: React.FC<IPostedDialogProps> = (props) => {
             </Tooltip>
           </div>
           <div className="flex flex-col gap-y-5">
-            <PostedCard title="Air Jordan Dior Travis Scott" status="pending" />
-            <PostedCard title="Air Jordan Dior Travis Scott" status="pending" />
-            <PostedCard title="Air Jordan Dior Travis Scott" status="pending" />
-            <PostedCard title="Air Jordan Dior Travis Scott" status="success" />
-            <PostedCard title="Air Jordan Dior Travis Scott" status="success" />
-            <PostedCard title="Air Jordan Dior Travis Scott" status="success" />
-            <PostedCard title="Air Jordan Dior Travis Scott" status="success" />
-            <PostedCard title="Air Jordan Dior Travis Scott" status="success" />
+            {items.map((item, index) => (
+              <PostedCard
+                title={item.product.name}
+                status={item.priceWin === null ? "pending" : "success"}
+                imagePath={item.product.imagePath}
+                createdAt={item.bidStartingDate?.toString().prettyDate()}
+              />
+            ))}
           </div>
         </div>
       </DialogContent>

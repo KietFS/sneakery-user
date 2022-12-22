@@ -5,10 +5,12 @@ import { PlayIcon, TrashIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useAppSelector } from "../../../hooks/useRedux";
 import { IRootState } from "../../../redux";
+import { useDispatch } from "react-redux";
+import { setGlobalCartItems } from "../../../redux/slices/cart";
 
 interface ICartList {}
 
-interface ICartItem {
+export interface ICartItem {
   orderId: string;
   product: {
     id: number;
@@ -24,6 +26,7 @@ interface ICartItem {
 const CartList: React.FC<ICartList> = (props) => {
   const { user } = useAppSelector((state: IRootState) => state.auth);
   const [items, setItems] = useState<ICartItem[]>([]);
+  const dispatch = useDispatch();
 
   const getItems = async () => {
     try {
@@ -37,6 +40,7 @@ const CartList: React.FC<ICartList> = (props) => {
       );
       response && console.log("RESPONSE", response);
       response && setItems(response.data.data);
+      response && dispatch(setGlobalCartItems(response.data.data));
     } catch (error) {
       console.log("CART ERROR", error);
     }

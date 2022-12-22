@@ -277,7 +277,9 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
                       {item.transactedAt.toString().replace("T", " ")}
                     </p>
                     <p className="text-xs font-semibold text-blue-500">
-                      {item.status === "DEPOSIT" ? "+" : "-"}
+                      {item.status === "DEPOSIT" || item.status === "RECEIVED"
+                        ? "+"
+                        : "-"}
                       {`${item.amount}$`}
                     </p>
                   </div>

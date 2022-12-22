@@ -23,7 +23,7 @@ export interface IBidDialogProps {
 function BidDialog(props: IBidDialogProps) {
   const { open, onClose, product } = props;
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
-    amount: product.currentPrice.toString(),
+    amount: (product.currentPrice + product.bidIncrement).toString(),
   });
   console.log("STEP BID", { product });
   const [loading, setLoading] = React.useState<boolean>(false);
