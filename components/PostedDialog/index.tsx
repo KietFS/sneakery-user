@@ -74,6 +74,7 @@ const PostedDialog: React.FC<IPostedDialogProps> = (props) => {
           <div className="flex flex-col gap-y-5">
             {items.map((item, index) => (
               <PostedCard
+                key={index.toString()}
                 title={item.product.name}
                 status={item.priceWin === null ? "pending" : "success"}
                 imagePath={item.product.imagePath}

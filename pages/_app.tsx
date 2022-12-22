@@ -56,8 +56,6 @@ function App({ Component, pageProps }: AppProps) {
           pauseOnHover
           theme="light"
         />
-        {/* Same as */}
-        <ToastContainer />
         <Component {...pageProps} />
       </Provider>
     </LocalizationProvider>
