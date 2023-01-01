@@ -12,6 +12,8 @@ const UploadImage: React.FC<IUploadImageProps> = (props) => {
   const [baseImage, setBaseImage] = useState<any[]>([]);
   const [imgShow, setImgShow] = useState<any[]>([]);
 
+  
+
   const uploadImage = async (e: any) => {
     console.log("TARGET FILE", e.target.files);
     const file = e.target.files[0];

@@ -78,7 +78,7 @@ const InputEmail: React.FC<IInputEmailProps> = (props) => {
         )}
       </div>
       <div
-        className={`flex w-80 items-center bg-gray-100 px-2 py-1 rounded-lg h-10 focus-within:bg-blue-50`}
+        className={`flex w-80 items-center bg-gray-100 px-2 py-1 rounded-lg h-10 focus-within:bg-blue-50 ${className}`}
       >
         <div className="border-r border-gray-500 pr-2">
           <EnvelopeIcon width={20} height={20} color="gray" />

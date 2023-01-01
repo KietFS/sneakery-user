@@ -1,8 +1,4 @@
-import {
-  MagnifyingGlassCircleIcon,
-  MagnifyingGlassIcon,
-  MagnifyingGlassMinusIcon,
-} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
@@ -14,8 +10,6 @@ import useOnClickOutside from "../../hooks/useClickOutSide";
 import useDebounce from "../../hooks/useDebounce";
 import { setKeyWord } from "../../redux/slices/filter";
 import HorizontalProductCard from "../HorizontalProductCard";
-import InputEmail from "../InputEmail";
-import InputText from "../InputText";
 import InputWithIcon from "../InputWithIcon";
 
 interface IInputSearchProps {}
