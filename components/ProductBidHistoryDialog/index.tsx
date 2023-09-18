@@ -1,19 +1,21 @@
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { Dialog, DialogContent, Tooltip } from "@mui/material";
-import React from "react";
-import { IProductBidHistoryItem } from "../../containers/products/RightSide";
-import OrderCard from "../../designs/OrderCard";
-import Image from "next/image";
+import React from 'react'
+
+//styles
+import { Dialog, DialogContent, Tooltip } from '@mui/material'
+import { XMarkIcon } from '@heroicons/react/20/solid'
+
+//utils
+import { IProductBidHistoryItem } from '@/containers/products/RightSide'
 
 interface IProductBidHistoryDialogProps {
-  onClose: () => void;
-  open: boolean;
-  bidHistory: IProductBidHistoryItem[];
+  onClose: () => void
+  open: boolean
+  bidHistory: IProductBidHistoryItem[]
 }
 
-const ProductBidHistoryDialog: React.FC<IProductBidHistoryDialogProps> = (
-  props
-) => {
+const ProductBidHistoryDialog: React.FC<
+  IProductBidHistoryDialogProps
+> = props => {
   return (
     <Dialog
       onClose={props.onClose}
@@ -45,7 +47,7 @@ const ProductBidHistoryDialog: React.FC<IProductBidHistoryDialogProps> = (
                   {item.bidAmount.toString().prettyMoney()}$
                 </p>
                 <p className="text-gray-600 text-sm cursor-pointer">
-                  {item.createdAt.toString().replace("T", " ")}
+                  {item.createdAt.toString().replace('T', ' ')}
                 </p>
               </div>
             ))}
@@ -53,7 +55,7 @@ const ProductBidHistoryDialog: React.FC<IProductBidHistoryDialogProps> = (
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default ProductBidHistoryDialog;
+export default ProductBidHistoryDialog

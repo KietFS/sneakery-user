@@ -1,97 +1,103 @@
-import * as React from "react";
-import Dialog from "@mui/material/Dialog";
-import { DialogContent } from "@mui/material";
-import * as yup from "yup";
-import { Formik } from "formik";
-import InputBid from "../../designs/InputNumber";
-import Button from "../../designs/Button";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
+import * as React from 'react'
+
+//styles
+import InputBid from '@/designs/InputNumber'
+import Button from '@/designs/Button'
+import { DialogContent } from '@mui/material'
+import Dialog from '@mui/material/Dialog'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+
+//store
+import { IRootState } from '@/redux'
+
+//utils
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import * as yup from 'yup'
+import { Formik } from 'formik'
 
 interface IFormValue {
-  amount?: string;
+  amount?: string
 }
 
 export interface IBidDialogProps {
-  open: boolean;
-  onClose: () => void;
-  product: IProduct;
+  open: boolean
+  onClose: () => void
+  product: IProduct
 }
 
 function BidDialog(props: IBidDialogProps) {
-  const { open, onClose, product } = props;
+  const { open, onClose, product } = props
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
     amount: (product.currentPrice + product.bidIncrement).toString(),
-  });
-  console.log("STEP BID", { product });
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string>("");
-  const { user, balance } = useAppSelector((state: IRootState) => state.auth);
+  })
+  console.log('STEP BID', { product })
+  const [loading, setLoading] = React.useState<boolean>(false)
+  const [error, setError] = React.useState<string>('')
+  const { user, balance } = useAppSelector((state: IRootState) => state.auth)
   const validationSchema = yup
     .object()
-    .shape<{ [k in keyof IFormValue]: any }>({});
+    .shape<{ [k in keyof IFormValue]: any }>({})
 
   const handleSubmit = async (values: IFormValue) => {
     if (
-      Number(values?.amount?.split(",").join("")) <
+      Number(values?.amount?.split(',').join('')) <
       Number(product.currentPrice + product.bidIncrement)
     ) {
-      setError(
-        "Vui lòng nhập bid cao hơn mức bid hiện tại cộng với bước giá !"
-      );
+      setError('Vui lòng nhập bid cao hơn mức bid hiện tại cộng với bước giá !')
     } else if (
       Number(balance) < Number(product?.currentPrice + product.bidIncrement)
     ) {
-      setError("Tài khoản của bạn không đủ để thực hiện lượt bid này");
+      setError('Tài khoản của bạn không đủ để thực hiện lượt bid này')
     } else {
       try {
-        setLoading(true);
+        setLoading(true)
         const data = await axios.post(
-          "https://sneakery.herokuapp.com/api/bids",
+          'https://sneakery.herokuapp.com/api/bids',
           {
-            amount: Number(values.amount?.split(",").join("")),
+            amount: Number(values.amount?.split(',').join('')),
             productId: Number(product.id),
           },
           {
             headers: {
               Authorization: `Bearer ${user?.token}`,
             },
-          }
-        );
+          },
+        )
         if (data) {
-          toast.success("Bid sản phẩm thành công", {
-            position: "top-right",
+          toast.success('Bid sản phẩm thành công', {
+            position: 'top-right',
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "colored",
-          });
-          onClose();
+            theme: 'colored',
+          })
+          onClose()
         } else {
-          toast.error("Đã có lỗi xảy ra, vui lòng thử lại sau", {
-            position: "top-right",
+          toast.error('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+            position: 'top-right',
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "colored",
-          });
-          onClose();
+            theme: 'colored',
+          })
+          onClose()
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
-  };
+  }
 
   return (
     <Dialog
@@ -144,12 +150,12 @@ function BidDialog(props: IBidDialogProps) {
                   </div>
                 </div>
               </div>
-            );
+            )
           }}
         </Formik>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
-export default BidDialog;
+export default BidDialog

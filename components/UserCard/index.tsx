@@ -1,35 +1,36 @@
-import * as React from "react";
-import { Theme, useTheme } from "@mui/material/styles";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
+import * as React from 'react'
+
+//styles
 import {
   ArrowsRightLeftIcon,
-  BanknotesIcon,
   ChevronRightIcon,
-  ClipboardDocumentCheckIcon,
-  ClipboardDocumentIcon,
   ClipboardDocumentListIcon,
   ClockIcon,
   MapPinIcon,
   UserIcon,
   WalletIcon,
-} from "@heroicons/react/24/outline";
-import AddressDialog from "../AddressDialog";
-import AccountDialog from "../AccountDialog";
-import OrderHistoryDialog from "../OrderHistoryDialog";
-import LogoutConfirmDialog from "../LogoutConfirmDialog";
-import { useRouter } from "next/router";
-import { toast } from "react-toastify";
-import PostedDialog from "../PostedDialog";
-import WalletDialog from "../WalletDialog";
-import WithDrawDialog from "../WithDrawDialog";
+} from '@heroicons/react/24/outline'
+import AddressDialog from '../AddressDialog'
+import AccountDialog from '../AccountDialog'
+import OrderHistoryDialog from '../OrderHistoryDialog'
+import LogoutConfirmDialog from '../LogoutConfirmDialog'
+import PostedDialog from '../PostedDialog'
+import WalletDialog from '../WalletDialog'
+import WithDrawDialog from '../WithDrawDialog'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import OutlinedInput from '@mui/material/OutlinedInput'
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+//hooks
+import { useRouter } from 'next/router'
+import { useAppSelector } from '@/hooks/useRedux'
+
+//utils
+import { toast } from 'react-toastify'
+import FormControl from '@mui/material/FormControl'
+import { IRootState } from '@/redux'
+
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
 const MenuProps = {
   PaperProps: {
     style: {
@@ -37,52 +38,49 @@ const MenuProps = {
       width: 200,
     },
   },
-};
+}
 
 export default function MultipleSelectPlaceholder() {
-  const [personName, setPersonName] = React.useState<string[]>([]);
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+  //state
+  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const [personName, setPersonName] = React.useState<string[]>([])
+  const [openAddressDialog, setOpenAddressDialog] =
+    React.useState<boolean>(false)
+  const [openAccountDialog, setOpenAccountDialog] =
+    React.useState<boolean>(false)
+  const [openOrderHistory, setOpenOrderHistory] = React.useState<boolean>(false)
+  const [openLogoutDialog, setOpenLogoutDialog] = React.useState<boolean>(false)
+  const [openPostedDialog, setOpenPostedDialog] = React.useState<boolean>(false)
+  const [walletDialog, setWalletDialo] = React.useState<boolean>(false)
+  const [openWithDraw, setOpenWithDraw] = React.useState<boolean>(false)
 
+  //functions
   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
     const {
       target: { value },
-    } = event;
+    } = event
     setPersonName(
       // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
+      typeof value === 'string' ? value.split(',') : value,
+    )
+  }
 
-  const router = useRouter();
+  const router = useRouter()
 
   const logOut = () => {
     try {
-      console.log("LOG OUT");
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      toast.success("Đăng xuất thành công", {
-        position: "top-right",
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
+      toast.success('Đăng xuất thành công', {
+        position: 'top-right',
         hideProgressBar: true,
-        theme: "colored",
-      });
-      router.reload();
+        theme: 'colored',
+      })
+      router.reload()
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
-
-  const [openAddressDialog, setOpenAddressDialog] =
-    React.useState<boolean>(false);
-  const [openAccountDialog, setOpenAccountDialog] =
-    React.useState<boolean>(false);
-  const [openOrderHistory, setOpenOrderHistory] =
-    React.useState<boolean>(false);
-  const [openLogoutDialog, setOpenLogoutDialog] =
-    React.useState<boolean>(false);
-  const [openPostedDialog, setOpenPostedDialog] =
-    React.useState<boolean>(false);
-  const [walletDialog, setWalletDialo] = React.useState<boolean>(false);
-  const [openWithDraw, setOpenWithDraw] = React.useState<boolean>(false);
+  }
 
   return (
     <div>
@@ -98,7 +96,7 @@ export default function MultipleSelectPlaceholder() {
             height: 45,
 
             borderWidth: 0,
-            borderColor: "transparent",
+            borderColor: 'transparent',
 
             borderRadius: 7,
           }}
@@ -110,17 +108,17 @@ export default function MultipleSelectPlaceholder() {
               </p>
 
               <p className="text-gray-600 font-semibold hidden laptop:flex">
-                {user?.username || "Tuan Kiet"}
+                {user?.username || 'Tuan Kiet'}
               </p>
             </div>
           )}
           MenuProps={MenuProps}
-          inputProps={{ "aria-label": "Without label" }}
+          inputProps={{ 'aria-label': 'Without label' }}
         >
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
-              setOpenAccountDialog(true);
+              setOpenAccountDialog(true)
             }}
           >
             <p className="text-gray-500 text-sm ">Cài đặt tài khoản</p>
@@ -129,7 +127,7 @@ export default function MultipleSelectPlaceholder() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
-              setOpenAddressDialog(true);
+              setOpenAddressDialog(true)
             }}
           >
             <p className="text-gray-500 text-sm ">Cài đặt địa chỉ</p>
@@ -138,7 +136,7 @@ export default function MultipleSelectPlaceholder() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
-              setOpenOrderHistory(true);
+              setOpenOrderHistory(true)
             }}
           >
             <p className="text-gray-500 text-sm ">Lịch sử đấu giá</p>
@@ -147,7 +145,7 @@ export default function MultipleSelectPlaceholder() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
-              setOpenPostedDialog(true);
+              setOpenPostedDialog(true)
             }}
           >
             <p className="text-gray-500 text-sm ">Sản phẩm đã đăng</p>
@@ -156,7 +154,7 @@ export default function MultipleSelectPlaceholder() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
-              setWalletDialo(true);
+              setWalletDialo(true)
             }}
           >
             <p className="text-gray-500 text-sm ">Nạp tiền vào ví</p>
@@ -165,7 +163,7 @@ export default function MultipleSelectPlaceholder() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
-              setOpenWithDraw(true);
+              setOpenWithDraw(true)
             }}
           >
             <p className="text-gray-500 text-sm ">Rút tiền</p>
@@ -174,7 +172,7 @@ export default function MultipleSelectPlaceholder() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
-              setOpenLogoutDialog(true);
+              setOpenLogoutDialog(true)
             }}
           >
             <p className="text-gray-500 text-sm ">Đăng xuất</p>
@@ -209,5 +207,5 @@ export default function MultipleSelectPlaceholder() {
         onClose={() => setOpenWithDraw(false)}
       />
     </div>
-  );
+  )
 }

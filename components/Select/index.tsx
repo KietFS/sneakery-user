@@ -1,43 +1,44 @@
-import { SelectChangeEvent, Select, MenuItem } from "@mui/material";
-import { useField } from "formik";
-import React, { ReactNode, useEffect, useRef } from "react";
+import React, { ReactNode, useRef } from 'react'
+
+//styles
+import { Select, MenuItem } from '@mui/material'
 
 interface ISelectProps<T = any> {
-  name: string;
-  label: string;
-  placeholder: string;
-  options: T[];
-  optionSelected: T;
-  onSelect: (option: T) => void;
-  keyValue?: string;
-  keyLabel?: string;
-  renderOption?: (item: T[]) => ReactNode;
-  error?: string;
+  name: string
+  label: string
+  placeholder: string
+  options: T[]
+  optionSelected: T
+  onSelect: (option: T) => void
+  keyValue?: string
+  keyLabel?: string
+  renderOption?: (item: T[]) => ReactNode
+  error?: string
 }
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
 const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 3 + ITEM_PADDING_TOP,
     },
   },
-};
+}
 
-const SelectComponent: React.FC<ISelectProps> = (props) => {
-  const ref = useRef();
+const SelectComponent: React.FC<ISelectProps> = props => {
+  const ref = useRef()
   const {
     name,
     label,
-    placeholder = "",
+    placeholder = '',
     options,
     optionSelected,
-    keyValue = "id",
-    keyLabel = "name",
+    keyValue = 'id',
+    keyLabel = 'name',
     onSelect,
     renderOption,
-    error = "",
-  } = props;
+    error = '',
+  } = props
 
   return (
     <div className="flex flex-col gap-y-1">
@@ -48,15 +49,15 @@ const SelectComponent: React.FC<ISelectProps> = (props) => {
         placeholder={placeholder}
         value={optionSelected}
         style={{
-          width: "100%",
+          width: '100%',
           height: 40,
           borderWidth: 0,
-          borderColor: "transparent",
-          background: "#f3f4f6",
+          borderColor: 'transparent',
+          background: '#f3f4f6',
           borderRadius: 7,
           maxHeight: 100,
         }}
-        renderValue={(value) => (
+        renderValue={value => (
           <div className="flex h-full items-center">
             <p className="text-gray-900 text-sm items-center  ">
               {value[keyLabel]}
@@ -64,8 +65,8 @@ const SelectComponent: React.FC<ISelectProps> = (props) => {
           </div>
         )}
         sx={{
-          boxShadow: "none",
-          ".MuiOutlinedInput-notchedOutline": { border: 0 },
+          boxShadow: 'none',
+          '.MuiOutlinedInput-notchedOutline': { border: 0 },
         }}
       >
         {renderOption
@@ -84,7 +85,7 @@ const SelectComponent: React.FC<ISelectProps> = (props) => {
         <p className="text-red-500 text-xs font-semibold mt-1">{error}</p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default SelectComponent;
+export default SelectComponent

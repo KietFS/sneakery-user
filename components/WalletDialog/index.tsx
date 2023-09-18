@@ -1,65 +1,76 @@
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { ArrowPathIcon } from "@heroicons/react/24/outline";
-import { Dialog, DialogContent, DialogTitle, Tooltip } from "@mui/material";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { NumericFormat } from "react-number-format";
-import { useDispatch } from "react-redux";
-import Button from "../../designs/Button";
-import OrderCard from "../../designs/OrderCard";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
-import { setUserBalance } from "../../redux/slices/auth";
-import Spinner from "../Spinner";
+import React, { useEffect, useState } from 'react'
+
+//icons
+import { XMarkIcon } from '@heroicons/react/20/solid'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
+
+import axios from 'axios'
+
+//styles
+import { Dialog, DialogContent, Tooltip } from '@mui/material'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+import { useDispatch } from 'react-redux'
+import { IRootState } from '@/redux'
+
+//utils
+import { setUserBalance } from '@/redux/slices/auth'
+import { NumericFormat } from 'react-number-format'
+import Spinner from '../Spinner'
 
 interface IWalletDialogProps {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
 }
 
 interface ITransactionHistory {
-  amount: number;
-  status: string;
-  transactedAt: string;
-  transactionCode: number;
+  amount: number
+  status: string
+  transactedAt: string
+  transactionCode: number
 }
 
-const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
-  const { open, onClose } = props;
-  const { user } = useAppSelector((state: IRootState) => state.auth);
-  const [money, setMoney] = useState<number | null>(null);
-  const [isExisted, setIsExisted] = useState<boolean | null>(null);
-  const [createSuccess, setCreateSuccess] = useState<boolean | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [actionCharge, setActionCharge] = useState<boolean>(false);
-  const [chargeAmount, setChargeAmount] = useState<string | null>(null);
-  const [isWatch, setIsWatch] = useState<boolean>(false);
-  const [transactions, setTransactions] = useState<ITransactionHistory[]>([]);
+const WalletDialog: React.FC<IWalletDialogProps> = props => {
+  //props
+  const { open, onClose } = props
 
-  const dispatch = useDispatch();
+  //state
+  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const [money, setMoney] = useState<number | null>(null)
+  const [isExisted, setIsExisted] = useState<boolean | null>(null)
+  const [createSuccess, setCreateSuccess] = useState<boolean | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [actionCharge, setActionCharge] = useState<boolean>(false)
+  const [chargeAmount, setChargeAmount] = useState<string | null>(null)
+  const [isWatch, setIsWatch] = useState<boolean>(false)
+  const [transactions, setTransactions] = useState<ITransactionHistory[]>([])
+
+  //functions
+  const dispatch = useDispatch()
 
   const getWallet = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/wallet/get/${user?.id}`
-      );
-      data && console.log("WALLET DATA", data);
+        `https://sneakery.herokuapp.com/api/wallet/get/${user?.id}`,
+      )
+      data && console.log('WALLET DATA', data)
       if (data) {
         if (data.data?.data === null) {
-          setIsExisted(false);
+          setIsExisted(false)
         } else {
-          setIsExisted(true);
-          setMoney(data.data?.data.balance);
-          dispatch(setUserBalance(data.data?.data.balance));
+          setIsExisted(true)
+          setMoney(data.data?.data.balance)
+          dispatch(setUserBalance(data.data?.data.balance))
         }
       }
     } catch (error) {
-      console.log("GET WALLET ERROR", error);
+      console.log('GET WALLET ERROR', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const getTransactionHistory = async () => {
     try {
@@ -69,71 +80,71 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
-      response && setTransactions(response.data.data);
+        },
+      )
+      response && setTransactions(response.data.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const createWallet = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       const data = await axios.post(
-        "https://sneakery.herokuapp.com/api/wallet/create",
+        'https://sneakery.herokuapp.com/api/wallet/create',
         {
           email: user?.email,
-        }
-      );
+        },
+      )
       if (data) {
-        setCreateSuccess(true);
-        await getWallet();
+        setCreateSuccess(true)
+        await getWallet()
       }
     } catch (error) {
-      console.log("CREATE WALLET ERROR", error);
-      setCreateSuccess(false);
+      console.log('CREATE WALLET ERROR', error)
+      setCreateSuccess(false)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const charge = async () => {
     try {
       const data = await axios.post(
-        "https://sneakery.herokuapp.com/api/transaction/deposit",
+        'https://sneakery.herokuapp.com/api/transaction/deposit',
         {
           userId: Number(user?.id),
-          amount: Number(chargeAmount?.split(",").join("")),
+          amount: Number(chargeAmount?.split(',').join('')),
         },
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
+        },
+      )
       if (data) {
-        console.log("CHARGE DATA", data);
-        window.open(data.data.message);
+        console.log('CHARGE DATA', data)
+        window.open(data.data.message)
       }
     } catch (error) {
-      console.log("CHARGE ERROR", error);
+      console.log('CHARGE ERROR', error)
     } finally {
-      setActionCharge(false);
+      setActionCharge(false)
     }
-  };
+  }
 
   useEffect(() => {
-    chargeAmount && localStorage.setItem("currentCharge", chargeAmount);
-  }, [chargeAmount]);
+    chargeAmount && localStorage.setItem('currentCharge', chargeAmount)
+  }, [chargeAmount])
 
   useEffect(() => {
-    getWallet();
-  }, []);
+    getWallet()
+  }, [])
 
   useEffect(() => {
-    user && getTransactionHistory();
-  }, [user]);
+    user && getTransactionHistory()
+  }, [user])
 
   return (
     <Dialog
@@ -162,7 +173,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
               <>
                 {loading && (
                   <div className="mt-2">
-                    <Spinner size={20} />{" "}
+                    <Spinner size={20} />{' '}
                   </div>
                 )}
 
@@ -188,7 +199,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
                         placeholder="Nhập số tiền"
                         allowLeadingZeros
                         thousandSeparator=","
-                        onChange={(e) => setChargeAmount(e.target.value)}
+                        onChange={e => setChargeAmount(e.target.value)}
                         type="text"
                         className={`bg-gray-100 text-gray-700  w-[200px] my-2 h-8 px-2 text-sm ml-1 outline-none ring-0 outline-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent focus:bg-blue-50 rounded-lg`}
                       />
@@ -197,25 +208,25 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
                       className="text-sm font-semibold px-4 py-1 bg-blue-500 text-white rounded-full mt-3 cursor-pointer hover:opacity-80"
                       onClick={() => {
                         if (actionCharge === false) {
-                          setActionCharge(true);
+                          setActionCharge(true)
                         } else {
-                          charge();
+                          charge()
                         }
                       }}
                     >
-                      {actionCharge ? "Nạp ngay" : "Nạp thêm tiền"}
+                      {actionCharge ? 'Nạp ngay' : 'Nạp thêm tiền'}
                     </p>
                     <p
                       className="text-sm font-semibold px-4 py-1 bg-gray-200 text-gray-600 rounded-full mt-2 cursor-pointer hover:opacity-80"
                       onClick={() => {
                         if (actionCharge) {
-                          setActionCharge(false);
+                          setActionCharge(false)
                         } else {
-                          setIsWatch(true);
+                          setIsWatch(true)
                         }
                       }}
                     >
-                      {actionCharge ? "Hủy hành động" : "Xem lịch sử giao dịch"}
+                      {actionCharge ? 'Hủy hành động' : 'Xem lịch sử giao dịch'}
                     </p>
                   </>
                 ) : (
@@ -259,7 +270,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
               <>
                 {loading && (
                   <div className="mt-2">
-                    <Spinner size={20} />{" "}
+                    <Spinner size={20} />{' '}
                   </div>
                 )}
                 <div className="flex w-fit gap-x-2 justify-between items-center mt-2">
@@ -278,12 +289,12 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
                     className="flex mx-auto items-center mt-2 gap-x-5  gap-y-2 w-full justify-between"
                   >
                     <p className="text-gray-600 text-sm font-semibold ">
-                      {item.transactedAt.toString().replace("T", " ")}
+                      {item.transactedAt.toString().replace('T', ' ')}
                     </p>
                     <p className="text-xs font-semibold text-blue-500">
-                      {item.status === "DEPOSIT" || item.status === "RECEIVED"
-                        ? "+"
-                        : "-"}
+                      {item.status === 'DEPOSIT' || item.status === 'RECEIVED'
+                        ? '+'
+                        : '-'}
                       {`${item.amount}$`}
                     </p>
                   </div>
@@ -300,7 +311,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
         </DialogContent>
       )}
     </Dialog>
-  );
-};
+  )
+}
 
-export default WalletDialog;
+export default WalletDialog

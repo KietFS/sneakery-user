@@ -1,53 +1,59 @@
-import * as React from "react";
-import Dialog from "@mui/material/Dialog";
-import { DialogContent } from "@mui/material";
-import * as yup from "yup";
-import { Formik } from "formik";
-import InputText from "../../designs/InputText";
-import Button from "../../designs/Button";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
+import * as React from 'react'
+
+//styles
+import InputText from '@/designs/InputText'
+import Button from '@/designs/Button'
+import Dialog from '@mui/material/Dialog'
+import { DialogContent } from '@mui/material'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+
+//utils
+import * as yup from 'yup'
+import { IRootState } from '@/redux'
+import { Formik } from 'formik'
 
 interface IFormValue {
-  name: string;
-  phoneNumber: string;
+  name: string
+  phoneNumber: string
 }
 
 export interface IAccountDialogProps {
-  open: boolean;
-  onClose: () => void;
-  product?: IProduct;
+  open: boolean
+  onClose: () => void
+  product?: IProduct
 }
 
 function OrderShippingInfoDialog(props: IAccountDialogProps) {
-  const { open, onClose, product } = props;
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+  //props
+  const { open, onClose } = props
+
+  //state
+  const { user } = useAppSelector((state: IRootState) => state.auth)
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
     name: user?.username as string,
-    phoneNumber: "0819190227",
-  });
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [initialLoading, setInitialLoading] = React.useState<boolean>(false);
-  const [districtError, setDistrictError] = React.useState<string>("");
-  const [wardError, setWardError] = React.useState<string>("");
+    phoneNumber: '0819190227',
+  })
+  const [loading, setLoading] = React.useState<boolean>(false)
+
+  //functions
+  const handleSubmit = async (values: IFormValue) => {
+    try {
+      setLoading(true)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({
-      name: yup.string().required("Vui lòng điền tên của bạn"),
-      phoneNumber: yup.string().required("Vui lòng nhập số điện thoại của bạn"),
-    });
-
-  const handleSubmit = async (values: IFormValue) => {
-    try {
-      setLoading(true);
-      console.log("VALUES HERE", values);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      name: yup.string().required('Vui lòng điền tên của bạn'),
+      phoneNumber: yup.string().required('Vui lòng nhập số điện thoại của bạn'),
+    })
 
   return (
     <Dialog
@@ -107,12 +113,12 @@ function OrderShippingInfoDialog(props: IAccountDialogProps) {
                   </div>
                 </div>
               </div>
-            );
+            )
           }}
         </Formik>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
-export default OrderShippingInfoDialog;
+export default OrderShippingInfoDialog

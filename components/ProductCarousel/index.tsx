@@ -1,9 +1,10 @@
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import React from 'react'
+
+import { ArrowRightIcon } from '@heroicons/react/24/outline'
 
 interface IProductCarouselProps {}
 
-const ProductCarousel: React.FC<IProductCarouselProps> = (props) => {
+const ProductCarousel: React.FC<IProductCarouselProps> = props => {
   return (
     <div className="mt-20">
       <div className="pb-1 border-b-2 border-b-gray-300 w-full flex justify-between">
@@ -20,7 +21,7 @@ const ProductCarousel: React.FC<IProductCarouselProps> = (props) => {
         <div className=" h-80 border border-gray-200 rounded-lg"></div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProductCarousel;
+export default ProductCarousel

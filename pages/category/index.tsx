@@ -1,24 +1,36 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Head from "next/head";
-import HeaderV2 from "../../components/HeaderV2";
-import FooterSection from "../../components/FooterSection";
-import ProductGridV2 from "../../containers/category/ProductGridV2";
-import FilterSideBar from "../../containers/category/FilterSideBar";
-import Spinner from "../../components/Spinner";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
-import { Pagination } from "@mui/material";
-import SelectSortType from "../../containers/category/SelectSortType";
-import NotFound from "../../assets/images/NotFound.png";
-import Image from "next/image";
+import React, { useEffect, useState } from 'react'
+
+//styles
+import HeaderV2 from '@/components/HeaderV2'
+import FooterSection from '@/components/FooterSection'
+import ProductGridV2 from '@/containers/category/ProductGridV2'
+import FilterSideBar from '@/containers/category/FilterSideBar'
+import Spinner from '@/components/Spinner'
+import NotFound from '@/assets/images/NotFound.png'
+import Image from 'next/image'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+
+//store
+import { IRootState } from '@/redux'
+import { Pagination } from '@mui/material'
+
+//utils
+import SelectSortType from '@/containers/category/SelectSortType'
+import Head from 'next/head'
+import axios from 'axios'
+
 interface IProductProps {}
 
 const Category = (props: IProductProps) => {
-  const [listProduct, setListProduct] = useState<IProductHomePageResponse[]>(
-    []
-  );
-  const [loading, setLoading] = useState<boolean>(true);
+  //states
+  const [listProduct, setListProduct] = useState<IProductHomePageResponse[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [pageSelected, setPageSelected] = useState<number>(1)
+  const [error, setError] = useState<boolean>(false)
+
+  //redux
   const {
     brand,
     category,
@@ -29,54 +41,51 @@ const Category = (props: IProductProps) => {
     sortType,
     keyWord,
     size,
-  } = useAppSelector((state: IRootState) => state.filter);
-  const [pageSelected, setPageSelected] = useState<number>(1);
-  const [error, setError] = useState<boolean>(false);
+  } = useAppSelector((state: IRootState) => state.filter)
 
   const getAllProducts = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       const url = `https://sneakery.herokuapp.com/api/products?${
-        keyWord !== null ? `keyword=${keyWord}` : ""
-      }${condition !== null ? `&condition=${condition}` : ""}${
-        category !== null ? `&category=${category}` : ""
+        keyWord !== null ? `keyword=${keyWord}` : ''
+      }${condition !== null ? `&condition=${condition}` : ''}${
+        category !== null ? `&category=${category}` : ''
       }${
         brand.length > 0
-          ? `&brand=${brand.map((item, index) =>
-              index !== brand.length ? `${item}` : `${item}`
+          ? `&brand=${brand.map((item: any, index: number) =>
+              index !== brand.length ? `${item}` : `${item}`,
             )}`
-          : ""
+          : ''
       }${
         color.length > 0
-          ? `&color=${color.map((item, index) =>
-              index !== color.length ? `${item}` : `${item}`
+          ? `&color=${color.map((item: any, index: number) =>
+              index !== color.length ? `${item}` : `${item}`,
             )}`
-          : ""
+          : ''
       }${
         size.length > 0
-          ? `&size=${size.map((item, index) =>
-              index !== size.length ? `${item}` : `${item}`
+          ? `&size=${size.map((item: any, index: number) =>
+              index !== size.length ? `${item}` : `${item}`,
             )}`
-          : ""
-      }${priceStart !== null ? `&priceStart=${priceStart}` : ""}${
-        priceEnd !== null ? `&priceEnd=${priceEnd}` : ""
-      }${sortType !== null ? `&sorting=${sortType}` : ""}`;
-      console.log("URL here", url);
-      const data = await axios.get(url);
-      if (data) {
-        setError(false);
-        setListProduct(data.data.data.products);
+          : ''
+      }${priceStart !== null ? `&priceStart=${priceStart}` : ''}${
+        priceEnd !== null ? `&priceEnd=${priceEnd}` : ''
+      }${sortType !== null ? `&sorting=${sortType}` : ''}`
+      const response = await axios.get(url)
+      if (response) {
+        setError(false)
+        setListProduct(response.data.data.products)
       }
     } catch (error) {
-      console.log(error);
-      setError(true);
+      console.log(error)
+      setError(true)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    getAllProducts();
+    getAllProducts()
   }, [
     category,
     condition,
@@ -87,7 +96,7 @@ const Category = (props: IProductProps) => {
     priceEnd,
     sortType,
     keyWord,
-  ]);
+  ])
 
   return (
     <>
@@ -156,7 +165,7 @@ const Category = (props: IProductProps) => {
         <FooterSection />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Category;
+export default Category

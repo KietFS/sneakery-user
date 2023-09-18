@@ -1,16 +1,18 @@
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { Dialog, DialogContent, Tooltip } from "@mui/material";
-import React from "react";
-import EmailSent from "../../assets/images/EmailSent.png";
-import Image from "next/image";
+import React from 'react'
+
+//styles
+import EmailSent from '@/assets/images/EmailSent.png'
+import { Dialog, DialogContent, Tooltip } from '@mui/material'
+import { XMarkIcon } from '@heroicons/react/20/solid'
+import Image from 'next/image'
 
 interface IEmailSentDialogProps {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
 }
 
-const EmailSentDialog: React.FC<IEmailSentDialogProps> = (props) => {
-  const { open, onClose } = props;
+const EmailSentDialog: React.FC<IEmailSentDialogProps> = props => {
+  const { open, onClose } = props
 
   return (
     <Dialog
@@ -45,7 +47,7 @@ const EmailSentDialog: React.FC<IEmailSentDialogProps> = (props) => {
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default EmailSentDialog;
+export default EmailSentDialog

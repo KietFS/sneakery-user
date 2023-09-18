@@ -1,25 +1,26 @@
-import {
-  UserCircleIcon,
-  UserIcon,
-  UserPlusIcon,
-} from "@heroicons/react/20/solid";
-import { Bars3Icon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import React from "react";
-import { useDispatch } from "react-redux";
-import InputSearch from "../../designs/InputSearch";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
-import { setCategory } from "../../redux/slices/filter";
-import UserCard from "../UserCard";
+import React from 'react'
+
+//design
+import InputSearch from '@/designs/InputSearch'
+import { UserIcon, UserPlusIcon } from '@heroicons/react/20/solid'
+import { Bars3Icon } from '@heroicons/react/24/outline'
+import UserCard from '../UserCard'
+
+//store
+import { IRootState } from '@/redux'
+import { setCategory } from '@/redux/slices/filter'
+
+//hooks
+import { useRouter } from 'next/router'
+import { useAppSelector } from '@/hooks/useRedux'
+import { useDispatch } from 'react-redux'
 
 interface IHeaderV2Props {}
 
-const HeaderV2: React.FC<IHeaderV2Props> = (props) => {
-  const { user, isAuth } = useAppSelector((state: IRootState) => state.auth);
-  const router = useRouter();
-  const dispatch = useDispatch();
+const HeaderV2: React.FC<IHeaderV2Props> = props => {
+  const { user, isAuth } = useAppSelector((state: IRootState) => state.auth)
+  const router = useRouter()
+  const dispatch = useDispatch()
   return (
     <div className="w-full shadow-lg pb-4 laptop:pb-0 ">
       <div className="w-full flex space-x-4 tablet:space-x-6 laptop:space-x-6 desktop:space-x-8 items-center px-4 py-4  justify-between laptop:justify-around">
@@ -30,7 +31,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = (props) => {
         </div>
         <p
           className="text-3xl font-bold text-blue-500 w-1/3 laptop:w-fit text-center cursor-pointer"
-          onClick={() => router.push("/")}
+          onClick={() => router.push('/')}
         >
           Sneakery
         </p>
@@ -48,11 +49,6 @@ const HeaderV2: React.FC<IHeaderV2Props> = (props) => {
             </div>
           )}
         </div>
-        {/* <Image
-        src="https://t4.ftcdn.net/jpg/04/60/99/63/360_F_460996349_bIzl423o41oLdi5hJIgNT3OD8SViuo9i.jpg"
-        width={100}
-        height={60}
-      /> */}
         <div className="laptop:w-[230px] desktop:w-[400px] hidden laptop:flex">
           <InputSearch />
         </div>
@@ -60,8 +56,8 @@ const HeaderV2: React.FC<IHeaderV2Props> = (props) => {
           <p
             className=" text-gray-500 font-bold text-sm cursor-pointer hover:text-gray-700"
             onClick={() => {
-              dispatch(setCategory("nam"));
-              router.push("/category");
+              dispatch(setCategory('nam'))
+              router.push('/category')
             }}
           >
             Nam
@@ -69,8 +65,8 @@ const HeaderV2: React.FC<IHeaderV2Props> = (props) => {
           <p
             className=" text-gray-500 font-bold text-sm cursor-pointer hover:text-gray-700 "
             onClick={() => {
-              dispatch(setCategory("nu"));
-              router.push("/category");
+              dispatch(setCategory('nu'))
+              router.push('/category')
             }}
           >
             Nữ
@@ -78,15 +74,15 @@ const HeaderV2: React.FC<IHeaderV2Props> = (props) => {
           <p
             className=" text-gray-500 font-bold text-sm cursor-pointer hover:text-gray-700"
             onClick={() => {
-              dispatch(setCategory("unisex"));
-              router.push("/category");
+              dispatch(setCategory('unisex'))
+              router.push('/category')
             }}
           >
             Unisex
           </p>
           <p
             className=" text-gray-500 font-bold text-sm cursor-pointer hover:text-gray-700"
-            onClick={() => router.push("/cart")}
+            onClick={() => router.push('/cart')}
           >
             Giỏ hàng
           </p>
@@ -98,14 +94,14 @@ const HeaderV2: React.FC<IHeaderV2Props> = (props) => {
             <div className="hidden laptop:flex flex-end space-x-0.5 items-center w-64">
               <button
                 className="items-center rounded-xl px-4 py-2 text-center text-gray-600  text-sm w-fit flex hover:bg-gray-100"
-                onClick={() => router.push("/auth/register")}
+                onClick={() => router.push('/auth/register')}
               >
                 <UserPlusIcon className="w-5 h-5 text-gray-600 mr-1" />
                 Đăng ký
               </button>
               <button
                 className=" rounded-xl px-4 py-2 text-center text-gray-600  text-sm w-fit flex space-x-1 items-center hover:bg-gray-100"
-                onClick={() => router.push("/auth/login")}
+                onClick={() => router.push('/auth/login')}
               >
                 <UserIcon className="w-5 h-5 text-gray-600 mr-1" />
                 Đăng nhập
@@ -118,7 +114,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = (props) => {
         <InputSearch />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HeaderV2;
+export default HeaderV2

@@ -1,69 +1,67 @@
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { Dialog, DialogContent, DialogTitle, Tooltip } from "@mui/material";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import OrderCard from "../../designs/OrderCard";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
+import { XMarkIcon } from '@heroicons/react/20/solid'
+import { Dialog, DialogContent, DialogTitle, Tooltip } from '@mui/material'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import OrderCard from '../../designs/OrderCard'
+import { useAppSelector } from '../../hooks/useRedux'
+import { IRootState } from '../../redux'
 
 interface IOrderHistoryDialogProps {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
 }
 
-type IOrderStatus = "success" | "pending" | "failed";
+type IOrderStatus = 'success' | 'pending' | 'failed'
 
 export interface ICart {
-  orderId: number;
-  product: IProductInCart;
-  amount: number;
+  orderId: number
+  product: IProductInCart
+  amount: number
 }
 
 interface IProductInCart {
-  id: string;
-  name: string;
-  condition: IProductCondition;
-  startPrice: number;
-  currentPrice: number;
-  imagePath: string;
-  category: ICategoryProps;
-  brand: string;
-  color: string;
-  username: string;
-  size: string;
-  bidIncrement: number;
-  bidClosingDate: string;
+  id: string
+  name: string
+  condition: IProductCondition
+  startPrice: number
+  currentPrice: number
+  imagePath: string
+  category: ICategoryProps
+  brand: string
+  color: string
+  username: string
+  size: string
+  bidIncrement: number
+  bidClosingDate: string
 }
 
-const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = (props) => {
-  const { open, onClose } = props;
-  const [loading, setLoading] = useState<boolean>(false);
-  const [items, setItems] = useState<ICart[]>([]);
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
+  const { open, onClose } = props
+  const [loading, setLoading] = useState<boolean>(false)
+  const [items, setItems] = useState<ICart[]>([])
+  const { user } = useAppSelector((state: IRootState) => state.auth)
 
   const getAllItems = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       const response = await axios.get(
-        "https://sneakery.herokuapp.com/api/bid_history/user",
+        'https://sneakery.herokuapp.com/api/bid_history/user',
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
-      response && setItems(response.data.data);
-      console.log("DaTa", response.data.data);
+        },
+      )
+      response && setItems(response.data.data)
     } catch (error) {
-      console.log("GET ALL ITEMS", error);
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    getAllItems();
-  }, []);
+    getAllItems()
+  }, [])
 
   return (
     <Dialog
@@ -91,7 +89,7 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = (props) => {
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default OrderHistoryDialog;
+export default OrderHistoryDialog

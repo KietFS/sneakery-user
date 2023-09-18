@@ -3,7 +3,7 @@ import React from "react";
 import { withAuthorization } from "../../common/config/HOC/withAuth";
 import CartList from "../../containers/cart/CartList";
 import CartPayment from "../../containers/cart/CartPayment";
-import SimilarProduct from "../../containers/cart/SimilarProduct";
+
 import FooterSection from "../../components/FooterSection";
 import HeaderV2 from "../../components/HeaderV2";
 

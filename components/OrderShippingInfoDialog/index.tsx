@@ -1,109 +1,118 @@
-import * as React from "react";
-import Dialog from "@mui/material/Dialog";
-import { DialogContent } from "@mui/material";
-import * as yup from "yup";
-import { Formik } from "formik";
-import InputText from "../../designs/InputText";
-import Button from "../../designs/Button";
-import axios from "axios";
-import { toast } from "react-toastify";
-import SelectComponent from "../Select";
-import RichTextInput from "../../designs/RichTextInput";
-import GHNLogo from "../../assets/images/GHNLogo.png";
-import Image from "next/image";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
-import { IAddressResponse } from "../../containers/createProduct/LeftSide";
-import { useRouter } from "next/router";
+import * as React from 'react'
+
+//style
+import InputText from '@/designs/InputText'
+import Button from '@/designs/Button'
+import SelectComponent from '../Select'
+import Image from 'next/image'
+import RichTextInput from '@/designs/RichTextInput'
+import GHNLogo from '@/assets/images/GHNLogo.png'
+import Dialog from '@mui/material/Dialog'
+import { DialogContent } from '@mui/material'
+
+//store
+import { IRootState } from '@/redux'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+import { useRouter } from 'next/router'
+
+//utils
+import axios from 'axios'
+import { IAddressResponse } from '@/containers/createProduct/LeftSide'
+import * as yup from 'yup'
+import { Formik } from 'formik'
+import { toast } from 'react-toastify'
 
 interface IFormValue {
-  name?: string;
-  phoneNumber?: string;
-  ward?: string;
-  district?: string;
-  addressDetail: string;
-  expressClient?: string;
+  name?: string
+  phoneNumber?: string
+  ward?: string
+  district?: string
+  addressDetail: string
+  expressClient?: string
 }
 
 export interface IOrderShippingInfoDialog {
-  open: boolean;
-  onClose: () => void;
-  product?: IProduct;
-  orderId: string;
-  totalProduct: number;
+  open: boolean
+  onClose: () => void
+  product?: IProduct
+  orderId: string
+  totalProduct: number
 }
 
 interface IDistrict {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 interface IWard {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
-  const { open, onClose, product } = props;
-  const { user, balance } = useAppSelector((state: IRootState) => state.auth);
-  const [initialValues, setInitialValues] = React.useState<IFormValue>({
-    name: user?.username as string,
-    phoneNumber: "0819190777",
-    ward: "",
-    district: "",
-    addressDetail: "",
-  });
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [initialLoading, setInitialLoading] = React.useState<boolean>(false);
-  const [listDistrict, setListDistrict] = React.useState<IDistrict[]>([]);
-  const [districtSelected, setDistrictSelected] =
-    React.useState<IDistrict | null>(null);
-  const [listWard, setListWard] = React.useState<IWard[]>([]);
-  const [wardSelected, setWardSelected] = React.useState<IWard | null>(null);
-  const [districtError, setDistrictError] = React.useState<string>("");
-  const [wardError, setWardError] = React.useState<string>("");
-  const [address, setAddress] = React.useState<IAddressResponse[]>([]);
-  const [isInitialAddress, setIsInitialAddress] =
-    React.useState<boolean>(false);
-  const [shippingFee, setShippingFee] = React.useState<number>(0);
-  const router = useRouter();
-
+  //constanst
   const clients = [
     {
-      id: "giao-hang-nhanh",
-      name: "Giao hàng nhanh",
+      id: 'giao-hang-nhanh',
+      name: 'Giao hàng nhanh',
       logo: GHNLogo,
     },
-  ];
+  ]
+
+  const { open, onClose } = props
+  const { user, balance } = useAppSelector((state: IRootState) => state.auth)
+  const [initialValues, setInitialValues] = React.useState<IFormValue>({
+    name: user?.username as string,
+    phoneNumber: '0819190777',
+    ward: '',
+    district: '',
+    addressDetail: '',
+  })
+  const [loading, setLoading] = React.useState<boolean>(false)
+  const [initialLoading, setInitialLoading] = React.useState<boolean>(false)
+  const [listDistrict, setListDistrict] = React.useState<IDistrict[]>([])
+  const [districtSelected, setDistrictSelected] =
+    React.useState<IDistrict | null>(null)
+  const [listWard, setListWard] = React.useState<IWard[]>([])
+  const [wardSelected, setWardSelected] = React.useState<IWard | null>(null)
+  const [districtError, setDistrictError] = React.useState<string>('')
+  const [wardError, setWardError] = React.useState<string>('')
+  const [address, setAddress] = React.useState<IAddressResponse[]>([])
+  const [isInitialAddress, setIsInitialAddress] = React.useState<boolean>(false)
+  const [shippingFee, setShippingFee] = React.useState<number>(0)
+  const router = useRouter()
+
   const [clientSelected, setClientSelected] = React.useState<{
-    id: string;
-    name: string;
-    logo: any;
-  }>(clients?.[0]);
+    id: string
+    name: string
+    logo: any
+  }>(clients?.[0])
 
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({
-      name: yup.string().required("Vui lòng điền tên của bạn"),
-      phoneNumber: yup.string().required("Vui lòng nhập số điện thoại của bạn"),
+      name: yup.string().required('Vui lòng điền tên của bạn'),
+      phoneNumber: yup.string().required('Vui lòng nhập số điện thoại của bạn'),
       addressDetail: yup
         .string()
-        .required("Vui lòng nhập địa chỉ cụ thể của bạn"),
-    });
+        .required('Vui lòng nhập địa chỉ cụ thể của bạn'),
+    })
 
   const handleSubmit = async (values: IFormValue) => {
     try {
       if (districtSelected === null) {
-        setDistrictError("Vui lòng chọn quận");
+        setDistrictError('Vui lòng chọn quận')
       } else {
-        setDistrictError("");
+        setDistrictError('')
       }
       if (wardSelected === null) {
-        setWardError("Vui lòng chọn phường");
+        setWardError('Vui lòng chọn phường')
       } else {
-        setWardError("");
+        setWardError('')
       }
-      setLoading(true);
+      setLoading(true)
 
       if (balance >= Number((shippingFee / 23000).toFixed(0))) {
         const data = await axios.get(
@@ -116,90 +125,73 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
             headers: {
               Authorization: `Bearer ${user?.token}`,
             },
-          }
-        );
+          },
+        )
         data &&
-          toast.success("Đặt hàng thành công", {
-            position: "top-right",
+          toast.success('Đặt hàng thành công', {
+            position: 'top-right',
             hideProgressBar: true,
-            theme: "colored",
-          });
-        onClose();
-        router.push("/orderStatus");
+            theme: 'colored',
+          })
+        onClose()
+        router.push('/orderStatus')
       } else {
         toast.error(
-          "Tài khoản bạn không đủ chi trả cho phí vận chuyển, vui lòng nạp thêm tiền"
-        );
+          'Tài khoản bạn không đủ chi trả cho phí vận chuyển, vui lòng nạp thêm tiền',
+        )
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const getListDistricts = async () => {
     try {
-      setInitialLoading(true);
+      setInitialLoading(true)
       const data = await axios.get(
-        "https://sneakery.herokuapp.com/api/address/districts"
-      );
-      data && setListDistrict(data.data);
+        'https://sneakery.herokuapp.com/api/address/districts',
+      )
+      data && setListDistrict(data.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setInitialLoading(false);
+      setInitialLoading(false)
     }
-  };
+  }
 
   const getListWars = async (districtId: string) => {
     try {
-      setInitialLoading(true);
+      setInitialLoading(true)
       const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`
-      );
-      data && setListWard(data.data);
+        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`,
+      )
+      data && setListWard(data.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setInitialLoading(false);
+      setInitialLoading(false)
     }
-  };
+  }
 
-  const temp = "Thành phố Thủ Đức";
+  const defaultCity = 'Thành phố Thủ Đức'
 
   const calculateShippingFee = async () => {
     try {
       const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/shipping_fee/get?originDistrict=${temp}&destinationDistrict=${districtSelected?.name}`,
+        `https://sneakery.herokuapp.com/api/shipping_fee/get?originDistrict=${defaultCity}&destinationDistrict=${districtSelected?.name}`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
-      response && setShippingFee(response.data.data.fee);
+        },
+      )
+      response && setShippingFee(response.data.data.fee)
     } catch (error) {
-      console.log("SHIPPING FEE ERROR", error);
+      console.log('SHIPPING FEE ERROR', error)
     }
-  };
-
-  React.useEffect(() => {
-    getListDistricts();
-    getUserAddress();
-    calculateShippingFee();
-  }, []);
-
-  React.useEffect(() => {
-    if (districtSelected && isInitialAddress === false) {
-      getListWars(districtSelected.id as string);
-      setWardSelected(null);
-    }
-  }, [districtSelected]);
-
-  React.useEffect(() => {
-    districtSelected !== null && calculateShippingFee();
-  }, [districtSelected]);
+  }
 
   const getUserAddress = async () => {
     try {
@@ -209,27 +201,43 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
-      response && setAddress(response.data.data);
-      response && console.log("ADDRESS RESPONBSE", response);
+        },
+      )
+      response && setAddress(response.data.data)
+      response && console.log('ADDRESS RESPONBSE', response)
     } catch (error) {
-      console.log("GET USER ADDRESS ERROR", error);
+      console.log('GET USER ADDRESS ERROR', error)
     }
-  };
+  }
+
+  React.useEffect(() => {
+    getListDistricts()
+    getUserAddress()
+    calculateShippingFee()
+  }, [])
+
+  React.useEffect(() => {
+    if (districtSelected && isInitialAddress === false) {
+      getListWars(districtSelected.id as string)
+      setWardSelected(null)
+    }
+  }, [districtSelected])
+
+  React.useEffect(() => {
+    districtSelected !== null && calculateShippingFee()
+  }, [districtSelected])
 
   React.useEffect(() => {
     if (address) {
-      setIsInitialAddress(true);
+      setIsInitialAddress(true)
       setInitialValues({
         ...initialValues,
         addressDetail: address?.[0]?.homeNumber,
-      });
-      console.log("ADDRESS", { address });
-      setWardSelected(address?.[0]?.ward);
-      setDistrictSelected(address?.[0]?.district);
+      })
+      setWardSelected(address?.[0]?.ward)
+      setDistrictSelected(address?.[0]?.district)
     }
-  }, [address]);
+  }, [address])
 
   return (
     <Dialog
@@ -247,7 +255,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
           enableReinitialize
         >
           {({ submitForm, values, handleSubmit, errors }) => {
-            console.log("ERROR FORM", { errors });
+            console.log('ERROR FORM', { errors })
             return (
               <div className="flex flex-col space-y-10">
                 <div className="flex flex-col space-y-5">
@@ -274,9 +282,9 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                       name="district"
                       label="Chọn quận"
                       optionSelected={districtSelected}
-                      onSelect={(option) => {
-                        setIsInitialAddress(false);
-                        setDistrictSelected(option);
+                      onSelect={option => {
+                        setIsInitialAddress(false)
+                        setDistrictSelected(option)
                       }}
                       options={listDistrict}
                       placeholder="Chọn quận bạn muốn giao hàng đến"
@@ -286,7 +294,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                       name="ward"
                       label="Chọn phường"
                       optionSelected={wardSelected}
-                      onSelect={(option) => setWardSelected(option)}
+                      onSelect={option => setWardSelected(option)}
                       options={listWard}
                       placeholder="Chọn phường bạn muốn giao hàng đến"
                       error={wardError}
@@ -303,10 +311,10 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                       name="expressClient"
                       options={clients}
                       optionSelected={clientSelected}
-                      onSelect={(option) => setClientSelected(option)}
+                      onSelect={option => setClientSelected(option)}
                       label="Chọn đơn vị vận chuyển"
                       placeholder="Chọn đơn vị vận chuyển đơn hàng của bạn"
-                      renderOption={(options) => {
+                      renderOption={options => {
                         return options.map((option, index) => (
                           <div
                             key={index.toString()}
@@ -316,7 +324,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                             <p>{option.name}</p>
                             <Image src={option.logo} width={100} height={50} />
                           </div>
-                        ));
+                        ))
                       }}
                     />
                   </div>
@@ -352,12 +360,12 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                   </div>
                 </div>
               </div>
-            );
+            )
           }}
         </Formik>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
-export default OrderShippingInfoDialog;
+export default OrderShippingInfoDialog

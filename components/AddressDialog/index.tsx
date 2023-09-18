@@ -1,83 +1,94 @@
-import * as React from "react";
-import Dialog from "@mui/material/Dialog";
-import { DialogContent } from "@mui/material";
-import * as yup from "yup";
-import { Formik } from "formik";
-import InputText from "../../designs/InputText";
-import Button from "../../designs/Button";
-import axios from "axios";
-import SelectComponent from "../Select";
-import RichTextInput from "../../designs/RichTextInput";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
-import { IAddressResponse } from "../../containers/createProduct/LeftSide";
-import { toast } from "react-toastify";
+import * as React from 'react'
+
+//styles
+import RichTextInput from '@/designs/RichTextInput'
+import Button from '@/designs/Button'
+import { IAddressResponse } from '@/containers/createProduct/LeftSide'
+import SelectComponent from '@/components/Select'
+import Dialog from '@mui/material/Dialog'
+import { DialogContent } from '@mui/material'
+
+//store
+import { IRootState } from '@/redux'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+
+//utils
+import axios from 'axios'
+import * as yup from 'yup'
+import { Formik } from 'formik'
+import { toast } from 'react-toastify'
 
 interface IFormValue {
-  ward?: string;
-  district?: string;
-  addressDetail?: string;
+  ward?: string
+  district?: string
+  addressDetail?: string
 }
 
 export interface IAddressDialogProps {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
 }
 
 interface IDistrict {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 interface IWard {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 function AddressDialog(props: IAddressDialogProps) {
-  const { open, onClose } = props;
-  const [initialValues, setInitialValues] = React.useState<IFormValue>({
-    ward: "",
-    district: "",
-    addressDetail: "",
-  });
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [initialLoading, setInitialLoading] = React.useState<boolean>(false);
-  const [listDistrict, setListDistrict] = React.useState<IDistrict[]>([]);
-  const [districtSelected, setDistrictSelected] =
-    React.useState<IDistrict | null>(null);
-  const [listWard, setListWard] = React.useState<IWard[]>([]);
-  const [wardSelected, setWardSelected] = React.useState<IWard | null>(null);
-  const [districtError, setDistrictError] = React.useState<string>("");
-  const [wardError, setWardError] = React.useState<string>("");
-  const { user } = useAppSelector((state: IRootState) => state.auth);
-  const [address, setAddress] = React.useState<IAddressResponse[]>([]);
-  const [isInitialAddress, setIsInitialAddress] =
-    React.useState<boolean>(false);
+  //props
+  const { open, onClose } = props
 
+  //state
+  const [initialValues, setInitialValues] = React.useState<IFormValue>({
+    ward: '',
+    district: '',
+    addressDetail: '',
+  })
+  const [loading, setLoading] = React.useState<boolean>(false)
+  const [initialLoading, setInitialLoading] = React.useState<boolean>(false)
+  const [listDistrict, setListDistrict] = React.useState<IDistrict[]>([])
+  const [districtSelected, setDistrictSelected] =
+    React.useState<IDistrict | null>(null)
+  const [listWard, setListWard] = React.useState<IWard[]>([])
+  const [wardSelected, setWardSelected] = React.useState<IWard | null>(null)
+  const [districtError, setDistrictError] = React.useState<string>('')
+  const [wardError, setWardError] = React.useState<string>('')
+  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const [address, setAddress] = React.useState<IAddressResponse[]>([])
+  const [isInitialAddress, setIsInitialAddress] = React.useState<boolean>(false)
+
+  //utils
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({
       addressDetail: yup
         .string()
-        .required("Vui lòng nhập địa chỉ cụ thể của bạn"),
-    });
+        .required('Vui lòng nhập địa chỉ cụ thể của bạn'),
+    })
 
+  //functions
   const handleSubmit = async (values: IFormValue) => {
     try {
       if (districtSelected === null) {
-        setDistrictError("Vui lòng chọn quận");
+        setDistrictError('Vui lòng chọn quận')
       } else {
-        setDistrictError("");
+        setDistrictError('')
       }
       if (wardSelected === null) {
-        setWardError("Vui lòng chọn phường");
+        setWardError('Vui lòng chọn phường')
       } else {
-        setWardError("");
+        setWardError('')
       }
-      setLoading(true);
+      setLoading(true)
       const data = await axios.post(
-        "https://sneakery.herokuapp.com/api/address/create",
+        'https://sneakery.herokuapp.com/api/address/create',
         {
           homeNumber: values.addressDetail,
           cityId: 1,
@@ -88,44 +99,44 @@ function AddressDialog(props: IAddressDialogProps) {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
-      data && toast.success("Cập nhật địa chỉ thành công");
+        },
+      )
+      data && toast.success('Cập nhật địa chỉ thành công')
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setLoading(false);
-      onClose();
+      setLoading(false)
+      onClose()
     }
-  };
+  }
 
   const getListDistricts = async () => {
     try {
-      setInitialLoading(true);
+      setInitialLoading(true)
       const data = await axios.get(
-        "https://sneakery.herokuapp.com/api/address/districts"
-      );
-      data && setListDistrict(data.data);
+        'https://sneakery.herokuapp.com/api/address/districts',
+      )
+      data && setListDistrict(data.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setInitialLoading(false);
+      setInitialLoading(false)
     }
-  };
+  }
 
   const getListWars = async (districtId: string) => {
     try {
-      setInitialLoading(true);
+      setInitialLoading(true)
       const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`
-      );
-      data && setListWard(data.data);
+        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`,
+      )
+      data && setListWard(data.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setInitialLoading(false);
+      setInitialLoading(false)
     }
-  };
+  }
 
   const getUserAddress = async () => {
     try {
@@ -135,38 +146,35 @@ function AddressDialog(props: IAddressDialogProps) {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
-      response && setAddress(response.data.data);
-      response && console.log("ADDRESS RESPONBSE", response);
-    } catch (error) {
-      console.log("GET USER ADDRESS ERROR", error);
-    }
-  };
+        },
+      )
+      response && setAddress(response.data.data)
+    } catch (error) {}
+  }
 
   React.useEffect(() => {
-    getListDistricts();
-    getUserAddress();
-  }, []);
+    getListDistricts()
+    getUserAddress()
+  }, [])
 
   React.useEffect(() => {
     if (districtSelected && isInitialAddress === false) {
-      getListWars(districtSelected.id as string);
-      setWardSelected(null);
+      getListWars(districtSelected.id as string)
+      setWardSelected(null)
     }
-  }, [districtSelected]);
+  }, [districtSelected])
 
   React.useEffect(() => {
     if (address.length >= 1) {
-      setIsInitialAddress(true);
+      setIsInitialAddress(true)
       setInitialValues({
         addressDetail: address?.[0]?.homeNumber,
-      });
-      console.log("ADDRESS", { address });
-      setWardSelected(address?.[0]?.ward);
-      setDistrictSelected(address?.[0]?.district);
+      })
+      console.log('ADDRESS', { address })
+      setWardSelected(address?.[0]?.ward)
+      setDistrictSelected(address?.[0]?.district)
     }
-  }, [address]);
+  }, [address])
 
   return (
     <Dialog
@@ -197,9 +205,9 @@ function AddressDialog(props: IAddressDialogProps) {
                       name="district"
                       label="Chọn quận"
                       optionSelected={districtSelected}
-                      onSelect={(option) => {
-                        setDistrictSelected(option);
-                        setIsInitialAddress(false);
+                      onSelect={option => {
+                        setDistrictSelected(option)
+                        setIsInitialAddress(false)
                       }}
                       options={listDistrict}
                       placeholder="Chọn quận bạn muốn giao hàng đến"
@@ -209,7 +217,7 @@ function AddressDialog(props: IAddressDialogProps) {
                       name="ward"
                       label="Chọn phường"
                       optionSelected={wardSelected}
-                      onSelect={(option) => setWardSelected(option)}
+                      onSelect={option => setWardSelected(option)}
                       options={listWard}
                       placeholder="Chọn phường bạn muốn giao hàng đến"
                       error={wardError}
@@ -241,12 +249,12 @@ function AddressDialog(props: IAddressDialogProps) {
                   </div>
                 </div>
               </div>
-            );
+            )
           }}
         </Formik>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
-export default AddressDialog;
+export default AddressDialog

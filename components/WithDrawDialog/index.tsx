@@ -1,63 +1,67 @@
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { ArrowPathIcon } from "@heroicons/react/24/outline";
-import { Dialog, DialogContent, DialogTitle, Tooltip } from "@mui/material";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { NumericFormat } from "react-number-format";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
-import { setUserBalance } from "../../redux/slices/auth";
-import Spinner from "../Spinner";
+import React, { useState } from 'react'
+
+//styles
+import { Dialog, DialogContent, Tooltip } from '@mui/material'
+import Spinner from '../Spinner'
+
+import { XMarkIcon } from '@heroicons/react/20/solid'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+
+//utils
+import { NumericFormat } from 'react-number-format'
+import { toast } from 'react-toastify'
+import axios from 'axios'
+import { IRootState } from '@/redux'
 
 interface IWalletDialogProps {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
 }
 
 interface ITransactionHistory {
-  amount: number;
-  status: string;
-  transactedAt: string;
-  transactionCode: number;
+  amount: number
+  status: string
+  transactedAt: string
+  transactionCode: number
 }
 
-const WithDrawDialog: React.FC<IWalletDialogProps> = (props) => {
-  const { open, onClose } = props;
-  const { user, balance } = useAppSelector((state: IRootState) => state.auth);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [actionWithDraw, setActionWithDraw] = useState<boolean>(false);
-  const [chargeAmount, setChargeAmount] = useState<string | null>(null);
+const WithDrawDialog: React.FC<IWalletDialogProps> = props => {
+  const { open, onClose } = props
+  const { user, balance } = useAppSelector((state: IRootState) => state.auth)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [actionWithDraw, setActionWithDraw] = useState<boolean>(false)
+  const [chargeAmount, setChargeAmount] = useState<string | null>(null)
 
   const withDraw = async () => {
-    if (Number(chargeAmount?.split(",").join("")) > balance) {
-      toast.error("Tài khoản của bạn không đủ để thực hiện");
+    if (Number(chargeAmount?.split(',').join('')) > balance) {
+      toast.error('Tài khoản của bạn không đủ để thực hiện')
     } else {
       try {
-        setLoading(true);
+        setLoading(true)
         const data = await axios.get(
           `https://sneakery.herokuapp.com/api/transaction/withdraw?amount=${chargeAmount
-            ?.split(",")
-            .join("")}`,
+            ?.split(',')
+            .join('')}`,
           {
             headers: {
               Authorization: `Bearer ${user?.token}`,
             },
-          }
-        );
+          },
+        )
         if (data) {
-          console.log("CHARGE DATA", data);
-          toast.success("Rút tiền thành công");
+          console.log('CHARGE DATA', data)
+          toast.success('Rút tiền thành công')
         }
       } catch (error) {
-        console.log("CHARGE ERROR", error);
-        toast.error("Đã có lỗi xảy ra, vui lòng thử lại sau");
+        console.log('CHARGE ERROR', error)
+        toast.error('Đã có lỗi xảy ra, vui lòng thử lại sau')
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
-  };
+  }
 
   return (
     <Dialog
@@ -89,23 +93,23 @@ const WithDrawDialog: React.FC<IWalletDialogProps> = (props) => {
                 </div>
               ) : (
                 <>
-                  {" "}
+                  {' '}
                   <NumericFormat
                     placeholder="Nhập số tiền"
                     allowLeadingZeros
                     thousandSeparator=","
-                    onChange={(e) => setChargeAmount(e.target.value)}
+                    onChange={e => setChargeAmount(e.target.value)}
                     type="text"
                     className={`bg-gray-100 text-gray-700  w-[200px] my-2 h-8 px-2 text-sm ml-1 outline-none ring-0 outline-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent focus:bg-blue-50 rounded-lg`}
                   />
                   <p
                     className="text-sm font-semibold px-4 py-1 bg-blue-500 text-white rounded-full mt-3 cursor-pointer hover:opacity-80"
                     onClick={() => {
-                      withDraw();
+                      withDraw()
                     }}
                   >
                     Rút tiền về
-                  </p>{" "}
+                  </p>{' '}
                 </>
               )}
             </>
@@ -113,7 +117,7 @@ const WithDrawDialog: React.FC<IWalletDialogProps> = (props) => {
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default WithDrawDialog;
+export default WithDrawDialog

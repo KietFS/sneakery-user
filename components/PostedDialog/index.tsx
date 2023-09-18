@@ -1,57 +1,62 @@
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { Dialog, DialogContent, DialogTitle, Tooltip } from "@mui/material";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import PostedCard from "../../designs/PostedCard";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+
+import PostedCard from '@/designs/PostedCard'
+import { Dialog, DialogContent, Tooltip } from '@mui/material'
+import { XMarkIcon } from '@heroicons/react/20/solid'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+
+//store
+import { IRootState } from '@/redux'
 
 interface IPostedDialogProps {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
 }
 
 interface IPostedProduct {
-  bidId: string;
-  bidStartingDate: string;
-  priceStart: number;
-  stepBid: number;
-  priceWin: number | null;
+  bidId: string
+  bidStartingDate: string
+  priceStart: number
+  stepBid: number
+  priceWin: number | null
   product: {
-    id: number;
-    name: string;
-    startPrice: number;
-    imagePath: string;
-    username: string;
-    bidClosingDate: string;
-  };
+    id: number
+    name: string
+    startPrice: number
+    imagePath: string
+    username: string
+    bidClosingDate: string
+  }
 }
 
-const PostedDialog: React.FC<IPostedDialogProps> = (props) => {
-  const { open, onClose } = props;
-  const [items, setItems] = useState<IPostedProduct[]>([]);
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+const PostedDialog: React.FC<IPostedDialogProps> = props => {
+  const { open, onClose } = props
+  const [items, setItems] = useState<IPostedProduct[]>([])
+  const { user } = useAppSelector((state: IRootState) => state.auth)
 
   const getPostedItems = async () => {
     try {
       const response = await axios.get(
-        "https://sneakery.herokuapp.com/api/bids/get_uploaded_products",
+        'https://sneakery.herokuapp.com/api/bids/get_uploaded_products',
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
-      response && setItems(response?.data?.data);
-      response && console.log("REPONSE", response);
+        },
+      )
+      response && setItems(response?.data?.data)
+      response && console.log('REPONSE', response)
     } catch (error) {
-      console.log("POSTED ITEMS ERROR", error);
+      console.log('POSTED ITEMS ERROR', error)
     }
-  };
+  }
 
   useEffect(() => {
-    getPostedItems();
-  }, []);
+    getPostedItems()
+  }, [])
 
   return (
     <Dialog
@@ -76,7 +81,7 @@ const PostedDialog: React.FC<IPostedDialogProps> = (props) => {
               <PostedCard
                 key={index.toString()}
                 title={item.product.name}
-                status={item.priceWin === null ? "pending" : "success"}
+                status={item.priceWin === null ? 'pending' : 'success'}
                 imagePath={item.product.imagePath}
                 createdAt={item.bidStartingDate?.toString().prettyDate()}
               />
@@ -85,7 +90,7 @@ const PostedDialog: React.FC<IPostedDialogProps> = (props) => {
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default PostedDialog;
+export default PostedDialog
