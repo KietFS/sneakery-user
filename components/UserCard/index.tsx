@@ -10,13 +10,13 @@ import {
   UserIcon,
   WalletIcon,
 } from '@heroicons/react/24/outline'
-import AddressDialog from '../AddressDialog'
-import AccountDialog from '../AccountDialog'
-import OrderHistoryDialog from '../OrderHistoryDialog'
-import LogoutConfirmDialog from '../LogoutConfirmDialog'
-import PostedDialog from '../PostedDialog'
-import WalletDialog from '../WalletDialog'
-import WithDrawDialog from '../WithDrawDialog'
+import AddressDialog from '@/components/AddressDialog'
+import AccountDialog from '@/components/AccountDialog'
+import OrderHistoryDialog from '@/components/OrderHistoryDialog'
+import LogoutConfirmDialog from '@/components/LogoutConfirmDialog'
+import PostedDialog from '@/components/PostedDialog'
+import WalletDialog from '@/components/WalletDialog'
+import WithDrawDialog from '@/components/WithDrawDialog'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import OutlinedInput from '@mui/material/OutlinedInput'
 

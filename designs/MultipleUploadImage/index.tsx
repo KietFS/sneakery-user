@@ -1,60 +1,57 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import { XCircleIcon } from "@heroicons/react/20/solid";
-import { Tooltip } from "@mui/material";
+import React, { useState } from 'react'
+
+//styles
+import Image from 'next/image'
+import { XCircleIcon } from '@heroicons/react/20/solid'
+import { Tooltip } from '@mui/material'
 
 interface IUploadImageProps {
-  onSelect: (listImage: any[]) => void;
+  onSelect: (listImage: any[]) => void
 }
 
-const UploadImage: React.FC<IUploadImageProps> = (props) => {
-  const [baseImage, setBaseImage] = useState<any[]>([]);
-  const [imgShow, setImgShow] = useState<any[]>([]);
-  const { onSelect } = props;
+const UploadImage: React.FC<IUploadImageProps> = props => {
+  const [baseImage, setBaseImage] = useState<any[]>([])
+  const [imgShow, setImgShow] = useState<any[]>([])
+  const { onSelect } = props
 
   const uploadImage = async (e: any) => {
-    console.log("E is", { e });
-    console.log("TARGET FILE", Object.values(e.target.files));
-    const listFile = Object.values(e.target.files) as any[];
+    const listFile = Object.values(e.target.files) as any[]
     const base64 = await Promise.all(
-      listFile?.map(async (file) => await convertBase64(file))
-    );
-
-    console.log("BASE 64", base64);
-    console.log(base64);
-    setBaseImage([...baseImage, listFile]);
-    onSelect(listFile);
-    setImgShow(base64);
-  };
+      listFile?.map(async file => await convertBase64(file)),
+    )
+    setBaseImage([...baseImage, listFile])
+    onSelect(listFile)
+    setImgShow(base64)
+  }
 
   const convertBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(file)
 
       fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
+        resolve(fileReader.result)
+      }
 
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
+      fileReader.onerror = error => {
+        reject(error)
+      }
+    })
+  }
 
   const remove = (index: any) => {
-    console.log(index);
-    const temp = imgShow;
-    const cloned = temp;
-    cloned.splice(index, 1);
-    console.log(cloned);
-    setImgShow([...cloned]);
+    console.log(index)
+    const temp = imgShow
+    const cloned = temp
+    cloned.splice(index, 1)
+    console.log(cloned)
+    setImgShow([...cloned])
 
-    const temp2 = baseImage;
-    const cloned2 = temp2;
-    cloned2.splice(index, 1);
-    setBaseImage([...cloned2]);
-  };
+    const temp2 = baseImage
+    const cloned2 = temp2
+    cloned2.splice(index, 1)
+    setBaseImage([...cloned2])
+  }
 
   return (
     <div className="w-full my-10">
@@ -64,7 +61,7 @@ const UploadImage: React.FC<IUploadImageProps> = (props) => {
       <input
         type="file"
         multiple
-        onChange={(e) => uploadImage(e)}
+        onChange={e => uploadImage(e)}
         className="w-full  border-gray-200 border bg-gray-100 rounded-lg mt-1 h-10"
       />
       <div className="grid grid-cols-3 gap-x-2 w-fit">
@@ -86,7 +83,7 @@ const UploadImage: React.FC<IUploadImageProps> = (props) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UploadImage;
+export default UploadImage

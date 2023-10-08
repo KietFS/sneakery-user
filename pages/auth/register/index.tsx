@@ -1,78 +1,81 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import Head from "next/head";
-import * as yup from "yup";
-import { Formik } from "formik";
-import LoginBackground from "../../../assets/images/LoginBackground.png";
+import React, { useState } from 'react'
+import * as yup from 'yup'
+import { Formik } from 'formik'
 
 //components
-import InputPassword from "../../../designs/InputPassword";
-import InputPhoneNumber from "../../../designs/InputPhone";
-import InputConfirmPassword from "../../../designs/InputConfirmPassword";
-import InputText from "../../../designs/InputName";
-import InputEmail from "../../../designs/InputEmail";
-import { useRouter } from "next/router";
+import InputPassword from '@/designs/InputPassword'
+import InputConfirmPassword from '@/designs/InputConfirmPassword'
+import InputText from '@/designs/InputName'
+import InputEmail from '@/designs/InputEmail'
+import Button from '@/designs/Button'
+import EmailSentDialog from '@/components/EmailSentDialog'
+import LoginBackground from '@/assets/images/LoginBackground.png'
+import Image from 'next/image'
+import Head from 'next/head'
 
-import { useAuth } from "../../../hooks/useAuth";
-import Button from "../../../designs/Button";
-import EmailSentDialog from "../../../components/EmailSentDialog";
-import { useAppSelector } from "../../../hooks/useRedux";
-import { IRootState } from "../../../redux";
-import { useDispatch } from "react-redux";
-import { setOpenEmailSentDialog } from "../../../redux/slices/auth";
+//hooks
+import { useRouter } from 'next/router'
+import { useAuth } from '@/hooks/useAuth'
+import { useDispatch } from 'react-redux'
+import { useAppSelector } from '@/hooks/useRedux'
+
+//utils
+import { IRootState } from '@/redux'
+
+import { setOpenEmailSentDialog } from '@/redux/slices/auth'
 
 interface ILoginPageProps {}
 
 interface IFormValue {
-  email: string;
-  fullName: string;
-  password: string;
-  confirmPassword: string;
+  email: string
+  fullName: string
+  password: string
+  confirmPassword: string
 }
 
 const RegisterPage: React.FC<ILoginPageProps> = () => {
   const [initialValues, setInitialValues] = useState<IFormValue>({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    fullName: "",
-  });
+    email: '',
+    password: '',
+    confirmPassword: '',
+    fullName: '',
+  })
   const { openEmailSentDialog } = useAppSelector(
-    (state: IRootState) => state.auth
-  );
+    (state: IRootState) => state.auth,
+  )
 
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({
       email: yup
         .string()
-        .email("Vui lòng nhập đúng định dạng email")
-        .required("Vui lòng nhập số điện thoại của bạn"),
+        .email('Vui lòng nhập đúng định dạng email')
+        .required('Vui lòng nhập số điện thoại của bạn'),
       password: yup
         .string()
-        .min(6, "Mật khẩu phải lớn hơn 6 kí tự")
-        .required("Vui lòng nhập mật khẩu của bạn"),
+        .min(6, 'Mật khẩu phải lớn hơn 6 kí tự')
+        .required('Vui lòng nhập mật khẩu của bạn'),
       confirmPassword: yup
         .string()
-        .oneOf([yup.ref("password"), null], "Xác nhận mật khẩu phải khớp")
-        .required("Vui lòng xác xác nhận mật khẩu của bạn"),
-      fullName: yup.string().required("Vui lòng nhập tên của bạn"),
-    });
+        .oneOf([yup.ref('password'), null], 'Xác nhận mật khẩu phải khớp')
+        .required('Vui lòng xác xác nhận mật khẩu của bạn'),
+      fullName: yup.string().required('Vui lòng nhập tên của bạn'),
+    })
 
   const handleSubmit = async (values: IFormValue) => {
     try {
-      const { email, fullName, password } = values;
-      console.log("REGISTER PAYLOAD", values);
-      register(password, fullName, email);
+      const { email, fullName, password } = values
+      console.log('REGISTER PAYLOAD', values)
+      register(password, fullName, email)
     } catch (error) {
-      console.log("REGISTER ERROR", error);
+      console.log('REGISTER ERROR', error)
     }
-  };
+  }
 
-  const { register, registerError, regsiterLoading } = useAuth();
+  const { register, regsiterLoading } = useAuth()
 
-  const router = useRouter();
-  const dispatch = useDispatch();
+  const router = useRouter()
+  const dispatch = useDispatch()
 
   return (
     <>
@@ -101,7 +104,7 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
           onSubmit={handleSubmit}
         >
           {({ handleSubmit, submitForm, errors }) => {
-            console.log("REGISTER FORMIK ERRORS", errors);
+            console.log('REGISTER FORMIK ERRORS', errors)
             return (
               <div className="space-y-7">
                 <div className="space-x-1">
@@ -127,7 +130,7 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
                   onClick={submitForm}
                   className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
                 >
-                  {regsiterLoading ? "..." : "Đăng ký"}
+                  {regsiterLoading ? '...' : 'Đăng ký'}
                 </button>
                 <div className="space-y-3">
                   <p className="text-gray-700 text-xs">Hoặc đăng nhập với</p>
@@ -153,7 +156,7 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
                     <p className="text-xs text-gray-700">Bạn đã có tài khoản</p>
                     <p
                       className="text-xs text-blue-500 underline font-bold ml-1 cursor-pointer"
-                      onClick={() => router.push("/auth/login")}
+                      onClick={() => router.push('/auth/login')}
                     >
                       Đăng nhập ngay
                     </p>
@@ -163,24 +166,24 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
                       Với việc đăng ký bạn đã đồng ý với
                     </p>
                     <p className="text-xs text-blue-500 underline font-bold ml-1 cursor-pointer">
-                      {" "}
+                      {' '}
                       chính sách bảo mật
                     </p>
                   </div>
                   <p
                     className="text-xs text-red-500 underline font-bold ml-1 cursor-pointer text-center"
-                    onClick={() => router.push("/")}
+                    onClick={() => router.push('/')}
                   >
                     Quay về trang chủ
                   </p>
                 </div>
               </div>
-            );
+            )
           }}
         </Formik>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default RegisterPage;
+export default RegisterPage

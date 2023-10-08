@@ -17,13 +17,6 @@ interface ISelectProps<T = any> {
 }
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 3 + ITEM_PADDING_TOP,
-    },
-  },
-}
 
 const SelectComponent: React.FC<ISelectProps> = props => {
   const ref = useRef()

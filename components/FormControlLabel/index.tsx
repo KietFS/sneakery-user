@@ -1,11 +1,11 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 
 interface IFormLabelProps {
-  children?: ReactNode;
-  isError: boolean;
-  required: boolean | undefined;
-  htmlFor?: string;
-  subTitle?: string | null;
+  children?: ReactNode
+  isError: boolean
+  required: boolean | undefined
+  htmlFor?: string
+  subTitle?: string | null
 }
 
 const FormControlLabel: React.FC<IFormLabelProps> = ({
@@ -15,12 +15,12 @@ const FormControlLabel: React.FC<IFormLabelProps> = ({
   isError,
   subTitle,
 }) => {
-  if (!children) return null;
+  if (!children) return null
 
   return (
     <div
       className={`block font-medium text-lg mb-0.5 ${
-        isError ? "text-red-500" : "text-neutral-50"
+        isError ? 'text-red-500' : 'text-neutral-50'
       }`}
     >
       {children}
@@ -33,7 +33,7 @@ const FormControlLabel: React.FC<IFormLabelProps> = ({
         </span>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default FormControlLabel;
+export default FormControlLabel

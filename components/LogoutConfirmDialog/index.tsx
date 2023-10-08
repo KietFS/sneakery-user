@@ -1,15 +1,19 @@
-import { Dialog, DialogContent } from "@mui/material";
-import React from "react";
-import Button from "../../designs/Button";
+import React from 'react'
+
+//styles
+import Button from '@/designs/Button'
+import { Dialog, DialogContent } from '@mui/material'
+
+
 
 interface ILogoutConfirmDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
+  open: boolean
+  onClose: () => void
+  onConfirm: () => void
 }
 
-const LogoutConfirmDialog: React.FC<ILogoutConfirmDialogProps> = (props) => {
-  const { open, onClose, onConfirm } = props;
+const LogoutConfirmDialog: React.FC<ILogoutConfirmDialogProps> = props => {
+  const { open, onClose, onConfirm } = props
   return (
     <Dialog
       onClose={onClose}
@@ -32,7 +36,7 @@ const LogoutConfirmDialog: React.FC<ILogoutConfirmDialogProps> = (props) => {
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default LogoutConfirmDialog;
+export default LogoutConfirmDialog

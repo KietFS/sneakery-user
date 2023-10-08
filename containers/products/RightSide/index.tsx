@@ -1,63 +1,72 @@
-import React, { useEffect, useState } from "react";
-import PaypalLogo from "../../../assets/images/PayPalLogo.png";
-import ZaloPayLogo from "../../../assets/images/ZaloPayLogo.png";
-import MomoLogo from "../../../assets/images/MomoLogo.png";
-import Image from "next/image";
-import axios from "axios";
-import { useAppSelector } from "../../../hooks/useRedux";
-import { IRootState } from "../../../redux";
-import ProductBidHistoryDialog from "../../../components/ProductBidHistoryDialog";
-import { useRouter } from "next/router";
-import { toast } from "react-toastify";
+import React, { useEffect, useState } from 'react'
+
+//styles
+import ProductBidHistoryDialog from '@/components/ProductBidHistoryDialog'
+import PaypalLogo from '@/assets/images/PayPalLogo.png'
+import ZaloPayLogo from '@/assets/images/ZaloPayLogo.png'
+import MomoLogo from '@/assets/images/MomoLogo.png'
+import Image from 'next/image'
+
+//hooks
+import { useRouter } from 'next/router'
+import { useAppSelector } from '@/hooks/useRedux'
+
+//utils
+import { IRootState } from '@/redux'
 
 interface IRightSideProps {
-  product: IProduct;
-  bidHistory: IProductBidHistoryItem[];
-  onPlaceBid: () => void;
+  product: IProduct
+  bidHistory: IProductBidHistoryItem[]
+  onPlaceBid: () => void
 }
 
 export interface IProductBidHistoryItem {
-  bidAmount: number;
-  createdAt: string;
-  userName: string;
+  bidAmount: number
+  createdAt: string
+  userName: string
 }
 
-const RightSide: React.FC<IRightSideProps> = (props) => {
-  const { product, onPlaceBid } = props;
-  const { user } = useAppSelector((state: IRootState) => state.auth);
-  let newBidClosingDate = new Date(product?.bidClosingDate);
-  const [textDay, setTextDay] = useState<string>("");
-  const [textHour, setTextHour] = useState<string>("");
-  const [textMinute, setTextMinute] = useState<string>("");
-  const [textSecond, setTextSecond] = useState<string>("");
-  const [openHistoryDialog, setOpenHistoryDialog] = useState<boolean>(false);
-  const router = useRouter();
+const RightSide: React.FC<IRightSideProps> = props => {
+  const { product, onPlaceBid } = props
 
+  let newBidClosingDate = new Date(product?.bidClosingDate)
+
+  //state
+  const [textDay, setTextDay] = useState<string>('')
+  const [textHour, setTextHour] = useState<string>('')
+  const [textMinute, setTextMinute] = useState<string>('')
+  const [textSecond, setTextSecond] = useState<string>('')
+  const [openHistoryDialog, setOpenHistoryDialog] = useState<boolean>(false)
+
+  //hooks
+  const router = useRouter()
+
+  //functions
   const countdown = () => {
-    const countDate = newBidClosingDate.getTime();
-    const now = new Date().getTime();
-    const gap = countDate - now;
-    const second = 1000;
-    const minute = second * 60;
-    const hour = minute * 60;
-    const day = hour * 24;
-    const textDay = Math.floor(gap / day);
-    setTextDay(textDay.toString());
-    const textHour = Math.floor((gap % day) / hour);
-    setTextHour(textHour.toString());
-    const textMinute = Math.floor((gap % hour) / minute);
-    setTextMinute(textMinute.toString());
-    const textSecond = Math.floor((gap % minute) / second);
-    setTextSecond(textSecond.toString());
-  };
+    const countDate = newBidClosingDate.getTime()
+    const now = new Date().getTime()
+    const gap = countDate - now
+    const second = 1000
+    const minute = second * 60
+    const hour = minute * 60
+    const day = hour * 24
+    const textDay = Math.floor(gap / day)
+    setTextDay(textDay.toString())
+    const textHour = Math.floor((gap % day) / hour)
+    setTextHour(textHour.toString())
+    const textMinute = Math.floor((gap % hour) / minute)
+    setTextMinute(textMinute.toString())
+    const textSecond = Math.floor((gap % minute) / second)
+    setTextSecond(textSecond.toString())
+  }
 
   useEffect(() => {
     if (Date.now() > newBidClosingDate.getTime()) {
-      router.push("/");
+      router.push('/')
     }
-  }, [textSecond]);
+  }, [textSecond])
 
-  setInterval(countdown, 1);
+  setInterval(countdown, 1)
 
   return (
     <div className="px-8 py-4">
@@ -131,7 +140,7 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
         </div>
         <div className="mt-4 max-w-[90%]">
           <h3 className="text-gray-400 text-lg leading-0">
-            Các lượt bid gần đây :{" "}
+            Các lượt bid gần đây :{' '}
           </h3>
           <div className="flex flex-col gap-y-2 mt-2 w-fit">
             {props.bidHistory.map((item, index) => {
@@ -148,10 +157,10 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
                       {item.bidAmount.toString().prettyMoney()}$ -
                     </p>
                     <p className="text-gray-600 text-sm cursor-pointer">
-                      {item.createdAt.toString().replace("T", " ")}
+                      {item.createdAt.toString().replace('T', ' ')}
                     </p>
                   </div>
-                );
+                )
             })}
           </div>
           <p
@@ -165,12 +174,12 @@ const RightSide: React.FC<IRightSideProps> = (props) => {
       <ProductBidHistoryDialog
         open={openHistoryDialog}
         onClose={() => {
-          setOpenHistoryDialog(false);
+          setOpenHistoryDialog(false)
         }}
         bidHistory={props.bidHistory}
       />
     </div>
-  );
-};
+  )
+}
 
-export default RightSide;
+export default RightSide

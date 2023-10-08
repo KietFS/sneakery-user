@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import OrderShippingDetailDialog from "../../../components/OrderShippingInfoDialog";
-import { useAppSelector } from "../../../hooks/useRedux";
-import { IRootState } from "../../../redux";
+import React, { useState } from 'react'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+
+//styles
+import OrderShippingDetailDialog from '@/components/OrderShippingInfoDialog'
+
+//utils
+import { IRootState } from '@/redux'
 
 interface ICartPaymentProps {}
 
-const CartPayment: React.FC<ICartPaymentProps> = (props) => {
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const { items } = useAppSelector((state: IRootState) => state.cart);
-  let total = 0;
-  const { balance } = useAppSelector((state: IRootState) => state.auth);
+const CartPayment: React.FC<ICartPaymentProps> = props => {
+  const [openDialog, setOpenDialog] = useState<boolean>(false)
+  const { items } = useAppSelector((state: IRootState) => state.cart)
+  let total = 0
 
-  items.map((item) => (total = total + item.priceWin));
+  items.map((item: any) => (total = total + item.priceWin))
 
   return (
     <>
@@ -23,7 +27,7 @@ const CartPayment: React.FC<ICartPaymentProps> = (props) => {
           <p className="text-gray-500 text-sm laptop:text-lg">
             Giá từng sản phẩm
           </p>
-          {items.map((item, index) => (
+          {items.map((item: any, index: number) => (
             <>
               <p
                 className="text-gray-600 text-sm font-semibold laptop:text-lg mb-2"
@@ -52,7 +56,7 @@ const CartPayment: React.FC<ICartPaymentProps> = (props) => {
           <button
             className="w-full text-center py-2 rounded-lg bg-red-500 text-white font-semibold hover:opacity-80"
             onClick={() => {
-              setOpenDialog(true);
+              setOpenDialog(true)
             }}
           >
             Giao hàng ngay
@@ -66,7 +70,7 @@ const CartPayment: React.FC<ICartPaymentProps> = (props) => {
         onClose={() => setOpenDialog(false)}
       />
     </>
-  );
-};
+  )
+}
 
-export default CartPayment;
+export default CartPayment

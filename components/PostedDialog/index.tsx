@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
+//styles
 import PostedCard from '@/designs/PostedCard'
 import { Dialog, DialogContent, Tooltip } from '@mui/material'
 import { XMarkIcon } from '@heroicons/react/20/solid'

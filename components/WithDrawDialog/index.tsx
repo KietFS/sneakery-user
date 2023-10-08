@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 
 //styles
 import { Dialog, DialogContent, Tooltip } from '@mui/material'
-import Spinner from '../Spinner'
-
+import Spinner from '@/components/Spinner'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 
 //hooks
@@ -31,7 +30,6 @@ const WithDrawDialog: React.FC<IWalletDialogProps> = props => {
   const { open, onClose } = props
   const { user, balance } = useAppSelector((state: IRootState) => state.auth)
   const [loading, setLoading] = useState<boolean>(false)
-  const [actionWithDraw, setActionWithDraw] = useState<boolean>(false)
   const [chargeAmount, setChargeAmount] = useState<string | null>(null)
 
   const withDraw = async () => {

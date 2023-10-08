@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react'
 
 interface IVideoSectionProps {}
 
-const VideoSection: React.FC<IVideoSectionProps> = (props) => {
+const VideoSection: React.FC<IVideoSectionProps> = props => {
   return (
     <div className="px-10 py-5 bg-blue-50 w-full h-fit flex flex-col laptop:flex-row justify-between items-center space-y-10 laptop:space-y-0 laptop:space-x-5">
       <div className="w-11/12 laptop:w-1/2 space-y-2">
@@ -22,7 +22,7 @@ const VideoSection: React.FC<IVideoSectionProps> = (props) => {
         ></iframe>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default VideoSection;
+export default VideoSection

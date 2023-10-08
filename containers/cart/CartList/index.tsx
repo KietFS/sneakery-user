@@ -1,32 +1,37 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { CheckBadgeIcon } from "@heroicons/react/20/solid";
-import { PlayIcon, TrashIcon } from "@heroicons/react/24/outline";
-import axios from "axios";
-import { useAppSelector } from "../../../hooks/useRedux";
-import { IRootState } from "../../../redux";
-import { useDispatch } from "react-redux";
-import { setGlobalCartItems } from "../../../redux/slices/cart";
+import React, { useEffect, useState } from 'react'
+
+//styles
+import Image from 'next/image'
+import { CheckBadgeIcon } from '@heroicons/react/20/solid'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+import { useDispatch } from 'react-redux'
+
+//utils and types
+import axios from 'axios'
+import { IRootState } from '@/redux'
+import { setGlobalCartItems } from '@/redux/slices/cart'
 
 interface ICartList {}
 
 export interface ICartItem {
-  id: number;
+  id: number
   product: {
-    id: number;
-    name: string;
-    startPrice: 126;
-    imagePath: string;
-    username: string;
-    bidClosingDate: string;
-  };
-  priceWin: number;
+    id: number
+    name: string
+    startPrice: 126
+    imagePath: string
+    username: string
+    bidClosingDate: string
+  }
+  priceWin: number
 }
 
-const CartList: React.FC<ICartList> = (props) => {
-  const { user } = useAppSelector((state: IRootState) => state.auth);
-  const [items, setItems] = useState<ICartItem[]>([]);
-  const dispatch = useDispatch();
+const CartList: React.FC<ICartList> = props => {
+  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const [items, setItems] = useState<ICartItem[]>([])
+  const dispatch = useDispatch()
 
   const getItems = async () => {
     try {
@@ -36,19 +41,18 @@ const CartList: React.FC<ICartList> = (props) => {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
-      response && console.log("RESPONSE", response);
-      response && setItems(response.data.data);
-      response && dispatch(setGlobalCartItems(response.data.data));
+        },
+      )
+      response && setItems(response.data.data)
+      response && dispatch(setGlobalCartItems(response.data.data))
     } catch (error) {
-      console.log("CART ERROR", error);
+      console.log('CART ERROR', error)
     }
-  };
+  }
 
   useEffect(() => {
-    user && getItems();
-  }, [user]);
+    user && getItems()
+  }, [user])
 
   return (
     <div className="h-fit laptop:min-h-[600px] laptop:w-4/5 w-full bg-white rounded-lg border border-gray-200 shadow-lg px-8 py-4">
@@ -106,7 +110,7 @@ const CartList: React.FC<ICartList> = (props) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CartList;
+export default CartList

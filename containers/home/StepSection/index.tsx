@@ -1,16 +1,16 @@
+import React from 'react'
+
+//styles
 import {
   CircleStackIcon,
   CursorArrowRaysIcon,
-  HandRaisedIcon,
-  HandThumbUpIcon,
   TruckIcon,
   UserPlusIcon,
-} from "@heroicons/react/24/outline";
-import React from "react";
+} from '@heroicons/react/24/outline'
 
 interface IStepSectionProps {}
 
-const StepSection: React.FC<IStepSectionProps> = (props) => {
+const StepSection: React.FC<IStepSectionProps> = props => {
   return (
     <div className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-4 dekstop:grid-cols-4 gap-x-10 gap-y-10">
       <div className="flex flex-col space-y-5 cursor-pointer hover:bg-gray-50 px-4 py-2">
@@ -61,7 +61,7 @@ const StepSection: React.FC<IStepSectionProps> = (props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default StepSection;
+export default StepSection

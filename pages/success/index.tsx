@@ -1,53 +1,56 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 
-import HeaderV2 from "../../components/HeaderV2";
-import PaymentProcess from "../../assets/images/PaymentProcess.png";
-import Image from "next/image";
-import FooterSection from "../../components/FooterSection";
-import Spinner from "../../components/Spinner";
-import Button from "../../designs/Button";
-import axios from "axios";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+import { useRouter } from 'next/router'
 
-const Cancel: React.FC = (props) => {
-  const router = useRouter();
-  const { user } = useAppSelector((state: IRootState) => state.auth);
-  const { paymentId, token, PayerID } = router.query;
-  const [loading, setLoading] = useState<boolean>(false);
-  const [call, setCall] = useState<number>(0);
+//styles
+import Head from 'next/head'
+import HeaderV2 from '@/components/HeaderV2'
+import PaymentProcess from '@/assets/images/PaymentProcess.png'
+import Image from 'next/image'
+import FooterSection from '@/components/FooterSection'
+import Spinner from '@/components/Spinner'
+import Button from '@/designs/Button'
+
+//utils
+import axios from 'axios'
+import { IRootState } from '@/redux'
+
+const Cancel: React.FC = props => {
+  const router = useRouter()
+  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const { paymentId, token, PayerID } = router.query
+  const [loading, setLoading] = useState<boolean>(false)
+  const [call, setCall] = useState<number>(0)
 
   const processCharge = async () => {
     try {
-      setLoading(true);
-      const url = `https://sneakery.herokuapp.com/api/transaction/deposit/success?paymentId=${paymentId}&payerId=${PayerID}`;
-      console.log("URL", url);
+      setLoading(true)
+      const url = `https://sneakery.herokuapp.com/api/transaction/deposit/success?paymentId=${paymentId}&payerId=${PayerID}`
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-      });
-      response && console.log("PROCESS CHARGE", response);
+      })
     } catch (error) {
-      console.log("PROCESS CHARGE ERROR", error);
+      console.log('PROCESS CHARGE ERROR', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
     if (paymentId && PayerID) {
-      setCall(call + 1);
-      processCharge();
+      setCall(call + 1)
+      processCharge()
     }
-  }, [paymentId]);
+  }, [paymentId])
 
   useEffect(() => {
-    console.log("CALLED", call);
-  }, [call]);
+    console.log('CALLED', call)
+  }, [call])
 
   return (
     <>
@@ -63,8 +66,8 @@ const Cancel: React.FC = (props) => {
             </div>
             <h1 className="text-gray-500 font-bold text-2xl text-center mt-2">
               {loading
-                ? "Vui lòng đợi chúng tôi đang xử lý giao dịch của bạn"
-                : "Xử lý giao dịch thành công, tài khoản của bạn đã được cập nhật"}
+                ? 'Vui lòng đợi chúng tôi đang xử lý giao dịch của bạn'
+                : 'Xử lý giao dịch thành công, tài khoản của bạn đã được cập nhật'}
             </h1>
             {loading && (
               <div className="flex items-center justify-center mt-4 laptop:mt-8">
@@ -74,11 +77,11 @@ const Cancel: React.FC = (props) => {
 
             <div
               className="flex justify-center items-center gap-x-2"
-              onClick={() => router.push("/")}
+              onClick={() => router.push('/')}
             >
               <Button
                 title="Quay về trang chủ"
-                className={`mt-8 ${loading ? "opacity-50" : ""}`}
+                className={`mt-8 ${loading ? 'opacity-50' : ''}`}
               />
             </div>
           </div>
@@ -86,7 +89,7 @@ const Cancel: React.FC = (props) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Cancel;
+export default Cancel

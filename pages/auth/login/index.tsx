@@ -1,51 +1,60 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import Head from "next/head";
-import * as yup from "yup";
-import { Formik } from "formik";
-import LoginBackground from "../../../assets/images/LoginBackground.png";
+import React, { useEffect, useState } from 'react'
 
-//components
-import InputPassword from "../../../designs/InputPassword";
-import InputEmail from "../../../designs/InputEmail";
-import { useAuth } from "../../../hooks/useAuth";
-import { useAppSelector } from "../../../hooks/useRedux";
-import { IRootState } from "../../../redux";
-import { useRouter } from "next/router";
+//styles
+import InputPassword from '@/designs/InputPassword'
+import InputEmail from '@/designs/InputEmail'
+import LoginBackground from '@/assets/images/LoginBackground.png'
+import Image from 'next/image'
+import Head from 'next/head'
+
+//hooks
+import { useAuth } from '@/hooks/useAuth'
+import { useAppSelector } from '@/hooks/useRedux'
+import { useRouter } from 'next/router'
+import * as yup from 'yup'
+import { Formik } from 'formik'
+
+//types
+import { IRootState } from '@/redux'
 
 interface ILoginPageProps {}
 
 interface IFormValue {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 const validationSchema = yup.object().shape<{ [k in keyof IFormValue]: any }>({
   email: yup
     .string()
-    .email("Vui lòng nhập đúng định dạng email")
-    .required("Vui lòng nhập email của bạn"),
+    .email('Vui lòng nhập đúng định dạng email')
+    .required('Vui lòng nhập email của bạn'),
   password: yup
     .string()
-    .min(6, "Mật khẩu phải lớn hơn 6 kí tự")
-    .required("Vui lòng nhập mật khẩu của bạn"),
-});
+    .min(6, 'Mật khẩu phải lớn hơn 6 kí tự')
+    .required('Vui lòng nhập mật khẩu của bạn'),
+})
 const LoginPage: React.FC<ILoginPageProps> = () => {
-  const { googleLogin, login, loginLoading, loginError } = useAuth();
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+  //local state
   const [initialValues, setInitialValues] = useState<IFormValue>({
-    email: "",
-    password: "",
-  });
-  const router = useRouter();
+    email: '',
+    password: '',
+  })
+
+  //hooks
+  const { googleLogin, login, loginLoading, loginError } = useAuth()
+  const router = useRouter()
+
+  //store
+  const { user } = useAppSelector((state: IRootState) => state.auth)
 
   const handleSubmit = (values: IFormValue) => {
-    login(values.email, values.password);
-  };
+    login(values.email, values.password)
+  }
 
   useEffect(() => {
-    user && router.push("/");
-  }, [user]);
+    user && router.push('/')
+  }, [user])
 
   return (
     <>
@@ -92,14 +101,14 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                   onClick={submitForm}
                   className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
                 >
-                  {loginLoading ? "..." : "Đăng nhập"}
+                  {loginLoading ? '...' : 'Đăng nhập'}
                 </button>
                 <div className="space-y-3">
                   <p className="text-gray-700 text-xs">Hoặc đăng nhập với</p>
                   <div className="flex items-center">
                     <div
                       className="mr-3 cursor-pointer"
-                      onClick={() => console.log("Values")}
+                      onClick={() => console.log('Values')}
                     >
                       <Image
                         width={25}
@@ -124,7 +133,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                     <p className="text-xs text-gray-700">Chưa có tài khoản?</p>
                     <p
                       className="text-xs text-blue-500 underline font-bold ml-1 cursor-pointer"
-                      onClick={() => router.push("/auth/register")}
+                      onClick={() => router.push('/auth/register')}
                     >
                       Đăng ký ngay
                     </p>
@@ -134,25 +143,23 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                       Với việc đăng nhập bạn đã đồng ý với
                     </p>
                     <p className="text-xs text-blue-500 underline font-bold ml-1 cursor-pointer">
-                      {" "}
                       chính sách bảo mật
                     </p>
                   </div>
                   <p
                     className="text-xs text-red-500 underline font-bold ml-1 cursor-pointer text-center"
-                    onClick={() => router.push("/")}
+                    onClick={() => router.push('/')}
                   >
-                    {" "}
                     Quay về trang chủ
                   </p>
                 </div>
               </div>
-            );
+            )
           }}
         </Formik>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

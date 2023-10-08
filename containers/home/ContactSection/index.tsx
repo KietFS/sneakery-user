@@ -1,26 +1,30 @@
-import { Formik } from "formik";
-import React, { useState } from "react";
-import * as yup from "yup";
-import InputEmail from "../../../designs/InputEmail";
-import InputPhoneNumber from "../../../designs/InputPhone";
+import React, { useState } from 'react'
+
+//styles
+import InputEmail from '@/designs/InputEmail'
+import InputPhoneNumber from '@/designs/InputPhone'
+
+//utils
+import { Formik } from 'formik'
+import * as yup from 'yup'
 
 interface IContactSectionProps {}
 
 interface IFormValue {
-  phoneNumber?: string;
-  email?: string;
-  reason?: string;
+  phoneNumber?: string
+  email?: string
+  reason?: string
 }
 
 const validationSchema = yup
   .object()
-  .shape<{ [k in keyof IFormValue]: any }>({});
+  .shape<{ [k in keyof IFormValue]: any }>({})
 
-const ContactSection: React.FC<IContactSectionProps> = (props) => {
-  const [initialValues, setInitialValues] = useState<IFormValue>({});
+const ContactSection: React.FC<IContactSectionProps> = props => {
+  const [initialValues, setInitialValues] = useState<IFormValue>({})
   const handleSubmit = (values: IFormValue) => {
-    console.log({ values });
-  };
+    console.log({ values })
+  }
   return (
     <div className="h-[700px]">
       <div className="bg-transparent h-[100px] rounded-xl"></div>
@@ -67,7 +71,7 @@ const ContactSection: React.FC<IContactSectionProps> = (props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ContactSection;
+export default ContactSection

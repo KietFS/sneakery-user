@@ -3,7 +3,6 @@ import * as React from 'react'
 //styles
 import RichTextInput from '@/designs/RichTextInput'
 import Button from '@/designs/Button'
-import { IAddressResponse } from '@/containers/createProduct/LeftSide'
 import SelectComponent from '@/components/Select'
 import Dialog from '@mui/material/Dialog'
 import { DialogContent } from '@mui/material'
@@ -14,11 +13,12 @@ import { IRootState } from '@/redux'
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
 
-//utils
+//utils and types
 import axios from 'axios'
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { toast } from 'react-toastify'
+import { IAddressResponse } from '@/containers/createProduct/LeftSide'
 
 interface IFormValue {
   ward?: string

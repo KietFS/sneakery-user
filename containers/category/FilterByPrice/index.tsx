@@ -1,60 +1,66 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
-import { useDispatch } from "react-redux";
-import { setPriceEnd, setPriceStart } from "../../../redux/slices/filter";
+import * as React from 'react'
+
+//styles
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
+import Box from '@mui/material/Box'
+import Slider from '@mui/material/Slider'
+
+//hooks
+import { useDispatch } from 'react-redux'
+
+//utils
+import { setPriceEnd, setPriceStart } from '@/redux/slices/filter'
 
 function valuetext(value: number) {
-  return `${value}°C`;
+  return `${value}°C`
 }
 
 export default function RangeSlider() {
-  const [value, setValue] = React.useState<number[]>([0, 0]);
-  const [openBelow, setOpenBelow] = React.useState<boolean>(false);
+  const [value, setValue] = React.useState<number[]>([0, 0])
+  const [openBelow, setOpenBelow] = React.useState<boolean>(false)
 
   const handleChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[]);
-  };
+    setValue(newValue as number[])
+  }
 
   const marks = [
     {
       value: 0,
-      label: "0",
+      label: '0',
     },
     {
       value: 20,
-      label: "20k$",
+      label: '20k$',
     },
     {
       value: 50,
-      label: "50k$",
+      label: '50k$',
     },
     {
       value: 100,
-      label: "100k$",
+      label: '100k$',
     },
-  ];
+  ]
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   React.useEffect(() => {
     if (value[0] === 0) {
-      dispatch(setPriceStart("0"));
+      dispatch(setPriceStart('0'))
     } else {
-      dispatch(setPriceStart(`${value[0].toString()}000`));
+      dispatch(setPriceStart(`${value[0].toString()}000`))
     }
     if (value[1] === 0) {
-      dispatch(setPriceEnd("0"));
+      dispatch(setPriceEnd('0'))
     } else {
-      dispatch(setPriceEnd(`${value[1].toString()}000`));
+      dispatch(setPriceEnd(`${value[1].toString()}000`))
     }
-  }, [value]);
+  }, [value])
 
   React.useEffect(() => {
-    dispatch(setPriceEnd(null));
-    dispatch(setPriceStart(null));
-  }, []);
+    dispatch(setPriceEnd(null))
+    dispatch(setPriceStart(null))
+  }, [])
 
   return (
     <div className="w-full mt-5">
@@ -70,9 +76,9 @@ export default function RangeSlider() {
         )}
       </div>
       {openBelow ? (
-        <Box sx={{ width: "92%", mx: "auto", mt: 1 }}>
+        <Box sx={{ width: '92%', mx: 'auto', mt: 1 }}>
           <Slider
-            getAriaLabel={() => "Temperature range"}
+            getAriaLabel={() => 'Temperature range'}
             value={value}
             onChange={handleChange}
             valueLabelDisplay="auto"
@@ -85,5 +91,5 @@ export default function RangeSlider() {
         </Box>
       ) : null}
     </div>
-  );
+  )
 }

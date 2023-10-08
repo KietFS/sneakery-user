@@ -1,81 +1,86 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import axios from "axios";
-import { Formik } from "formik";
-import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import * as yup from "yup";
-import Spinner from "../../components/Spinner";
-import useOnClickOutside from "../../hooks/useClickOutSide";
-import useDebounce from "../../hooks/useDebounce";
-import { setKeyWord } from "../../redux/slices/filter";
-import HorizontalProductCard from "../HorizontalProductCard";
-import InputWithIcon from "../InputWithIcon";
+import React, { useEffect, useRef, useState } from 'react'
+
+//styles
+import HorizontalProductCard from '@/designs/HorizontalProductCard'
+import InputWithIcon from '@/designs/InputWithIcon'
+import Spinner from '@/components/Spinner'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+
+//hooks
+import useOnClickOutside from '@/hooks/useClickOutSide'
+import useDebounce from '@/hooks/useDebounce'
+import { useDispatch } from 'react-redux'
+import { useRouter } from 'next/router'
+
+//utils
+import { setKeyWord } from '@/redux/slices/filter'
+import * as yup from 'yup'
+import { Formik } from 'formik'
 
 interface IInputSearchProps {}
 
 interface IFormValue {
-  keyword?: string;
+  keyword?: string
 }
 
-const InputSearch: React.FC<IInputSearchProps> = (props) => {
+const InputSearch: React.FC<IInputSearchProps> = props => {
+  //state
   const [initialValues, setInitialValues] = useState<IFormValue>({
-    keyword: "",
-  });
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [results, setResults] = useState<IProduct[]>([]);
-  const [openRecommendDialog, setOpenRecommendDialog] =
-    useState<boolean>(false);
+    keyword: '',
+  })
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [results, setResults] = useState<IProduct[]>([])
+  const [openRecommendDialog, setOpenRecommendDialog] = useState<boolean>(false)
 
-  const debouncedSearchTerm: string = useDebounce<string>(searchTerm, 500);
+  const debouncedSearchTerm: string = useDebounce<string>(searchTerm, 500)
 
   const searchCharacters = (search: string): Promise<any[]> => {
     return fetch(
       `https://sneakery.herokuapp.com/api/products?keyword=${search}`,
       {
-        method: "GET",
-      }
+        method: 'GET',
+      },
     )
-      .then((r) => r.json())
-      .then((r) => r.data.products)
-      .catch((error) => {
-        console.error(error);
-        return [];
-      });
-  };
+      .then(r => r.json())
+      .then(r => r.data.products)
+      .catch(error => {
+        console.error(error)
+        return []
+      })
+  }
 
   useEffect(
     () => {
       if (debouncedSearchTerm) {
-        setLoading(true);
-        searchCharacters(debouncedSearchTerm).then((results) => {
-          console.log("RESULT", results);
-          setLoading(false);
-          setResults(results);
-        });
+        setLoading(true)
+        searchCharacters(debouncedSearchTerm).then(results => {
+          console.log('RESULT', results)
+          setLoading(false)
+          setResults(results)
+        })
       } else {
-        setResults([]);
+        setResults([])
       }
     },
-    [debouncedSearchTerm] // Only call effect if debounced search term changes
-  );
+    [debouncedSearchTerm], // Only call effect if debounced search term changes
+  )
 
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({
       keyword: yup.string(),
-    });
+    })
 
   const handleSubmit = (values: IFormValue) => {
-    console.log(values);
-  };
+    console.log(values)
+  }
 
-  const ref = useRef();
+  const ref = useRef()
 
-  useOnClickOutside(ref, () => setOpenRecommendDialog(false));
-  const router = useRouter();
-  const dispatch = useDispatch();
+  useOnClickOutside(ref, () => setOpenRecommendDialog(false))
+  const router = useRouter()
+  const dispatch = useDispatch()
 
   return (
     <Formik
@@ -89,17 +94,17 @@ const InputSearch: React.FC<IInputSearchProps> = (props) => {
           icon={<MagnifyingGlassIcon width={20} height={20} color="gray" />}
           name="keyword"
           placeholder="Tìm kiếm theo tên giày, thương hiệu,..."
-          onChangeValue={(text) => {
-            setSearchTerm(text as string);
+          onChangeValue={text => {
+            setSearchTerm(text as string)
           }}
           onFocus={() => {
-            setOpenRecommendDialog(true);
+            setOpenRecommendDialog(true)
           }}
         />
         {openRecommendDialog && (
           <div
             className={`w-[410px] mt-2 bg-white shadow-lg border border-gray-200 h-fit z-20 ${
-              searchTerm === "" && "hidden"
+              searchTerm === '' && 'hidden'
             }  pb-2 absolute rounded-xl flex flex-col`}
             ref={ref as any}
           >
@@ -116,18 +121,18 @@ const InputSearch: React.FC<IInputSearchProps> = (props) => {
                         product={item as any}
                         key={index.toString()}
                       />
-                    );
+                    )
                 })}
-                {searchTerm !== "" && loading === false && (
+                {searchTerm !== '' && loading === false && (
                   <button
                     className="mx-auto mt-2 rounded-full text-blue-900 bg-blue-200 text-xs px-4 py-2 hover:opacity-80"
                     onClick={() => {
-                      if (searchTerm !== "") {
-                        dispatch(setKeyWord(searchTerm));
+                      if (searchTerm !== '') {
+                        dispatch(setKeyWord(searchTerm))
                       } else {
-                        dispatch(setKeyWord(null));
+                        dispatch(setKeyWord(null))
                       }
-                      router.push("/category");
+                      router.push('/category')
                     }}
                   >
                     Xem thêm
@@ -139,7 +144,7 @@ const InputSearch: React.FC<IInputSearchProps> = (props) => {
         )}
       </div>
     </Formik>
-  );
-};
+  )
+}
 
-export default InputSearch;
+export default InputSearch

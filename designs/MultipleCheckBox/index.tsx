@@ -1,19 +1,23 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
-import { CheckIcon } from "@heroicons/react/24/outline";
-import React, { ReactNode, useState } from "react";
-import { isEqual } from "../../utils/prototype";
+import React, { ReactNode, useState } from 'react'
+
+//styles
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
+import { CheckIcon } from '@heroicons/react/24/outline'
+
+//utils
+import { isEqual } from '@/utils/prototype'
 
 interface IMultipleCheckBoxProps<T = any> {
-  label: string;
-  options: T[];
-  renderOption?: (option: T) => ReactNode;
-  listOptionSelected: T[];
-  onSelect: (items: T[]) => void;
-  keyValue: string;
-  keyLabel: string;
+  label: string
+  options: T[]
+  renderOption?: (option: T) => ReactNode
+  listOptionSelected: T[]
+  onSelect: (items: T[]) => void
+  keyValue: string
+  keyLabel: string
 }
 
-const MultipleCheckBox: React.FC<IMultipleCheckBoxProps> = (props) => {
+const MultipleCheckBox: React.FC<IMultipleCheckBoxProps> = props => {
   const {
     label,
     options,
@@ -22,17 +26,17 @@ const MultipleCheckBox: React.FC<IMultipleCheckBoxProps> = (props) => {
     keyValue,
     listOptionSelected,
     onSelect,
-  } = props;
-  const [openBelow, setOpenBelow] = useState<boolean>(true);
+  } = props
+  const [openBelow, setOpenBelow] = useState<boolean>(true)
 
   const handleAddItem = (item: any) => {
-    onSelect([...listOptionSelected, item]);
-  };
+    onSelect([...listOptionSelected, item])
+  }
 
   const handleRemoveItem = (item: any) => {
-    const temp = listOptionSelected.filter((option) => !isEqual(option, item));
-    onSelect(temp);
-  };
+    const temp = listOptionSelected.filter(option => !isEqual(option, item))
+    onSelect(temp)
+  }
 
   return (
     <div className="mt-4">
@@ -49,7 +53,7 @@ const MultipleCheckBox: React.FC<IMultipleCheckBoxProps> = (props) => {
       </div>
       {openBelow ? (
         <div className="flex flex-col mt-2 gap-y-2">
-          {options?.map((option) => (
+          {options?.map(option => (
             <div
               className="flex flex-row gap-x-3 cursor-pointer items-center text-gray-500 justify-between"
               onClick={() =>
@@ -73,7 +77,7 @@ const MultipleCheckBox: React.FC<IMultipleCheckBoxProps> = (props) => {
         </div>
       ) : null}
     </div>
-  );
-};
+  )
+}
 
-export default MultipleCheckBox;
+export default MultipleCheckBox

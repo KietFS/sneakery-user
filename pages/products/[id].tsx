@@ -1,21 +1,24 @@
-import React, { useState } from "react";
-import axios from "axios";
-import Head from "next/head";
-import HeaderV2 from "../../components/HeaderV2";
-import LeftSide from "../../containers/products/LeftSide";
+import React, { useState } from 'react'
+
+//styles
+import HeaderV2 from '@/components/HeaderV2'
+import LeftSide from '@/containers/products/LeftSide'
 import RightSide, {
   IProductBidHistoryItem,
-} from "../../containers/products/RightSide";
-import FooterSection from "../../components/FooterSection";
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
-import SimilarProduct from "../../containers/cart/SimilarProduct";
-import BidDialog from "../../components/BidDialog";
-import { toast } from "react-toastify";
+} from '@/containers/products/RightSide'
+import FooterSection from '@/components/FooterSection'
+import SimilarProduct from '@/containers/cart/SimilarProduct'
+import BidDialog from '@/components/BidDialog'
+import Head from 'next/head'
+
+//utils
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import axios from 'axios'
 
 interface IProductProps {}
 
 const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false)
   return (
     <>
       <BidDialog
@@ -54,42 +57,42 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         <FooterSection />
       </div>
     </>
-  );
-};
+  )
+}
 
 export const getStaticPaths: GetStaticPaths<{}> = async () => {
   const data = await axios.get(
-    "http://sneakery.herokuapp.com/api/products/allid"
-  );
-  const products = data.data?.data || [];
+    'http://sneakery.herokuapp.com/api/products/allid',
+  )
+  const products = data.data?.data || []
 
   const paths = products.map((item: number) => ({
     params: {
       id: `${item.toString()}`,
     },
-  }));
+  }))
 
   return {
     paths,
     // fallback: false // bat ki path nao k returned boi getStaticPaths se toi trang 404
-    fallback: "blocking", // path nao k returned ngay lap tuc se show trang "tam thoi" => doi getStaticProps chay
+    fallback: 'blocking', // path nao k returned ngay lap tuc se show trang "tam thoi" => doi getStaticProps chay
     // => getStaticProps chay xong => return trang hoan chinh
-  };
-};
+  }
+}
 
 export const getStaticProps: GetStaticProps<{
-  product: IProduct;
-  bidHistory: IProductBidHistoryItem[];
+  product: IProduct
+  bidHistory: IProductBidHistoryItem[]
 }> = async ({ params }: any) => {
   const data = await axios.get(
-    `https://sneakery.herokuapp.com/api/products/${params.id}`
-  );
+    `https://sneakery.herokuapp.com/api/products/${params.id}`,
+  )
 
   const bidHistory = await axios.get(
-    `https://sneakery.herokuapp.com/api/bid_history/product/${params.id}`
-  );
+    `https://sneakery.herokuapp.com/api/bid_history/product/${params.id}`,
+  )
 
-  const product = data.data.data;
+  const product = data.data.data
 
   return {
     props: {
@@ -97,7 +100,7 @@ export const getStaticProps: GetStaticProps<{
       bidHistory: bidHistory?.data?.data,
     },
     revalidate: 5,
-  };
-};
+  }
+}
 
-export default Product;
+export default Product

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+//styles
 import HeaderV2 from '@/components/HeaderV2'
 import HeroSection from '@/containers/home/Hero'
 import TopSlider from '@/containers/home/TopSlider'
@@ -19,7 +20,7 @@ import { setUser } from '@/redux/slices/auth'
 
 //utils
 import { IUser } from '@/types/user'
-import { GetStaticProps, InferGetStaticPropsType } from 'next'  
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
 
 const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {

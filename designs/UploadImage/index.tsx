@@ -1,43 +1,42 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import { Tooltip } from "@mui/material";
-import { XCircleIcon } from "@heroicons/react/20/solid";
+import React, { useState } from 'react'
+
+//styles
+import Image from 'next/image'
+import { Tooltip } from '@mui/material'
+import { XCircleIcon } from '@heroicons/react/20/solid'
 
 interface IUploadImageProps {
-  onSelect: (listImage: any[]) => void;
+  onSelect: (listImage: any[]) => void
 }
 
-const UploadImage: React.FC<IUploadImageProps> = (props) => {
-  const { onSelect } = props;
-  const [baseImage, setBaseImage] = useState<any[]>([]);
-  const [imgShow, setImgShow] = useState<any[]>([]);
-
-  
+const UploadImage: React.FC<IUploadImageProps> = props => {
+  const { onSelect } = props
+  const [baseImage, setBaseImage] = useState<any[]>([])
+  const [imgShow, setImgShow] = useState<any[]>([])
 
   const uploadImage = async (e: any) => {
-    console.log("TARGET FILE", e.target.files);
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
+    const file = e.target.files[0]
+    const base64 = await convertBase64(file)
 
-    onSelect([...baseImage, file]);
-    setBaseImage([...baseImage, file]);
-    setImgShow([...imgShow, base64]);
-  };
+    onSelect([...baseImage, file])
+    setBaseImage([...baseImage, file])
+    setImgShow([...imgShow, base64])
+  }
 
   const convertBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(file)
 
       fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
+        resolve(fileReader.result)
+      }
 
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
+      fileReader.onerror = error => {
+        reject(error)
+      }
+    })
+  }
 
   return (
     <div className="w-full mt-1">
@@ -47,15 +46,15 @@ const UploadImage: React.FC<IUploadImageProps> = (props) => {
       <input
         value=""
         type="file"
-        onChange={(e) => uploadImage(e)}
+        onChange={e => uploadImage(e)}
         className="w-full  border-gray-200 border bg-gray-100 rounded-lg mt-1 h-10"
       />
       <div className="my-4 flex flex-col border border-gray-200 shadow-lg w-[210px] h-[210px] p-1 justify-center rounded-lg cursor-pointer hover:opacity-80 items-center">
         {imgShow.length !== 0 && (
           <Tooltip
             onClick={() => {
-              setImgShow([]);
-              setBaseImage([]);
+              setImgShow([])
+              setBaseImage([])
             }}
             children={
               <XCircleIcon className="w-5 h-5 text-gray-400 hover:text-gray-800 float-right mb-2 " />
@@ -73,7 +72,7 @@ const UploadImage: React.FC<IUploadImageProps> = (props) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UploadImage;
+export default UploadImage

@@ -1,35 +1,37 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import Slider from "react-slick";
-import useWindowDimensions from "../../../hooks/useWindowDimension";
+import React, { useEffect, useState } from 'react'
+
+//styles
+import Image from 'next/image'
+import Slider from 'react-slick'
 
 interface ILeftSideProps {
-  product?: IProduct;
+  product?: IProduct
 }
 
-const LeftSide: React.FC<ILeftSideProps> = (props) => {
+const LeftSide: React.FC<ILeftSideProps> = props => {
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-  };
+  }
 
-  const { product } = props;
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const { product } = props
+  const [isMobile, setIsMobile] = useState<boolean>(false)
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       if (window.innerWidth < 700) {
-        setIsMobile(true);
+        setIsMobile(true)
       } else {
-        setIsMobile(false);
+        setIsMobile(false)
       }
     }
-  }, []);
+  }, [])
 
-  console.log("is mobile", isMobile);
+  //REFACTOR RESPONSIVE
+  console.log('is mobile', isMobile)
 
   return (
     <div className="border-r border-r-gray-200 h-full py-8 px-4">
@@ -59,7 +61,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LeftSide;
+export default LeftSide

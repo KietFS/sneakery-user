@@ -1,21 +1,19 @@
-import {
-  ChevronDownIcon,
-  ChevronUpDownIcon,
-  ChevronUpIcon,
-} from "@heroicons/react/20/solid";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState } from 'react'
+
+//styles
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
 
 interface IRadioButtonProps<T = any> {
-  label: string;
-  options: T[];
-  optionSelected: T;
-  onSelect: (item: T) => void;
-  renderOption?: (item: T) => ReactNode;
-  keyLabel: string;
-  keyValue: string;
+  label: string
+  options: T[]
+  optionSelected: T
+  onSelect: (item: T) => void
+  renderOption?: (item: T) => ReactNode
+  keyLabel: string
+  keyValue: string
 }
 
-const RadioButton: React.FC<IRadioButtonProps> = (props) => {
+const RadioButton: React.FC<IRadioButtonProps> = props => {
   const {
     label,
     optionSelected,
@@ -24,8 +22,8 @@ const RadioButton: React.FC<IRadioButtonProps> = (props) => {
     keyLabel,
     keyValue,
     options,
-  } = props;
-  const [openBelow, setOpenBelow] = useState<boolean>(true);
+  } = props
+  const [openBelow, setOpenBelow] = useState<boolean>(true)
   return (
     <div className="mt-4">
       <div
@@ -41,7 +39,7 @@ const RadioButton: React.FC<IRadioButtonProps> = (props) => {
       </div>
       {openBelow ? (
         <div className="flex flex-col mt-2 gap-y-2">
-          {options?.map((option) => (
+          {options?.map(option => (
             <div
               className="flex flex-row gap-x-3 cursor-pointer items-center text-gray-500 justify-between"
               onClick={() =>
@@ -65,7 +63,7 @@ const RadioButton: React.FC<IRadioButtonProps> = (props) => {
         </div>
       ) : null}
     </div>
-  );
-};
+  )
+}
 
-export default RadioButton;
+export default RadioButton

@@ -1,64 +1,66 @@
-import { useField, useFormikContext } from "formik";
 import {
   ChangeEvent,
   DetailedHTMLProps,
   InputHTMLAttributes,
   useEffect,
-} from "react";
+} from 'react'
+
+//hooks
+import { useField, useFormikContext } from 'formik'
 
 //icons
-import { PhoneIcon } from "@heroicons/react/20/solid";
+import { PhoneIcon } from '@heroicons/react/20/solid'
 
 interface IInputPhoneNumberProps
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  name: string;
-  className?: string;
-  label?: string | null;
-  subLabel?: string;
-  disabled?: boolean;
-  required?: boolean;
-  placeholder?: string;
-  hasEvent?: boolean;
-  isBorder?: boolean;
-  onClickEvent?: () => void;
+  name: string
+  className?: string
+  label?: string | null
+  subLabel?: string
+  disabled?: boolean
+  required?: boolean
+  placeholder?: string
+  hasEvent?: boolean
+  isBorder?: boolean
+  onClickEvent?: () => void
   // use onChangeValue instead of onChange, since Formik will overwrite the onChange
-  onChangeValue?: (value: string | number) => void;
-  readonly onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChangeValue?: (value: string | number) => void
+  readonly onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-const InputPhoneNumber: React.FC<IInputPhoneNumberProps> = (props) => {
+const InputPhoneNumber: React.FC<IInputPhoneNumberProps> = props => {
   const {
     name,
     className,
     required,
     label = null,
-    subLabel = "",
+    subLabel = '',
     hasEvent = false,
     onClickEvent,
-    autoComplete = "off",
+    autoComplete = 'off',
     onChangeValue,
     isBorder = true,
     ...rest
-  } = props;
-  const { setFieldValue } = useFormikContext();
-  const [field, meta] = useField(props.name);
+  } = props
+  const { setFieldValue } = useFormikContext()
+  const [field, meta] = useField(props.name)
   useEffect(() => {
-    onChangeValue && onChangeValue(field.value || "");
-  }, [field.value]);
+    onChangeValue && onChangeValue(field.value || '')
+  }, [field.value])
 
-  const isError: boolean = !!meta.touched && !!meta.error;
+  const isError: boolean = !!meta.touched && !!meta.error
 
   const onValueChange = (phoneNumber: string) => {
-    setFieldValue(name, phoneNumber);
-  };
+    setFieldValue(name, phoneNumber)
+  }
 
   return (
     <div
       className={`w-full rounded-sm ${
-        isError ? "text-blue-500" : "text-neutral-300"
+        isError ? 'text-blue-500' : 'text-neutral-300'
       }`}
     >
       <div className="flex items-center justify-between">
@@ -70,7 +72,7 @@ const InputPhoneNumber: React.FC<IInputPhoneNumberProps> = (props) => {
           <div
             className="duration-300 cursor-default text-base hover:text-gray-500 text-blue-500"
             onClick={() => {
-              onClickEvent && onClickEvent();
+              onClickEvent && onClickEvent()
             }}
           >
             Change
@@ -87,7 +89,7 @@ const InputPhoneNumber: React.FC<IInputPhoneNumberProps> = (props) => {
           placeholder="+84 123 456 789"
           {...(rest as any)}
           {...field}
-          onChange={(e) => onValueChange(e.target.value)}
+          onChange={e => onValueChange(e.target.value)}
           className={`bg-gray-100 text-gray-700  w-80 h-10 text-sm ml-1 px-1 focus:bg-blue-50 rounded-lg`}
         />
       </div>
@@ -95,7 +97,7 @@ const InputPhoneNumber: React.FC<IInputPhoneNumberProps> = (props) => {
         <p className="text-blue-500 text-xs font-semibold mt-1">{meta.error}</p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default InputPhoneNumber;
+export default InputPhoneNumber

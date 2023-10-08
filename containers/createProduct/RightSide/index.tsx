@@ -1,80 +1,87 @@
-import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
-import { useAppSelector } from "../../../hooks/useRedux";
-import { IRootState } from "../../../redux";
-import * as yup from "yup";
-import axios from "axios";
-import SelectComponent from "../../../components/Select";
-import RichTextInput from "../../../designs/RichTextInput";
-import Button from "../../../designs/Button";
-import InputText from "../../../designs/InputText";
-import { IAddressResponse } from "../LeftSide";
-import { toast } from "react-toastify";
+import React, { useEffect, useState } from 'react'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+import { IRootState } from '@/redux'
+
+//styles
+import SelectComponent from '@/components/Select'
+import RichTextInput from '@/designs/RichTextInput'
+import Button from '@/designs/Button'
+import InputText from '@/designs/InputText'
+
+//utils
+import { IAddressResponse } from '@/containers/createProduct/LeftSide'
+import * as yup from 'yup'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { Formik } from 'formik'
 
 interface ILeftSideProps {}
 
 interface IDistrict {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 interface IWard {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 interface IFormValue {
-  ward?: string;
-  district?: string;
-  addressDetail?: string;
-  phoneNumber: string;
+  ward?: string
+  district?: string
+  addressDetail?: string
+  phoneNumber: string
 }
 
 interface IFormValue {}
 
-const RightSide: React.FC<ILeftSideProps> = (props) => {
+const RightSide: React.FC<ILeftSideProps> = props => {
+  //state
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
-    ward: "",
-    district: "",
-    addressDetail: "",
-    phoneNumber: "",
-  });
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [initialLoading, setInitialLoading] = React.useState<boolean>(false);
-  const [listDistrict, setListDistrict] = React.useState<IDistrict[]>([]);
+    ward: '',
+    district: '',
+    addressDetail: '',
+    phoneNumber: '',
+  })
+  const [loading, setLoading] = React.useState<boolean>(false)
+  const [initialLoading, setInitialLoading] = React.useState<boolean>(false)
+  const [listDistrict, setListDistrict] = React.useState<IDistrict[]>([])
   const [districtSelected, setDistrictSelected] =
-    React.useState<IDistrict | null>(null);
-  const [listWard, setListWard] = React.useState<IWard[]>([]);
-  const [wardSelected, setWardSelected] = React.useState<IWard | null>(null);
-  const [districtError, setDistrictError] = React.useState<string>("");
-  const [wardError, setWardError] = React.useState<string>("");
-  const { user } = useAppSelector((state: IRootState) => state.auth);
-  const [isInitialAddress, setIsInitialAddress] = useState<boolean>(false);
+    React.useState<IDistrict | null>(null)
+  const [listWard, setListWard] = React.useState<IWard[]>([])
+  const [wardSelected, setWardSelected] = React.useState<IWard | null>(null)
+  const [districtError, setDistrictError] = React.useState<string>('')
+  const [wardError, setWardError] = React.useState<string>('')
+  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const [isInitialAddress, setIsInitialAddress] = useState<boolean>(false)
 
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({
-      phoneNumber: yup.string().required("Vui lòng điền số điện thoại của bạn"),
+      phoneNumber: yup.string().required('Vui lòng điền số điện thoại của bạn'),
       addressDetail: yup
         .string()
-        .required("Vui lòng nhập địa chỉ cụ thể của bạn"),
-    });
+        .required('Vui lòng nhập địa chỉ cụ thể của bạn'),
+    })
 
   const handleSubmit = async (values: IFormValue) => {
     try {
       if (districtSelected === null) {
-        setDistrictError("Vui lòng chọn quận");
+        setDistrictError('Vui lòng chọn quận')
       } else {
-        setDistrictError("");
+        setDistrictError('')
       }
       if (wardSelected === null) {
-        setWardError("Vui lòng chọn phường");
+        setWardError('Vui lòng chọn phường')
       } else {
-        setWardError("");
+        setWardError('')
       }
-      setLoading(true);
+      setLoading(true)
       const data = await axios.post(
-        "https://sneakery.herokuapp.com/api/address/create",
+        'https://sneakery.herokuapp.com/api/address/create',
         {
           homeNumber: values.addressDetail,
           cityId: 1,
@@ -85,55 +92,55 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
+        },
+      )
       data &&
-        toast.success("Cập nhật địa chỉ của bạn thành công", {
-          position: "top-right",
+        toast.success('Cập nhật địa chỉ của bạn thành công', {
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "colored",
-        });
+          theme: 'colored',
+        })
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const getListDistricts = async () => {
     try {
-      setInitialLoading(true);
+      setInitialLoading(true)
       const data = await axios.get(
-        "https://sneakery.herokuapp.com/api/address/districts"
-      );
-      data && setListDistrict(data.data);
+        'https://sneakery.herokuapp.com/api/address/districts',
+      )
+      data && setListDistrict(data.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setInitialLoading(false);
+      setInitialLoading(false)
     }
-  };
+  }
 
   const getListWars = async (districtId: string) => {
     try {
-      setInitialLoading(true);
+      setInitialLoading(true)
       const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`
-      );
-      data && setListWard(data.data);
+        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`,
+      )
+      data && setListWard(data.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setInitialLoading(false);
+      setInitialLoading(false)
     }
-  };
+  }
 
-  const [address, setAddress] = useState<IAddressResponse[]>([]);
+  const [address, setAddress] = useState<IAddressResponse[]>([])
 
   const getUserAddress = async () => {
     try {
@@ -143,43 +150,43 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
-      response && setAddress(response.data.data);
-      response && console.log("ADDRESS RESPONBSE", response);
+        },
+      )
+      response && setAddress(response.data.data)
+      response && console.log('ADDRESS RESPONBSE', response)
     } catch (error) {
-      console.log("GET USER ADDRESS ERROR", error);
+      console.log('GET USER ADDRESS ERROR', error)
     }
-  };
+  }
 
   React.useEffect(() => {
-    getListDistricts();
-  }, []);
+    getListDistricts()
+  }, [])
 
   React.useEffect(() => {
-    user && getUserAddress();
-  }, [user]);
+    user && getUserAddress()
+  }, [user])
 
   React.useEffect(() => {
     if (districtSelected && isInitialAddress === false) {
-      getListWars(districtSelected.id as string);
-      setWardSelected(null);
+      getListWars(districtSelected.id as string)
+      setWardSelected(null)
     }
-  }, [districtSelected]);
+  }, [districtSelected])
 
   useEffect(() => {
     if (address) {
-      setIsInitialAddress(true);
+      setIsInitialAddress(true)
       setInitialValues({
         addressDetail: address?.[0]?.homeNumber,
 
-        phoneNumber: "0819190777",
-      });
-      console.log("ADDRESS", { address });
-      setWardSelected(address?.[0]?.ward);
-      setDistrictSelected(address?.[0]?.district);
+        phoneNumber: '0819190777',
+      })
+      console.log('ADDRESS', { address })
+      setWardSelected(address?.[0]?.ward)
+      setDistrictSelected(address?.[0]?.district)
     }
-  }, [address]);
+  }, [address])
 
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-4">
@@ -210,9 +217,9 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
                     name="district"
                     label="Chọn quận"
                     optionSelected={districtSelected}
-                    onSelect={(option) => {
-                      setIsInitialAddress(false);
-                      setDistrictSelected(option);
+                    onSelect={option => {
+                      setIsInitialAddress(false)
+                      setDistrictSelected(option)
                     }}
                     options={listDistrict}
                     placeholder="Chọn quận bạn muốn giao hàng đến"
@@ -222,7 +229,7 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
                     name="ward"
                     label="Chọn phường"
                     optionSelected={wardSelected}
-                    onSelect={(option) => setWardSelected(option)}
+                    onSelect={option => setWardSelected(option)}
                     options={listWard}
                     placeholder="Chọn phường bạn muốn giao hàng đến"
                     error={wardError}
@@ -250,11 +257,11 @@ const RightSide: React.FC<ILeftSideProps> = (props) => {
                 </div>
               </div>
             </div>
-          );
+          )
         }}
       </Formik>
     </div>
-  );
-};
+  )
+}
 
-export default RightSide;
+export default RightSide

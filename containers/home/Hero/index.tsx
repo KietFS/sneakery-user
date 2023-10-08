@@ -1,13 +1,17 @@
-import { MapPinIcon } from "@heroicons/react/20/solid";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import React from "react";
-import HeroImage from "../../../assets/images/HeroImage.png";
+import React from 'react'
+
+//hooks
+import { useRouter } from 'next/router'
+
+//styles
+import HeroImage from '@/assets/images/HeroImage.png'
+import { MapPinIcon } from '@heroicons/react/20/solid'
+import Image from 'next/image'
 
 interface IHeroSectionProps {}
 
-const HeroSection: React.FC<IHeroSectionProps> = (props) => {
-  const router = useRouter();
+const HeroSection: React.FC<IHeroSectionProps> = props => {
+  const router = useRouter()
   return (
     <div className="flex mx-auto laptop:mx-0 flex-col laptop:flex-row w-full space-x-5 justify-between mt-2 bg-gray-100 px-6 tablet:px-10 laptop:px-32 py-10 laptop:space-y-0 ">
       <div className="w-full laptop:w-1/2 flex flex-col ">
@@ -24,7 +28,7 @@ const HeroSection: React.FC<IHeroSectionProps> = (props) => {
           </button>
           <button
             className="px-6 py-2 bg-blue-500 text-white font-semibold text-lg rounded-lg active:opacity-80"
-            onClick={() => router.push("/createProduct")}
+            onClick={() => router.push('/createProduct')}
           >
             Đăng giày
           </button>
@@ -53,7 +57,7 @@ const HeroSection: React.FC<IHeroSectionProps> = (props) => {
         <Image src={HeroImage} alt="hero-img" width={400} height={400} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HeroSection;
+export default HeroSection

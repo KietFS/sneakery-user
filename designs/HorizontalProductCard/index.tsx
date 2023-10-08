@@ -1,17 +1,16 @@
-import React from "react";
-import Image from "next/image";
-import { ClockIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/router";
+import React from 'react'
+import Image from 'next/image'
+
+//hooks
+import { useRouter } from 'next/router'
 
 interface IHorizontalProductCardProps {
-  product: IProductHomePageResponse;
+  product: IProductHomePageResponse
 }
 
-const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = (
-  props
-) => {
-  const { product } = props;
-  const router = useRouter();
+const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = props => {
+  const { product } = props
+  const router = useRouter()
   return (
     <div
       className=" border-b border-gray-200 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80"
@@ -34,7 +33,7 @@ const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = (
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HorizontalProductCard;
+export default HorizontalProductCard

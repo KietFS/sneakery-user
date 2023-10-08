@@ -1,15 +1,18 @@
-import Head from "next/head";
-import React from "react";
-import { withAuthorization } from "../../common/config/HOC/withAuth";
-import CartList from "../../containers/cart/CartList";
-import CartPayment from "../../containers/cart/CartPayment";
+import Head from 'next/head'
+import React from 'react'
 
-import FooterSection from "../../components/FooterSection";
-import HeaderV2 from "../../components/HeaderV2";
+//styles
+import CartList from '@/containers/cart/CartList'
+import CartPayment from '@/containers/cart/CartPayment'
+import FooterSection from '@/components/FooterSection'
+import HeaderV2 from '@/components/HeaderV2'
+
+//utils
+import { withAuthorization } from '@/common/config/HOC/withAuth'
 
 interface ICartPageProps {}
 
-const Cart: React.FC<ICartPageProps> = (props) => {
+const Cart: React.FC<ICartPageProps> = props => {
   return (
     <div className="bg-white">
       <Head>
@@ -25,7 +28,7 @@ const Cart: React.FC<ICartPageProps> = (props) => {
       </div>
       <FooterSection />
     </div>
-  );
-};
+  )
+}
 
-export default withAuthorization(Cart);
+export default withAuthorization(Cart)

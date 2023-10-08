@@ -4,10 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 
-import axios from 'axios'
-
 //styles
 import { Dialog, DialogContent, Tooltip } from '@mui/material'
+import Spinner from '@/components/Spinner'
 
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
@@ -17,7 +16,7 @@ import { IRootState } from '@/redux'
 //utils
 import { setUserBalance } from '@/redux/slices/auth'
 import { NumericFormat } from 'react-number-format'
-import Spinner from '../Spinner'
+import axios from 'axios'
 
 interface IWalletDialogProps {
   open: boolean

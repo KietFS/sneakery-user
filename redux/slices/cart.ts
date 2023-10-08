@@ -1,23 +1,24 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ICartItem } from "../../containers/cart/CartList";
+//utils and types
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { ICartItem } from '@/containers/cart/CartList'
 
 interface IInitialState {
-  items: ICartItem[];
+  items: ICartItem[]
 }
 
 const initialState: IInitialState = {
   items: [],
-};
+}
 
 const cartSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     setGlobalCartItems: (state, actions: PayloadAction<ICartItem[]>) => {
-      state.items = actions.payload;
+      state.items = actions.payload
     },
   },
-});
+})
 
-export const { setGlobalCartItems } = cartSlice.actions;
-export default cartSlice.reducer;
+export const { setGlobalCartItems } = cartSlice.actions
+export default cartSlice.reducer

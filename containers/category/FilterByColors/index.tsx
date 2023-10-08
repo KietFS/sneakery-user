@@ -1,38 +1,42 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setColor } from "../../../redux/slices/filter";
+import React, { useEffect, useState } from 'react'
+
+//styles
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
+
+//hooks
+import { useDispatch } from 'react-redux'
+
+//utils and types
+import { setColor } from '@/redux/slices/filter'
 
 interface IFilterByColorsProps {}
 
-interface IColor {
-  id: string;
-  value: string;
-}
-
-const FilterByColors: React.FC<IFilterByColorsProps> = (props) => {
+const FilterByColors: React.FC<IFilterByColorsProps> = props => {
   const [listColor, setListSize] = useState<string[]>([
-    "white",
-    "silver",
-    "gray",
-    "black",
-    "denim",
-    "cream",
-    "red",
-    "pink",
-    "green",
-    "yellow",
-    "brown",
-  ]);
-  const [colorSelected, setColorSelected] = useState<string[]>([]);
-  const [openBelow, setOpenBelow] = useState<boolean>(true);
-  const dispatch = useDispatch();
+    'white',
+    'silver',
+    'gray',
+    'black',
+    'denim',
+    'cream',
+    'red',
+    'pink',
+    'green',
+    'yellow',
+    'brown',
+  ])
 
+  //states
+  const [colorSelected, setColorSelected] = useState<string[]>([])
+  const [openBelow, setOpenBelow] = useState<boolean>(true)
+  const dispatch = useDispatch()
+
+  //effects
   useEffect(() => {
     if (colorSelected) {
-      dispatch(setColor(colorSelected.map((item) => item)));
+      dispatch(setColor(colorSelected.map(item => item)))
     }
-  }, [colorSelected]);
+  }, [colorSelected])
 
   return (
     <div className="mt-4">
@@ -49,15 +53,15 @@ const FilterByColors: React.FC<IFilterByColorsProps> = (props) => {
       </div>
       {openBelow ? (
         <div className="grid grid-cols-4 gap-x-0 mt-2">
-          {listColor.map((item) => (
+          {listColor.map(item => (
             <div
               className={`h-10 border border-gray-200 ${
-                colorSelected.includes(item) ? "p-2 border bg-blue-50" : ""
+                colorSelected.includes(item) ? 'p-2 border bg-blue-50' : ''
               } w-full flex justify-center items-center cursor-pointer `}
               onClick={() =>
                 colorSelected.includes(item)
                   ? setColorSelected(
-                      colorSelected.filter((temp) => temp !== item)
+                      colorSelected.filter(temp => temp !== item),
                     )
                   : setColorSelected([...colorSelected, item])
               }
@@ -70,7 +74,7 @@ const FilterByColors: React.FC<IFilterByColorsProps> = (props) => {
         </div>
       ) : null}
     </div>
-  );
-};
+  )
+}
 
-export default FilterByColors;
+export default FilterByColors

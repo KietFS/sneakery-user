@@ -1,14 +1,15 @@
-import React from "react";
-import Image from "next/image";
-import { WalletIcon } from "@heroicons/react/24/outline";
-import { ICart } from "../../components/OrderHistoryDialog";
+import React from 'react'
+import Image from 'next/image'
+
+//utils
+import { ICart } from '@/components/OrderHistoryDialog'
 
 interface IOrderCardProps {
-  order: ICart;
+  order: ICart
 }
 
-const OrderCard: React.FC<IOrderCardProps> = (props) => {
-  const { order } = props;
+const OrderCard: React.FC<IOrderCardProps> = props => {
+  const { order } = props
   return (
     <div className="rounded-lg border border-gray-200 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80">
       <div className="flex gap-x-3 items-center">
@@ -50,7 +51,7 @@ const OrderCard: React.FC<IOrderCardProps> = (props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default OrderCard;
+export default OrderCard

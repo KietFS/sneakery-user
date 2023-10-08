@@ -1,64 +1,66 @@
-import { useField, useFormikContext } from "formik";
 import {
   ChangeEvent,
   DetailedHTMLProps,
   InputHTMLAttributes,
   useEffect,
-} from "react";
-import { NumericFormat } from "react-number-format";
+} from 'react'
+import { NumericFormat } from 'react-number-format'
+
+//utils
+import { useField, useFormikContext } from 'formik'
 
 interface IInputNumberProps
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  name: string;
-  className?: string;
-  label?: string | null;
-  subLabel?: string;
-  disabled?: boolean;
-  requiblue?: boolean;
-  placeholder?: string;
-  hasEvent?: boolean;
-  isBorder?: boolean;
-  onClickEvent?: () => void;
-  onChangeValue?: (value: string | number) => void;
-  readonly onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  bidError?: string;
+  name: string
+  className?: string
+  label?: string | null
+  subLabel?: string
+  disabled?: boolean
+  requiblue?: boolean
+  placeholder?: string
+  hasEvent?: boolean
+  isBorder?: boolean
+  onClickEvent?: () => void
+  onChangeValue?: (value: string | number) => void
+  readonly onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  bidError?: string
 }
 
-const InputNumber: React.FC<IInputNumberProps> = (props) => {
+const InputNumber: React.FC<IInputNumberProps> = props => {
   const {
     name,
     className,
     requiblue,
     label = null,
-    subLabel = "",
+    subLabel = '',
     hasEvent = false,
     onClickEvent,
-    autoComplete = "off",
+    autoComplete = 'off',
     onChangeValue,
     isBorder = true,
-    bidError = "",
+    bidError = '',
     ...rest
-  } = props;
-  const { setFieldValue } = useFormikContext();
-  const [field, meta] = useField(props.name);
+  } = props
+  const { setFieldValue } = useFormikContext()
+  const [field, meta] = useField(props.name)
 
   useEffect(() => {
-    onChangeValue && onChangeValue(field.value);
-  }, [field.value]);
+    onChangeValue && onChangeValue(field.value)
+  }, [field.value])
 
-  const isError: boolean = !!meta.touched && !!meta.error;
+  const isError: boolean = !!meta.touched && !!meta.error
 
   const onValueChange = (amount: number) => {
-    setFieldValue(name, amount);
-  };
+    setFieldValue(name, amount)
+  }
 
   return (
     <div
       className={`w-full rounded-sm ${
-        isError ? "text-blue-500" : "text-neutral-300"
+        isError ? 'text-blue-500' : 'text-neutral-300'
       }`}
     >
       <div className="flex items-center justify-between">
@@ -70,7 +72,7 @@ const InputNumber: React.FC<IInputNumberProps> = (props) => {
           <div
             className="duration-300 cursor-default text-base hover:text-gray-500 text-blue-500"
             onClick={() => {
-              onClickEvent && onClickEvent();
+              onClickEvent && onClickEvent()
             }}
           >
             Change
@@ -89,7 +91,7 @@ const InputNumber: React.FC<IInputNumberProps> = (props) => {
           type="text"
           value={field.value}
           name={props.name}
-          onChange={(e) => onValueChange(e.target.value as any)}
+          onChange={e => onValueChange(e.target.value as any)}
           className={`bg-gray-100 text-gray-700  w-full h-10 text-sm ml-1 px-1 outline-none ring-0 outline-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent focus:bg-blue-50 rounded-lg`}
         />
       </div>
@@ -97,7 +99,7 @@ const InputNumber: React.FC<IInputNumberProps> = (props) => {
         <p className="text-red-500 text-xs font-semibold mt-1">{bidError}</p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default InputNumber;
+export default InputNumber

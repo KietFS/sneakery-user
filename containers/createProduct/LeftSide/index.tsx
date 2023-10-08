@@ -1,289 +1,292 @@
-import { MenuItem } from "@mui/material";
-import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
-import * as yup from "yup";
-import SelectComponent from "../../../components/Select";
-import Button from "../../../designs/Button";
-import DatePicker from "../../../designs/DatePicker";
-import InputNumber from "../../../designs/InputNumber";
-import InputText from "../../../designs/InputText";
-import UploadImage from "../../../designs/UploadImage";
-import Image from "next/image";
-import MultipleUploadImage from "../../../designs/MultipleUploadImage";
-import axios from "axios";
-import { useAppSelector } from "../../../hooks/useRedux";
-import { IRootState } from "../../../redux";
-import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from 'react'
+
+//styles
+import SelectComponent from '@/components/Select'
+import Button from '@/designs/Button'
+import DatePicker from '@/designs/DatePicker'
+import InputNumber from '@/designs/InputNumber'
+import InputText from '@/designs/InputText'
+import UploadImage from '@/designs/UploadImage'
+import MultipleUploadImage from '@/designs/MultipleUploadImage'
+import { MenuItem } from '@mui/material'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+import { useRouter } from 'next/router'
+
+//utils
+import axios from 'axios'
+import * as yup from 'yup'
+import { IRootState } from '@/redux'
+import { toast } from 'react-toastify'
+import { Formik } from 'formik'
 
 interface ILeftSideProps {}
 
 interface IFormValue {
-  productName: string;
-  brand?: string;
-  size?: string;
-  color?: string;
-  condition?: string;
-  category?: string;
-  priceStart: string;
-  stepBid: string;
-  bidClosingDate?: string;
+  productName: string
+  brand?: string
+  size?: string
+  color?: string
+  condition?: string
+  category?: string
+  priceStart: string
+  stepBid: string
+  bidClosingDate?: string
 }
 
 interface IOption {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 interface IColor {
-  id: string;
-  name: string;
-  bg: string;
+  id: string
+  name: string
+  bg: string
 }
 
 export interface IAddressResponse {
-  addressId: number;
-  homeNumber: string;
-  cityName: string;
-  district: IOption;
-  ward: IOption;
+  addressId: number
+  homeNumber: string
+  cityName: string
+  district: IOption
+  ward: IOption
 }
 
 const validationSchema = yup.object().shape<{ [k in keyof IFormValue]: any }>({
-  productName: yup.string().required("Vui lòng nhập tên sản phẩm"),
-  priceStart: yup.string().required("Vui lòng giá khởi điển"),
-  stepBid: yup.string().required("Vui lòng nhập bước giá"),
-});
+  productName: yup.string().required('Vui lòng nhập tên sản phẩm'),
+  priceStart: yup.string().required('Vui lòng giá khởi điển'),
+  stepBid: yup.string().required('Vui lòng nhập bước giá'),
+})
 
-const LeftSide: React.FC<ILeftSideProps> = (props) => {
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+const LeftSide: React.FC<ILeftSideProps> = props => {
+  const { user } = useAppSelector((state: IRootState) => state.auth)
   const [initialValues, setInitialValues] = useState<IFormValue>({
-    productName: "",
-    brand: "",
-    condition: "",
-    category: "",
-    priceStart: "",
-    stepBid: "",
-    bidClosingDate: "",
-    size: "",
-    color: "",
-  });
+    productName: '',
+    brand: '',
+    condition: '',
+    category: '',
+    priceStart: '',
+    stepBid: '',
+    bidClosingDate: '',
+    size: '',
+    color: '',
+  })
   const brands: IOption[] = [
     {
-      id: "1",
-      name: "Nike",
+      id: '1',
+      name: 'Nike',
     },
     {
-      id: "2",
-      name: "Adidas",
+      id: '2',
+      name: 'Adidas',
     },
     {
-      id: "3",
-      name: "Puma",
+      id: '3',
+      name: 'Puma',
     },
     {
-      id: "4",
-      name: "Balenciaga",
+      id: '4',
+      name: 'Balenciaga',
     },
     {
-      id: "5",
-      name: "Saint Laurent",
+      id: '5',
+      name: 'Saint Laurent',
     },
     {
-      id: "6",
-      name: "Dior",
+      id: '6',
+      name: 'Dior',
     },
     {
-      id: "7",
-      name: "Balenciaga",
+      id: '7',
+      name: 'Balenciaga',
     },
     {
-      id: "8",
-      name: "Chanel",
+      id: '8',
+      name: 'Chanel',
     },
-  ];
+  ]
   const conditions: IOption[] = [
     {
-      id: "fullbox",
-      name: "Nguyên seal",
+      id: 'fullbox',
+      name: 'Nguyên seal',
     },
     {
-      id: "used",
-      name: "Đã qua sử dụng",
+      id: 'used',
+      name: 'Đã qua sử dụng',
     },
-  ];
+  ]
   const categories: IOption[] = [
     {
-      id: "nam",
-      name: "Nam",
+      id: 'nam',
+      name: 'Nam',
     },
     {
-      id: "nu",
-      name: "Nữ",
+      id: 'nu',
+      name: 'Nữ',
     },
     {
-      id: "unisex",
-      name: "Unisex",
+      id: 'unisex',
+      name: 'Unisex',
     },
-  ];
+  ]
   const sizes: IOption[] = [
     {
-      id: "36",
-      name: "Size 36 (VN) - 5.5 (US)",
+      id: '36',
+      name: 'Size 36 (VN) - 5.5 (US)',
     },
     {
-      id: "37",
-      name: "Size 37 (VN) - 6 (US)",
+      id: '37',
+      name: 'Size 37 (VN) - 6 (US)',
     },
 
     {
-      id: "38",
-      name: "Size 38 (VN) - 7 (US)",
+      id: '38',
+      name: 'Size 38 (VN) - 7 (US)',
     },
     {
-      id: "39",
-      name: "Size 39 (VN) - 8 (US)",
+      id: '39',
+      name: 'Size 39 (VN) - 8 (US)',
     },
     {
-      id: "40",
-      name: "Size 40 (VN) - 8.5 (US)",
+      id: '40',
+      name: 'Size 40 (VN) - 8.5 (US)',
     },
     {
-      id: "41",
-      name: "Size 41 (VN) - 9.5 (US)",
+      id: '41',
+      name: 'Size 41 (VN) - 9.5 (US)',
     },
     {
-      id: "42",
-      name: "Size 42 (VN) - 10 (US)",
+      id: '42',
+      name: 'Size 42 (VN) - 10 (US)',
     },
     {
-      id: "43",
-      name: "Size 43 (VN) - 11 (US)",
+      id: '43',
+      name: 'Size 43 (VN) - 11 (US)',
     },
     {
-      id: "44",
-      name: "Size 44 (VN) - 11.5 (US)",
+      id: '44',
+      name: 'Size 44 (VN) - 11.5 (US)',
     },
     {
-      id: "45",
-      name: "Size 45 (VN) - 12.5 (US)",
+      id: '45',
+      name: 'Size 45 (VN) - 12.5 (US)',
     },
-  ];
+  ]
   const colors: IColor[] = [
     {
-      id: "white",
-      name: "Trắng",
-      bg: "bg-white",
+      id: 'white',
+      name: 'Trắng',
+      bg: 'bg-white',
     },
     {
-      id: "silver",
-      name: "Bạc",
-      bg: "bg-silver-500",
+      id: 'silver',
+      name: 'Bạc',
+      bg: 'bg-silver-500',
     },
     {
-      id: "gray",
-      name: "Xám",
-      bg: "bg-gray-500",
+      id: 'gray',
+      name: 'Xám',
+      bg: 'bg-gray-500',
     },
     {
-      id: "black",
-      name: "Đen",
-      bg: "bg-black-500",
+      id: 'black',
+      name: 'Đen',
+      bg: 'bg-black-500',
     },
     {
-      id: "denim",
-      name: "Denim",
-      bg: "bg-denim-500",
+      id: 'denim',
+      name: 'Denim',
+      bg: 'bg-denim-500',
     },
     {
-      id: "cream",
-      name: "Kem",
-      bg: "bg-cream-500",
+      id: 'cream',
+      name: 'Kem',
+      bg: 'bg-cream-500',
     },
     {
-      id: "red",
-      name: "Đỏ",
-      bg: "bg-red-500",
+      id: 'red',
+      name: 'Đỏ',
+      bg: 'bg-red-500',
     },
     {
-      id: "pink",
-      name: "Hồng",
-      bg: "bg-pink-500",
+      id: 'pink',
+      name: 'Hồng',
+      bg: 'bg-pink-500',
     },
     {
-      id: "green",
-      name: "Xanh lá",
-      bg: "bg-green-500",
+      id: 'green',
+      name: 'Xanh lá',
+      bg: 'bg-green-500',
     },
     {
-      id: "yellow",
-      name: "Màu vàng",
-      bg: "bg-yellow-500",
+      id: 'yellow',
+      name: 'Màu vàng',
+      bg: 'bg-yellow-500',
     },
     {
-      id: "brown",
-      name: "Màu nâu",
-      bg: "bg-brown-500",
+      id: 'brown',
+      name: 'Màu nâu',
+      bg: 'bg-brown-500',
     },
-  ];
+  ]
 
-  const [brandSelected, setBrandSelected] = useState<IOption | null>(null);
+  //state
+  const [brandSelected, setBrandSelected] = useState<IOption | null>(null)
   const [conditionSelected, setConditionSelected] = useState<IOption | null>(
-    null
-  );
-  const [categorySelected, setCategorySelected] = useState<IOption | null>(
-    null
-  );
-  const [sizeSelected, setSizeSelected] = useState<IOption | null>(null);
-  const [colorSelected, setColorSelected] = useState<IColor | null>(null);
-  const [thumbnailSelected, setThumbnailSelected] = useState<any[] | null>(
-    null
-  );
-  const [imagesSelected, setImagesSelected] = useState<any[] | null>(null);
+    null,
+  )
+  const [categorySelected, setCategorySelected] = useState<IOption | null>(null)
+  const [sizeSelected, setSizeSelected] = useState<IOption | null>(null)
+  const [colorSelected, setColorSelected] = useState<IColor | null>(null)
+  const [thumbnailSelected, setThumbnailSelected] = useState<any[] | null>(null)
+  const [imagesSelected, setImagesSelected] = useState<any[] | null>(null)
+  const [brandError, setBrandError] = useState<string>('')
+  const [categoryError, setCategoryError] = useState<string>('')
+  const [colorError, setColorError] = useState<string>('')
+  const [conditionError, setConditionError] = useState<string>('')
+  const [sizeError, setSizeError] = useState<string>('')
+  const [createLoading, setCreateLoading] = useState<boolean>(false)
+  const [address, setAddress] = useState<IAddressResponse[]>([])
 
-  const [brandError, setBrandError] = useState<string>("");
-  const [categoryError, setCategoryError] = useState<string>("");
-  const [colorError, setColorError] = useState<string>("");
-  const [conditionError, setConditionError] = useState<string>("");
-  const [sizeError, setSizeError] = useState<string>("");
+  //hooks
+  const router = useRouter()
 
-  const [createLoading, setCreateLoading] = useState<boolean>(false);
-
-  const router = useRouter();
-
+  //functions
   const handleSubmit = async (values: IFormValue) => {
     if (address.length === 0) {
-      toast.error("Vui lòng cập nhật địa chỉ của bạn", {
-        position: "top-right",
+      toast.error('Vui lòng cập nhật địa chỉ của bạn', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
-      });
+        theme: 'colored',
+      })
     } else {
-      const newDate = values.bidClosingDate?.split("T");
-      let isAM = newDate?.[1].slice(-2);
-      console.log("IS AM", isAM);
-      console.log("TEMP HOUR");
+      const newDate = values.bidClosingDate?.split('T')
+      let isAM = newDate?.[1].slice(-2)
+      console.log('IS AM', isAM)
+      console.log('TEMP HOUR')
       if (brandSelected === null) {
-        setBrandError("Vui lòng chọn thương hiệu");
+        setBrandError('Vui lòng chọn thương hiệu')
       }
       if (categorySelected === null) {
-        setCategoryError("Vui lòng chọn danh mục");
+        setCategoryError('Vui lòng chọn danh mục')
       }
       if (colorSelected === null) {
-        setColorError("Vui lòng chọn màu");
+        setColorError('Vui lòng chọn màu')
       }
       if (conditionSelected === null) {
-        setConditionError("Vui lòng chọn tình trạng");
+        setConditionError('Vui lòng chọn tình trạng')
       }
       if (sizeSelected === null) {
-        setSizeError("vui lòng chọn size");
+        setSizeError('vui lòng chọn size')
       }
-      console.log("SUBMIT IS", { values });
+      console.log('SUBMIT IS', { values })
       if (
         brandSelected === null ||
         categorySelected === null ||
@@ -300,59 +303,57 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
           color: colorSelected?.id as string,
           size: Number(sizeSelected.id),
           bidClosingDateTime: values.bidClosingDate,
-          priceStart: Number(values.priceStart?.split(",").join("")),
-          stepBid: Number(values.stepBid?.split(",").join("")),
-        };
-        let formData = new FormData();
-        const json = JSON.stringify(payload);
-        console.log("PAYLOAD HERE", payload);
+          priceStart: Number(values.priceStart?.split(',').join('')),
+          stepBid: Number(values.stepBid?.split(',').join('')),
+        }
+        let formData = new FormData()
+        const json = JSON.stringify(payload)
+        console.log('PAYLOAD HERE', payload)
 
         const blob = new Blob([json], {
-          type: "application/json",
-        });
+          type: 'application/json',
+        })
 
-        formData.append("thumbnail", thumbnailSelected?.[0]);
-        imagesSelected?.map((image) => formData.append("images", image));
-        formData.append("bidCreateRequest", blob);
+        formData.append('thumbnail', thumbnailSelected?.[0])
+        imagesSelected?.map(image => formData.append('images', image))
+        formData.append('bidCreateRequest', blob)
 
         try {
-          setCreateLoading(true);
+          setCreateLoading(true)
           const data = await axios({
-            method: "post",
-            url: "https://sneakery.herokuapp.com/api/bids/create",
+            method: 'post',
+            url: 'https://sneakery.herokuapp.com/api/bids/create',
             headers: {
-              "Content-Type": "multipart/form-data",
+              'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${user?.token}`,
             },
             data: formData,
-          });
-          data && console.log("SUCCESS");
+          })
+          data && console.log('SUCCESS')
           data &&
-            toast.success("Tạo sản phẩm thành công", {
-              position: "top-right",
+            toast.success('Tạo sản phẩm thành công', {
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "colored",
-            });
-          data && router.push("/");
+              theme: 'colored',
+            })
+          data && router.push('/')
         } catch (error) {
-          console.log("CREATE BID ERROR", { error });
+          console.log('CREATE BID ERROR', { error })
         } finally {
-          setCreateLoading(false);
+          setCreateLoading(false)
         }
       }
     }
-  };
-
-  const [address, setAddress] = useState<IAddressResponse[]>([]);
+  }
 
   useEffect(() => {
-    user && getUserAddress();
-  }, [user]);
+    user && getUserAddress()
+  }, [user])
 
   const getUserAddress = async () => {
     try {
@@ -362,14 +363,14 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
-        }
-      );
-      response && setAddress(response.data.data);
-      response && console.log("ADDRESS RESPONBSE", response);
+        },
+      )
+      response && setAddress(response.data.data)
+      response && console.log('ADDRESS RESPONBSE', response)
     } catch (error) {
-      console.log("GET USER ADDRESS ERROR", error);
+      console.log('GET USER ADDRESS ERROR', error)
     }
-  };
+  }
 
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-6">
@@ -383,7 +384,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
         validationSchema={validationSchema}
       >
         {({ handleSubmit, submitForm, errors }) => {
-          console.log("ERRORS", { errors });
+          console.log('ERRORS', { errors })
           return (
             <div className="grid grid-cols-2 gap-x-10 gap-y-5 mt-5">
               <InputText
@@ -400,7 +401,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 options={brands}
                 label="Chọn thương hiệu"
                 placeholder=""
-                onSelect={(brand) => setBrandSelected(brand)}
+                onSelect={brand => setBrandSelected(brand)}
                 error={brandError}
               />
               <SelectComponent
@@ -411,7 +412,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 options={conditions}
                 label="Chọn tình trạng hiệu"
                 placeholder=""
-                onSelect={(condition) => setConditionSelected(condition)}
+                onSelect={condition => setConditionSelected(condition)}
                 error={conditionError}
               />
               <SelectComponent
@@ -422,7 +423,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 options={categories}
                 label="Chọn danh mục"
                 placeholder=""
-                onSelect={(category) => setCategorySelected(category)}
+                onSelect={category => setCategorySelected(category)}
                 error={categoryError}
               />
               <SelectComponent
@@ -433,7 +434,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 options={sizes}
                 label="Chọn size"
                 placeholder=""
-                onSelect={(size) => setSizeSelected(size)}
+                onSelect={size => setSizeSelected(size)}
                 error={sizeError}
               />
               <SelectComponent
@@ -445,8 +446,8 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 label="Chọn màu"
                 error={colorError}
                 placeholder=""
-                onSelect={(size) => setSizeSelected(size)}
-                renderOption={(options) => {
+                onSelect={size => setSizeSelected(size)}
+                renderOption={options => {
                   return options.map((option: any) => (
                     <MenuItem
                       value={option.id}
@@ -461,7 +462,7 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                         ></div>
                       </div>
                     </MenuItem>
-                  ));
+                  ))
                 }}
               />
               <InputNumber
@@ -482,10 +483,10 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
               />
               <div className="col-span-2 mt-2">
                 <UploadImage
-                  onSelect={(listImage) => setThumbnailSelected(listImage)}
+                  onSelect={listImage => setThumbnailSelected(listImage)}
                 />
                 <MultipleUploadImage
-                  onSelect={(listImage) => setImagesSelected(listImage)}
+                  onSelect={listImage => setImagesSelected(listImage)}
                 />
               </div>
 
@@ -499,11 +500,11 @@ const LeftSide: React.FC<ILeftSideProps> = (props) => {
                 />
               </div>
             </div>
-          );
+          )
         }}
       </Formik>
     </div>
-  );
-};
+  )
+}
 
-export default LeftSide;
+export default LeftSide

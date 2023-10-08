@@ -1,14 +1,16 @@
-import React from "react";
-import GHTKLogo from "../../../assets/images/GHTKLogo.webp";
-import AhamoveLogo from "../../../assets/images/AhamoveLogo.png";
-import GHNLogo from "../../../assets/images/GHNLogo.png";
-import GrabExpressLogo from "../../../assets/images/GrabExpressLogo.png";
-import PaypalLogo from "../../../assets/images/PayPalLogo.png";
-import Image from "next/image";
+import React from 'react'
+
+//styles
+import GHTKLogo from '@/assets/images/GHTKLogo.webp'
+import AhamoveLogo from '@/assets/images/AhamoveLogo.png'
+import GHNLogo from '@/assets/images/GHNLogo.png'
+import GrabExpressLogo from '@/assets/images/GrabExpressLogo.png'
+import PaypalLogo from '@/assets/images/PayPalLogo.png'
+import Image from 'next/image'
 
 interface IPartnetSection {}
 
-const PartnerSection: React.FC<IPartnetSection> = (props) => {
+const PartnerSection: React.FC<IPartnetSection> = props => {
   return (
     <div className="space-y-10">
       <div className="space-y-2">
@@ -38,7 +40,7 @@ const PartnerSection: React.FC<IPartnetSection> = (props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PartnerSection;
+export default PartnerSection

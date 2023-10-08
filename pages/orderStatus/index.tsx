@@ -1,15 +1,18 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
-import React from "react";
+import React from 'react'
 
-import ShippingOrder from "../../assets/images/ShippingOrder.png";
-import Image from "next/image";
-import Button from "../../designs/Button";
-import HeaderV2 from "../../components/HeaderV2";
-import FooterSection from "../../components/FooterSection";
+//styles
+import ShippingOrder from '@/assets/images/ShippingOrder.png'
+import Image from 'next/image'
+import Button from '@/designs/Button'
+import HeaderV2 from '@/components/HeaderV2'
+import FooterSection from '@/components/FooterSection'
+import Head from 'next/head'
 
-const OrderStatus: React.FC = (props) => {
-  const router = useRouter();
+//hooks
+import { useRouter } from 'next/router'
+
+const OrderStatus: React.FC = props => {
+  const router = useRouter()
 
   return (
     <>
@@ -23,7 +26,7 @@ const OrderStatus: React.FC = (props) => {
           <div className="mt-16 w-5/6 mx-auto border-gray-200 border rounded-lg h-[600px] bg-white py-4">
             <p
               className="text-[40px] font-bold text-blue-500 w-full cursor-pointer text-center"
-              onClick={() => router.push("/")}
+              onClick={() => router.push('/')}
             >
               Sneakery
             </p>
@@ -36,10 +39,10 @@ const OrderStatus: React.FC = (props) => {
 
             <div
               className="flex justify-center items-center gap-x-2"
-              onClick={() => router.push("/")}
+              onClick={() => router.push('/')}
             >
               <Button
-                onClick={() => router.push("/")}
+                onClick={() => router.push('/')}
                 title="Quay về trang chủ"
                 className={`mt-8`}
               />
@@ -49,7 +52,7 @@ const OrderStatus: React.FC = (props) => {
         <FooterSection />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default OrderStatus;
+export default OrderStatus

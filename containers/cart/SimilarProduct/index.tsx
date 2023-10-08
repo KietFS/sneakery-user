@@ -1,37 +1,39 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import axios from "axios";
+import React, { useEffect, useState } from 'react'
+
+//styles
+import Image from 'next/image'
+
+//utils
+import axios from 'axios'
 
 interface ISimilarProduct {
-  brand: string;
-  currentProductId: number;
-  category: string;
+  brand: string
+  currentProductId: number
+  category: string
 }
 
-const SimilarProduct: React.FC<ISimilarProduct> = (props) => {
-  const [listProduct, setListProduct] = useState<IProductHomePageResponse[]>(
-    []
-  );
-  const [loading, setLoading] = useState<boolean>(false);
+const SimilarProduct: React.FC<ISimilarProduct> = props => {
+  const [listProduct, setListProduct] = useState<IProductHomePageResponse[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
 
   const getSimilarProducts = async () => {
     try {
-      setLoading(true);
-      const url = `https://sneakery.herokuapp.com/api/products?category=${props.category}&brand=${props.brand}`;
-      const data = await axios.get(url);
+      setLoading(true)
+      const url = `https://sneakery.herokuapp.com/api/products?category=${props.category}&brand=${props.brand}`
+      const data = await axios.get(url)
       if (data) {
-        setListProduct(data.data.data.products);
+        setListProduct(data.data.data.products)
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    getSimilarProducts();
-  }, []);
+    getSimilarProducts()
+  }, [])
 
   return (
     <div className="h-fit rounded-lg shadow-lg bg-white mt-10 border border-gray-200 w-full px-8 pt-4 pb-8">
@@ -53,7 +55,7 @@ const SimilarProduct: React.FC<ISimilarProduct> = (props) => {
                   </h1>
                   <div className="flex items-center justify-center">
                     <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                      Được bán bởi:{" "}
+                      Được bán bởi:{' '}
                     </p>
                     <p className="text-xs font-semibold text-blue-500">
                       {item.username}
@@ -61,7 +63,7 @@ const SimilarProduct: React.FC<ISimilarProduct> = (props) => {
                   </div>
                   <div className="flex items-center justify-center">
                     <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                      Giá khởi điểm:{" "}
+                      Giá khởi điểm:{' '}
                     </p>
                     <p className="text-xs font-bold text-gray-500">
                       {item.startPrice.toString().prettyMoney()}$
@@ -69,14 +71,14 @@ const SimilarProduct: React.FC<ISimilarProduct> = (props) => {
                   </div>
                 </div>
               </div>
-            );
+            )
           else {
-            return null;
+            return null
           }
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SimilarProduct;
+export default SimilarProduct

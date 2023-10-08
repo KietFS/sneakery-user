@@ -1,24 +1,32 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setSize } from "../../../redux/slices/filter";
+import React, { useEffect, useState } from 'react'
+
+//styles
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
+
+//hooks
+import { useDispatch } from 'react-redux'
+
+//utils
+import { setSize } from '@/redux/slices/filter'
 
 interface IFilterBySizeProps {}
 
-const FilterBySize: React.FC<IFilterBySizeProps> = (props) => {
+const FilterBySize: React.FC<IFilterBySizeProps> = props => {
+  //state
   const [listSize, setListSize] = useState<number[]>([
     35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
-  ]);
-  const [sizeSelected, setSizeSelected] = useState<number[]>([]);
-  const [openBelow, setOpenBelow] = useState<boolean>(true);
+  ])
+  const [sizeSelected, setSizeSelected] = useState<number[]>([])
+  const [openBelow, setOpenBelow] = useState<boolean>(true)
 
-  const dispatch = useDispatch();
+  //dispatch
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (sizeSelected) {
-      dispatch(setSize(sizeSelected.map((item) => item.toString())));
+      dispatch(setSize(sizeSelected.map(item => item.toString())))
     }
-  }, [sizeSelected]);
+  }, [sizeSelected])
 
   return (
     <div className="mt-4">
@@ -35,16 +43,14 @@ const FilterBySize: React.FC<IFilterBySizeProps> = (props) => {
       </div>
       {openBelow ? (
         <div className="grid grid-cols-6 gap-x-0 mt-2">
-          {listSize.map((item) => (
+          {listSize.map(item => (
             <div
               className={`h-10 border border-gray-200 ${
-                sizeSelected.includes(item) ? "bg-blue-50" : ""
+                sizeSelected.includes(item) ? 'bg-blue-50' : ''
               } w-full flex justify-center items-center cursor-pointer `}
               onClick={() =>
                 sizeSelected.includes(item)
-                  ? setSizeSelected(
-                      sizeSelected.filter((temp) => temp !== item)
-                    )
+                  ? setSizeSelected(sizeSelected.filter(temp => temp !== item))
                   : setSizeSelected([...sizeSelected, item])
               }
             >
@@ -54,7 +60,7 @@ const FilterBySize: React.FC<IFilterBySizeProps> = (props) => {
         </div>
       ) : null}
     </div>
-  );
-};
+  )
+}
 
-export default FilterBySize;
+export default FilterBySize
