@@ -17,6 +17,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { Formik } from 'formik'
+import { Config } from '@/config/api'
 
 interface IFormValue {
   amount?: string
@@ -55,7 +56,7 @@ function BidDialog(props: IBidDialogProps) {
       try {
         setLoading(true)
         const data = await axios.post(
-          'https://sneakery.herokuapp.com/api/bids',
+          `${Config.API_URL}/bids`,
           {
             amount: Number(values.amount?.split(',').join('')),
             productId: Number(product.id),

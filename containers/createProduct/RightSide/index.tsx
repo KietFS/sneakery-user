@@ -16,6 +16,8 @@ import * as yup from 'yup'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { Formik } from 'formik'
+import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
 
 interface ILeftSideProps {}
 
@@ -57,6 +59,7 @@ const RightSide: React.FC<ILeftSideProps> = props => {
   const [wardError, setWardError] = React.useState<string>('')
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const [isInitialAddress, setIsInitialAddress] = useState<boolean>(false)
+  const [address, setAddress] = useState<IAddressResponse[]>([])
 
   const validationSchema = yup
     .object()
@@ -80,8 +83,8 @@ const RightSide: React.FC<ILeftSideProps> = props => {
         setWardError('')
       }
       setLoading(true)
-      const data = await axios.post(
-        'https://sneakery.herokuapp.com/api/address/create',
+      const response = await axios.post(
+        `${Config.API_URL}/address/create`,
         {
           homeNumber: values.addressDetail,
           cityId: 1,
@@ -94,7 +97,8 @@ const RightSide: React.FC<ILeftSideProps> = props => {
           },
         },
       )
-      data &&
+      const { isSuccess, data, error } = configResponse(response)
+      if (isSuccess) {
         toast.success('Cập nhật địa chỉ của bạn thành công', {
           position: 'top-right',
           autoClose: 5000,
@@ -105,6 +109,7 @@ const RightSide: React.FC<ILeftSideProps> = props => {
           progress: undefined,
           theme: 'colored',
         })
+      }
     } catch (error) {
       console.log(error)
     } finally {
@@ -115,10 +120,13 @@ const RightSide: React.FC<ILeftSideProps> = props => {
   const getListDistricts = async () => {
     try {
       setInitialLoading(true)
-      const data = await axios.get(
-        'https://sneakery.herokuapp.com/api/address/districts',
-      )
-      data && setListDistrict(data.data)
+      const response = await axios.get(`${Config.API_URL}/address/districts`)
+      const { isSuccess, error, data } = configResponse(response)
+      if (isSuccess) {
+        setListDistrict(data)
+      } else {
+        console.log('Error', error)
+      }
     } catch (error) {
       console.log(error)
     } finally {
@@ -129,18 +137,21 @@ const RightSide: React.FC<ILeftSideProps> = props => {
   const getListWars = async (districtId: string) => {
     try {
       setInitialLoading(true)
-      const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`,
+      const response = await axios.get(
+        `${Config.API_URL}/address/districts/${districtId}`,
       )
-      data && setListWard(data.data)
+      const { isSuccess, data, error } = configResponse(response)
+      if (isSuccess) {
+        setListWard(data)
+      } else {
+        console.log('Error', error)
+      }
     } catch (error) {
       console.log(error)
     } finally {
       setInitialLoading(false)
     }
   }
-
-  const [address, setAddress] = useState<IAddressResponse[]>([])
 
   const getUserAddress = async () => {
     try {
@@ -152,10 +163,14 @@ const RightSide: React.FC<ILeftSideProps> = props => {
           },
         },
       )
-      response && setAddress(response.data.data)
-      response && console.log('ADDRESS RESPONBSE', response)
+      const { isSuccess, data, error } = configResponse(response)
+      if (isSuccess) {
+        setAddress(data.data)
+      } else {
+        console.log('Error', error)
+      }
     } catch (error) {
-      console.log('GET USER ADDRESS ERROR', error)
+      console.log('CLIENT ERROR', error)
     }
   }
 

@@ -19,6 +19,8 @@ import * as yup from 'yup'
 import { Formik } from 'formik'
 import { toast } from 'react-toastify'
 import { IAddressResponse } from '@/containers/createProduct/LeftSide'
+import { configResponse } from '@/utils/request'
+import { Config } from '@/config/api'
 
 interface IFormValue {
   ward?: string
@@ -87,8 +89,8 @@ function AddressDialog(props: IAddressDialogProps) {
         setWardError('')
       }
       setLoading(true)
-      const data = await axios.post(
-        'https://sneakery.herokuapp.com/api/address/create',
+      const response = await axios.post(
+        `${Config.API_URL}/address/create`,
         {
           homeNumber: values.addressDetail,
           cityId: 1,
@@ -101,7 +103,12 @@ function AddressDialog(props: IAddressDialogProps) {
           },
         },
       )
-      data && toast.success('Cập nhật địa chỉ thành công')
+      const { isSuccess, data, error } = configResponse(response)
+      if (isSuccess) {
+        toast.success('Cập nhật địa chỉ thành công')
+      } else {
+        toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
+      }
     } catch (error) {
       console.log(error)
     } finally {
@@ -113,10 +120,13 @@ function AddressDialog(props: IAddressDialogProps) {
   const getListDistricts = async () => {
     try {
       setInitialLoading(true)
-      const data = await axios.get(
-        'https://sneakery.herokuapp.com/api/address/districts',
-      )
-      data && setListDistrict(data.data)
+      const response = await axios.get(`${Config.API_URL}/address/districts`)
+      const { data, isSuccess, error } = configResponse(response)
+      if (isSuccess) {
+        setListDistrict(data)
+      } else {
+        console.log('Server error', error)
+      }
     } catch (error) {
       console.log(error)
     } finally {
@@ -127,10 +137,16 @@ function AddressDialog(props: IAddressDialogProps) {
   const getListWars = async (districtId: string) => {
     try {
       setInitialLoading(true)
-      const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`,
+      const response = await axios.get(
+        `${Config.API_URL}/address/districts/${districtId}`,
       )
-      data && setListWard(data.data)
+
+      const { isSuccess, error, data } = configResponse(response)
+      if (isSuccess) {
+        setListWard(response.data)
+      } else {
+        console.log('Server error', error)
+      }
     } catch (error) {
       console.log(error)
     } finally {
@@ -140,15 +156,18 @@ function AddressDialog(props: IAddressDialogProps) {
 
   const getUserAddress = async () => {
     try {
-      const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/get_all`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
+      const response = await axios.get(`${Config.API_URL}/address/get_all`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
         },
-      )
-      response && setAddress(response.data.data)
+      })
+      const { data, isSuccess, error } = configResponse(response)
+
+      if (isSuccess) {
+        setAddress(data?.data)
+      } else {
+        console.log('Error', error)
+      }
     } catch (error) {}
   }
 

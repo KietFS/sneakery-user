@@ -1,6 +1,6 @@
 const apiURl: Object = {
-  development: 'https://sneakery.herokuapp.com/api/',
-  production: 'https://sneakery.herokuapp.com/api/',
+  development: 'https://sneakery.herokuapp.com/api',
+  production: 'https://sneakery.herokuapp.com/api',
 }
 
 export const Config = {

@@ -13,6 +13,8 @@ import { NumericFormat } from 'react-number-format'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { IRootState } from '@/redux'
+import { configResponse } from '@/utils/request'
+import { Config } from '@/config/api'
 
 interface IWalletDialogProps {
   open: boolean
@@ -38,8 +40,8 @@ const WithDrawDialog: React.FC<IWalletDialogProps> = props => {
     } else {
       try {
         setLoading(true)
-        const data = await axios.get(
-          `https://sneakery.herokuapp.com/api/transaction/withdraw?amount=${chargeAmount
+        const response = await axios.get(
+          `${Config.API_URL}/transaction/withdraw?amount=${chargeAmount
             ?.split(',')
             .join('')}`,
           {
@@ -48,9 +50,11 @@ const WithDrawDialog: React.FC<IWalletDialogProps> = props => {
             },
           },
         )
-        if (data) {
-          console.log('CHARGE DATA', data)
+        const { isSuccess, error, data } = configResponse(response)
+        if (isSuccess) {
           toast.success('Rút tiền thành công')
+        } else if (error) {
+          toast.error('Rút tiền thất bại')
         }
       } catch (error) {
         console.log('CHARGE ERROR', error)

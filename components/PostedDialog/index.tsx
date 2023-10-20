@@ -11,6 +11,8 @@ import { useAppSelector } from '@/hooks/useRedux'
 
 //store
 import { IRootState } from '@/redux'
+import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
 
 interface IPostedDialogProps {
   open: boolean
@@ -41,17 +43,21 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
   const getPostedItems = async () => {
     try {
       const response = await axios.get(
-        'https://sneakery.herokuapp.com/api/bids/get_uploaded_products',
+        `${Config.API_URL}/bids/get_uploaded_products`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
         },
       )
-      response && setItems(response?.data?.data)
-      response && console.log('REPONSE', response)
+      const { isSuccess, data, error } = configResponse(response)
+      if (isSuccess) {
+        setItems(data?.data)
+      } else {
+        console.log('Error', error)
+      }
     } catch (error) {
-      console.log('POSTED ITEMS ERROR', error)
+      console.log('Client Error', error)
     }
   }
 

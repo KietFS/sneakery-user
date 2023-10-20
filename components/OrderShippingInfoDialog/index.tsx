@@ -23,6 +23,8 @@ import { IAddressResponse } from '@/containers/createProduct/LeftSide'
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { toast } from 'react-toastify'
+import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
 
 interface IFormValue {
   name?: string
@@ -113,10 +115,10 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
         setWardError('')
       }
       setLoading(true)
-
+      //FIX SAU
       if (balance >= Number((shippingFee / 23000).toFixed(0))) {
-        const data = await axios.get(
-          `https://sneakery.herokuapp.com/api/transaction/paid?orderId=${
+        const response = await axios.get(
+          `${Config.API_URL}/transaction/paid?orderId=${
             props.orderId
           }&shippingFee=${(shippingFee / 23000).toFixed(0)}&subtotal=${
             props.totalProduct + Number((shippingFee / 23000).toFixed(0))
@@ -127,12 +129,18 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
             },
           },
         )
-        data &&
+
+        const { data, isSuccess, error } = configResponse(response)
+
+        if (isSuccess) {
           toast.success('Đặt hàng thành công', {
             position: 'top-right',
             hideProgressBar: true,
             theme: 'colored',
           })
+        } else {
+          toast.error(`${error?.message}`)
+        }
         onClose()
         router.push('/orderStatus')
       } else {
@@ -150,9 +158,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const getListDistricts = async () => {
     try {
       setInitialLoading(true)
-      const data = await axios.get(
-        'https://sneakery.herokuapp.com/api/address/districts',
-      )
+      const data = await axios.get(`${Config.API_URL}/address/districts`)
       data && setListDistrict(data.data)
     } catch (error) {
       console.log(error)
@@ -165,7 +171,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
     try {
       setInitialLoading(true)
       const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`,
+        `${Config.API_URL}/address/districts/${districtId}`,
       )
       data && setListWard(data.data)
     } catch (error) {
@@ -180,7 +186,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const calculateShippingFee = async () => {
     try {
       const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/shipping_fee/get?originDistrict=${defaultCity}&destinationDistrict=${districtSelected?.name}`,
+        `${Config.API_URL}/shipping_fee/get?originDistrict=${defaultCity}&destinationDistrict=${districtSelected?.name}`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
@@ -195,14 +201,11 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
 
   const getUserAddress = async () => {
     try {
-      const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/get_all`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
+      const response = await axios.get(`${Config.API_URL}/address/get_all`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
         },
-      )
+      })
       response && setAddress(response.data.data)
       response && console.log('ADDRESS RESPONBSE', response)
     } catch (error) {

@@ -1,10 +1,18 @@
-import { XMarkIcon } from '@heroicons/react/20/solid'
-import { Dialog, DialogContent, DialogTitle, Tooltip } from '@mui/material'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import OrderCard from '../../designs/OrderCard'
-import { useAppSelector } from '../../hooks/useRedux'
-import { IRootState } from '../../redux'
+
+//styles
+import OrderCard from '@/designs/OrderCard'
+import { XMarkIcon } from '@heroicons/react/20/solid'
+import { Dialog, DialogContent, Tooltip } from '@mui/material'
+
+//hooks
+import { useAppSelector } from '@/hooks/useRedux'
+
+//utils
+import axios from 'axios'
+import { IRootState } from '@/redux'
+import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
 
 interface IOrderHistoryDialogProps {
   open: boolean
@@ -44,15 +52,17 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
   const getAllItems = async () => {
     try {
       setLoading(true)
-      const response = await axios.get(
-        'https://sneakery.herokuapp.com/api/bid_history/user',
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
+      const response = await axios.get(`${Config.API_URL}/bid_history/user`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
         },
-      )
-      response && setItems(response.data.data)
+      })
+      const { isSuccess, error, data } = configResponse(response)
+      if (isSuccess) {
+        setItems(data.data)
+      } else {
+        console.log('Error', error)
+      }
     } catch (error) {
     } finally {
       setLoading(false)

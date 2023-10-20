@@ -12,6 +12,8 @@ import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import { IRootState } from '@/redux'
 import { setGlobalCartItems } from '@/redux/slices/cart'
+import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
 
 interface ICartList {}
 
@@ -35,16 +37,17 @@ const CartList: React.FC<ICartList> = props => {
 
   const getItems = async () => {
     try {
-      const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/orders/get_all`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
+      const response = await axios.get(`${Config.API_URL}/orders/get_all`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
         },
-      )
-      response && setItems(response.data.data)
-      response && dispatch(setGlobalCartItems(response.data.data))
+      })
+      const { isSuccess, data, error } = configResponse(response)
+
+      if (isSuccess) {
+        setItems(data?.data)
+        dispatch(setGlobalCartItems(data?.data))
+      }
     } catch (error) {
       console.log('CART ERROR', error)
     }

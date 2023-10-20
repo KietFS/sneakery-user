@@ -20,6 +20,8 @@ import * as yup from 'yup'
 import { IRootState } from '@/redux'
 import { toast } from 'react-toastify'
 import { Formik } from 'formik'
+import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
 
 interface ILeftSideProps {}
 
@@ -308,29 +310,25 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
         }
         let formData = new FormData()
         const json = JSON.stringify(payload)
-        console.log('PAYLOAD HERE', payload)
-
         const blob = new Blob([json], {
           type: 'application/json',
         })
-
         formData.append('thumbnail', thumbnailSelected?.[0])
         imagesSelected?.map(image => formData.append('images', image))
         formData.append('bidCreateRequest', blob)
-
         try {
           setCreateLoading(true)
-          const data = await axios({
+          const response = await axios({
             method: 'post',
-            url: 'https://sneakery.herokuapp.com/api/bids/create',
+            url: `${Config.API_URL}/bids/create`,
             headers: {
               'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${user?.token}`,
             },
             data: formData,
           })
-          data && console.log('SUCCESS')
-          data &&
+          const { data, isSuccess, error } = configResponse(response)
+          if (isSuccess) {
             toast.success('Tạo sản phẩm thành công', {
               position: 'top-right',
               autoClose: 5000,
@@ -341,7 +339,8 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
               progress: undefined,
               theme: 'colored',
             })
-          data && router.push('/')
+            router.push('/')
+          }
         } catch (error) {
           console.log('CREATE BID ERROR', { error })
         } finally {
@@ -357,16 +356,17 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
 
   const getUserAddress = async () => {
     try {
-      const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/get_all`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
+      const response = await axios.get(`${Config.API_URL}/address/get_all`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
         },
-      )
-      response && setAddress(response.data.data)
-      response && console.log('ADDRESS RESPONBSE', response)
+      })
+      const { data, isSuccess, error } = configResponse(response)
+      if (isSuccess) {
+        setAddress(data?.data)
+      } else {
+        console.log('Error', error)
+      }
     } catch (error) {
       console.log('GET USER ADDRESS ERROR', error)
     }

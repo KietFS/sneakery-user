@@ -17,6 +17,9 @@ import { IRootState } from '@/redux'
 import { setUserBalance } from '@/redux/slices/auth'
 import { NumericFormat } from 'react-number-format'
 import axios from 'axios'
+import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
+import { toast } from 'react-toastify'
 
 interface IWalletDialogProps {
   open: boolean
@@ -51,21 +54,23 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
   const getWallet = async () => {
     try {
       setLoading(true)
-      const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/wallet/get/${user?.id}`,
+      const response = await axios.get(
+        `${Config.API_URL}/wallet/get/${user?.id}`,
       )
-      data && console.log('WALLET DATA', data)
-      if (data) {
-        if (data.data?.data === null) {
+      const { isSuccess, data, error } = configResponse(response)
+      if (isSuccess) {
+        if (data?.data === null) {
           setIsExisted(false)
         } else {
           setIsExisted(true)
-          setMoney(data.data?.data.balance)
-          dispatch(setUserBalance(data.data?.data.balance))
+          setMoney(data?.data.balance)
+          dispatch(setUserBalance(data?.data.balance))
         }
+      } else {
+        console.log('Server error', error)
       }
     } catch (error) {
-      console.log('GET WALLET ERROR', error)
+      console.log('Get wallet error', error)
     } finally {
       setLoading(false)
     }
@@ -73,15 +78,17 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
 
   const getTransactionHistory = async () => {
     try {
-      const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/transaction/get`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
+      const response = await axios.get(`${Config.API_URL}/transaction/get`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
         },
-      )
-      response && setTransactions(response.data.data)
+      })
+      const { isSuccess, data, error } = configResponse(response)
+      if (isSuccess) {
+        setTransactions(data?.data)
+      } else {
+        console.log('Server error', error)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -90,18 +97,20 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
   const createWallet = async () => {
     try {
       setLoading(true)
-      const data = await axios.post(
-        'https://sneakery.herokuapp.com/api/wallet/create',
-        {
-          email: user?.email,
-        },
-      )
-      if (data) {
+      const response = await axios.post(`${Config.API_URL}/wallet/create`, {
+        email: user?.email,
+      })
+      const { isSuccess, data, error } = configResponse(response)
+      if (isSuccess) {
+        toast.success('Create wallet successfully')
         setCreateSuccess(true)
         await getWallet()
+      } else {
+        console.log('Error', error)
       }
     } catch (error) {
-      console.log('CREATE WALLET ERROR', error)
+      alert('Create wallet error')
+      console.log('Error', error)
       setCreateSuccess(false)
     } finally {
       setLoading(false)
@@ -110,8 +119,8 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
 
   const charge = async () => {
     try {
-      const data = await axios.post(
-        'https://sneakery.herokuapp.com/api/transaction/deposit',
+      const response = await axios.post(
+        `${Config.API_URL}/transaction/deposit`,
         {
           userId: Number(user?.id),
           amount: Number(chargeAmount?.split(',').join('')),
@@ -122,9 +131,11 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
           },
         },
       )
-      if (data) {
-        console.log('CHARGE DATA', data)
-        window.open(data.data.message)
+      const { isSuccess, error, data } = configResponse(response)
+      if (isSuccess) {
+        window.open(data.message)
+      } else {
+        console.log('Error', error)
       }
     } catch (error) {
       console.log('CHARGE ERROR', error)

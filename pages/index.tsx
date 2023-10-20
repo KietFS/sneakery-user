@@ -22,6 +22,8 @@ import { setUser } from '@/redux/slices/auth'
 import { IUser } from '@/types/user'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
+import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
 
 const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   //function
@@ -75,12 +77,13 @@ export const getStaticProps: GetStaticProps<{
   products: IProductHomePageResponse[]
 }> = async context => {
   // Fetch data from external API
-  const data = await axios.get(
-    'https://sneakery.herokuapp.com/api/products/homepage',
-  )
+  const response = await axios.get(`${Config.API_URL}/products/homepage`)
   let products: IProductHomePageResponse[] = []
-  if (data.data.data.products) {
-    products = data.data?.data?.products as IProductHomePageResponse[]
+
+  const { isSuccess, data, error } = configResponse(response)
+
+  if (isSuccess) {
+    products = data?.data?.products as IProductHomePageResponse[]
   }
 
   return { props: { products } }

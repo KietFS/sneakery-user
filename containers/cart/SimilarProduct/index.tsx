@@ -5,6 +5,8 @@ import Image from 'next/image'
 
 //utils
 import axios from 'axios'
+import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
 
 interface ISimilarProduct {
   brand: string
@@ -19,10 +21,13 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
   const getSimilarProducts = async () => {
     try {
       setLoading(true)
-      const url = `https://sneakery.herokuapp.com/api/products?category=${props.category}&brand=${props.brand}`
-      const data = await axios.get(url)
-      if (data) {
-        setListProduct(data.data.data.products)
+      const url = `${Config.API_URL}/products?category=${props.category}&brand=${props.brand}`
+      const response = await axios.get(url)
+      const { isSuccess, data, error } = configResponse(response)
+      if (isSuccess) {
+        setListProduct(data.data.products)
+      } else {
+        console.log('Error', error)
       }
     } catch (error) {
       console.log(error)
