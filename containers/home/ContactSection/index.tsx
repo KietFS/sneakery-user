@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 
 //styles
-import InputEmail from '@/designs/InputEmail'
-import InputPhoneNumber from '@/designs/InputPhone'
 
 //utils
 import { Formik } from 'formik'
 import * as yup from 'yup'
+import BaseInput from '@/designs/BaseInput'
 
 interface IContactSectionProps {}
 
@@ -49,16 +48,20 @@ const ContactSection: React.FC<IContactSectionProps> = props => {
             <div className="space-y-10 flex flex-col justify-center items-center">
               <div className="grid grid-cols-1 laptop:grid-cols-2 gap-x-10 gap-y-10 justify-center">
                 <div className="w-full px-5">
-                  <InputPhoneNumber
+                  <BaseInput
                     name="phoneNumber"
+                    width={10}
                     label="Số điện thoại"
+                    mode="phoneNumber"
                     className="w-[200px] rounded-lg laptop:w-full"
                   />
                 </div>
                 <div className="w-full px-5">
-                  <InputEmail
+                  <BaseInput
                     name="email"
+                    width={10}
                     label="Email của bạn"
+                    mode="email"
                     className="w-[200px] rounded-lg laptop:w-full"
                   />
                 </div>

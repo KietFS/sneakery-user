@@ -85,11 +85,11 @@ const InputConfirmPassword: React.FC<IInputConfirmPasswordProps> = props => {
           <UserCircleIcon width={20} height={20} color="gray" />
         </div>
         <input
-          placeholder="*********"
+          placeholder="John Doe"
           {...(rest as any)}
           {...field}
           onChange={e => onValueChange(e.target.value)}
-          className="px-2 py-1  bg-gray-100 text-gray-700 rounded-lg w-80 h-10 text-sm focus:bg-blue-50"
+          className={`px-2 py-1  bg-gray-100 text-gray-700 rounded-lg w-80 h-10 text-sm focus:bg-blue-50 outline-none ring-0 border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent`}
         />
       </div>
 

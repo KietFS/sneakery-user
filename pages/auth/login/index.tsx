@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
 //styles
-import InputPassword from '@/designs/InputPassword'
-import InputEmail from '@/designs/InputEmail'
 import LoginBackground from '@/assets/images/LoginBackground.png'
 import Image from 'next/image'
 import Head from 'next/head'
@@ -16,6 +14,8 @@ import { Formik } from 'formik'
 
 //types
 import { IRootState } from '@/redux'
+import { CircularProgress } from '@mui/material'
+import BaseInput from '@/designs/BaseInput'
 
 interface ILoginPageProps {}
 
@@ -93,15 +93,24 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                   {loginError && (
                     <p className="text-blue-500">Đã có lỗi xảy ra</p>
                   )}
-                  <InputEmail name="email" label="Email" required />
-                  <InputPassword name="password" label="Mật khẩu" required />
+                  <BaseInput name="email" label="Email" required mode="email" />
+                  <BaseInput
+                    name="password"
+                    label="Mật khẩu"
+                    required
+                    mode="password"
+                  />
                 </div>
                 <button
                   type="submit"
                   onClick={submitForm}
                   className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
                 >
-                  {loginLoading ? '...' : 'Đăng nhập'}
+                  {loginLoading ? (
+                    <CircularProgress sx={{ color: 'white' }} size={20} />
+                  ) : (
+                    'Đăng nhập'
+                  )}
                 </button>
                 <div className="space-y-3">
                   <p className="text-gray-700 text-xs">Hoặc đăng nhập với</p>

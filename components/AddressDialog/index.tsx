@@ -172,8 +172,12 @@ function AddressDialog(props: IAddressDialogProps) {
   }
 
   React.useEffect(() => {
-    getListDistricts()
-    getUserAddress()
+    if (listDistrict.length == 0) {
+      getListDistricts()
+    }
+    if (address.length == 0) {
+      getUserAddress()
+    }
   }, [])
 
   React.useEffect(() => {
@@ -189,7 +193,6 @@ function AddressDialog(props: IAddressDialogProps) {
       setInitialValues({
         addressDetail: address?.[0]?.homeNumber,
       })
-      console.log('ADDRESS', { address })
       setWardSelected(address?.[0]?.ward)
       setDistrictSelected(address?.[0]?.district)
     }

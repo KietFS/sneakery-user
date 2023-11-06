@@ -62,7 +62,9 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
   }
 
   useEffect(() => {
-    getPostedItems()
+    if (!items) {
+      getPostedItems()
+    }
   }, [])
 
   return (

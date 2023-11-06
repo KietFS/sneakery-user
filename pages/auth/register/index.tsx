@@ -3,10 +3,9 @@ import * as yup from 'yup'
 import { Formik } from 'formik'
 
 //components
-import InputPassword from '@/designs/InputPassword'
 import InputConfirmPassword from '@/designs/InputConfirmPassword'
 import InputText from '@/designs/InputName'
-import InputEmail from '@/designs/InputEmail'
+
 import Button from '@/designs/Button'
 import EmailSentDialog from '@/components/EmailSentDialog'
 import LoginBackground from '@/assets/images/LoginBackground.png'
@@ -23,6 +22,7 @@ import { useAppSelector } from '@/hooks/useRedux'
 import { IRootState } from '@/redux'
 
 import { setOpenEmailSentDialog } from '@/redux/slices/auth'
+import BaseInput from '@/designs/BaseInput'
 
 interface ILoginPageProps {}
 
@@ -117,8 +117,13 @@ const RegisterPage: React.FC<ILoginPageProps> = () => {
                 </div>
                 <div className="space-y-5">
                   <InputText name="fullName" label="Tên đầy đủ" required />
-                  <InputEmail name="email" label="Email" required />
-                  <InputPassword name="password" label="Mật khẩu" required />
+                  <BaseInput mode="email" name="email" label="Email" required />
+                  <BaseInput
+                    mode="password"
+                    name="password"
+                    label="Mật khẩu"
+                    required
+                  />
                   <InputConfirmPassword
                     name="confirmPassword"
                     label="Xác nhận mật khẩu"

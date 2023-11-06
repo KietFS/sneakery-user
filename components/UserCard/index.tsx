@@ -180,32 +180,55 @@ export default function MultipleSelectPlaceholder() {
           </div>
         </Select>
       </FormControl>
-      <AddressDialog
-        open={openAddressDialog}
-        onClose={() => setOpenAddressDialog(false)}
-      />
-      <AccountDialog
-        open={openAccountDialog}
-        onClose={() => setOpenAccountDialog(false)}
-      />
-      <OrderHistoryDialog
-        open={openOrderHistory}
-        onClose={() => setOpenOrderHistory(false)}
-      />
-      <LogoutConfirmDialog
-        open={openLogoutDialog}
-        onConfirm={() => logOut()}
-        onClose={() => setOpenLogoutDialog(false)}
-      />
-      <PostedDialog
-        open={openPostedDialog}
-        onClose={() => setOpenPostedDialog(false)}
-      />
-      <WalletDialog open={walletDialog} onClose={() => setWalletDialo(false)} />
-      <WithDrawDialog
-        open={openWithDraw}
-        onClose={() => setOpenWithDraw(false)}
-      />
+      {openAddressDialog ? (
+        <AddressDialog
+          open={openAddressDialog}
+          onClose={() => setOpenAddressDialog(false)}
+        />
+      ) : null}
+
+      {openAddressDialog ? (
+        <AccountDialog
+          open={openAccountDialog}
+          onClose={() => setOpenAccountDialog(false)}
+        />
+      ) : null}
+
+      {openOrderHistory ? (
+        <OrderHistoryDialog
+          open={openOrderHistory}
+          onClose={() => setOpenOrderHistory(false)}
+        />
+      ) : null}
+
+      {openLogoutDialog ? (
+        <LogoutConfirmDialog
+          open={openLogoutDialog}
+          onConfirm={() => logOut()}
+          onClose={() => setOpenLogoutDialog(false)}
+        />
+      ) : null}
+
+      {openPostedDialog ? (
+        <PostedDialog
+          open={openPostedDialog}
+          onClose={() => setOpenPostedDialog(false)}
+        />
+      ) : null}
+
+      {walletDialog ? (
+        <WalletDialog
+          open={walletDialog}
+          onClose={() => setWalletDialo(false)}
+        />
+      ) : null}
+
+      {openWithDraw ? (
+        <WithDrawDialog
+          open={openWithDraw}
+          onClose={() => setOpenWithDraw(false)}
+        />
+      ) : null}
     </div>
   )
 }
