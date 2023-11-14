@@ -103,6 +103,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                 </div>
                 <button
                   type="submit"
+                  name="submit-login"
                   onClick={submitForm}
                   className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
                 >
