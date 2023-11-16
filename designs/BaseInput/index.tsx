@@ -73,8 +73,6 @@ const BaseInput: React.FC<IBaseInputProps> = props => {
     },
   }
 
-  console.log('asda', (objectTypes as any)?.[mode]?.icon)
-
   const isError: boolean = !!meta.touched && !!meta.error
 
   const onValueChange = (phoneNumber: string) => {
