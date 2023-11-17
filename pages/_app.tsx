@@ -34,13 +34,13 @@ function App({ Component, pageProps }: AppProps) {
   Router.events.on('routeChangeComplete', () => NProgress.done())
   Router.events.on('routeChangeError', () => NProgress.done())
 
-  React.useEffect(() => {
-    let userInfo = JSON.parse(localStorage.getItem('user') as string)
-    if (userInfo) {
-      store.dispatch(setUser(userInfo))
-      store.dispatch(setAuth(true))
-    }
-  }, [])
+  // React.useEffect(() => {
+  //   let userInfo = JSON.parse(localStorage.getItem('user') as string)
+  //   if (userInfo) {
+  //     store.dispatch(setUser(userInfo))
+  //     store.dispatch(setAuth(true))
+  //   }
+  // }, [])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

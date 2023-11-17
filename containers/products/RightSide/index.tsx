@@ -60,13 +60,13 @@ const RightSide: React.FC<IRightSideProps> = props => {
     setTextSecond(textSecond.toString())
   }
 
-  useEffect(() => {
-    if (Date.now() > newBidClosingDate.getTime()) {
-      router.push('/')
-    }
-  }, [textSecond])
+  // useEffect(() => {
+  //   if (Date.now() > newBidClosingDate.getTime()) {
+  //     router.push('/')
+  //   }
+  // }, [textSecond])
 
-  setInterval(countdown, 1)
+  // setInterval(countdown, 1)
 
   return (
     <div className="px-8 py-4">

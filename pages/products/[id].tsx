@@ -74,9 +74,9 @@ export const getStaticPaths: GetStaticPaths<{}> = async () => {
 
   return {
     paths,
-    // fallback: false // bat ki path nao k returned boi getStaticPaths se toi trang 404
-    fallback: 'blocking', // path nao k returned ngay lap tuc se show trang "tam thoi" => doi getStaticProps chay
-    // => getStaticProps chay xong => return trang hoan chinh
+    fallback: false, // bat ki path nao k returned boi getStaticPaths se toi trang 404
+    // fallback: 'blocking', // path nao k returned ngay lap tuc se show trang "tam thoi" => doi getStaticProps chay
+    // // => getStaticProps chay xong => return trang hoan chinh
   }
 }
 
@@ -99,7 +99,6 @@ export const getStaticProps: GetStaticProps<{
       product,
       bidHistory: bidHistory?.data?.data,
     },
-    revalidate: 5,
   }
 }
 
