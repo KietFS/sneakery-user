@@ -34,7 +34,6 @@ function BidDialog(props: IBidDialogProps) {
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
     amount: (product.currentPrice + product.bidIncrement).toString(),
   })
-  console.log('STEP BID', { product })
   const [loading, setLoading] = React.useState<boolean>(false)
   const [error, setError] = React.useState<string>('')
   const { user, balance } = useAppSelector((state: IRootState) => state.auth)
