@@ -67,6 +67,7 @@ const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           <StepSection />
           <PartnerSection />
           <ContactSection />
+          {/* <LoginDialog isOpen={true} onclickClose={() => {}} /> */}
         </div>
         <FooterSection />
       </div>

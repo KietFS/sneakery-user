@@ -21,22 +21,21 @@ export function configResponse(
       )
     }
 
-    const { data, status } = response
-    const isSuccess = response?.status === 200
+    const { data: responseData, status: responseStatus } = response
+    const { success, message } = responseData
 
-    if (isSuccess) {
-      return { isSuccess, data, error: undefined }
+    if (success) {
+      return { isSuccess: success, data: responseData, error: undefined }
     } else {
-      if (token && status === 401) {
+      if (token && responseStatus === 401) {
         alert('Session Expire')
       }
 
-      const message =
-        typeof data?.message === 'object'
-          ? JSON.stringify(data.message)
-          : data?.message || response.statusText
-
-      return { isSuccess, data, error: { message, status, problem: null } }
+      return {
+        isSuccess: success,
+        data: responseData,
+        error: { message, status: responseStatus, problem: null },
+      }
     }
   } catch (error: any) {
     return {
