@@ -186,7 +186,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const calculateShippingFee = async () => {
     try {
       const response = await axios.get(
-        `${Config.API_URL}/shipping_fee/get?originDistrict=${defaultCity}&destinationDistrict=${districtSelected?.name}`,
+        `${Config.API_URL}/shipping-fee/get?originDistrict=${defaultCity}&destinationDistrict=${districtSelected?.name}`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
@@ -201,13 +201,13 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
 
   const getUserAddress = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/address/get_all`, {
+      const response = await axios.get(`${Config.API_URL}/address/get-all`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
       })
       response && setAddress(response.data.data)
-      response && console.log('ADDRESS RESPONBSE', response)
+
     } catch (error) {
       console.log('GET USER ADDRESS ERROR', error)
     }

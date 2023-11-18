@@ -356,7 +356,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
 
   const getUserAddress = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/address/get_all`, {
+      const response = await axios.get(`${Config.API_URL}/address/get-all`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },

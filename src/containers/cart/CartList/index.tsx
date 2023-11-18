@@ -37,7 +37,7 @@ const CartList: React.FC<ICartList> = props => {
 
   const getItems = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/orders/get_all`, {
+      const response = await axios.get(`${Config.API_URL}/orders/get-all`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },

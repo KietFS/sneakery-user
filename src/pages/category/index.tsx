@@ -20,6 +20,7 @@ import { Pagination } from '@mui/material'
 import SelectSortType from '@/containers/category/SelectSortType'
 import Head from 'next/head'
 import axios from 'axios'
+import { Config } from '@/config/api'
 
 interface IProductProps {}
 
@@ -46,7 +47,7 @@ const Category = (props: IProductProps) => {
   const getAllProducts = async () => {
     try {
       setLoading(true)
-      const url = `https://sneakery.herokuapp.com/api/products?${
+      const url = `${Config.API_URL}/products?${
         keyWord !== null ? `keyword=${keyWord}` : ''
       }${condition !== null ? `&condition=${condition}` : ''}${
         category !== null ? `&category=${category}` : ''

@@ -16,6 +16,7 @@ import Button from '@/designs/Button'
 //utils
 import axios from 'axios'
 import { IRootState } from '@/redux'
+import { Config } from '@/config/api'
 
 const Cancel: React.FC = props => {
   const router = useRouter()
@@ -27,7 +28,7 @@ const Cancel: React.FC = props => {
   const processCharge = async () => {
     try {
       setLoading(true)
-      const url = `https://sneakery.herokuapp.com/api/transaction/deposit/success?paymentId=${paymentId}&payerId=${PayerID}`
+      const url = `${Config.API_URL}/transaction/deposit/success?paymentId=${paymentId}&payerId=${PayerID}`
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${user?.token}`,

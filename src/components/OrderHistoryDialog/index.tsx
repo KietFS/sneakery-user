@@ -52,13 +52,16 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
   const getAllItems = async () => {
     try {
       setLoading(true)
-      const response = await axios.get(`${Config.API_URL}/bid_history/user`, {
+      const response = await axios.get(`${Config.API_URL}/bid-history/user`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
       })
+      console.log('token', user.token)
+
       const { isSuccess, error, data } = configResponse(response)
       if (isSuccess) {
+        console.log('succes kiet')
         setItems(data.data)
       } else {
         console.log('Error', error)

@@ -155,14 +155,11 @@ const RightSide: React.FC<ILeftSideProps> = props => {
 
   const getUserAddress = async () => {
     try {
-      const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/get_all`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
+      const response = await axios.get(`${Config.API_URL}/address/get-all`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
         },
-      )
+      })
       const { isSuccess, data, error } = configResponse(response)
       if (isSuccess) {
         setAddress(data.data)

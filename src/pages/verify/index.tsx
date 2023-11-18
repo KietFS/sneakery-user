@@ -14,6 +14,7 @@ import Head from 'next/head'
 //utils
 import axios from 'axios'
 import { IRootState } from '@/redux'
+import { Config } from '@/config/api'
 
 const Verify: React.FC = props => {
   const router = useRouter()
@@ -27,7 +28,7 @@ const Verify: React.FC = props => {
   const verifyEmail = async () => {
     try {
       setLoading(true)
-      const url = `https://sneakery.herokuapp.com/api/auth/verify/${code}`
+      const url = `${Config.API_URL}/auth/verify/${code}`
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${user?.token}`,

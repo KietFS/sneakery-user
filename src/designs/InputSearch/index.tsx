@@ -16,6 +16,7 @@ import { useRouter } from 'next/router'
 import { setKeyWord } from '@/redux/slices/filter'
 import * as yup from 'yup'
 import { Formik } from 'formik'
+import { Config } from '@/config/api'
 
 interface IInputSearchProps {}
 
@@ -36,12 +37,9 @@ const InputSearch: React.FC<IInputSearchProps> = props => {
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm, 500)
 
   const searchCharacters = (search: string): Promise<any[]> => {
-    return fetch(
-      `https://sneakery.herokuapp.com/api/products?keyword=${search}`,
-      {
-        method: 'GET',
-      },
-    )
+    return fetch(`${Config.API_URL}/products?keyword=${search}`, {
+      method: 'GET',
+    })
       .then(r => r.json())
       .then(r => r.data.products)
       .catch(error => {

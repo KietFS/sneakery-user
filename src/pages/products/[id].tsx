@@ -14,6 +14,7 @@ import Head from 'next/head'
 //utils
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
+import { Config } from '@/config/api'
 
 interface IProductProps {}
 
@@ -61,9 +62,7 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 }
 
 export const getStaticPaths: GetStaticPaths<{}> = async () => {
-  const data = await axios.get(
-    'http://sneakery.herokuapp.com/api/products/allid',
-  )
+  const data = await axios.get(`${Config.API_URL}/products/allid`)
   const products = data.data?.data || []
 
   const paths = products.map((item: number) => ({
@@ -84,12 +83,10 @@ export const getStaticProps: GetStaticProps<{
   product: IProduct
   bidHistory: IProductBidHistoryItem[]
 }> = async ({ params }: any) => {
-  const data = await axios.get(
-    `https://sneakery.herokuapp.com/api/products/${params.id}`,
-  )
+  const data = await axios.get(`${Config.API_URL}/products/${params.id}`)
 
   const bidHistory = await axios.get(
-    `https://sneakery.herokuapp.com/api/bid_history/product/${params.id}`,
+    `${Config.API_URL}/bid-history/product/${params.id}`,
   )
 
   const product = data.data.data
