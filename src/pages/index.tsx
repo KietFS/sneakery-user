@@ -24,6 +24,7 @@ import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
+import LoginDialog from '@/components/LoginDialog'
 
 const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   //function

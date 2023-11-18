@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 //design
 import InputSearch from '@/designs/InputSearch'
@@ -14,13 +14,25 @@ import { setCategory } from '@/redux/slices/filter'
 import { useRouter } from 'next/router'
 import { useAppSelector } from '@/hooks/useRedux'
 import { useDispatch } from 'react-redux'
+import LoginDialog from '../LoginDialog'
+import RegisterDialog from '../RegisterDialog'
+import EmailSentDialog from '../EmailSentDialog'
+import { setOpenEmailSentDialog } from '@/redux/slices/auth'
 
 interface IHeaderV2Props {}
 
 const HeaderV2: React.FC<IHeaderV2Props> = props => {
   const { user, isAuth } = useAppSelector((state: IRootState) => state.auth)
   const router = useRouter()
+
+  //state
+  const [openLogin, setOpenLogin] = useState<boolean>(false)
+  const [openRegister, setOpenRegister] = useState<boolean>(false)
+  const { openEmailSentDialog } = useAppSelector(
+    (state: IRootState) => state.auth,
+  )
   const dispatch = useDispatch()
+
   return (
     <div className="w-full shadow-lg pb-4 laptop:pb-0 ">
       <div className="w-full flex space-x-4 tablet:space-x-6 laptop:space-x-6 desktop:space-x-8 items-center px-4 py-4  justify-between laptop:justify-around">
@@ -94,14 +106,14 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
             <div className="hidden laptop:flex flex-end space-x-0.5 items-center w-64">
               <button
                 className="items-center rounded-xl px-4 py-2 text-center text-gray-600  text-sm w-fit flex hover:bg-gray-100"
-                onClick={() => router.push('/auth/register')}
+                onClick={() => setOpenRegister(true)}
               >
                 <UserPlusIcon className="w-5 h-5 text-gray-600 mr-1" />
                 Đăng ký
               </button>
               <button
                 className=" rounded-xl px-4 py-2 text-center text-gray-600  text-sm w-fit flex space-x-1 items-center hover:bg-gray-100"
-                onClick={() => router.push('/auth/login')}
+                onClick={() => setOpenLogin(true)}
               >
                 <UserIcon className="w-5 h-5 text-gray-600 mr-1" />
                 Đăng nhập
@@ -113,6 +125,25 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
       <div className="flex laptop:hidden px-2">
         <InputSearch />
       </div>
+      {openLogin ? (
+        <LoginDialog
+          isOpen={openLogin}
+          onclickClose={() => setOpenLogin(false)}
+        />
+      ) : null}
+      {openRegister ? (
+        <RegisterDialog
+          isOpen={openRegister}
+          onClickClose={() => setOpenRegister(false)}
+        />
+      ) : null}
+
+      {openEmailSentDialog ? (
+        <EmailSentDialog
+          open={openEmailSentDialog}
+          onClose={() => dispatch(setOpenEmailSentDialog(false))}
+        />
+      ) : null}
     </div>
   )
 }

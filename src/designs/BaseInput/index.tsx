@@ -13,9 +13,17 @@ import {
   LockClosedIcon,
   PhoneIcon,
   UserCircleIcon,
+  CheckBadgeIcon,
+  PencilIcon,
 } from '@heroicons/react/20/solid'
 
-type IInputMode = 'email' | 'password' | 'text' | 'phoneNumber' | 'name'
+type IInputMode =
+  | 'email'
+  | 'password'
+  | 'confirmPassword'
+  | 'text'
+  | 'phoneNumber'
+  | 'name'
 
 interface IBaseInputProps
   extends DetailedHTMLProps<
@@ -63,13 +71,18 @@ const BaseInput: React.FC<IBaseInputProps> = props => {
       icon: <LockClosedIcon width={20} height={20} color="gray" />,
       placeholder: '**********',
     },
+
+    confirmPassword: {
+      icon: <CheckBadgeIcon width={20} height={20} color="gray" />,
+      placeholder: '**********',
+    },
     phoneNumber: {
       icon: <PhoneIcon width={20} height={20} color="gray" />,
       placeholder: '+84 809 211 211',
     },
     text: {
-      icon: null,
-      placeholder: '**********',
+      icon: <PencilIcon width={20} height={20} color="gray" />,
+      placeholder: 'Your text here',
     },
   }
 
@@ -135,7 +148,11 @@ const BaseInput: React.FC<IBaseInputProps> = props => {
           placeholder={(objectTypes as any)?.[mode]?.placeholder || ''}
           {...field}
           onBlur={handleOnBlur}
-          type={mode}
+          type={
+            mode === 'password' || mode == 'confirmPassword'
+              ? 'password'
+              : 'text'
+          }
           onFocus={handleOnFocus}
           onChange={e => onValueChange(e.target.value)}
           className={`px-2 py-1  ${

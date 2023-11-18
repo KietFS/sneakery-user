@@ -14,6 +14,7 @@ import { IUser } from '@/types/user'
 import { IRootState } from '@/redux'
 import { toast } from 'react-toastify'
 import { auth } from '@/common/config/firebase'
+import { configResponse } from '@/utils/request'
 
 export const useAuth = () => {
   //local state
@@ -35,17 +36,22 @@ export const useAuth = () => {
   const login = async (email: string, password: string) => {
     try {
       setLoginLoading(true)
-      const data = await loginService(email, password)
-      if (data) {
-        toast.success('Đăng nhập thành công', {
-          position: 'top-right',
-          autoClose: 0,
-          theme: 'colored',
-          hideProgressBar: true,
-        })
-        console.log('LOGIN RESPONSE', data.data)
-        dispatch(setUser(data?.data?.data as IUser))
-        dispatch(setAuth(true))
+      const response = await loginService(email, password)
+      if (response) {
+        const { data, isSuccess, error } = configResponse(response)
+        if (isSuccess) {
+          toast.success('Đăng nhập thành công', {
+            position: 'top-right',
+            autoClose: 0,
+            theme: 'colored',
+            hideProgressBar: true,
+          })
+          dispatch(setUser(response?.data?.data as IUser))
+          dispatch(setAuth(true))
+        } else {
+          console.log(error)
+          setLoginError(error?.message as string)
+        }
       }
     } catch (error) {
       console.log(error)

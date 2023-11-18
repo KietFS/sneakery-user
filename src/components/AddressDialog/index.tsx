@@ -76,19 +76,27 @@ function AddressDialog(props: IAddressDialogProps) {
     })
 
   //functions
+  const checkSelectionErrors = () => {
+    if (districtSelected === null) {
+      setDistrictError('Vui lòng chọn quận')
+      return true
+    } else {
+      setDistrictError('')
+    }
+    if (wardSelected === null) {
+      setWardError('Vui lòng chọn phường')
+      return true
+    } else {
+      setWardError('')
+    }
+    return false
+  }
+
   const handleSubmit = async (values: IFormValue) => {
+    if (checkSelectionErrors()) return
+
+    setLoading(true)
     try {
-      if (districtSelected === null) {
-        setDistrictError('Vui lòng chọn quận')
-      } else {
-        setDistrictError('')
-      }
-      if (wardSelected === null) {
-        setWardError('Vui lòng chọn phường')
-      } else {
-        setWardError('')
-      }
-      setLoading(true)
       const response = await axios.post(
         `${Config.API_URL}/address/create`,
         {
