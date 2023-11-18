@@ -77,7 +77,7 @@ export const getStaticProps: GetStaticProps<{
   products: IProductHomePageResponse[]
 }> = async context => {
   // Fetch data from external API
-  console.log('start call')
+
   const response = await axios.get(`${Config.API_URL}/products/homepage`)
   let products: IProductHomePageResponse[] = []
 

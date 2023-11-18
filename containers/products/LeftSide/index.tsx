@@ -56,7 +56,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       <div className={`grid grid-cols-4 gap-x-5 mt-20`}>
         {product?.imagePath?.map((item, index) => (
           <div className="p-2 border border-gray-200 rounded-xl cursor-pointer hover:opacity-50">
-            <Image
+            <img
               src={item.split('?')[0]}
               key={index.toString()}
               width={120}
