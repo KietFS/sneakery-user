@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../../../hooks/useAuth'
 import { useAppSelector } from '../../../hooks/useRedux'
-import LoginPage from '../../../pages/auth/login'
 import { IRootState } from '../../../redux'
 export function withAuthorization<T>(
   Component: React.FC<T>,
