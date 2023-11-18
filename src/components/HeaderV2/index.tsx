@@ -88,7 +88,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
           </p>
         </div>
         <div className="hidden laptop:flex">
-          {isAuth ? (
+          {!!user ? (
             <UserCard />
           ) : (
             <div className="hidden laptop:flex flex-end space-x-0.5 items-center w-64">

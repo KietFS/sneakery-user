@@ -1,6 +1,6 @@
-import { IIconSVGProps } from "../../typings";
+import { IIconSVGProps } from '../../typings'
 
-export const HidePasswordIcon: React.FC<IIconSVGProps> = (props) => (
+export const HidePasswordIcon: React.FC<IIconSVGProps> = props => (
   <svg
     width="24"
     height="25"
@@ -30,9 +30,9 @@ export const HidePasswordIcon: React.FC<IIconSVGProps> = (props) => (
       fill="currentColor"
     />
   </svg>
-);
+)
 
-export const ShowPasswordIcon: React.FC<IIconSVGProps> = (props) => (
+export const ShowPasswordIcon: React.FC<IIconSVGProps> = props => (
   <svg
     width="24"
     height="25"
@@ -50,4 +50,4 @@ export const ShowPasswordIcon: React.FC<IIconSVGProps> = (props) => (
       fill="currentColor"
     />
   </svg>
-);
+)
