@@ -194,7 +194,6 @@ const RightSide: React.FC<ILeftSideProps> = props => {
 
         phoneNumber: '0819190777',
       })
-      console.log('ADDRESS', { address })
       setWardSelected(address?.[0]?.ward)
       setDistrictSelected(address?.[0]?.district)
     }

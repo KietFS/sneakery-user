@@ -39,7 +39,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
         className={`block justify-center  laptop:w-[500px] w-[300px] laptop:h-[375px] h-[200px] rounded-lg mx-auto`}
       >
         {product?.imagePath?.map((item, index) => {
-          console.log('product', product.imagePath)
           return (
             <div className="desktop:w-[500px] laptop:w-[400px] laptop:h[300px] w-[300px] desktop:h-[375px] h-[200px] block">
               <img

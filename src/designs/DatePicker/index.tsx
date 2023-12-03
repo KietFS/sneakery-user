@@ -42,7 +42,6 @@ const DatePicker: React.FC<IDatePickerProps> = props => {
         let hourString = temp?.[1].split(':')
         let newHour = Number(hourString?.[0]) + 12
         let finalHourString = `${newHour}:${hourString?.[1]}:${hourString?.[2]}`
-        console.log('FINAL TEST', `${temp?.[0]}T${finalHourString}`)
         setFieldValue(name, `${temp?.[0]}T${finalHourString}`)
       }
     } else {

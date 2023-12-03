@@ -53,7 +53,6 @@ const InputSearch: React.FC<IInputSearchProps> = props => {
       if (debouncedSearchTerm) {
         setLoading(true)
         searchCharacters(debouncedSearchTerm).then(results => {
-          console.log('RESULT', results)
           setLoading(false)
           setResults(results)
         })

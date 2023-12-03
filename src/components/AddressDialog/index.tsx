@@ -34,12 +34,12 @@ export interface IAddressDialogProps {
 }
 
 interface IDistrict {
-  DistrictID: number
+  DistrictID: string
   DistrictName: string
 }
 
 interface IWard {
-  WarCode: number
+  WardCode: string
   WardName: string
 }
 
@@ -94,16 +94,24 @@ function AddressDialog(props: IAddressDialogProps) {
 
   const handleSubmit = async (values: IFormValue) => {
     if (checkSelectionErrors()) return
-
     setLoading(true)
+
+    const payload = {
+      homeNumber: values.addressDetail,
+      cityId: 1,
+      districtId: districtSelected?.DistrictID,
+      wardId: wardSelected?.WardCode,
+    }
+
+    console.log('payload is', payload)
     try {
       const response = await axios.post(
-        `${Config.API_URL}/address/create`,
+        `${Config.API_URL}/addresses`,
         {
           homeNumber: values.addressDetail,
           cityId: 1,
           districtId: districtSelected?.DistrictID,
-          wardId: wardSelected?.WarCode,
+          wardId: wardSelected?.WardCode,
         },
         {
           headers: {
@@ -151,7 +159,7 @@ function AddressDialog(props: IAddressDialogProps) {
     }
   }
 
-  const getListWars = async (districtId: number) => {
+  const getListWars = async (districtId: string) => {
     const apiUrl =
       'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward'
     const headers = {
@@ -214,8 +222,8 @@ function AddressDialog(props: IAddressDialogProps) {
       setInitialValues({
         addressDetail: address?.[0]?.homeNumber,
       })
-      setWardSelected(address?.[0]?.ward)
-      setDistrictSelected(address?.[0]?.district)
+      // setWardSelected(address?.[0]?.ward)
+      // setDistrictSelected(address?.[0]?.district)
     }
   }, [address])
 
