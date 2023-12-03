@@ -54,7 +54,6 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
 
       const { isSuccess, data, error } = configResponse(response)
       if (isSuccess) {
-        console.log('success')
         setItems(data?.data)
       } else {
         console.log('Error', error)

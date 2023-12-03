@@ -60,7 +60,6 @@ export const isExistedEmail = async (email: string) => {
       `${Config.API_URL}/auth/checkemail?email=${email}`,
     )
     if (isExisted) {
-      console.log('CALEED HERE BITCH')
       return isExisted
     }
   } catch (error) {

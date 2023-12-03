@@ -34,13 +34,13 @@ export interface IAddressDialogProps {
 }
 
 interface IDistrict {
-  id: string
-  name: string
+  DistrictID: number
+  DistrictName: string
 }
 
 interface IWard {
-  id: string
-  name: string
+  WarCode: number
+  WardName: string
 }
 
 function AddressDialog(props: IAddressDialogProps) {
@@ -102,8 +102,8 @@ function AddressDialog(props: IAddressDialogProps) {
         {
           homeNumber: values.addressDetail,
           cityId: 1,
-          districtId: districtSelected?.id,
-          wardId: wardSelected?.id,
+          districtId: districtSelected?.DistrictID,
+          wardId: wardSelected?.WarCode,
         },
         {
           headers: {
@@ -126,14 +126,23 @@ function AddressDialog(props: IAddressDialogProps) {
   }
 
   const getListDistricts = async () => {
+    const apiUrl =
+      'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district'
+
+    const headers = {
+      token: '5ded4c97-7c70-11ed-b62e-2a5743127145',
+      'Content-Type': 'application/json',
+    }
+
+    const requestData = {
+      province_id: 202,
+    }
     try {
       setInitialLoading(true)
-      const response = await axios.get(`${Config.API_URL}/address/districts`)
-      const { data, isSuccess, error } = configResponse(response)
-      if (isSuccess) {
+      const response = await axios.get(apiUrl, { headers, params: requestData })
+      if (response?.status == 200) {
+        const { data } = response?.data
         setListDistrict(data)
-      } else {
-        console.log('Server error', error)
       }
     } catch (error) {
       console.log(error)
@@ -142,18 +151,22 @@ function AddressDialog(props: IAddressDialogProps) {
     }
   }
 
-  const getListWars = async (districtId: string) => {
+  const getListWars = async (districtId: number) => {
+    const apiUrl =
+      'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward'
+    const headers = {
+      token: '5ded4c97-7c70-11ed-b62e-2a5743127145',
+      'Content-Type': 'application/json',
+    }
+    const requestData = {
+      district_id: districtId,
+    }
     try {
       setInitialLoading(true)
-      const response = await axios.get(
-        `${Config.API_URL}/address/districts/${districtId}`,
-      )
-
-      const { isSuccess, error, data } = configResponse(response)
-      if (isSuccess) {
-        setListWard(response.data)
-      } else {
-        console.log('Server error', error)
+      const response = await axios.get(apiUrl, { headers, params: requestData })
+      if (response?.status == 200) {
+        const { data } = response?.data
+        setListWard(data)
       }
     } catch (error) {
       console.log(error)
@@ -190,7 +203,7 @@ function AddressDialog(props: IAddressDialogProps) {
 
   React.useEffect(() => {
     if (districtSelected && isInitialAddress === false) {
-      getListWars(districtSelected.id as string)
+      getListWars(districtSelected.DistrictID)
       setWardSelected(null)
     }
   }, [districtSelected])
@@ -239,6 +252,8 @@ function AddressDialog(props: IAddressDialogProps) {
                         setDistrictSelected(option)
                         setIsInitialAddress(false)
                       }}
+                      keyValue="DistrictID"
+                      keyLabel="DistrictName"
                       options={listDistrict}
                       placeholder="Chọn quận bạn muốn giao hàng đến"
                       error={districtError}
@@ -246,6 +261,8 @@ function AddressDialog(props: IAddressDialogProps) {
                     <SelectComponent
                       name="ward"
                       label="Chọn phường"
+                      keyLabel="WardName"
+                      keyValue="WardCode"
                       optionSelected={wardSelected}
                       onSelect={option => setWardSelected(option)}
                       options={listWard}

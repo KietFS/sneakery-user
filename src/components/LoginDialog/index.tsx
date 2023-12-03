@@ -136,10 +136,7 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
                         Hoặc đăng nhập với
                       </p>
                       <div className="flex items-center">
-                        <div
-                          className="mr-3 cursor-pointer"
-                          onClick={() => console.log('Values')}
-                        >
+                        <div className="mr-3 cursor-pointer">
                           <Image
                             width={25}
                             height={25}

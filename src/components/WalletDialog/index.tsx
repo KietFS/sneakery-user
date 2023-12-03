@@ -99,9 +99,6 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
         email: user?.email,
       })
       const { isSuccess, data, error } = configResponse(response)
-      if (response) {
-        console.log('response is', response)
-      }
       if (isSuccess) {
         toast.success('Create wallet successfully')
         setCreateSuccess(true)

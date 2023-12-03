@@ -57,11 +57,8 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
           Authorization: `Bearer ${user?.token}`,
         },
       })
-      console.log('token', user.token)
-
       const { isSuccess, error, data } = configResponse(response)
       if (isSuccess) {
-        console.log('succes kiet')
         setItems(data.data)
       } else {
         console.log('Error', error)

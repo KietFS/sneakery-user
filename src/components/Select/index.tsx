@@ -64,7 +64,7 @@ const SelectComponent: React.FC<ISelectProps> = props => {
       >
         {renderOption
           ? renderOption(options)
-          : options.map((option, index) => (
+          : options?.map((option, index) => (
               <MenuItem
                 value={option[keyValue]}
                 onClick={() => onSelect(option)}

@@ -49,10 +49,6 @@ const Cancel: React.FC = props => {
     }
   }, [paymentId])
 
-  useEffect(() => {
-    console.log('CALLED', call)
-  }, [call])
-
   return (
     <>
       <div className="bg-white">

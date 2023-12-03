@@ -271,8 +271,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     } else {
       const newDate = values.bidClosingDate?.split('T')
       let isAM = newDate?.[1].slice(-2)
-      console.log('IS AM', isAM)
-      console.log('TEMP HOUR')
       if (brandSelected === null) {
         setBrandError('Vui lòng chọn thương hiệu')
       }
@@ -288,7 +286,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       if (sizeSelected === null) {
         setSizeError('vui lòng chọn size')
       }
-      console.log('SUBMIT IS', { values })
       if (
         brandSelected === null ||
         categorySelected === null ||
@@ -448,7 +445,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
                 placeholder=""
                 onSelect={size => setSizeSelected(size)}
                 renderOption={options => {
-                  return options.map((option: any) => (
+                  return options?.map((option: any) => (
                     <MenuItem
                       value={option.id}
                       onClick={() => setColorSelected(option)}

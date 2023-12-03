@@ -207,7 +207,6 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
         },
       })
       response && setAddress(response.data.data)
-
     } catch (error) {
       console.log('GET USER ADDRESS ERROR', error)
     }
@@ -258,7 +257,6 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
           enableReinitialize
         >
           {({ submitForm, values, handleSubmit, errors }) => {
-            console.log('ERROR FORM', { errors })
             return (
               <div className="flex flex-col space-y-10">
                 <div className="flex flex-col space-y-5">
@@ -318,7 +316,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                       label="Chọn đơn vị vận chuyển"
                       placeholder="Chọn đơn vị vận chuyển đơn hàng của bạn"
                       renderOption={options => {
-                        return options.map((option, index) => (
+                        return options?.map((option, index) => (
                           <div
                             key={index.toString()}
                             className="w-full flex items-center justify-between px-4 cursor-pointer hover:opacity-80 hover:bg-gray-100"

@@ -28,7 +28,6 @@ function App({ Component, pageProps }: AppProps) {
   // 2. Use at the root of your app
 
   Router.events.on('routeChangeStart', url => {
-    console.log(`Loading: ${url}`)
     NProgress.start()
   })
   Router.events.on('routeChangeComplete', () => NProgress.done())
