@@ -46,7 +46,12 @@ export const useAuth = () => {
             theme: 'colored',
             hideProgressBar: true,
           })
+          console.log('response login', response?.data?.data)
           dispatch(setUser(response?.data?.data as IUser))
+          await localStorage.setItem(
+            'user',
+            JSON.stringify(response?.data?.data),
+          )
           dispatch(setAuth(true))
         } else {
           console.log(error)

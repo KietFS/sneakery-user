@@ -54,9 +54,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
   const getWallet = async () => {
     try {
       setLoading(true)
-      const response = await axios.get(
-        `${Config.API_URL}/wallet/get/${user?.id}`,
-      )
+      const response = await axios.get(`${Config.API_URL}/wallet/${user?.id}`)
       const { isSuccess, data, error } = configResponse(response)
       if (isSuccess) {
         if (data?.data === null) {
@@ -78,7 +76,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
 
   const getTransactionHistory = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/transaction/get`, {
+      const response = await axios.get(`${Config.API_URL}/transaction`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
@@ -97,10 +95,13 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
   const createWallet = async () => {
     try {
       setLoading(true)
-      const response = await axios.post(`${Config.API_URL}/wallet/create`, {
+      const response = await axios.post(`${Config.API_URL}/wallet`, {
         email: user?.email,
       })
       const { isSuccess, data, error } = configResponse(response)
+      if (response) {
+        console.log('response is', response)
+      }
       if (isSuccess) {
         toast.success('Create wallet successfully')
         setCreateSuccess(true)

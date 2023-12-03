@@ -44,7 +44,7 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
     try {
       //THIS NEED TO FIX
       const response = await axios.get(
-        `${Config.API_URL}/bids/get_uploaded_products`,
+        `${Config.API_URL}/bids/uploaded_products/`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
