@@ -128,6 +128,7 @@ export const useAuth = () => {
   }
 
   return {
+    user,
     login,
     loginError,
     googleLogin,

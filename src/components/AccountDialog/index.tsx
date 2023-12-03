@@ -16,7 +16,7 @@ import { Formik } from 'formik'
 
 interface IFormValue {
   name: string
-  phoneNumber: string
+  email: string
 }
 
 export interface IAccountDialogProps {
@@ -33,7 +33,7 @@ function OrderShippingInfoDialog(props: IAccountDialogProps) {
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
     name: user?.username as string,
-    phoneNumber: '0819190227',
+    email: user?.email as string,
   })
   const [loading, setLoading] = React.useState<boolean>(false)
 
@@ -47,12 +47,13 @@ function OrderShippingInfoDialog(props: IAccountDialogProps) {
       setLoading(false)
     }
   }
+  console.log('user', user)
 
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({
       name: yup.string().required('Vui lòng điền tên của bạn'),
-      phoneNumber: yup.string().required('Vui lòng nhập số điện thoại của bạn'),
+      email: yup.string().required(''),
     })
 
   return (
@@ -87,10 +88,10 @@ function OrderShippingInfoDialog(props: IAccountDialogProps) {
                       placeholder="Nhập tên của bạn"
                     />
                     <InputText
-                      name="phoneNumber"
-                      value={initialValues?.phoneNumber}
-                      label="Số điện thoại"
-                      placeholder="Nhập số điện thoại"
+                      name="email"
+                      value={initialValues?.email}
+                      label="Email"
+                      placeholder="Email"
                     />
                   </div>
                 </div>
@@ -102,14 +103,14 @@ function OrderShippingInfoDialog(props: IAccountDialogProps) {
                       onClick={() => onClose()}
                       title="Đóng"
                     />
-                    <Button
+                    {/* <Button
                       type="submit"
                       title="Xác nhận"
                       variant="primary"
                       className="ml-2"
                       isLoading={loading}
                       onClick={handleSubmit}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>

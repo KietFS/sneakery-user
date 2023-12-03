@@ -21,10 +21,11 @@ import { toast } from 'react-toastify'
 import { IAddressResponse } from '@/containers/createProduct/LeftSide'
 import { configResponse } from '@/utils/request'
 import { Config } from '@/config/api'
+import { useAuth } from '@/hooks/useAuth'
 
 interface IFormValue {
-  ward?: string
-  district?: string
+  ward?: IWard | null
+  district?: IDistrict | null
   addressDetail?: string
 }
 
@@ -49,8 +50,8 @@ function AddressDialog(props: IAddressDialogProps) {
 
   //state
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
-    ward: '',
-    district: '',
+    ward: null,
+    district: null,
     addressDetail: '',
   })
   const [loading, setLoading] = React.useState<boolean>(false)
@@ -63,8 +64,8 @@ function AddressDialog(props: IAddressDialogProps) {
   const [districtError, setDistrictError] = React.useState<string>('')
   const [wardError, setWardError] = React.useState<string>('')
   const { user } = useAppSelector((state: IRootState) => state.auth)
-  const [address, setAddress] = React.useState<IAddressResponse[]>([])
-  const [isInitialAddress, setIsInitialAddress] = React.useState<boolean>(false)
+  const [address, setAddress] = React.useState<any | null>(null)
+  const [isExistedAddress, setIsExistedAddress] = React.useState<boolean>(false)
 
   //utils
   const validationSchema = yup
@@ -98,47 +99,66 @@ function AddressDialog(props: IAddressDialogProps) {
 
     const payload = {
       homeNumber: values.addressDetail,
-      cityId: 1,
-      districtId: districtSelected?.DistrictID,
-      wardId: wardSelected?.WardCode,
+      cityCode: 202,
+      districtCode: districtSelected?.DistrictID,
+      wardCode: Number(wardSelected?.WardCode),
     }
 
-    console.log('payload is', payload)
-    try {
-      const response = await axios.post(
-        `${Config.API_URL}/addresses`,
-        {
-          homeNumber: values.addressDetail,
-          cityId: 1,
-          districtId: districtSelected?.DistrictID,
-          wardId: wardSelected?.WardCode,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
+    if (isExistedAddress == false) {
+      try {
+        const response = await axios.post(
+          `${Config.API_URL}/addresses`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
           },
-        },
-      )
-      const { isSuccess, data, error } = configResponse(response)
-      if (isSuccess) {
-        toast.success('Cập nhật địa chỉ thành công')
-      } else {
-        toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
+        )
+        const { isSuccess, data, error } = configResponse(response)
+        if (isSuccess) {
+          toast.success('Cập nhật địa chỉ thành công')
+        } else {
+          toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+        onClose()
       }
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setLoading(false)
-      onClose()
+    } else {
+      try {
+        const response = await axios.put(
+          `${Config.API_URL}/addresses/${user?.id}/`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          },
+        )
+        const { isSuccess, data, error } = configResponse(response)
+        if (isSuccess) {
+          toast.success('Cập nhật địa chỉ thành công')
+        } else {
+          toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+        onClose()
+      }
     }
   }
 
   const getListDistricts = async () => {
     const apiUrl =
-      'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district'
+      'https://online-gateway.ghn.vn/shiip/public-api/master-data/district'
 
     const headers = {
-      token: '5ded4c97-7c70-11ed-b62e-2a5743127145',
+      token: '09b46603-9193-11ee-b394-8ac29577e80e',
       'Content-Type': 'application/json',
     }
 
@@ -161,9 +181,9 @@ function AddressDialog(props: IAddressDialogProps) {
 
   const getListWars = async (districtId: string) => {
     const apiUrl =
-      'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward'
+      'https://online-gateway.ghn.vn/shiip/public-api/master-data/ward'
     const headers = {
-      token: '5ded4c97-7c70-11ed-b62e-2a5743127145',
+      token: '09b46603-9193-11ee-b394-8ac29577e80e',
       'Content-Type': 'application/json',
     }
     const requestData = {
@@ -185,16 +205,21 @@ function AddressDialog(props: IAddressDialogProps) {
 
   const getUserAddress = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/address/get-all`, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
+      const response = await axios.get(
+        `${Config.API_URL}/addresses/${user?.id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
         },
-      })
+      )
       const { data, isSuccess, error } = configResponse(response)
 
       if (isSuccess) {
+        setIsExistedAddress(true)
         setAddress(data?.data)
       } else {
+        setIsExistedAddress(false)
         console.log('Error', error)
       }
     } catch (error) {}
@@ -204,28 +229,44 @@ function AddressDialog(props: IAddressDialogProps) {
     if (listDistrict.length == 0) {
       getListDistricts()
     }
-    if (address.length == 0) {
-      getUserAddress()
-    }
+    getUserAddress()
   }, [])
 
   React.useEffect(() => {
-    if (districtSelected && isInitialAddress === false) {
+    if (districtSelected) {
       getListWars(districtSelected.DistrictID)
       setWardSelected(null)
     }
   }, [districtSelected])
 
   React.useEffect(() => {
-    if (address.length >= 1) {
-      setIsInitialAddress(true)
+    if (listWard?.length > 0 && address) {
+      setWardSelected(
+        listWard.find(item => {
+          return item.WardCode == address?.wardCode
+        }) as any,
+      )
+    }
+  }, [listWard, address])
+
+  React.useEffect(() => {
+    if (!!address) {
+      setDistrictSelected(
+        listDistrict.find(item => {
+          return item.DistrictID == address?.districtCode
+        }) as any,
+      )
+
       setInitialValues({
-        addressDetail: address?.[0]?.homeNumber,
+        addressDetail: address?.homeNumber,
+        district: listDistrict.find(item => {
+          return item.DistrictID == address?.districtCode
+        }),
       })
-      // setWardSelected(address?.[0]?.ward)
-      // setDistrictSelected(address?.[0]?.district)
     }
   }, [address])
+
+  console.log('isexisted', isExistedAddress)
 
   return (
     <Dialog
@@ -258,7 +299,6 @@ function AddressDialog(props: IAddressDialogProps) {
                       optionSelected={districtSelected}
                       onSelect={option => {
                         setDistrictSelected(option)
-                        setIsInitialAddress(false)
                       }}
                       keyValue="DistrictID"
                       keyLabel="DistrictName"

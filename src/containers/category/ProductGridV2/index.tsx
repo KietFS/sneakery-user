@@ -1,57 +1,63 @@
-import React from "react";
-import Image from "next/image";
-import { useRouter } from "next/router";
+import React from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 interface IProductGridV2Props {
-  listProducts: IProductHomePageResponse[];
+  listProducts: IProductHomePageResponse[]
 }
 
-const ProductGridV2: React.FC<IProductGridV2Props> = (props) => {
-  const { listProducts } = props;
-  const router = useRouter();
+const ProductGridV2: React.FC<IProductGridV2Props> = props => {
+  const { listProducts } = props
+  const router = useRouter()
   return (
-    <div className="flex flex-col space-y-10 items-center justify-center h-fit">
-      <div className="grid grid-flow-row grid-cols-1 tablet:grid-cols-1 laptop:grid-cols-2 desktop:grid-cols-3 w-full gap-x-5 gap-y-10">
-        {listProducts?.map((item, index) => {
-          return (
-            <div
-              className="h-fit py-10 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
-              key={index.toString()}
-              onClick={() => router.push(`/products/${item.id}`)}
-            >
-              <Image
-                src={item.imagePath}
-                width={200}
-                height={150}
-                className="z-10"
-              />
-              <div className="justify-center px-4 space-y-1 mx-auto">
-                <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
-                  {item.name.truncate(25)}
-                </h1>
-                <div className="flex items-center justify-center">
-                  <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                    Được bán bởi:{" "}
-                  </p>
-                  <p className="text-xs font-semibold text-blue-500">
-                    {item.username}
-                  </p>
+    <>
+      {listProducts?.length > 0 ? (
+        <div className="flex flex-col space-y-10 items-center justify-center h-fit">
+          <div className="grid grid-flow-row grid-cols-1 tablet:grid-cols-1 laptop:grid-cols-2 desktop:grid-cols-3 w-full gap-x-5 gap-y-10">
+            {listProducts?.map((item, index) => {
+              return (
+                <div
+                  className="h-fit py-10 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
+                  key={index.toString()}
+                  onClick={() => router.push(`/products/${item.id}`)}
+                >
+                  <Image
+                    src={item.imagePath}
+                    width={200}
+                    height={150}
+                    className="z-10"
+                  />
+                  <div className="justify-center px-4 space-y-1 mx-auto">
+                    <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
+                      {item.name.truncate(25)}
+                    </h1>
+                    <div className="flex items-center justify-center">
+                      <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                        Được bán bởi:{' '}
+                      </p>
+                      <p className="text-xs font-semibold text-blue-500">
+                        {item.username}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                        Giá khởi điểm:{' '}
+                      </p>
+                      <p className="text-xs font-bold text-gray-500">
+                        {item.startPrice.toString().prettyMoney()}$
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center justify-center">
-                  <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                    Giá khởi điểm:{" "}
-                  </p>
-                  <p className="text-xs font-bold text-gray-500">
-                    {item.startPrice.toString().prettyMoney()}$
-                  </p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+              )
+            })}
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+    </>
+  )
+}
 
-export default ProductGridV2;
+export default ProductGridV2

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 //styles
 import HeaderV2 from '@/components/HeaderV2'
@@ -8,6 +8,7 @@ import FilterSideBar from '@/containers/category/FilterSideBar'
 import Spinner from '@/components/Spinner'
 import NotFound from '@/assets/images/NotFound.png'
 import Image from 'next/image'
+import { debounce } from 'lodash'
 
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
@@ -21,6 +22,7 @@ import SelectSortType from '@/containers/category/SelectSortType'
 import Head from 'next/head'
 import axios from 'axios'
 import { Config } from '@/config/api'
+import useDebounce from '@/hooks/useDebounce'
 
 interface IProductProps {}
 
@@ -30,6 +32,7 @@ const Category = (props: IProductProps) => {
   const [loading, setLoading] = useState<boolean>(true)
   const [pageSelected, setPageSelected] = useState<number>(1)
   const [error, setError] = useState<boolean>(false)
+  const [filterString, setFilterString] = useState<string>('')
 
   //redux
   const {
@@ -44,14 +47,51 @@ const Category = (props: IProductProps) => {
     size,
   } = useAppSelector((state: IRootState) => state.filter)
 
+  const filterStringDebounce = useDebounce<string>(filterString, 500)
+
+  const memoBrand = useMemo(() => {
+    if (brand?.length > 0) {
+      return brand
+    }
+  }, [brand])
+
+  const memoColor = useMemo(() => {
+    if (color?.length > 0) {
+      return color
+    }
+  }, [color])
+
+  const memoSize = useMemo(() => {}, [size])
+
   const getAllProducts = async () => {
     try {
       setLoading(true)
-      const url = `${Config.API_URL}/products?${
-        keyWord !== null ? `keyword=${keyWord}` : ''
-      }${condition !== null ? `&condition=${condition}` : ''}${
-        category !== null ? `&category=${category}` : ''
-      }${
+      const url = `${Config.API_URL}/products?${filterString}&page=${pageSelected}&limit=12`
+      const response = await axios.get(url)
+      if (response) {
+        setError(false)
+        setListProduct(response.data.data.products)
+      }
+    } catch (error) {
+      console.log(error)
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (filterStringDebounce.length > 0) {
+      console.log('099090')
+      getAllProducts()
+    }
+  }, [filterStringDebounce, pageSelected])
+
+  useEffect(() => {
+    setFilterString(
+      `  ${keyWord !== null ? `keyword=${keyWord}` : ''}${
+        condition !== null ? `&condition=${condition}` : ''
+      }${category !== null ? `&category=${category}` : ''}${
         brand.length > 0
           ? `&brand=${brand.map((item: any, index: number) =>
               index !== brand.length ? `${item}` : `${item}`,
@@ -71,22 +111,8 @@ const Category = (props: IProductProps) => {
           : ''
       }${priceStart !== null ? `&priceStart=${priceStart}` : ''}${
         priceEnd !== null ? `&priceEnd=${priceEnd}` : ''
-      }${sortType !== null ? `&sorting=${sortType}` : ''}`
-      const response = await axios.get(url)
-      if (response) {
-        setError(false)
-        setListProduct(response.data.data.products)
-      }
-    } catch (error) {
-      console.log(error)
-      setError(true)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    getAllProducts()
+      }${sortType !== null ? `&sorting=${sortType}` : ''}`,
+    )
   }, [
     category,
     condition,

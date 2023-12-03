@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { debounce } from 'lodash'
 
 //styles
 import MultipleCheckBox from '@/designs/MultipleCheckBox'
@@ -26,8 +27,17 @@ const FilterByBrandsCheckBox: React.FC<IFilterByBrandsCheckBox> = props => {
 
   //effect
   useEffect(() => {
-    if (listBrandSelected) {
+    const debouncedDispatch = debounce(() => {
       dispatch(setBrand(listBrandSelected.map(item => item.value)))
+    }, 2000)
+
+    if (listBrandSelected) {
+      debouncedDispatch()
+    }
+
+    // Clean up function
+    return () => {
+      debouncedDispatch.cancel()
     }
   }, [listBrandSelected])
 

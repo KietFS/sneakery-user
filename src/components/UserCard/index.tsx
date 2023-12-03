@@ -121,7 +121,7 @@ export default function MultipleSelectPlaceholder() {
               setOpenAccountDialog(true)
             }}
           >
-            <p className="text-gray-500 text-sm ">Cài đặt tài khoản</p>
+            <p className="text-gray-500 text-sm ">Thông tin tài khoản</p>
             <UserIcon className="h-5 w-5 text-gray-500" />
           </div>
           <div
@@ -187,7 +187,7 @@ export default function MultipleSelectPlaceholder() {
         />
       ) : null}
 
-      {openAddressDialog ? (
+      {openAccountDialog ? (
         <AccountDialog
           open={openAccountDialog}
           onClose={() => setOpenAccountDialog(false)}

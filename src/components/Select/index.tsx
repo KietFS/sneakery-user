@@ -36,44 +36,53 @@ const SelectComponent: React.FC<ISelectProps> = props => {
   return (
     <div className="flex flex-col gap-y-1">
       <p className="text-sm font-bold text-gray-600 mb-1 mr-1">{label}</p>
-      <Select
-        ref={ref}
-        name={name}
-        placeholder={placeholder}
-        value={optionSelected}
-        style={{
-          width: '100%',
-          height: 40,
-          borderWidth: 0,
-          borderColor: 'transparent',
-          background: '#f3f4f6',
-          borderRadius: 7,
-          maxHeight: 100,
-        }}
-        renderValue={value => (
-          <div className="flex h-full items-center">
-            <p className="text-gray-900 text-sm items-center  ">
-              {value[keyLabel]}
-            </p>
-          </div>
-        )}
-        sx={{
-          boxShadow: 'none',
-          '.MuiOutlinedInput-notchedOutline': { border: 0 },
-        }}
-      >
-        {renderOption
-          ? renderOption(options)
-          : options?.map((option, index) => (
-              <MenuItem
-                value={option[keyValue]}
-                onClick={() => onSelect(option)}
-                key={index.toString()}
-              >
-                {option[keyLabel]}
-              </MenuItem>
-            ))}
-      </Select>
+      <div className="max-h-[200px]">
+        <Select
+          MenuProps={{
+            style: {
+              maxHeight: 400,
+            },
+          }}
+          ref={ref}
+          name={name}
+          placeholder={placeholder}
+          value={optionSelected}
+          style={{
+            width: '100%',
+            height: 40,
+            borderWidth: 0,
+            borderColor: 'transparent',
+            background: '#f3f4f6',
+            borderRadius: 7,
+            maxHeight: '200px',
+          }}
+          renderValue={value => (
+            <div className="flex h-full items-center">
+              <p className="text-gray-900 text-sm items-center  ">
+                {value[keyLabel]}
+              </p>
+            </div>
+          )}
+          sx={{
+            boxShadow: 'none',
+            '.MuiOutlinedInput-notchedOutline': { border: 0 },
+            height: '40px',
+            maxHeight: '200px',
+          }}
+        >
+          {renderOption
+            ? renderOption(options)
+            : options?.map((option, index) => (
+                <MenuItem
+                  value={option[keyValue]}
+                  onClick={() => onSelect(option)}
+                  key={index.toString()}
+                >
+                  {option[keyLabel]}
+                </MenuItem>
+              ))}
+        </Select>
+      </div>
       {error && (
         <p className="text-red-500 text-xs font-semibold mt-1">{error}</p>
       )}
