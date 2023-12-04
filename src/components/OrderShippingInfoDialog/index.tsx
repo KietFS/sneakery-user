@@ -67,7 +67,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const { user, balance } = useAppSelector((state: IRootState) => state.auth)
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
     name: user?.username as string,
-    phoneNumber: '0819190777',
+    phoneNumber: '',
     ward: '',
     district: '',
     addressDetail: '',
