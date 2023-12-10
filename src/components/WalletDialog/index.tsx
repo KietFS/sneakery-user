@@ -95,9 +95,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
   const createWallet = async () => {
     try {
       setLoading(true)
-      const response = await axios.post(`${Config.API_URL}/wallet`, {
-        email: user?.email,
-      })
+      const response = await axios.post(`${Config.API_URL}/wallet/${user?.id}`)
       const { isSuccess, data, error } = configResponse(response)
       if (isSuccess) {
         toast.success('Create wallet successfully')

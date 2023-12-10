@@ -67,7 +67,7 @@ const RightSide: React.FC<IRightSideProps> = props => {
       const textSecond = Math.floor((gap % minute) / second)
       setTextSecond(textSecond.toString())
 
-      console.log('text day is', textDay)
+      console.log('text day is', countDate)
     }
     const intervalId = setInterval(countdown, 1000)
 
