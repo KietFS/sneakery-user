@@ -18,6 +18,9 @@ import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
+import { useDispatch } from 'react-redux'
+import { setUserBalance } from '@/redux/slices/auth'
 
 interface IFormValue {
   amount?: string
@@ -40,6 +43,7 @@ function BidDialog(props: IBidDialogProps) {
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({})
+  const dispatch = useDispatch()
 
   const handleSubmit = async (values: IFormValue) => {
     if (
@@ -50,12 +54,13 @@ function BidDialog(props: IBidDialogProps) {
     } else if (
       Number(balance) < Number(product?.currentPrice + product.bidIncrement)
     ) {
+      console.log('balance', balance)
       setError('Tài khoản của bạn không đủ để thực hiện lượt bid này')
     } else {
       try {
         setLoading(true)
         const data = await axios.post(
-          `${Config.API_URL}/bids`,
+          `${Config.API_URL}/bids/place`,
           {
             amount: Number(values.amount?.split(',').join('')),
             productId: Number(product.id),

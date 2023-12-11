@@ -250,14 +250,14 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const [conditionError, setConditionError] = useState<string>('')
   const [sizeError, setSizeError] = useState<string>('')
   const [createLoading, setCreateLoading] = useState<boolean>(false)
-  const [address, setAddress] = useState<IAddressResponse[]>([])
+  const [address, setAddress] = useState<any | null>(null)
 
   //hooks
   const router = useRouter()
 
   //functions
   const handleSubmit = async (values: IFormValue) => {
-    if (address.length === 0) {
+    if (!address) {
       toast.error('Vui lòng cập nhật địa chỉ của bạn', {
         position: 'top-right',
         autoClose: 5000,
@@ -317,7 +317,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           setCreateLoading(true)
           const response = await axios({
             method: 'post',
-            url: `${Config.API_URL}/bids/create`,
+            url: `${Config.API_URL}/bids`,
             headers: {
               'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${user?.token}`,
@@ -353,20 +353,22 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
 
   const getUserAddress = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/address/get-all`, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
+      const response = await axios.get(
+        `${Config.API_URL}/addresses/${user?.id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
         },
-      })
+      )
       const { data, isSuccess, error } = configResponse(response)
+
       if (isSuccess) {
         setAddress(data?.data)
       } else {
         console.log('Error', error)
       }
-    } catch (error) {
-      console.log('GET USER ADDRESS ERROR', error)
-    }
+    } catch (error) {}
   }
 
   return (

@@ -22,11 +22,13 @@ import { IAddressResponse } from '@/containers/createProduct/LeftSide'
 import { configResponse } from '@/utils/request'
 import { Config } from '@/config/api'
 import { useAuth } from '@/hooks/useAuth'
+import BaseInput from '@/designs/BaseInput'
 
 interface IFormValue {
   ward?: IWard | null
   district?: IDistrict | null
   addressDetail?: string
+  phoneNumber?: string
 }
 
 export interface IAddressDialogProps {
@@ -53,6 +55,7 @@ function AddressDialog(props: IAddressDialogProps) {
     ward: null,
     district: null,
     addressDetail: '',
+    phoneNumber: '',
   })
   const [loading, setLoading] = React.useState<boolean>(false)
   const [initialLoading, setInitialLoading] = React.useState<boolean>(false)
@@ -102,6 +105,7 @@ function AddressDialog(props: IAddressDialogProps) {
       cityCode: 202,
       districtCode: districtSelected?.DistrictID,
       wardCode: Number(wardSelected?.WardCode),
+      phoneNumber: values.phoneNumber,
     }
 
     if (isExistedAddress == false) {
@@ -259,6 +263,7 @@ function AddressDialog(props: IAddressDialogProps) {
 
       setInitialValues({
         addressDetail: address?.homeNumber,
+        phoneNumber: address?.phoneNumber,
         district: listDistrict.find(item => {
           return item.DistrictID == address?.districtCode
         }),
@@ -266,14 +271,12 @@ function AddressDialog(props: IAddressDialogProps) {
     }
   }, [address])
 
-  console.log('isexisted', isExistedAddress)
-
   return (
     <Dialog
       onClose={onClose}
       open={open}
       className="rounded-lg"
-      maxWidth="sm"
+      maxWidth="md"
       fullWidth={true}
     >
       <DialogContent>
@@ -289,7 +292,7 @@ function AddressDialog(props: IAddressDialogProps) {
                 <div className="flex flex-col space-y-5">
                   <div className="w-full flex items-center">
                     <h1 className="text-gray-600 font-bold text-2xl mb-2">
-                      Quản lý địa chỉ của bạn
+                      Quản lý địa chỉ
                     </h1>
                   </div>
                   <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
@@ -318,12 +321,20 @@ function AddressDialog(props: IAddressDialogProps) {
                       error={wardError}
                     />
                   </div>
-                  <RichTextInput
-                    name="addressDetail"
-                    value={initialValues?.addressDetail}
-                    label="Số nhà,tên đường"
-                    placeholder="Nhập địa chỉ cụ thể của bạn"
-                  />
+                  <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
+                    <RichTextInput
+                      name="addressDetail"
+                      value={initialValues?.addressDetail}
+                      label="Số nhà,tên đường"
+                      placeholder="Nhập địa chỉ cụ thể của bạn"
+                    />
+                    <RichTextInput
+                      name="phoneNumber"
+                      value={initialValues?.phoneNumber}
+                      label="Số điện thoại"
+                      placeholder="Nhập số điện thoại"
+                    />
+                  </div>
                 </div>
                 <div className="flex justify-between items-center">
                   <div></div>

@@ -17,7 +17,7 @@ import NProgress from 'nprogress'
 import Router from 'next/router'
 
 //utils
-import { setAuth, setUser } from '@/redux/slices/auth'
+import { setAuth, setUser, setUserBalance } from '@/redux/slices/auth'
 
 import type {} from '@mui/x-date-pickers/themeAugmentation'
 
@@ -33,13 +33,17 @@ function App({ Component, pageProps }: AppProps) {
   Router.events.on('routeChangeComplete', () => NProgress.done())
   Router.events.on('routeChangeError', () => NProgress.done())
 
-  // React.useEffect(() => {
-  //   let userInfo = JSON.parse(localStorage.getItem('user') as string)
-  //   if (userInfo) {
-  //     store.dispatch(setUser(userInfo))
-  //     store.dispatch(setAuth(true))
-  //   }
-  // }, [])
+  React.useEffect(() => {
+    let userInfo = JSON.parse(localStorage.getItem('user') as string)
+    let balanceInfo = JSON.parse(localStorage.getItem('balance') as string)
+    if (userInfo) {
+      store.dispatch(setUser(userInfo))
+      store.dispatch(setAuth(true))
+    }
+    if (balanceInfo) {
+      store.dispatch(setUserBalance(balanceInfo?.balance))
+    }
+  }, [])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

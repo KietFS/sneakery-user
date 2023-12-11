@@ -14,7 +14,7 @@ const TopSlider: React.FC<ITopSliderProps> = props => {
     {
       title: 'Giá cả hợp lý',
       subTitle:
-        'Giá cả của những đôi giày có trên sàn chúng tôi đều đã được các chuyên gia xem xét và kiểm duyệt rất khắt khe',
+        'Đội ngũ chuyên gia thực hiện kiểm duyệt giá những đôi giày hiện có. Điều này nhằm đảm bảo mỗi mức giá phản ánh đúng giá trị của sản phẩm',
       icon: (
         <BanknotesIcon className="text-blue-500 h-12 w-12 tablet:h-20 tablet:w-20 laptop:h-32 laptop:w-32 mx-auto" />
       ),

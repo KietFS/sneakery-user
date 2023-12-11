@@ -21,32 +21,38 @@ import { configResponse } from '@/utils/request'
 
 interface ILeftSideProps {}
 
+interface IFormValue {
+  ward?: IWard | null
+  district?: IDistrict | null
+  addressDetail?: string
+  phoneNumber?: string
+}
+
+export interface IAddressDialogProps {
+  open: boolean
+  onClose: () => void
+}
+
 interface IDistrict {
-  id: string
-  name: string
+  DistrictID: string
+  DistrictName: string
 }
 
 interface IWard {
-  id: string
-  name: string
-}
-
-interface IFormValue {
-  ward?: string
-  district?: string
-  addressDetail?: string
-  phoneNumber: string
+  WardCode: string
+  WardName: string
 }
 
 interface IFormValue {}
 
 const RightSide: React.FC<ILeftSideProps> = props => {
   //state
+
+  //state
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
-    ward: '',
-    district: '',
+    ward: null,
+    district: null,
     addressDetail: '',
-    phoneNumber: '',
   })
   const [loading, setLoading] = React.useState<boolean>(false)
   const [initialLoading, setInitialLoading] = React.useState<boolean>(false)
@@ -58,74 +64,112 @@ const RightSide: React.FC<ILeftSideProps> = props => {
   const [districtError, setDistrictError] = React.useState<string>('')
   const [wardError, setWardError] = React.useState<string>('')
   const { user } = useAppSelector((state: IRootState) => state.auth)
-  const [isInitialAddress, setIsInitialAddress] = useState<boolean>(false)
-  const [address, setAddress] = useState<IAddressResponse[]>([])
+  const [address, setAddress] = React.useState<any | null>(null)
+  const [isExistedAddress, setIsExistedAddress] = React.useState<boolean>(false)
 
+  //utils
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({
-      phoneNumber: yup.string().required('Vui lòng điền số điện thoại của bạn'),
       addressDetail: yup
         .string()
         .required('Vui lòng nhập địa chỉ cụ thể của bạn'),
     })
 
+  //functions
+  const checkSelectionErrors = () => {
+    if (districtSelected === null) {
+      setDistrictError('Vui lòng chọn quận')
+      return true
+    } else {
+      setDistrictError('')
+    }
+    if (wardSelected === null) {
+      setWardError('Vui lòng chọn phường')
+      return true
+    } else {
+      setWardError('')
+    }
+    return false
+  }
+
   const handleSubmit = async (values: IFormValue) => {
-    try {
-      if (districtSelected === null) {
-        setDistrictError('Vui lòng chọn quận')
-      } else {
-        setDistrictError('')
-      }
-      if (wardSelected === null) {
-        setWardError('Vui lòng chọn phường')
-      } else {
-        setWardError('')
-      }
-      setLoading(true)
-      const response = await axios.post(
-        `${Config.API_URL}/address/create`,
-        {
-          homeNumber: values.addressDetail,
-          cityId: 1,
-          districtId: districtSelected?.id,
-          wardId: wardSelected?.id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
+    if (checkSelectionErrors()) return
+    setLoading(true)
+
+    const payload = {
+      homeNumber: values.addressDetail,
+      cityCode: 202,
+      districtCode: districtSelected?.DistrictID,
+      wardCode: Number(wardSelected?.WardCode),
+      phoneNumber: values.phoneNumber,
+    }
+
+    if (isExistedAddress == false) {
+      try {
+        const response = await axios.post(
+          `${Config.API_URL}/addresses`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
           },
-        },
-      )
-      const { isSuccess, data, error } = configResponse(response)
-      if (isSuccess) {
-        toast.success('Cập nhật địa chỉ của bạn thành công', {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-        })
+        )
+        const { isSuccess, data, error } = configResponse(response)
+        if (isSuccess) {
+          toast.success('Cập nhật địa chỉ thành công')
+        } else {
+          toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setLoading(false)
+    } else {
+      try {
+        const response = await axios.put(
+          `${Config.API_URL}/addresses/${user?.id}/`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          },
+        )
+        const { isSuccess, data, error } = configResponse(response)
+        if (isSuccess) {
+          toast.success('Cập nhật địa chỉ thành công')
+        } else {
+          toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
   const getListDistricts = async () => {
+    const apiUrl =
+      'https://online-gateway.ghn.vn/shiip/public-api/master-data/district'
+
+    const headers = {
+      token: '09b46603-9193-11ee-b394-8ac29577e80e',
+      'Content-Type': 'application/json',
+    }
+
+    const requestData = {
+      province_id: 202,
+    }
     try {
       setInitialLoading(true)
-      const response = await axios.get(`${Config.API_URL}/address/districts`)
-      const { isSuccess, error, data } = configResponse(response)
-      if (isSuccess) {
+      const response = await axios.get(apiUrl, { headers, params: requestData })
+      if (response?.status == 200) {
+        const { data } = response?.data
         setListDistrict(data)
-      } else {
-        console.log('Error', error)
       }
     } catch (error) {
       console.log(error)
@@ -135,16 +179,21 @@ const RightSide: React.FC<ILeftSideProps> = props => {
   }
 
   const getListWars = async (districtId: string) => {
+    const apiUrl =
+      'https://online-gateway.ghn.vn/shiip/public-api/master-data/ward'
+    const headers = {
+      token: '09b46603-9193-11ee-b394-8ac29577e80e',
+      'Content-Type': 'application/json',
+    }
+    const requestData = {
+      district_id: districtId,
+    }
     try {
       setInitialLoading(true)
-      const response = await axios.get(
-        `${Config.API_URL}/address/districts/${districtId}`,
-      )
-      const { isSuccess, data, error } = configResponse(response)
-      if (isSuccess) {
+      const response = await axios.get(apiUrl, { headers, params: requestData })
+      if (response?.status == 200) {
+        const { data } = response?.data
         setListWard(data)
-      } else {
-        console.log('Error', error)
       }
     } catch (error) {
       console.log(error)
@@ -155,47 +204,65 @@ const RightSide: React.FC<ILeftSideProps> = props => {
 
   const getUserAddress = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/address/get-all`, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
+      const response = await axios.get(
+        `${Config.API_URL}/addresses/${user?.id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
         },
-      })
-      const { isSuccess, data, error } = configResponse(response)
+      )
+      const { data, isSuccess, error } = configResponse(response)
+
       if (isSuccess) {
-        setAddress(data.data)
+        setIsExistedAddress(true)
+        setAddress(data?.data)
       } else {
+        setIsExistedAddress(false)
         console.log('Error', error)
       }
-    } catch (error) {
-      console.log('CLIENT ERROR', error)
-    }
+    } catch (error) {}
   }
 
   React.useEffect(() => {
-    getListDistricts()
+    if (listDistrict.length == 0) {
+      getListDistricts()
+    }
+    getUserAddress()
   }, [])
 
   React.useEffect(() => {
-    user && getUserAddress()
-  }, [user])
-
-  React.useEffect(() => {
-    if (districtSelected && isInitialAddress === false) {
-      getListWars(districtSelected.id as string)
+    if (districtSelected) {
+      getListWars(districtSelected.DistrictID)
       setWardSelected(null)
     }
   }, [districtSelected])
 
-  useEffect(() => {
-    if (address) {
-      setIsInitialAddress(true)
-      setInitialValues({
-        addressDetail: address?.[0]?.homeNumber,
+  React.useEffect(() => {
+    if (listWard?.length > 0 && address) {
+      setWardSelected(
+        listWard.find(item => {
+          return item.WardCode == address?.wardCode
+        }) as any,
+      )
+    }
+  }, [listWard, address])
 
-        phoneNumber: '',
+  React.useEffect(() => {
+    if (!!address) {
+      setDistrictSelected(
+        listDistrict.find(item => {
+          return item.DistrictID == address?.districtCode
+        }) as any,
+      )
+
+      setInitialValues({
+        addressDetail: address?.homeNumber,
+        phoneNumber: address?.phoneNumber,
+        district: listDistrict.find(item => {
+          return item.DistrictID == address?.districtCode
+        }),
       })
-      setWardSelected(address?.[0]?.ward)
-      setDistrictSelected(address?.[0]?.district)
     }
   }, [address])
 
@@ -217,21 +284,15 @@ const RightSide: React.FC<ILeftSideProps> = props => {
                   </h1>
                 </div>
                 <div className="grid grid-cols-1 tablet:grid-cols-1 gap-x-2 gap-y-5 items-center justify-between">
-                  <InputText
-                    name="phoneNumber"
-                    value={initialValues?.phoneNumber}
-                    label="Số điện thoại"
-                    placeholder="Nhập số điện thoại"
-                    required
-                  />
                   <SelectComponent
                     name="district"
                     label="Chọn quận"
                     optionSelected={districtSelected}
                     onSelect={option => {
-                      setIsInitialAddress(false)
                       setDistrictSelected(option)
                     }}
+                    keyValue="DistrictID"
+                    keyLabel="DistrictName"
                     options={listDistrict}
                     placeholder="Chọn quận bạn muốn giao hàng đến"
                     error={districtError}
@@ -239,6 +300,8 @@ const RightSide: React.FC<ILeftSideProps> = props => {
                   <SelectComponent
                     name="ward"
                     label="Chọn phường"
+                    keyLabel="WardName"
+                    keyValue="WardCode"
                     optionSelected={wardSelected}
                     onSelect={option => setWardSelected(option)}
                     options={listWard}
@@ -251,7 +314,12 @@ const RightSide: React.FC<ILeftSideProps> = props => {
                   value={initialValues?.addressDetail}
                   label="Số nhà,tên đường"
                   placeholder="Nhập địa chỉ cụ thể của bạn"
-                  required
+                />
+                <RichTextInput
+                  name="phoneNumber"
+                  value={initialValues?.phoneNumber}
+                  label="Số điện thoại"
+                  placeholder="Nhập số điện thoại"
                 />
               </div>
               <div className="flex justify-between items-center">
@@ -259,7 +327,7 @@ const RightSide: React.FC<ILeftSideProps> = props => {
                 <div className="flex items-center">
                   <Button
                     type="submit"
-                    title="Cập nhật"
+                    title={isExistedAddress ? 'Cập nhật' : 'Tạo'}
                     variant="primary"
                     className="ml-2"
                     isLoading={loading}

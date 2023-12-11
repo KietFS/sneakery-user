@@ -183,21 +183,21 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
 
   const defaultCity = 'Thành phố Thủ Đức'
 
-  const calculateShippingFee = async () => {
-    try {
-      const response = await axios.get(
-        `${Config.API_URL}/shipping-fee/get?originDistrict=${defaultCity}&destinationDistrict=${districtSelected?.name}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        },
-      )
-      response && setShippingFee(response.data.data.fee)
-    } catch (error) {
-      console.log('SHIPPING FEE ERROR', error)
-    }
-  }
+  // const calculateShippingFee = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${Config.API_URL}/shipping-fee/get?originDistrict=${defaultCity}&destinationDistrict=${districtSelected?.name}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${user?.token}`,
+  //         },
+  //       },
+  //     )
+  //     response && setShippingFee(response.data.data.fee)
+  //   } catch (error) {
+  //     console.log('SHIPPING FEE ERROR', error)
+  //   }
+  // }
 
   const getUserAddress = async () => {
     try {
@@ -215,7 +215,6 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   React.useEffect(() => {
     getListDistricts()
     getUserAddress()
-    calculateShippingFee()
   }, [])
 
   React.useEffect(() => {
@@ -223,10 +222,6 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
       getListWars(districtSelected.id as string)
       setWardSelected(null)
     }
-  }, [districtSelected])
-
-  React.useEffect(() => {
-    districtSelected !== null && calculateShippingFee()
   }, [districtSelected])
 
   React.useEffect(() => {

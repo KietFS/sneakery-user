@@ -11,7 +11,7 @@ import Spinner from '@/components/Spinner'
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
 import { useDispatch } from 'react-redux'
-import { IRootState } from '@/redux'
+import store, { IRootState } from '@/redux'
 
 //utils
 import { setUserBalance } from '@/redux/slices/auth'
@@ -146,6 +146,14 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
 
   useEffect(() => {
     getWallet()
+  }, [])
+
+  React.useEffect(() => {
+    let userInfo = JSON.parse(localStorage.getItem('user') as string)
+    let balanceInfo = JSON.parse(localStorage.getItem('balance') as string)
+    if (balanceInfo) {
+      store.dispatch(setUserBalance(balanceInfo?.balance))
+    }
   }, [])
 
   useEffect(() => {

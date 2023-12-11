@@ -37,7 +37,7 @@ const CartList: React.FC<ICartList> = props => {
 
   const getItems = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/orders/get-all`, {
+      const response = await axios.get(`${Config.API_URL}/orders`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
@@ -92,13 +92,13 @@ const CartList: React.FC<ICartList> = props => {
             </h3>
 
             <div className="flex laptop:flex">
-              <Image
+              {/* <Image
                 src={item.product.imagePath}
                 width={80}
                 height={60}
                 layout="fixed"
                 className="mx-auto"
-              />
+              /> */}
             </div>
             <div className="hidden laptop:flex cursor-pointer">
               <h3 className="text-blue-500 font-semibold text-sm">
