@@ -16,7 +16,7 @@ import Head from 'next/head'
 import { useAppDispatch } from '@/hooks/useRedux'
 
 //store
-import { setUser } from '@/redux/slices/auth'
+import { setAuth, setUser, setUserBalance } from '@/redux/slices/auth'
 
 //utils
 import { IUser } from '@/types/user'
@@ -25,29 +25,10 @@ import axios from 'axios'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import LoginDialog from '@/components/LoginDialog'
+import store from '@/redux'
 
 const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   //function
-  const dispatch = useAppDispatch()
-
-  const setUserFromStorage = async () => {
-    try {
-      const data = await localStorage.getItem('user')
-      const newData = JSON.parse(data as string) as IUser
-      dispatch(setUser(newData))
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    setUserFromStorage()
-  }, [])
-
-  useEffect(() => {
-    const storageUser = localStorage.getItem('user')
-    storageUser && dispatch(setUser(JSON.parse(storageUser)))
-  }, [])
 
   return (
     <>

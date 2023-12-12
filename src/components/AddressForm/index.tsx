@@ -18,16 +18,13 @@ import axios from 'axios'
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { toast } from 'react-toastify'
-import { IAddressResponse } from '@/containers/createProduct/LeftSide'
 import { configResponse } from '@/utils/request'
 import { Config } from '@/config/api'
-import { useAuth } from '@/hooks/useAuth'
-import BaseInput from '@/designs/BaseInput'
+import Spinner from '../Spinner'
 
 interface IFormValue {
   ward?: IWard | null
   district?: IDistrict | null
-  province?: IProvince | null
   addressDetail?: string
   phoneNumber?: string
 }
@@ -63,9 +60,6 @@ function AddressForm(props: IAddressFormProps) {
   })
   const [loading, setLoading] = React.useState<boolean>(false)
   const [initialLoading, setInitialLoading] = React.useState<boolean>(false)
-  const [listProvince, setListProvince] = React.useState<IProvince[]>([])
-  const [proviceSelected, setProvinceSelected] =
-    React.useState<IProvince | null>(null)
   const [listDistrict, setListDistrict] = React.useState<IDistrict[]>([])
   const [districtSelected, setDistrictSelected] =
     React.useState<IDistrict | null>(null)
@@ -116,7 +110,6 @@ function AddressForm(props: IAddressFormProps) {
       province_id,
     }
     try {
-      setInitialLoading(true)
       const response = await axios.get(apiUrl, { headers, params: requestData })
       if (response?.status == 200) {
         const { data } = response?.data
@@ -125,30 +118,6 @@ function AddressForm(props: IAddressFormProps) {
     } catch (error) {
       console.log(error)
     } finally {
-      setInitialLoading(false)
-    }
-  }
-
-  const getListProvince = async () => {
-    const apiUrl =
-      'https://online-gateway.ghn.vn/shiip/public-api/master-data/province'
-
-    const headers = {
-      token: '09b46603-9193-11ee-b394-8ac29577e80e',
-      'Content-Type': 'application/json',
-    }
-
-    try {
-      setInitialLoading(true)
-      const response = await axios.get(apiUrl, { headers })
-      if (response?.status == 200) {
-        const { data } = response?.data
-        setListProvince(data)
-      }
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setInitialLoading(false)
     }
   }
 
@@ -163,7 +132,6 @@ function AddressForm(props: IAddressFormProps) {
       district_id: districtId,
     }
     try {
-      setInitialLoading(true)
       const response = await axios.get(apiUrl, { headers, params: requestData })
       if (response?.status == 200) {
         const { data } = response?.data
@@ -172,12 +140,12 @@ function AddressForm(props: IAddressFormProps) {
     } catch (error) {
       console.log(error)
     } finally {
-      setInitialLoading(false)
     }
   }
 
   const getUserAddress = async () => {
     try {
+      setInitialLoading(true)
       const response = await axios.get(
         `${Config.API_URL}/addresses/${user?.id}/`,
         {
@@ -189,13 +157,17 @@ function AddressForm(props: IAddressFormProps) {
       const { data, isSuccess, error } = configResponse(response)
 
       if (isSuccess) {
+        setInitialLoading(false)
         setIsExistedAddress(true)
         setAddress(data?.data)
       } else {
+        setInitialLoading(false)
         setIsExistedAddress(false)
         console.log('Error', error)
       }
-    } catch (error) {}
+    } catch (error) {
+      setInitialLoading(false)
+    }
   }
 
   const handleSubmit = async (values: IFormValue) => {
@@ -205,7 +177,7 @@ function AddressForm(props: IAddressFormProps) {
     const payload = {
       homeNumber: values.addressDetail,
       districtCode: districtSelected?.DistrictID,
-      cityCode: proviceSelected?.ProvinceID,
+      cityCode: 202,
       wardCode: Number(wardSelected?.WardCode),
       phoneNumber: values.phoneNumber,
     }
@@ -260,19 +232,11 @@ function AddressForm(props: IAddressFormProps) {
   }
 
   React.useEffect(() => {
-    if (listProvince?.length == 0) {
-      getListProvince()
+    if (listDistrict?.length == 0) {
+      getListDistricts(202)
     }
     getUserAddress()
-  }, [])
-
-  React.useEffect(() => {
-    if (proviceSelected) {
-      getListDistricts(Number(proviceSelected.ProvinceID))
-      setDistrictSelected(null)
-      setWardSelected(null)
-    }
-  }, [proviceSelected])
+  }, [user])
 
   React.useEffect(() => {
     if (districtSelected) {
@@ -303,9 +267,9 @@ function AddressForm(props: IAddressFormProps) {
 
   React.useEffect(() => {
     if (!!address) {
-      setProvinceSelected(
-        listProvince.find(item => {
-          return item.ProvinceID == address?.cityCode
+      setDistrictSelected(
+        listDistrict.find(item => {
+          return item.DistrictID == address?.districtCode
         }) as any,
       )
 
@@ -328,86 +292,101 @@ function AddressForm(props: IAddressFormProps) {
     >
       {({ submitForm, values, handleSubmit, errors }) => {
         return (
-          <div className="flex flex-col space-y-10">
-            <div className="flex flex-col space-y-5">
-              <div className="w-full flex items-center">
+          <>
+            {initialLoading ? (
+              <div className="h-[300px] items-center justify-center">
                 <h1 className="text-gray-600 font-bold text-2xl mb-2">
                   Quản lý địa chỉ
                 </h1>
+
+                <div className="w-full flex justify-between gap-x-10 items-center mt-12">
+                  <div className="animate-pulse bg-neutral-200 w-1/2 h-[50px] rounded-xl"></div>
+                  <div className="animate-pulse bg-neutral-200 w-1/2 h-[50px] rounded-xl"></div>
+                </div>
+
+                <div className="w-full flex justify-between gap-x-10 items-center mt-8">
+                  <div className="animate-pulse bg-neutral-200 w-1/2 h-[50px] rounded-xl"></div>
+                  <div className="animate-pulse bg-neutral-200 w-1/2 h-[50px] rounded-xl"></div>
+                </div>
+
+                <div className="w-full flex justify-between gap-x-2 items-center mt-8">
+                  <div></div>
+                  <div className="flex gap-x-2">
+                    <div className="animate-pulse bg-neutral-200 w-[150px] h-[50px] rounded-xl"></div>
+                    <div className="animate-pulse bg-neutral-200 w-[150px] h-[50px] rounded-xl"></div>
+                  </div>
+                </div>
               </div>
-              <SelectComponent
-                name="province"
-                label="Chọn thành phố"
-                optionSelected={proviceSelected}
-                onSelect={option => {
-                  setProvinceSelected(option)
-                }}
-                keyValue="ProvinceID"
-                keyLabel="ProvinceName"
-                options={listProvince}
-                placeholder="Chọn thành phố bạn muốn giao hàng đến"
-                error={districtError}
-              />
-              <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
-                <SelectComponent
-                  name="district"
-                  label="Chọn quận"
-                  optionSelected={districtSelected}
-                  onSelect={option => {
-                    setDistrictSelected(option)
-                  }}
-                  keyValue="DistrictID"
-                  keyLabel="DistrictName"
-                  options={listDistrict}
-                  placeholder="Chọn quận bạn muốn giao hàng đến"
-                  error={districtError}
-                />
-                <SelectComponent
-                  name="ward"
-                  label="Chọn phường"
-                  keyLabel="WardName"
-                  keyValue="WardCode"
-                  optionSelected={wardSelected}
-                  onSelect={option => setWardSelected(option)}
-                  options={listWard}
-                  placeholder="Chọn phường bạn muốn giao hàng đến"
-                  error={wardError}
-                />
+            ) : (
+              <div className="flex flex-col space-y-10">
+                <div className="flex flex-col space-y-5">
+                  <div className="w-full flex items-center">
+                    <h1 className="text-gray-600 font-bold text-2xl mb-2">
+                      Quản lý địa chỉ
+                    </h1>
+                  </div>
+                  <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
+                    <SelectComponent
+                      name="district"
+                      label="Chọn quận"
+                      optionSelected={districtSelected}
+                      onSelect={option => {
+                        setDistrictSelected(option)
+                      }}
+                      keyValue="DistrictID"
+                      keyLabel="DistrictName"
+                      options={listDistrict}
+                      placeholder="Chọn quận bạn muốn giao hàng đến"
+                      error={districtError}
+                    />
+                    <SelectComponent
+                      name="ward"
+                      label="Chọn phường"
+                      keyLabel="WardName"
+                      keyValue="WardCode"
+                      optionSelected={wardSelected}
+                      onSelect={option => setWardSelected(option)}
+                      options={listWard}
+                      placeholder="Chọn phường bạn muốn giao hàng đến"
+                      error={wardError}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
+                    <RichTextInput
+                      name="addressDetail"
+                      value={initialValues?.addressDetail}
+                      label="Số nhà,tên đường"
+                      placeholder="Nhập địa chỉ cụ thể của bạn"
+                    />
+                    <RichTextInput
+                      name="phoneNumber"
+                      value={initialValues?.phoneNumber}
+                      label="Số điện thoại"
+                      placeholder="Nhập số điện thoại"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <div></div>
+                  <div className="flex items-center">
+                    <Button
+                      variant="secondary"
+                      onClick={() => onCloseButton?.()}
+                      title="Đóng"
+                    />
+                    <Button
+                      type="submit"
+                      title="Xác nhận"
+                      variant="primary"
+                      className="ml-2"
+                      isLoading={loading}
+                      onClick={handleSubmit}
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
-                <RichTextInput
-                  name="addressDetail"
-                  value={initialValues?.addressDetail}
-                  label="Số nhà,tên đường"
-                  placeholder="Nhập địa chỉ cụ thể của bạn"
-                />
-                <RichTextInput
-                  name="phoneNumber"
-                  value={initialValues?.phoneNumber}
-                  label="Số điện thoại"
-                  placeholder="Nhập số điện thoại"
-                />
-              </div>
-            </div>
-            <div className="flex justify-between items-center">
-              <div></div>
-              <div className="flex items-center">
-                <Button
-                  variant="secondary"
-                  onClick={() => onCloseButton?.()}
-                  title="Đóng"
-                />
-                <Button
-                  type="submit"
-                  title="Xác nhận"
-                  variant="primary"
-                  className="ml-2"
-                  isLoading={loading}
-                  onClick={handleSubmit}
-                />
-              </div>
-            </div>
-          </div>
+            )}
+          </>
         )
       }}
     </Formik>

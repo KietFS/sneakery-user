@@ -7,7 +7,7 @@ import { Bars3Icon } from '@heroicons/react/24/outline'
 import UserCard from '../UserCard'
 
 //store
-import { IRootState } from '@/redux'
+import store, { IRootState } from '@/redux'
 import { setCategory } from '@/redux/slices/filter'
 
 //hooks
@@ -17,7 +17,12 @@ import { useDispatch } from 'react-redux'
 import LoginDialog from '../LoginDialog'
 import RegisterDialog from '../RegisterDialog'
 import EmailSentDialog from '../EmailSentDialog'
-import { setOpenEmailSentDialog } from '@/redux/slices/auth'
+import {
+  setAuth,
+  setOpenEmailSentDialog,
+  setUser,
+  setUserBalance,
+} from '@/redux/slices/auth'
 
 interface IHeaderV2Props {}
 
@@ -32,6 +37,18 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
     (state: IRootState) => state.auth,
   )
   const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    let userInfo = JSON.parse(localStorage.getItem('user') as string)
+    let balanceInfo = JSON.parse(localStorage.getItem('balanceInfo') as string)
+    if (userInfo) {
+      store.dispatch(setUser(userInfo))
+      store.dispatch(setAuth(true))
+    }
+    if (balanceInfo) {
+      store.dispatch(setUserBalance(balanceInfo?.balance))
+    }
+  }, [])
 
   return (
     <div className="w-full shadow-lg pb-4 laptop:pb-0 ">

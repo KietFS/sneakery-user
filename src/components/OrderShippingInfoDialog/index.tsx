@@ -252,7 +252,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
     if (wardSelected) {
       calculateShippingFee()
     }
-  }, [wardSelected])
+  }, [wardSelected, districtSelected])
 
   const calculateShippingFee = async () => {
     const data = {
