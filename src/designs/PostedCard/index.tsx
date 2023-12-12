@@ -16,7 +16,7 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
   return (
     <div className="rounded-lg border border-gray-200 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80">
       <div className="flex gap-x-3 items-center">
-        <img src={imagePath?.split('?')?.[0]} width={80} height={60} />
+        <img src={imagePath} width={80} height={60} />
         <div className="flex flex-col gap-y-2">
           <p className="text-sm text-gray-600 font-semibold">{title}</p>
           <div className="flex gap-x-1 items-center">

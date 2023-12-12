@@ -24,7 +24,7 @@ export interface ICartItem {
     name: string
     startPrice: 126
     imagePath: string
-    username: string
+    userName: string
     bidClosingDate: string
   }
   priceWin: number
@@ -92,17 +92,16 @@ const CartList: React.FC<ICartList> = props => {
             </h3>
 
             <div className="flex laptop:flex">
-              {/* <Image
+              <img
                 src={item.product.imagePath}
                 width={80}
                 height={60}
-                layout="fixed"
                 className="mx-auto"
-              /> */}
+              />
             </div>
             <div className="hidden laptop:flex cursor-pointer">
               <h3 className="text-blue-500 font-semibold text-sm">
-                {item.product.username}
+                {item.product.userName}
               </h3>
               <CheckBadgeIcon className="h-4 w-4 text-blue-500" />
             </div>

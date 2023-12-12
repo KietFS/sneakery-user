@@ -11,7 +11,7 @@ import Dialog from '@mui/material/Dialog'
 import { DialogContent } from '@mui/material'
 
 //store
-import { IRootState } from '@/redux'
+import store, { IRootState } from '@/redux'
 
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
@@ -25,15 +25,7 @@ import { Formik } from 'formik'
 import { toast } from 'react-toastify'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
-
-interface IFormValue {
-  name?: string
-  phoneNumber?: string
-  ward?: string
-  district?: string
-  addressDetail: string
-  expressClient?: string
-}
+import { setAuth, setUser, setUserBalance } from '@/redux/slices/auth'
 
 export interface IOrderShippingInfoDialog {
   open: boolean
@@ -43,14 +35,26 @@ export interface IOrderShippingInfoDialog {
   totalProduct: number
 }
 
+interface IFormValue {
+  ward?: IWard | null
+  district?: IDistrict | null
+  addressDetail?: string
+  phoneNumber?: string
+}
+
+export interface IAddressDialogProps {
+  open: boolean
+  onClose: () => void
+}
+
 interface IDistrict {
-  id: string
-  name: string
+  DistrictID: string
+  DistrictName: string
 }
 
 interface IWard {
-  id: string
-  name: string
+  WardCode: string
+  WardName: string
 }
 
 function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
@@ -64,13 +68,12 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   ]
 
   const { open, onClose } = props
-  const { user, balance } = useAppSelector((state: IRootState) => state.auth)
+  //state
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
-    name: user?.username as string,
-    phoneNumber: '',
-    ward: '',
-    district: '',
+    ward: null,
+    district: null,
     addressDetail: '',
+    phoneNumber: '',
   })
   const [loading, setLoading] = React.useState<boolean>(false)
   const [initialLoading, setInitialLoading] = React.useState<boolean>(false)
@@ -81,85 +84,117 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const [wardSelected, setWardSelected] = React.useState<IWard | null>(null)
   const [districtError, setDistrictError] = React.useState<string>('')
   const [wardError, setWardError] = React.useState<string>('')
-  const [address, setAddress] = React.useState<IAddressResponse[]>([])
-  const [isInitialAddress, setIsInitialAddress] = React.useState<boolean>(false)
+  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const [address, setAddress] = React.useState<any | null>(null)
+  const [isExistedAddress, setIsExistedAddress] = React.useState<boolean>(false)
   const [shippingFee, setShippingFee] = React.useState<number>(0)
-  const router = useRouter()
 
-  const [clientSelected, setClientSelected] = React.useState<{
-    id: string
-    name: string
-    logo: any
-  }>(clients?.[0])
-
+  //utils
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({
-      name: yup.string().required('Vui lòng điền tên của bạn'),
-      phoneNumber: yup.string().required('Vui lòng nhập số điện thoại của bạn'),
       addressDetail: yup
         .string()
         .required('Vui lòng nhập địa chỉ cụ thể của bạn'),
     })
 
+  //functions
+  const checkSelectionErrors = () => {
+    if (districtSelected === null) {
+      setDistrictError('Vui lòng chọn quận')
+      return true
+    } else {
+      setDistrictError('')
+    }
+    if (wardSelected === null) {
+      setWardError('Vui lòng chọn phường')
+      return true
+    } else {
+      setWardError('')
+    }
+    return false
+  }
+
   const handleSubmit = async (values: IFormValue) => {
-    try {
-      if (districtSelected === null) {
-        setDistrictError('Vui lòng chọn quận')
-      } else {
-        setDistrictError('')
-      }
-      if (wardSelected === null) {
-        setWardError('Vui lòng chọn phường')
-      } else {
-        setWardError('')
-      }
-      setLoading(true)
-      //FIX SAU
-      if (balance >= Number((shippingFee / 23000).toFixed(0))) {
-        const response = await axios.get(
-          `${Config.API_URL}/transaction/paid?orderId=${
-            props.orderId
-          }&shippingFee=${(shippingFee / 23000).toFixed(0)}&subtotal=${
-            props.totalProduct + Number((shippingFee / 23000).toFixed(0))
-          }`,
+    if (checkSelectionErrors()) return
+    setLoading(true)
+
+    const payload = {
+      homeNumber: values.addressDetail,
+      cityCode: 202,
+      districtCode: districtSelected?.DistrictID,
+      wardCode: Number(wardSelected?.WardCode),
+      phoneNumber: values.phoneNumber,
+    }
+
+    if (isExistedAddress == false) {
+      try {
+        const response = await axios.post(
+          `${Config.API_URL}/addresses`,
+          payload,
           {
             headers: {
               Authorization: `Bearer ${user?.token}`,
             },
           },
         )
-
-        const { data, isSuccess, error } = configResponse(response)
-
+        const { isSuccess, data, error } = configResponse(response)
         if (isSuccess) {
-          toast.success('Đặt hàng thành công', {
-            position: 'top-right',
-            hideProgressBar: true,
-            theme: 'colored',
-          })
+          toast.success('Cập nhật địa chỉ thành công')
         } else {
-          toast.error(`${error?.message}`)
+          toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
         }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
         onClose()
-        router.push('/orderStatus')
-      } else {
-        toast.error(
-          'Tài khoản bạn không đủ chi trả cho phí vận chuyển, vui lòng nạp thêm tiền',
-        )
       }
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setLoading(false)
+    } else {
+      try {
+        const response = await axios.put(
+          `${Config.API_URL}/addresses/${user?.id}/`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          },
+        )
+        const { isSuccess, data, error } = configResponse(response)
+        if (isSuccess) {
+          toast.success('Cập nhật địa chỉ thành công')
+        } else {
+          toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+        onClose()
+      }
     }
   }
 
   const getListDistricts = async () => {
+    const apiUrl =
+      'https://online-gateway.ghn.vn/shiip/public-api/master-data/district'
+
+    const headers = {
+      token: '09b46603-9193-11ee-b394-8ac29577e80e',
+      'Content-Type': 'application/json',
+    }
+
+    const requestData = {
+      province_id: 202,
+    }
     try {
       setInitialLoading(true)
-      const data = await axios.get(`${Config.API_URL}/address/districts`)
-      data && setListDistrict(data.data)
+      const response = await axios.get(apiUrl, { headers, params: requestData })
+      if (response?.status == 200) {
+        const { data } = response?.data
+        setListDistrict(data)
+      }
     } catch (error) {
       console.log(error)
     } finally {
@@ -168,12 +203,22 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   }
 
   const getListWars = async (districtId: string) => {
+    const apiUrl =
+      'https://online-gateway.ghn.vn/shiip/public-api/master-data/ward'
+    const headers = {
+      token: '09b46603-9193-11ee-b394-8ac29577e80e',
+      'Content-Type': 'application/json',
+    }
+    const requestData = {
+      district_id: districtId,
+    }
     try {
       setInitialLoading(true)
-      const data = await axios.get(
-        `${Config.API_URL}/address/districts/${districtId}`,
-      )
-      data && setListWard(data.data)
+      const response = await axios.get(apiUrl, { headers, params: requestData })
+      if (response?.status == 200) {
+        const { data } = response?.data
+        setListWard(data)
+      }
     } catch (error) {
       console.log(error)
     } finally {
@@ -181,58 +226,125 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
     }
   }
 
-  const defaultCity = 'Thành phố Thủ Đức'
-
-  // const calculateShippingFee = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${Config.API_URL}/shipping-fee/get?originDistrict=${defaultCity}&destinationDistrict=${districtSelected?.name}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${user?.token}`,
-  //         },
-  //       },
-  //     )
-  //     response && setShippingFee(response.data.data.fee)
-  //   } catch (error) {
-  //     console.log('SHIPPING FEE ERROR', error)
-  //   }
-  // }
-
   const getUserAddress = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/address/get-all`, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
+      const response = await axios.get(
+        `${Config.API_URL}/addresses/${user?.id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
         },
-      })
-      response && setAddress(response.data.data)
+      )
+      const { data, isSuccess, error } = configResponse(response)
+
+      if (isSuccess) {
+        setIsExistedAddress(true)
+        setAddress(data?.data)
+      } else {
+        setIsExistedAddress(false)
+        console.log('Error', error)
+      }
+    } catch (error) {}
+  }
+
+  React.useEffect(() => {
+    if (wardSelected) {
+      calculateShippingFee()
+    }
+  }, [wardSelected])
+
+  const calculateShippingFee = async () => {
+    const data = {
+      service_type_id: 5,
+      from_district_id: 3695,
+      from_ward_code: '90742',
+      to_district_id: districtSelected?.DistrictID,
+      to_ward_code: `${wardSelected?.WardCode}`,
+      height: 20,
+      length: 30,
+      weight: 10,
+      width: 40,
+      insurance_value: 0,
+      coupon: null,
+      items: [
+        {
+          name: 'TEST1',
+          quantity: 1,
+          height: 20,
+          weight: 20,
+          length: 20,
+          width: 20,
+        },
+      ],
+    }
+
+    const headers = {
+      'Content-Type': 'application/json',
+      token: '09b46603-9193-11ee-b394-8ac29577e80e',
+      ShopId: 4740288,
+    }
+
+    try {
+      const response = await axios
+        .post(
+          'https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee',
+          data,
+          { headers },
+        )
+        .then(response => {
+          console.log(response.data)
+          setShippingFee(response?.data?.data?.total)
+        })
+        .catch(error => {
+          console.error(error)
+        })
     } catch (error) {
-      console.log('GET USER ADDRESS ERROR', error)
+      console.log('SHIPPING FEE ERROR', error)
     }
   }
 
   React.useEffect(() => {
-    getListDistricts()
+    if (listDistrict.length == 0) {
+      getListDistricts()
+    }
     getUserAddress()
-  }, [])
+  }, [user])
 
   React.useEffect(() => {
-    if (districtSelected && isInitialAddress === false) {
-      getListWars(districtSelected.id as string)
+    if (districtSelected) {
+      calculateShippingFee()
+      getListWars(districtSelected.DistrictID)
       setWardSelected(null)
     }
   }, [districtSelected])
 
   React.useEffect(() => {
-    if (address) {
-      setIsInitialAddress(true)
+    if (listWard?.length > 0 && address) {
+      setWardSelected(
+        listWard.find(item => {
+          return item.WardCode == address?.wardCode
+        }) as any,
+      )
+    }
+  }, [listWard, address])
+
+  React.useEffect(() => {
+    if (!!address) {
+      calculateShippingFee()
+      setDistrictSelected(
+        listDistrict.find(item => {
+          return item.DistrictID == address?.districtCode
+        }) as any,
+      )
+
       setInitialValues({
-        ...initialValues,
-        addressDetail: address?.[0]?.homeNumber,
+        addressDetail: address?.homeNumber,
+        phoneNumber: address?.phoneNumber,
+        district: listDistrict.find(item => {
+          return item.DistrictID == address?.districtCode
+        }),
       })
-      setWardSelected(address?.[0]?.ward)
-      setDistrictSelected(address?.[0]?.district)
     }
   }, [address])
 
@@ -261,27 +373,15 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                     </h1>
                   </div>
                   <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
-                    <InputText
-                      name="name"
-                      value={initialValues?.name}
-                      label="Tên của bạn"
-                      placeholder="Nhập tên của bạn"
-                    />
-                    <InputText
-                      name="phoneNumber"
-                      value={initialValues?.phoneNumber}
-                      label="Số điện thoại"
-                      placeholder="Nhập số điện thoại"
-                    />
-
                     <SelectComponent
                       name="district"
                       label="Chọn quận"
                       optionSelected={districtSelected}
                       onSelect={option => {
-                        setIsInitialAddress(false)
                         setDistrictSelected(option)
                       }}
+                      keyValue="DistrictID"
+                      keyLabel="DistrictName"
                       options={listDistrict}
                       placeholder="Chọn quận bạn muốn giao hàng đến"
                       error={districtError}
@@ -289,6 +389,8 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                     <SelectComponent
                       name="ward"
                       label="Chọn phường"
+                      keyLabel="WardName"
+                      keyValue="WardCode"
                       optionSelected={wardSelected}
                       onSelect={option => setWardSelected(option)}
                       options={listWard}
@@ -296,34 +398,21 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                       error={wardError}
                     />
                   </div>
-                  <RichTextInput
-                    name="addressDetail"
-                    value={initialValues?.phoneNumber}
-                    label="Số nhà,tên đường"
-                    placeholder="Nhập địa chỉ cụ thể của bạn"
-                  />
-                  <div className="col-span-2">
-                    <SelectComponent
-                      name="expressClient"
-                      options={clients}
-                      optionSelected={clientSelected}
-                      onSelect={option => setClientSelected(option)}
-                      label="Chọn đơn vị vận chuyển"
-                      placeholder="Chọn đơn vị vận chuyển đơn hàng của bạn"
-                      renderOption={options => {
-                        return options?.map((option, index) => (
-                          <div
-                            key={index.toString()}
-                            className="w-full flex items-center justify-between px-4 cursor-pointer hover:opacity-80 hover:bg-gray-100"
-                            onClick={() => setClientSelected(option)}
-                          >
-                            <p>{option.name}</p>
-                            <Image src={option.logo} width={100} height={50} />
-                          </div>
-                        ))
-                      }}
+                  <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
+                    <RichTextInput
+                      name="addressDetail"
+                      value={initialValues?.addressDetail}
+                      label="Số nhà,tên đường"
+                      placeholder="Nhập địa chỉ cụ thể của bạn"
+                    />
+                    <RichTextInput
+                      name="phoneNumber"
+                      value={initialValues?.phoneNumber}
+                      label="Số điện thoại"
+                      placeholder="Nhập số điện thoại"
                     />
                   </div>
+                  <div className="col-span-2"> </div>
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-gray-600 font-bold">
                       Phí giao hàng

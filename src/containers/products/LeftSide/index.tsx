@@ -42,7 +42,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           return (
             <div className="desktop:w-[500px] laptop:w-[400px] laptop:h[300px] w-[300px] desktop:h-[375px] h-[200px] block">
               <img
-                src={item.split('?')[0]}
+                src={item}
                 key={product.id.toString()}
                 width={500}
                 height={375}
@@ -55,12 +55,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       <div className={`grid grid-cols-4 gap-x-5 mt-20`}>
         {product?.imagePath?.map((item, index) => (
           <div className="p-2 border border-gray-200 rounded-xl cursor-pointer hover:opacity-50">
-            <img
-              src={item.split('?')[0]}
-              key={index.toString()}
-              width={120}
-              height={90}
-            />
+            <img src={item} key={index.toString()} width={120} height={90} />
           </div>
         ))}
       </div>

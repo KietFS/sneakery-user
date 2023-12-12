@@ -44,11 +44,7 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
                 key={index.toString()}
                 onClick={() => router.push(`/products/${item.id}`)}
               >
-                <img
-                  src={item.imagePath?.split('?')[0]}
-                  width={200}
-                  height={150}
-                />
+                <img src={item.imagePath} width={200} height={150} />
                 <div className="justify-center px-4 space-y-1 mx-auto">
                   <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
                     {item.name.truncate(30)}

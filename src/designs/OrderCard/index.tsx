@@ -13,11 +13,7 @@ const OrderCard: React.FC<IOrderCardProps> = props => {
   return (
     <div className="rounded-lg border border-gray-200 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80">
       <div className="flex gap-x-3 items-center">
-        <img
-          src={order.product.imagePath?.split('?')?.[0] as string}
-          width={120}
-          height={80}
-        />
+        <img src={order.product.imagePath as string} width={120} height={80} />
         <div className="flex flex-col gap-y-2">
           <p className="text-sm text-gray-600 font-semibold">
             {order.product.name}

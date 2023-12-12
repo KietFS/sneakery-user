@@ -130,7 +130,7 @@ export default function MultipleSelectPlaceholder() {
               setOpenAddressDialog(true)
             }}
           >
-            <p className="text-gray-500 text-sm ">Cài đặt địa chỉ</p>
+            <p className="text-gray-500 text-sm ">Quản lý địa chỉ</p>
             <MapPinIcon className="h-5 w-5 text-gray-500" />
           </div>
           <div

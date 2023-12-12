@@ -53,11 +53,7 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
                 className="h-fit py-10 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
                 key={index.toString()}
               >
-                <img
-                  src={item.imagePath?.split('?')?.[0]}
-                  width={200}
-                  height={150}
-                />
+                <img src={item.imagePath} width={200} height={150} />
                 <div className="justify-center px-4 space-y-1 mx-auto">
                   <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
                     {item.name.truncate(30)}
