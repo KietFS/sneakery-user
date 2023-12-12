@@ -84,10 +84,12 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const [wardSelected, setWardSelected] = React.useState<IWard | null>(null)
   const [districtError, setDistrictError] = React.useState<string>('')
   const [wardError, setWardError] = React.useState<string>('')
-  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const { user, balance } = useAppSelector((state: IRootState) => state.auth)
   const [address, setAddress] = React.useState<any | null>(null)
   const [isExistedAddress, setIsExistedAddress] = React.useState<boolean>(false)
   const [shippingFee, setShippingFee] = React.useState<number>(0)
+
+  const router = useRouter()
 
   //utils
   const validationSchema = yup
@@ -115,64 +117,117 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
     return false
   }
 
+  // const handleSubmit = async (values: IFormValue) => {
+  //   if (checkSelectionErrors()) return
+  //   setLoading(true)
+
+  //   const payload = {
+  //     homeNumber: values.addressDetail,
+  //     cityCode: 202,
+  //     districtCode: districtSelected?.DistrictID,
+  //     wardCode: Number(wardSelected?.WardCode),
+  //     phoneNumber: values.phoneNumber,
+  //   }
+
+  //   if (isExistedAddress == false) {
+  //     try {
+  //       const response = await axios.post(
+  //         `${Config.API_URL}/addresses`,
+  //         payload,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${user?.token}`,
+  //           },
+  //         },
+  //       )
+  //       const { isSuccess, data, error } = configResponse(response)
+  //       if (isSuccess) {
+  //         toast.success('Cập nhật địa chỉ thành công')
+  //       } else {
+  //         toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
+  //       }
+  //     } catch (error) {
+  //       console.log(error)
+  //     } finally {
+  //       setLoading(false)
+  //       onClose()
+  //     }
+  //   } else {
+  //     try {
+  //       const response = await axios.put(
+  //         `${Config.API_URL}/addresses/${user?.id}/`,
+  //         payload,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${user?.token}`,
+  //           },
+  //         },
+  //       )
+  //       const { isSuccess, data, error } = configResponse(response)
+  //       if (isSuccess) {
+  //         toast.success('Cập nhật địa chỉ thành công')
+  //       } else {
+  //         toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
+  //       }
+  //     } catch (error) {
+  //       console.log(error)
+  //     } finally {
+  //       setLoading(false)
+  //       onClose()
+  //     }
+  //   }
+  // }
+
   const handleSubmit = async (values: IFormValue) => {
-    if (checkSelectionErrors()) return
-    setLoading(true)
-
-    const payload = {
-      homeNumber: values.addressDetail,
-      cityCode: 202,
-      districtCode: districtSelected?.DistrictID,
-      wardCode: Number(wardSelected?.WardCode),
-      phoneNumber: values.phoneNumber,
-    }
-
-    if (isExistedAddress == false) {
-      try {
-        const response = await axios.post(
-          `${Config.API_URL}/addresses`,
-          payload,
+    try {
+      if (districtSelected === null) {
+        setDistrictError('Vui lòng chọn quận')
+      } else {
+        setDistrictError('')
+      }
+      if (wardSelected === null) {
+        setWardError('Vui lòng chọn phường')
+      } else {
+        setWardError('')
+      }
+      setLoading(true)
+      //FIX SAU
+      if (balance >= Number((shippingFee / 23000).toFixed(0))) {
+        const response = await axios.get(
+          `${Config.API_URL}/transaction/paid?orderId=${
+            props.orderId
+          }&shippingFee=${(shippingFee / 23000).toFixed(0)}&subtotal=${
+            props.totalProduct + Number((shippingFee / 23000).toFixed(0))
+          }`,
           {
             headers: {
               Authorization: `Bearer ${user?.token}`,
             },
           },
         )
-        const { isSuccess, data, error } = configResponse(response)
+
+        const { data, isSuccess, error } = configResponse(response)
+
         if (isSuccess) {
-          toast.success('Cập nhật địa chỉ thành công')
+          toast.success('Đặt hàng thành công', {
+            position: 'top-right',
+            hideProgressBar: true,
+            theme: 'colored',
+          })
         } else {
-          toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
+          toast.error(`${error?.message}`)
         }
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setLoading(false)
         onClose()
-      }
-    } else {
-      try {
-        const response = await axios.put(
-          `${Config.API_URL}/addresses/${user?.id}/`,
-          payload,
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`,
-            },
-          },
+        router.push('/orderStatus')
+      } else {
+        toast.error(
+          'Tài khoản bạn không đủ chi trả cho phí vận chuyển, vui lòng nạp thêm tiền',
         )
-        const { isSuccess, data, error } = configResponse(response)
-        if (isSuccess) {
-          toast.success('Cập nhật địa chỉ thành công')
-        } else {
-          toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
-        }
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setLoading(false)
-        onClose()
       }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 

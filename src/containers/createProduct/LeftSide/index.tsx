@@ -348,7 +348,9 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   }
 
   useEffect(() => {
-    user && getUserAddress()
+    if (user) {
+      getUserAddress()
+    }
   }, [user])
 
   const getUserAddress = async () => {
