@@ -1,7 +1,7 @@
 module.exports = {
   env: {},
   root: true,
-  plugins: ['jest'],
+
   rules: {
     semi: ['error', 'never'],
     'object-curly-spacing': ['error', 'always'],
