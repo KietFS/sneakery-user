@@ -43,11 +43,11 @@ const RightSide: React.FC<IRightSideProps> = props => {
 
   //functions
 
-  // useEffect(() => {
-  //   if (Date.now() > newBidClosingDate.getTime()) {
-  //     router.push('/')
-  //   }
-  // }, [textSecond])
+  useEffect(() => {
+    if (Date.now() > newBidClosingDate.getTime()) {
+      router.push('/')
+    }
+  }, [textSecond])
 
   useEffect(() => {
     const countdown = () => {
@@ -102,18 +102,35 @@ const RightSide: React.FC<IRightSideProps> = props => {
         </h3>
       </div>
       <div className="mt-2 flex items-center">
-        <h3 className="text-gray-400 text-lg">Ngày hết hạn : </h3>
-        <h3 className="text-red-500 ml-1 text-lg  cursor-pointer">
-          {`${textDay} ngày : ${textHour} giờ : ${textMinute} phút : ${textSecond} giây`}
-        </h3>
+        {Date.now() > newBidClosingDate.getTime() ? (
+          <h3 className="text-red-500 ml-1 text-lg  cursor-pointer">
+            Sản phẩm đã hết phiên đấu giá
+          </h3>
+        ) : (
+          <>
+            <h3 className="text-gray-400 text-lg">Ngày hết hạn : </h3>
+            <h3 className="text-red-500 ml-1 text-lg  cursor-pointer">
+              {`${textDay} ngày : ${textHour} giờ : ${textMinute} phút : ${textSecond} giây`}
+            </h3>
+          </>
+        )}
       </div>
       <div className="flex items-center">
-        <button
-          onClick={() => onPlaceBid()}
-          className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg"
-        >
-          Đấu giá ngay
-        </button>
+        {Date.now() > newBidClosingDate.getTime() ? (
+          <>
+            <button className="items-center rounded-lg px-4 py-2 opacity-50 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg">
+              Đấu giá ngay
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={() => onPlaceBid()}
+            className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg"
+          >
+            Đấu giá ngay
+          </button>
+        )}
+
         <button className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-white text-blue-500 border border-blue-500 font-semibold text-lg ml-2">
           Yêu thích
         </button>
