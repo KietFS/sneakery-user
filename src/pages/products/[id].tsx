@@ -96,6 +96,7 @@ export const getStaticProps: GetStaticProps<{
       product,
       bidHistory: bidHistory?.data?.data,
     },
+    revalidate: 10,
   }
 }
 
