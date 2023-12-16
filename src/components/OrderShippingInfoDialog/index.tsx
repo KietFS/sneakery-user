@@ -244,7 +244,6 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
       province_id: 202,
     }
     try {
-      setInitialLoading(true)
       const response = await axios.get(apiUrl, { headers, params: requestData })
       if (response?.status == 200) {
         const { data } = response?.data
@@ -253,7 +252,6 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
     } catch (error) {
       console.log(error)
     } finally {
-      setInitialLoading(false)
     }
   }
 
@@ -283,6 +281,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
 
   const getUserAddress = async () => {
     try {
+      setInitialLoading(true)
       const response = await axios.get(
         `${Config.API_URL}/addresses/${user?.id}/`,
         {
@@ -294,13 +293,17 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
       const { data, isSuccess, error } = configResponse(response)
 
       if (isSuccess) {
+        setInitialLoading(false)
         setIsExistedAddress(true)
         setAddress(data?.data)
       } else {
+        setInitialLoading(false)
         setIsExistedAddress(false)
         console.log('Error', error)
       }
-    } catch (error) {}
+    } catch (error) {
+      setInitialLoading(false)
+    }
   }
 
   React.useEffect(() => {
@@ -420,86 +423,116 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
         >
           {({ submitForm, values, handleSubmit, errors }) => {
             return (
-              <div className="flex flex-col space-y-10">
-                <div className="flex flex-col space-y-5">
-                  <div className="w-full flex items-center">
+              <>
+                {initialLoading ? (
+                  <div className="h-[300px] items-center justify-center">
                     <h1 className="text-gray-600 font-bold text-2xl mb-2">
                       Nhập thông tin địa chỉ giao hàng của bạn
                     </h1>
-                  </div>
-                  <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
-                    <SelectComponent
-                      name="district"
-                      label="Chọn quận"
-                      optionSelected={districtSelected}
-                      onSelect={option => {
-                        setDistrictSelected(option)
-                      }}
-                      keyValue="DistrictID"
-                      keyLabel="DistrictName"
-                      options={listDistrict}
-                      placeholder="Chọn quận bạn muốn giao hàng đến"
-                      error={districtError}
-                    />
-                    <SelectComponent
-                      name="ward"
-                      label="Chọn phường"
-                      keyLabel="WardName"
-                      keyValue="WardCode"
-                      optionSelected={wardSelected}
-                      onSelect={option => setWardSelected(option)}
-                      options={listWard}
-                      placeholder="Chọn phường bạn muốn giao hàng đến"
-                      error={wardError}
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
-                    <RichTextInput
-                      name="addressDetail"
-                      value={initialValues?.addressDetail}
-                      label="Số nhà,tên đường"
-                      placeholder="Nhập địa chỉ cụ thể của bạn"
-                    />
-                    <RichTextInput
-                      name="phoneNumber"
-                      value={initialValues?.phoneNumber}
-                      label="Số điện thoại"
-                      placeholder="Nhập số điện thoại"
-                    />
-                  </div>
-                  <div className="col-span-2"> </div>
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-gray-600 font-bold">
-                      Phí giao hàng
+                    <div className="w-full flex justify-between gap-x-10 items-center mt-8">
+                      <div className="animate-pulse bg-neutral-200 w-1/2 h-[50px] rounded-xl"></div>
+                      <div className="animate-pulse bg-neutral-200 w-1/2 h-[50px] rounded-xl"></div>
                     </div>
-                    <div className="text-sm text-red-500 font-bold">
-                      {(shippingFee / 23000)
-                        .toFixed(0)
-                        .toString()
-                        .prettyMoney()}
-                      $
+
+                    <div className="w-full flex justify-between gap-x-10 items-center mt-4">
+                      <div className="animate-pulse bg-neutral-200 w-1/2 h-[50px] rounded-xl"></div>
+                      <div className="animate-pulse bg-neutral-200 w-1/2 h-[50px] rounded-xl"></div>
+                    </div>
+                    <div className="w-full flex justify-between gap-x-10 items-center mt-4">
+                      <div className="animate-pulse bg-neutral-200 w-1/2 h-[10px] rounded-xl"></div>
+                      <div className="animate-pulse bg-neutral-200 w-1/2 h-[10px] rounded-xl"></div>
+                    </div>
+                    <div className="w-full flex justify-between gap-x-2 items-center mt-8">
+                      <div></div>
+                      <div className="flex gap-x-2">
+                        <div className="animate-pulse bg-neutral-200 w-[150px] h-[50px] rounded-xl"></div>
+                        <div className="animate-pulse bg-neutral-200 w-[150px] h-[50px] rounded-xl"></div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div></div>
-                  <div className="flex items-center">
-                    <Button
-                      variant="secondary"
-                      onClick={() => onClose()}
-                      title="Đóng"
-                    />
-                    <Button
-                      type="submit"
-                      title="Xác nhận"
-                      variant="primary"
-                      className="ml-2"
-                      isLoading={loading}
-                      onClick={handleSubmit}
-                    />
+                ) : (
+                  <div className="flex flex-col space-y-10">
+                    <div className="flex flex-col space-y-5">
+                      <div className="w-full flex items-center">
+                        <h1 className="text-gray-600 font-bold text-2xl mb-2">
+                          Nhập thông tin địa chỉ giao hàng của bạn
+                        </h1>
+                      </div>
+                      <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
+                        <SelectComponent
+                          name="district"
+                          label="Chọn quận"
+                          optionSelected={districtSelected}
+                          onSelect={option => {
+                            setDistrictSelected(option)
+                          }}
+                          keyValue="DistrictID"
+                          keyLabel="DistrictName"
+                          options={listDistrict}
+                          placeholder="Chọn quận bạn muốn giao hàng đến"
+                          error={districtError}
+                        />
+                        <SelectComponent
+                          name="ward"
+                          label="Chọn phường"
+                          keyLabel="WardName"
+                          keyValue="WardCode"
+                          optionSelected={wardSelected}
+                          onSelect={option => setWardSelected(option)}
+                          options={listWard}
+                          placeholder="Chọn phường bạn muốn giao hàng đến"
+                          error={wardError}
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
+                        <RichTextInput
+                          name="addressDetail"
+                          value={initialValues?.addressDetail}
+                          label="Số nhà,tên đường"
+                          placeholder="Nhập địa chỉ cụ thể của bạn"
+                        />
+                        <RichTextInput
+                          name="phoneNumber"
+                          value={initialValues?.phoneNumber}
+                          label="Số điện thoại"
+                          placeholder="Nhập số điện thoại"
+                        />
+                      </div>
+                      <div className="col-span-2"> </div>
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-gray-600 font-bold">
+                          Phí giao hàng
+                        </div>
+                        <div className="text-sm text-red-500 font-bold">
+                          {(shippingFee / 23000)
+                            .toFixed(0)
+                            .toString()
+                            .prettyMoney()}
+                          $
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div></div>
+                      <div className="flex items-center">
+                        <Button
+                          variant="secondary"
+                          onClick={() => onClose()}
+                          title="Đóng"
+                        />
+                        <Button
+                          type="submit"
+                          title="Xác nhận"
+                          variant="primary"
+                          className="ml-2"
+                          isLoading={loading}
+                          onClick={handleSubmit}
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                )}
+              </>
             )
           }}
         </Formik>

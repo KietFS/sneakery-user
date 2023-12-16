@@ -38,9 +38,10 @@ export function configResponse(
       }
     }
   } catch (error: any) {
+    console.log('KKKK')
     return {
       isSuccess: false,
-      data: 'try/catch',
+      data: '',
       error: { message: error.message, status: null, problem: null },
     }
   }

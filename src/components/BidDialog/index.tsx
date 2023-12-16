@@ -59,7 +59,7 @@ function BidDialog(props: IBidDialogProps) {
     } else {
       try {
         setLoading(true)
-        const data = await axios.post(
+        const response = await axios.post(
           `${Config.API_URL}/bids/place`,
           {
             amount: Number(values.amount?.split(',').join('')),
@@ -71,6 +71,8 @@ function BidDialog(props: IBidDialogProps) {
             },
           },
         )
+        const { data, error } = configResponse(response)
+
         if (data) {
           toast.success('Bid sản phẩm thành công', {
             position: 'top-right',
@@ -83,20 +85,33 @@ function BidDialog(props: IBidDialogProps) {
             theme: 'colored',
           })
           onClose()
-        } else {
-          toast.error('Đã có lỗi xảy ra, vui lòng thử lại sau', {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-          })
+        } else if (error) {
+          toast.error(
+            error?.message || 'Đã có lỗi xảy ra, vui lòng thử lại sau',
+            {
+              position: 'top-right',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'colored',
+            },
+          )
           onClose()
         }
       } catch (error) {
+        toast.error((error as any)?.response?.data?.message, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        })
         console.log(error)
       } finally {
         setLoading(false)
