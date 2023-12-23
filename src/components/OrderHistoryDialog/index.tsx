@@ -27,6 +27,13 @@ export interface ICart {
   amount: number
 }
 
+export interface IUserBidHistoryItem {
+  orderId: number
+  product: IProductInCart
+  amount: number
+  status: 'SUCCESS' | 'REMOVE'
+}
+
 interface IProductInCart {
   id: string
   name: string
@@ -46,8 +53,10 @@ interface IProductInCart {
 const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
   const { open, onClose } = props
   const [loading, setLoading] = useState<boolean>(false)
-  const [items, setItems] = useState<ICart[]>([])
+  const [items, setItems] = useState<IUserBidHistoryItem[]>([])
   const { user } = useAppSelector((state: IRootState) => state.auth)
+
+  
 
   const getAllItems = async () => {
     try {
@@ -92,9 +101,27 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
             </Tooltip>
           </div>
           <div className="flex flex-col gap-y-5">
-            {items.map((item, index) => (
-              <OrderCard order={item} key={index.toString()} />
-            ))}
+            {loading ? (
+              <>
+                <div className="w-full h-[110px] animate-pulse rounded-lg bg-gray-300"></div>
+                <div className="w-full h-[110px] animate-pulse rounded-lg bg-gray-300"></div>
+                <div className="w-full h-[110px] animate-pulse rounded-lg bg-gray-300"></div>
+                <div className="w-full h-[110px] animate-pulse rounded-lg bg-gray-300"></div>
+                <div className="w-full h-[110px] animate-pulse rounded-lg bg-gray-300"></div>
+                <div className="w-full h-[110px] animate-pulse rounded-lg bg-gray-300"></div>
+                <div className="w-full h-[110px] animate-pulse rounded-lg bg-gray-300"></div>
+              </>
+            ) : (
+              <>
+                {items.map((item, index) => (
+                  <OrderCard
+                    order={item}
+                    key={index.toString()}
+                    handleCloseDialog={onClose}
+                  />
+                ))}
+              </>
+            )}
           </div>
         </div>
       </DialogContent>

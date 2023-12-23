@@ -25,7 +25,7 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
       const response = await axios.get(url)
       const { isSuccess, data, error } = configResponse(response)
       if (isSuccess) {
-        setListProduct(data.data.products)
+        setListProduct(data.data)
       } else {
         console.log('Error', error)
       }

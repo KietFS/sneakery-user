@@ -41,7 +41,7 @@ const InputSearch: React.FC<IInputSearchProps> = props => {
       method: 'GET',
     })
       .then(r => r.json())
-      .then(r => r.data.products)
+      .then(r => r.data)
       .catch(error => {
         console.error(error)
         return []
@@ -111,7 +111,7 @@ const InputSearch: React.FC<IInputSearchProps> = props => {
               </div>
             ) : (
               <div className="flex flex-col gap-y-2 pb-2">
-                {results.map((item, index) => {
+                {results?.map((item, index) => {
                   if (index <= 3)
                     return (
                       <HorizontalProductCard

@@ -16,10 +16,9 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
 import { Config } from '@/config/api'
 
-interface IProductProps {}
-
 const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
+
   return (
     <>
       <BidDialog
@@ -62,8 +61,10 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 }
 
 export const getStaticPaths: GetStaticPaths<{}> = async () => {
-  const data = await axios.get(`${Config.API_URL}/products/allid`)
-  const products = data.data?.data || []
+  const response = await axios.get(`${Config.API_URL}/products/allid`)
+  const products = response.data?.data || []
+
+  console.log('Static path products', products)
 
   const paths = products.map((item: number) => ({
     params: {
@@ -83,20 +84,32 @@ export const getStaticProps: GetStaticProps<{
   product: IProduct
   bidHistory: IProductBidHistoryItem[]
 }> = async ({ params }: any) => {
-  const data = await axios.get(`${Config.API_URL}/products/${params.id}`)
+  try {
+    // Use Promise.all to fetch both product and bid history concurrently
+    const [productResponse, bidHistoryResponse] = await Promise.all([
+      axios.get(`${Config.API_URL}/products/${params.id}`),
+      axios.get(`${Config.API_URL}/bid-history/product/${params.id}`),
+    ])
 
-  const bidHistory = await axios.get(
-    `${Config.API_URL}/bid-history/product/${params.id}`,
-  )
+    const product = productResponse.data.data
+    const bidHistory = bidHistoryResponse.data.data
 
-  const product = data.data.data
-
-  return {
-    props: {
-      product,
-      bidHistory: bidHistory?.data?.data,
-    },
-    revalidate: 10,
+    return {
+      props: {
+        product,
+        bidHistory,
+      },
+      revalidate: 10,
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error)
+    return {
+      props: {
+        product: null,
+        bidHistory: null,
+      },
+      revalidate: 10,
+    }
   }
 }
 

@@ -22,6 +22,8 @@ interface IRightSideProps {
 
 export interface IProductBidHistoryItem {
   bidAmount: number
+  bidHistoryId: number
+  status: 'SUCCESS' | 'REMOVE'
   createdAt: string
   userName: string
 }
@@ -66,8 +68,6 @@ const RightSide: React.FC<IRightSideProps> = props => {
       setTextMinute(textMinute.toString())
       const textSecond = Math.floor((gap % minute) / second)
       setTextSecond(textSecond.toString())
-
-      console.log('text day is', countDate)
     }
     const intervalId = setInterval(countdown, 1000)
 
@@ -196,13 +196,16 @@ const RightSide: React.FC<IRightSideProps> = props => {
           </p>
         </div>
       </div>
-      <ProductBidHistoryDialog
-        open={openHistoryDialog}
-        onClose={() => {
-          setOpenHistoryDialog(false)
-        }}
-        bidHistory={props.bidHistory}
-      />
+      {openHistoryDialog ? (
+        <ProductBidHistoryDialog
+          open={openHistoryDialog}
+          onClose={() => {
+            setOpenHistoryDialog(false)
+          }}
+          bidHistory={props.bidHistory}
+          product={product}
+        />
+      ) : null}
     </div>
   )
 }

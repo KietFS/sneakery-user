@@ -10,8 +10,6 @@ export const loginService = async (email: string, password: string) => {
     })
     if (data) return data
   } catch (error: any) {
-    console.log(error)
-    console.log(error)
     console.log('REGISTER ERROR', error)
     toast.error(error.response.data.message, {
       position: 'top-right',

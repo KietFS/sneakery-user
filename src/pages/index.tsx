@@ -67,7 +67,7 @@ export const getStaticProps: GetStaticProps<{
   const { isSuccess, data, error } = configResponse(response)
 
   if (isSuccess) {
-    products = data?.data?.products as IProductHomePageResponse[]
+    products = data?.data as IProductHomePageResponse[]
   }
 
   return { props: { products } }

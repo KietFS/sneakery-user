@@ -38,7 +38,6 @@ export function configResponse(
       }
     }
   } catch (error: any) {
-    console.log('KKKK')
     return {
       isSuccess: false,
       data: '',
