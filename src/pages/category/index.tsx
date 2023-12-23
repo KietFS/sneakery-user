@@ -66,11 +66,11 @@ const Category = (props: IProductProps) => {
   const getAllProducts = async () => {
     try {
       setLoading(true)
-      const url = `${Config.API_URL}/products?${filterString}&page=${pageSelected}&limit=12`
+      const url = `${Config.API_URL}/products?${filterStringDebounce}&page=${pageSelected}&limit=12`
       const response = await axios.get(url)
       if (response) {
         setError(false)
-        setListProduct(response.data.data.products)
+        setListProduct(response.data.data)
       }
     } catch (error) {
       console.log(error)

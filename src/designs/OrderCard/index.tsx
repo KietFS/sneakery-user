@@ -1,34 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 
 //utils
 import { ICart, IUserBidHistoryItem } from '@/components/OrderHistoryDialog'
 import Link from 'next/link'
+import { Config } from '@/config/api'
+import { IconButton, Tooltip } from '@mui/material'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import ConfirmDialog from '@/components/ConfirmDialog'
 
 interface IOrderCardProps {
   order: IUserBidHistoryItem
   handleCloseDialog: () => void
+  handlePressCancel: (id: number) => void
 }
 
 const OrderCard: React.FC<IOrderCardProps> = props => {
   const { order, handleCloseDialog: handleClostDialog } = props
 
   return (
-    <Link href={`/products/${order.product.id}/`}>
-      <button
-        className="rounded-lg border border-gray-200 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80"
-        onClick={handleClostDialog}
-      >
-        <div className="flex gap-x-3 items-center">
+    <>
+      <button className="rounded-lg border border-gray-200 px-2 w-full py-2 flex flex-col gap-y-5  cursor-pointer hover:opacity-80">
+        <div className="flex w-full gap-x-3 items-center">
           <img
             src={order.product.imagePath as string}
             width={120}
             height={80}
           />
-          <div className="flex flex-col gap-y-2">
-            <p className="text-sm text-gray-600 font-semibold">
-              {order.product.name}
-            </p>
+          <div className="flex flex-col gap-y-2 w-2/3">
+            <Link
+              onClick={handleClostDialog}
+              href={`/products/${order.product.id}/`}
+            >
+              <div className="flex gap-x-1 items-center">
+                <p className="text-sm text-gray-600 font-semibold">
+                  {order.product.name}
+                </p>
+              </div>
+            </Link>
             <div className="flex gap-x-1 items-center">
               <p className="text-xs text-gray-600">
                 Mức đặt: {order.amount?.toString().prettyMoney()}$
@@ -56,9 +67,20 @@ const OrderCard: React.FC<IOrderCardProps> = props => {
               </div>
             )} */}
           </div>
+          <div>
+            {order.status == 'SUCCESS' ? (
+              <Tooltip title="Hủy lượt đấu giá">
+                <IconButton
+                  onClick={() => props.handlePressCancel(order.bidHistoryId)}
+                >
+                  <XMarkIcon width={20} height={20} />
+                </IconButton>
+              </Tooltip>
+            ) : null}
+          </div>
         </div>
       </button>
-    </Link>
+    </>
   )
 }
 

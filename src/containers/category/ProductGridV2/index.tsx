@@ -21,7 +21,7 @@ const ProductGridV2: React.FC<IProductGridV2Props> = props => {
                   key={index.toString()}
                   onClick={() => router.push(`/products/${item.id}`)}
                 >
-                  <Image
+                  <img
                     src={item.imagePath}
                     width={200}
                     height={150}

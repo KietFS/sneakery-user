@@ -42,9 +42,7 @@ const ProductBidHistoryDialog: React.FC<
         setActionLoading(false)
         let clones = items
         clones?.forEach((clone, cloneIndex) => {
-          console.log('hehe')
           if (clone.bidHistoryId == orderSelected) {
-            console.log('hehe')
             clone.status = 'REMOVE'
           }
         })
