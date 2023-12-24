@@ -257,92 +257,79 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
 
   //functions
   const handleSubmit = async (values: IFormValue) => {
-    if (!address) {
-      toast.error('Vui lòng cập nhật địa chỉ của bạn', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored',
-      })
+    const newDate = values.bidClosingDate?.split('T')
+    let isAM = newDate?.[1].slice(-2)
+    if (brandSelected === null) {
+      setBrandError('Vui lòng chọn thương hiệu')
+    }
+    if (categorySelected === null) {
+      setCategoryError('Vui lòng chọn danh mục')
+    }
+    if (colorSelected === null) {
+      setColorError('Vui lòng chọn màu')
+    }
+    if (conditionSelected === null) {
+      setConditionError('Vui lòng chọn tình trạng')
+    }
+    if (sizeSelected === null) {
+      setSizeError('vui lòng chọn size')
+    }
+    if (
+      brandSelected === null ||
+      categorySelected === null ||
+      colorSelected === null ||
+      conditionSelected === null ||
+      sizeSelected === null
+    ) {
     } else {
-      const newDate = values.bidClosingDate?.split('T')
-      let isAM = newDate?.[1].slice(-2)
-      if (brandSelected === null) {
-        setBrandError('Vui lòng chọn thương hiệu')
+      const payload = {
+        name: values.productName,
+        condition: conditionSelected?.id.toUpperCase(),
+        category: categorySelected?.id,
+        brand: brandSelected?.name,
+        color: colorSelected?.id as string,
+        size: Number(sizeSelected.id),
+        bidClosingDateTime: values.bidClosingDate,
+        priceStart: Number(values.priceStart?.split(',').join('')),
+        stepBid: Number(values.stepBid?.split(',').join('')),
       }
-      if (categorySelected === null) {
-        setCategoryError('Vui lòng chọn danh mục')
-      }
-      if (colorSelected === null) {
-        setColorError('Vui lòng chọn màu')
-      }
-      if (conditionSelected === null) {
-        setConditionError('Vui lòng chọn tình trạng')
-      }
-      if (sizeSelected === null) {
-        setSizeError('vui lòng chọn size')
-      }
-      if (
-        brandSelected === null ||
-        categorySelected === null ||
-        colorSelected === null ||
-        conditionSelected === null ||
-        sizeSelected === null
-      ) {
-      } else {
-        const payload = {
-          name: values.productName,
-          condition: conditionSelected?.id.toUpperCase(),
-          category: categorySelected?.id,
-          brand: brandSelected?.name,
-          color: colorSelected?.id as string,
-          size: Number(sizeSelected.id),
-          bidClosingDateTime: values.bidClosingDate,
-          priceStart: Number(values.priceStart?.split(',').join('')),
-          stepBid: Number(values.stepBid?.split(',').join('')),
-        }
-        let formData = new FormData()
-        const json = JSON.stringify(payload)
-        const blob = new Blob([json], {
-          type: 'application/json',
+      let formData = new FormData()
+      const json = JSON.stringify(payload)
+      const blob = new Blob([json], {
+        type: 'application/json',
+      })
+      formData.append('thumbnail', thumbnailSelected?.[0])
+      imagesSelected?.map(image => formData.append('images', image))
+      formData.append('bidCreateRequest', blob)
+      try {
+        setCreateLoading(true)
+        const response = await axios({
+          method: 'post',
+          url: `${Config.API_URL}/bids`,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${user?.token}`,
+          },
+          data: formData,
         })
-        formData.append('thumbnail', thumbnailSelected?.[0])
-        imagesSelected?.map(image => formData.append('images', image))
-        formData.append('bidCreateRequest', blob)
-        try {
-          setCreateLoading(true)
-          const response = await axios({
-            method: 'post',
-            url: `${Config.API_URL}/bids`,
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${user?.token}`,
-            },
-            data: formData,
+        const { data, isSuccess, error } = configResponse(response)
+        if (isSuccess) {
+          toast.success('Tạo sản phẩm thành công', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
           })
-          const { data, isSuccess, error } = configResponse(response)
-          if (isSuccess) {
-            toast.success('Tạo sản phẩm thành công', {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'colored',
-            })
-            router.push('/')
-          }
-        } catch (error) {
-          console.log('CREATE BID ERROR', { error })
-        } finally {
-          setCreateLoading(false)
+          router.push('/')
         }
+      } catch (error) {
+        console.log('CREATE BID ERROR', { error })
+      } finally {
+        setCreateLoading(false)
       }
     }
   }

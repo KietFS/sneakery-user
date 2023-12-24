@@ -8,7 +8,6 @@ import FilterSideBar from '@/containers/category/FilterSideBar'
 import Spinner from '@/components/Spinner'
 import NotFound from '@/assets/images/NotFound.png'
 import Image from 'next/image'
-import { debounce } from 'lodash'
 
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
@@ -160,16 +159,6 @@ const Category = (props: IProductProps) => {
                     <ProductGridV2 listProducts={listProduct} />
                     <div className="w-full mt-4 justify-between flex items-center">
                       <div></div>
-                      {/* <Pagination
-                        count={totalCount}
-                        boundaryCount={10}
-                        shape="rounded"
-                        page={pageSelected}
-                        onChange={(event, page) =>
-                          setPageSelected(page as number)
-                        }
-                        color="primary"
-                      /> */}
                     </div>
                   </>
                 )}
