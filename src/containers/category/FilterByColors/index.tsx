@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 
 //utils and types
 import { setColor } from '@/redux/slices/filter'
+import { debounce } from 'lodash'
 
 interface IFilterByColorsProps {}
 
@@ -33,8 +34,17 @@ const FilterByColors: React.FC<IFilterByColorsProps> = props => {
 
   //effects
   useEffect(() => {
+    const debouncedDispatch = debounce(() => {
+      dispatch(setColor(colorSelected.map(item => `${item}`)))
+    }, 2000)
+
     if (colorSelected) {
-      dispatch(setColor(colorSelected.map(item => item)))
+      debouncedDispatch()
+    }
+
+    // Clean up function
+    return () => {
+      debouncedDispatch.cancel()
     }
   }, [colorSelected])
 

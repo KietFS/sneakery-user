@@ -39,9 +39,11 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
   const { open, onClose } = props
   const [items, setItems] = useState<IPostedProduct[]>([])
   const { user } = useAppSelector((state: IRootState) => state.auth)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const getPostedItems = async () => {
     try {
+      setIsLoading(true)
       //THIS NEED TO FIX
       const response = await axios.get(
         `${Config.API_URL}/bids/uploaded-products/`,
@@ -51,14 +53,15 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
           },
         },
       )
-
       const { isSuccess, data, error } = configResponse(response)
       if (isSuccess) {
+        setIsLoading(false)
         setItems(data?.data)
       } else {
         console.log('Error', error)
       }
     } catch (error) {
+      setIsLoading(false)
       console.log('Client Error', error)
     }
   }
@@ -85,29 +88,42 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
               <XMarkIcon className="w-8    h-8 p-1 hover:bg-gray-200 rounded-full cursor-pointer" />
             </Tooltip>
           </div>
-          {items.length > 0 ? (
-            <div className="flex flex-col gap-y-5">
-              {items.map((item, index) => (
-                <PostedCard
-                  key={index.toString()}
-                  title={item.product.name}
-                  status={item.priceWin === null ? 'pending' : 'success'}
-                  imagePath={item.product.imagePath}
-                  createdAt={item.bidStartingDate?.toString().prettyDate()}
-                />
-              ))}
+          {isLoading ? (
+            <div>
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>{' '}
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
             </div>
           ) : (
-            <div className="flex items-center">
-              <InformationCircleIcon
-                width={20}
-                height={20}
-                className="text-gray-600 mr-2"
-              />
-              <h1 className="text-gray-500 font-regular text-md">
-                Bạn chưa đăng sản phẩm nào
-              </h1>
-            </div>
+            <>
+              {items.length > 0 ? (
+                <div className="flex flex-col gap-y-5">
+                  {items.map((item, index) => (
+                    <PostedCard
+                      key={index.toString()}
+                      title={item.product.name}
+                      status={item.priceWin === null ? 'pending' : 'success'}
+                      imagePath={item.product.imagePath}
+                      createdAt={item.bidStartingDate?.toString().prettyDate()}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <InformationCircleIcon
+                    width={20}
+                    height={20}
+                    className="text-gray-600 mr-2"
+                  />
+                  <h1 className="text-gray-500 font-regular text-md">
+                    Bạn chưa đăng sản phẩm nào
+                  </h1>
+                </div>
+              )}
+            </>
           )}
         </div>
       </DialogContent>

@@ -33,6 +33,7 @@ const Category = (props: IProductProps) => {
   const [pageSelected, setPageSelected] = useState<number>(1)
   const [error, setError] = useState<boolean>(false)
   const [filterString, setFilterString] = useState<string>('')
+  const [totalCount, setTotalCount] = useState<number>(3)
 
   //redux
   const {
@@ -49,24 +50,12 @@ const Category = (props: IProductProps) => {
 
   const filterStringDebounce = useDebounce<string>(filterString, 500)
 
-  const memoBrand = useMemo(() => {
-    if (brand?.length > 0) {
-      return brand
-    }
-  }, [brand])
-
-  const memoColor = useMemo(() => {
-    if (color?.length > 0) {
-      return color
-    }
-  }, [color])
-
-  const memoSize = useMemo(() => {}, [size])
-
   const getAllProducts = async () => {
     try {
       setLoading(true)
-      const url = `${Config.API_URL}/products?${filterStringDebounce}&page=${pageSelected}&limit=12`
+      const url = `${
+        Config.API_URL
+      }/products?${filterStringDebounce}&page=${0}&size=9`
       const response = await axios.get(url)
       if (response) {
         setError(false)
@@ -82,7 +71,6 @@ const Category = (props: IProductProps) => {
 
   useEffect(() => {
     if (filterStringDebounce.length > 0) {
-      console.log('099090')
       getAllProducts()
     }
   }, [filterStringDebounce, pageSelected])
@@ -105,7 +93,7 @@ const Category = (props: IProductProps) => {
           : ''
       }${
         size.length > 0
-          ? `&size=${size.map((item: any, index: number) =>
+          ? `&sizes=${size.map((item: any, index: number) =>
               index !== size.length ? `${item}` : `${item}`,
             )}`
           : ''
@@ -172,8 +160,8 @@ const Category = (props: IProductProps) => {
                     <ProductGridV2 listProducts={listProduct} />
                     <div className="w-full mt-4 justify-between flex items-center">
                       <div></div>
-                      <Pagination
-                        count={3}
+                      {/* <Pagination
+                        count={totalCount}
                         boundaryCount={10}
                         shape="rounded"
                         page={pageSelected}
@@ -181,7 +169,7 @@ const Category = (props: IProductProps) => {
                           setPageSelected(page as number)
                         }
                         color="primary"
-                      />
+                      /> */}
                     </div>
                   </>
                 )}

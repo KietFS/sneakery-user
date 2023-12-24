@@ -6,6 +6,7 @@ import {
   ChevronRightIcon,
   ClipboardDocumentListIcon,
   ClockIcon,
+  CurrencyDollarIcon,
   MapPinIcon,
   UserIcon,
   WalletIcon,
@@ -28,6 +29,7 @@ import { useAppSelector } from '@/hooks/useRedux'
 import { toast } from 'react-toastify'
 import FormControl from '@mui/material/FormControl'
 import { IRootState } from '@/redux'
+import WinningDialog from '../WinningDialog'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -51,6 +53,8 @@ export default function MultipleSelectPlaceholder() {
   const [openOrderHistory, setOpenOrderHistory] = React.useState<boolean>(false)
   const [openLogoutDialog, setOpenLogoutDialog] = React.useState<boolean>(false)
   const [openPostedDialog, setOpenPostedDialog] = React.useState<boolean>(false)
+  const [openWinningDialog, setOpenWinningDialog] =
+    React.useState<boolean>(false)
   const [walletDialog, setWalletDialo] = React.useState<boolean>(false)
   const [openWithDraw, setOpenWithDraw] = React.useState<boolean>(false)
 
@@ -145,6 +149,15 @@ export default function MultipleSelectPlaceholder() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
+              setOpenWinningDialog(true)
+            }}
+          >
+            <p className="text-gray-500 text-sm ">Sản phẩm đã thắng</p>
+            <CurrencyDollarIcon className="h-5 w-5 text-gray-500" />
+          </div>
+          <div
+            className="py-2 px-4 cursor-pointer flex justify-between items-center"
+            onClick={() => {
               setOpenPostedDialog(true)
             }}
           >
@@ -220,6 +233,13 @@ export default function MultipleSelectPlaceholder() {
         <WalletDialog
           open={walletDialog}
           onClose={() => setWalletDialo(false)}
+        />
+      ) : null}
+
+      {openWinningDialog ? (
+        <WinningDialog
+          open={openWinningDialog}
+          onClose={() => setOpenWinningDialog(false)}
         />
       ) : null}
 

@@ -74,8 +74,9 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
 
       if (response?.data?.success == true) {
         toast.success(response?.data?.message)
-        await resetAllItems()
+        setLoading(false)
         setOpenConfirmDialog(false)
+        await resetAllItems()
       }
     } catch (error) {
       setActionLoading(false)

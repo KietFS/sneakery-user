@@ -28,6 +28,7 @@ export interface ICartItem {
     bidClosingDate: string
   }
   priceWin: number
+  status: 'PENDING' | 'APPROVED'
 }
 
 const CartList: React.FC<ICartList> = props => {
@@ -37,11 +38,14 @@ const CartList: React.FC<ICartList> = props => {
 
   const getItems = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/orders`, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
+      const response = await axios.get(
+        `${Config.API_URL}/orders/users/${user.id}?q=APPROVE`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
         },
-      })
+      )
       const { isSuccess, data, error } = configResponse(response)
 
       if (isSuccess) {
@@ -62,10 +66,6 @@ const CartList: React.FC<ICartList> = props => {
       <h3 className="text-xl laptop:text-2xl text-blue-500 font-bold">
         Giỏ hàng của bạn ({items.length})
       </h3>
-      <p className=" text-xs laptop:text-sm text-gray-500 w-full laptop:w-1/2">
-        *Đây là những sản phẩm bạn đã thắng được qua đấu giá, nếu bạn không hoàn
-        tất thanh toán trong khoảng thời gian quy định thì bạn sẽ bị mất lượt
-      </p>
       <div className="flex flex-col gap-y-5 mt-10">
         <div className="grid grid-cols-3 laptop:grid-cols-4 gap-x-10 py-2 px-4 border border-gray-200 rounded-lg">
           <p className="text-gray-600 font-semibold text-xs laptop:text-lg ">

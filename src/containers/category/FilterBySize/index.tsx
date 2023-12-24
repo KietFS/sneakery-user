@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 
 //utils
 import { setSize } from '@/redux/slices/filter'
+import { debounce } from 'lodash'
 
 interface IFilterBySizeProps {}
 
@@ -22,9 +23,19 @@ const FilterBySize: React.FC<IFilterBySizeProps> = props => {
   //dispatch
   const dispatch = useDispatch()
 
+  //effect
   useEffect(() => {
+    const debouncedDispatch = debounce(() => {
+      dispatch(setSize(sizeSelected.map(item => `${item}`)))
+    }, 2000)
+
     if (sizeSelected) {
-      dispatch(setSize(sizeSelected.map(item => item.toString())))
+      debouncedDispatch()
+    }
+
+    // Clean up function
+    return () => {
+      debouncedDispatch.cancel()
     }
   }, [sizeSelected])
 

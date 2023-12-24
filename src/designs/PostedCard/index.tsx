@@ -25,7 +25,7 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
           </div>
           {status === 'success' && (
             <div className="rounded-full bg-green-200 text-green-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
-              Đã thắng
+             Đã kết thúc phiên đấu giá
             </div>
           )}
           {status === 'pending' && (
