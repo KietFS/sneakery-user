@@ -236,8 +236,8 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
 
       <ConfirmDialog
         open={openConfirmDialog}
-        title="Bạn có chắc muốn hủy lượt đấu giá cho sản phẩm này"
-        description="Hành động này không thể quay lại"
+        title="Bạn chắc chắn thêm sản phẩm vào giỏ hàng"
+        description="Hành động không thể hoàn tác"
         onClose={() => setOpenConfirmDialog(false)}
         onConfirm={approveWinningItem}
         isConfirmLoadingButton={actionLoading}

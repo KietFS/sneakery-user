@@ -48,7 +48,7 @@ const OrderCard: React.FC<IOrderCardProps> = props => {
             <div className="flex gap-x-1 items-center">
               <p className="text-xs text-gray-600">Bán bởi: </p>
               <div className="rounded-full bg-blue-200 text-blue-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
-                {order.product.username}
+                {order.product.userName}
               </div>
             </div>
             {order.status == 'SUCCESS' && (

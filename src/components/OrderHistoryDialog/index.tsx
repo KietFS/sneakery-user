@@ -48,7 +48,7 @@ interface IProductInCart {
   category: ICategoryProps
   brand: string
   color: string
-  username: string
+  userName: string
   size: string
   bidIncrement: number
   bidClosingDate: string

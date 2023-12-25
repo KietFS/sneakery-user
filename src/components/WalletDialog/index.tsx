@@ -29,7 +29,7 @@ interface IWalletDialogProps {
 interface ITransactionHistory {
   amount: number
   status: string
-  transactedAt: string
+  createdDate: string
   transactionCode: number
 }
 
@@ -76,7 +76,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
 
   const getTransactionHistory = async () => {
     try {
-      const response = await axios.get(`${Config.API_URL}/transaction`, {
+      const response = await axios.get(`${Config.API_URL}/transaction/${user?.id}?&sort=createdDate,desc&size=7`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
@@ -240,7 +240,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
                         }
                       }}
                     >
-                      {actionCharge ? 'Hủy hành động' : 'Xem lịch sử giao dịch'}
+                      {actionCharge ? 'Hủy hành động' : 'Lịch sử giao dịch'}
                     </p>
                   </>
                 ) : (
@@ -248,7 +248,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
                     {loading === false ? (
                       <>
                         <p className="text-gray-500 text-sm font-semibold mt-2 text-center">
-                          Bạn hiện chưa liên tài khoản thanh toán PayPal trên hệ
+                          Bạn hiện chưa liên kết tài khoản thanh toán PayPal trên hệ
                           thống của chúng tôi
                         </p>
                         <p
@@ -289,7 +289,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
                 )}
                 <div className="flex w-fit gap-x-2 justify-between items-center mt-2">
                   <p className="text-gray-500 text-sm font-semibold">
-                    Số dư ví Paypal:
+                    Số dư hiện tại:
                   </p>
                   <p className="text-sm font-semibold px-2 py-1 bg-blue-50 text-blue-900 rounded-full">
                     {money}$
@@ -303,9 +303,10 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
                     className="flex mx-auto items-center mt-2 gap-x-5  gap-y-2 w-full justify-between"
                   >
                     <p className="text-gray-600 text-sm font-semibold ">
-                      {item.transactedAt.toString().replace('T', ' ')}
+                      {item.createdDate.toString().replace('T', ' ')}
                     </p>
-                    <p className="text-xs font-semibold text-blue-500">
+                    <p className={`text-xs font-semibold ${item.status === 'DEPOSIT' || item.status === 'RECEIVED' 
+                    ? 'text-green-500' : 'text-red-500'}`}>
                       {item.status === 'DEPOSIT' || item.status === 'RECEIVED'
                         ? '+'
                         : '-'}

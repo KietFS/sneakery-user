@@ -36,7 +36,7 @@ const ITEM_PADDING_TOP = 8
 const MenuProps = {
   PaperProps: {
     style: {
-      maxHeight: ITEM_HEIGHT * 6 + ITEM_PADDING_TOP,
+      maxHeight: ITEM_HEIGHT * 7 + ITEM_PADDING_TOP,
       width: 200,
     },
   },
@@ -170,7 +170,7 @@ export default function MultipleSelectPlaceholder() {
               setWalletDialo(true)
             }}
           >
-            <p className="text-gray-500 text-sm ">Nạp tiền vào ví</p>
+            <p className="text-gray-500 text-sm ">Nạp tiền</p>
             <WalletIcon className="h-5 w-5 text-gray-500" />
           </div>
           <div

@@ -24,7 +24,7 @@ interface IWalletDialogProps {
 interface ITransactionHistory {
   amount: number
   status: string
-  transactedAt: string
+  createdDate: string
   transactionCode: number
 }
 
@@ -110,7 +110,7 @@ const WithDrawDialog: React.FC<IWalletDialogProps> = props => {
                       withDraw()
                     }}
                   >
-                    Rút tiền về
+                    Rút tiền về PayPal
                   </p>{' '}
                 </>
               )}
