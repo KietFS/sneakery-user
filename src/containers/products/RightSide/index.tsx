@@ -45,11 +45,11 @@ const RightSide: React.FC<IRightSideProps> = props => {
 
   //functions
 
-  useEffect(() => {
-    if (Date.now() > newBidClosingDate.getTime()) {
-      router.push('/')
-    }
-  }, [textSecond])
+  // useEffect(() => {
+  //   if (Date.now() > newBidClosingDate.getTime()) {
+  //     router.push('/')
+  //   }
+  // }, [textSecond])
 
   useEffect(() => {
     const countdown = () => {

@@ -33,7 +33,6 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         </Head>
         <div className="pb-16 bg-white">
           <HeaderV2 />
-
           <div className="flex flex-col laptop:flex-row  rounded-lg bg-white border border-gray-100 shadow-lg mt-10 w-5/6 mx-auto min-h-[650px]">
             <div className="w-full laptop:w-3/5 desktop:w-1/2">
               <LeftSide product={props.product} />
@@ -62,6 +61,7 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 export const getStaticPaths: GetStaticPaths<{}> = async () => {
   const response = await axios.get(`${Config.API_URL}/products/allid`)
+
   const products = response.data?.data || []
 
   console.log('Static path products', products)

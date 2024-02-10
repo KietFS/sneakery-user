@@ -4,9 +4,12 @@ import {
   DialogContent,
   IconButton,
 } from '@mui/material'
+
+//form validation
 import { Formik } from 'formik'
-import React, { useEffect, useState } from 'react'
 import * as yup from 'yup'
+
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import BaseInput from '@/designs/BaseInput'
 import { useAppSelector } from '@/hooks/useRedux'
@@ -17,14 +20,14 @@ import { IRootState } from '@/redux'
 import LoginBackground from '@/assets/images/LoginBackground.png'
 import { XCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
 
-interface ILoginDialogProps {
-  isOpen: boolean
-  onclickClose: () => void
-}
-
 interface IFormValue {
   email: string
   password: string
+}
+
+interface ILoginDialogProps {
+  isOpen: boolean
+  onclickClose: () => void
 }
 
 const LoginDialog: React.FC<ILoginDialogProps> = props => {
@@ -50,10 +53,9 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
 
   //hooks
   const { googleLogin, login, loginLoading, loginError } = useAuth()
-  const router = useRouter()
 
   //store
-  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const { user, isAuth } = useAppSelector((state: IRootState) => state.auth)
 
   const handlePresslogin = (values: IFormValue) => {
     login(values.email, values.password)
@@ -64,8 +66,6 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
       onclickClose()
     }
   }, [user])
-
-  const handlePressRegister = () => {}
 
   return (
     <Dialog
