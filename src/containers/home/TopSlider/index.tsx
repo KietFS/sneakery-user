@@ -14,7 +14,7 @@ const TopSlider: React.FC<ITopSliderProps> = props => {
     {
       title: 'Giá cả hợp lý',
       subTitle:
-        'Đội ngũ chuyên gia thực hiện kiểm duyệt giá những đôi giày hiện có. Điều này nhằm đảm bảo mỗi mức giá phản ánh đúng giá trị của sản phẩm',
+        'Đội ngũ chuyên gia thực hiện kiểm duyệt giá những sản phẩm hiện có. Điều này nhằm đảm bảo mỗi mức giá phản ánh đúng giá trị của sản phẩm',
       icon: (
         <BanknotesIcon className="text-blue-500 h-12 w-12 tablet:h-20 tablet:w-20 laptop:h-32 laptop:w-32 mx-auto" />
       ),
@@ -22,7 +22,7 @@ const TopSlider: React.FC<ITopSliderProps> = props => {
     {
       title: 'Đảm bảo chất lượng',
       subTitle:
-        'Chất lượng luôn là tiêu chí hàng đầu vì thế trước khi đến tay khách hàng những đôi giày đã qua sự kiểm duyệt rất khắt khe từ người bán',
+        'Chất lượng luôn là tiêu chí hàng đầu vì thế trước khi đến tay khách hàng những sản phẩm đã qua sự kiểm duyệt rất khắt khe từ người bán',
       icon: (
         <CheckBadgeIcon className="text-blue-500 h-12 w-12 tablet:h-20 tablet:w-20 laptop:h-32 laptop:w-32 mx-auto" />
       ),

@@ -25,7 +25,7 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
           Những deal đấu giá đang hot tại sàn của chúng tôi
         </h2>
         <p className="text-lg text-gray-500 font-normal text-center">
-          Những đôi giày cực hiếm, cực đẹp
+          Những sản phẩm cực hiếm, cực đẹp
         </p>
         <p
           className="text-lg font-semibold text-center underline text-blue-500 hover:opacity-70 cursor-pointer"

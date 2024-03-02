@@ -90,7 +90,7 @@ const InputSearch: React.FC<IInputSearchProps> = props => {
         <InputWithIcon
           icon={<MagnifyingGlassIcon width={20} height={20} color="gray" />}
           name="keyword"
-          placeholder="Tìm kiếm theo tên giày, thương hiệu,..."
+          placeholder="Tìm kiếm theo tên sản phẩm, thương hiệu,..."
           onChangeValue={text => {
             setSearchTerm(text as string)
           }}

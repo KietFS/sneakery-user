@@ -9,10 +9,9 @@ import Image from 'next/image'
 
 //hooks
 import { useRouter } from 'next/router'
-import { useAppSelector } from '@/hooks/useRedux'
-
-//utils
-import { IRootState } from '@/redux'
+import BidHistorySection from './BidHistorySection'
+import axios from 'axios'
+import { Config } from '@/config/api'
 
 interface IRightSideProps {
   product: IProduct
@@ -29,7 +28,7 @@ export interface IProductBidHistoryItem {
 }
 
 const RightSide: React.FC<IRightSideProps> = props => {
-  const { product, onPlaceBid } = props
+  const { product, onPlaceBid, bidHistory } = props
 
   let newBidClosingDate = new Date(product?.bidClosingDate)
 
@@ -38,19 +37,8 @@ const RightSide: React.FC<IRightSideProps> = props => {
   const [textHour, setTextHour] = useState<string>('')
   const [textMinute, setTextMinute] = useState<string>('')
   const [textSecond, setTextSecond] = useState<string>('')
-  const [openHistoryDialog, setOpenHistoryDialog] = useState<boolean>(false)
-
-  //hooks
-  const router = useRouter()
 
   //functions
-
-  // useEffect(() => {
-  //   if (Date.now() > newBidClosingDate.getTime()) {
-  //     router.push('/')
-  //   }
-  // }, [textSecond])
-
   useEffect(() => {
     const countdown = () => {
       const countDate = newBidClosingDate.getTime()
@@ -124,7 +112,9 @@ const RightSide: React.FC<IRightSideProps> = props => {
           </>
         ) : (
           <button
-            onClick={() => onPlaceBid()}
+            onClick={() => {
+              onPlaceBid()
+            }}
             className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg"
           >
             Đấu giá ngay
@@ -163,49 +153,8 @@ const RightSide: React.FC<IRightSideProps> = props => {
             </div>
           </div>
         </div>
-        <div className="mt-4 max-w-[90%]">
-          <h3 className="text-gray-400 text-lg leading-0">
-            Các lượt bid gần đây :{' '}
-          </h3>
-          <div className="flex flex-col gap-y-2 mt-2 w-fit">
-            {props.bidHistory.map((item, index) => {
-              if (index <= 2)
-                return (
-                  <div
-                    className="flex justify-between items-center"
-                    key={index.toString()}
-                  >
-                    <p className="text-gray-500 text-sm cursor-pointer italic mr-1">
-                      Người dùng {item.userName} -
-                    </p>
-                    <p className="text-blue-500 font-bold text-sm cursor-pointer mr-1 ">
-                      {item.bidAmount.toString().prettyMoney()}$ -
-                    </p>
-                    <p className="text-gray-600 text-sm cursor-pointer">
-                      {item.createdAt.toString().replace('T', ' ')}
-                    </p>
-                  </div>
-                )
-            })}
-          </div>
-          <p
-            className="text-sm font-semibold px-4 py-1 bg-blue-200 text-blue-900 w-fit rounded-full mt-4 cursor-pointer hover:opacity-80"
-            onClick={() => setOpenHistoryDialog(true)}
-          >
-            Xem thêm
-          </p>
-        </div>
+        <BidHistorySection product={product} bidHistory={bidHistory} />
       </div>
-      {openHistoryDialog ? (
-        <ProductBidHistoryDialog
-          open={openHistoryDialog}
-          onClose={() => {
-            setOpenHistoryDialog(false)
-          }}
-          bidHistory={props.bidHistory}
-          product={product}
-        />
-      ) : null}
     </div>
   )
 }

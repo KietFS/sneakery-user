@@ -29,11 +29,12 @@ interface IFormValue {
 export interface IBidDialogProps {
   open: boolean
   onClose: () => void
+  onSuccess: () => void
   product: IProduct
 }
 
 function BidDialog(props: IBidDialogProps) {
-  const { open, onClose, product } = props
+  const { open, onClose, product, onSuccess } = props
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
     amount: (product.currentPrice + product.bidIncrement).toString(),
   })
@@ -84,6 +85,7 @@ function BidDialog(props: IBidDialogProps) {
             progress: undefined,
             theme: 'colored',
           })
+          onSuccess()
           onClose()
         } else if (error) {
           toast.error(

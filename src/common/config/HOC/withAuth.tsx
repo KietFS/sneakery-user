@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom'
 import { useAuth } from '../../../hooks/useAuth'
 import { useAppSelector } from '../../../hooks/useRedux'
 import { IRootState } from '../../../redux'
+import { toast } from 'react-toastify'
 export function withAuthorization<T>(
   Component: React.FC<T>,
   //   authorizations: string[],
@@ -18,7 +19,7 @@ export function withAuthorization<T>(
     useEffect(() => {
       const isExited = localStorage.getItem('user')
       if (user === null && !isExited) {
-        router.push('/auth/login')
+        toast.error('Cần đăng nhập trước khi vào giỏ hàng')
       }
     }, [user])
     // );

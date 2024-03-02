@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 //styles
 import HeaderV2 from '@/components/HeaderV2'
@@ -18,10 +18,30 @@ import { Config } from '@/config/api'
 
 const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
+  const [bidHistory, setBidHistory] = useState<IProductBidHistoryItem[]>([])
+
+  const getProductBidHistory = async (productId: string | number) => {
+    try {
+      const response = await axios.get(
+        `${Config.API_URL}/bid-history/product/${productId}`,
+      )
+      if (response?.data?.success) {
+        setBidHistory(response?.data?.data)
+      }
+    } catch (error) {
+      setBidHistory([])
+      console.log('Error', error)
+    }
+  }
+
+  useEffect(() => {
+    getProductBidHistory(props.product.id)
+  }, [])
 
   return (
     <>
       <BidDialog
+        onSuccess={() => getProductBidHistory(props.product.id)}
         open={openDialog}
         onClose={() => setOpenDialog(false)}
         product={props.product}
@@ -39,7 +59,7 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
             </div>
             <div className=" w-full laptop:w-2/5 desktop:w-1/2">
               <RightSide
-                bidHistory={props.bidHistory}
+                bidHistory={bidHistory}
                 product={props.product}
                 onPlaceBid={() => setOpenDialog(true)}
               />
@@ -82,22 +102,18 @@ export const getStaticPaths: GetStaticPaths<{}> = async () => {
 
 export const getStaticProps: GetStaticProps<{
   product: IProduct
-  bidHistory: IProductBidHistoryItem[]
 }> = async ({ params }: any) => {
   try {
     // Use Promise.all to fetch both product and bid history concurrently
-    const [productResponse, bidHistoryResponse] = await Promise.all([
-      axios.get(`${Config.API_URL}/products/${params.id}`),
-      axios.get(`${Config.API_URL}/bid-history/product/${params.id}`),
-    ])
+    const productResponse = await axios.get(
+      `${Config.API_URL}/products/${params.id}`,
+    )
 
     const product = productResponse.data.data
-    const bidHistory = bidHistoryResponse.data.data
 
     return {
       props: {
-        product,
-        bidHistory,
+        product: product,
       },
       revalidate: 10,
     }
@@ -106,7 +122,6 @@ export const getStaticProps: GetStaticProps<{
     return {
       props: {
         product: null,
-        bidHistory: null,
       },
       revalidate: 10,
     }

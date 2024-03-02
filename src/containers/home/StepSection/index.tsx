@@ -43,7 +43,7 @@ const StepSection: React.FC<IStepSectionProps> = props => {
             Đấu giá cho sản phẩm
           </p>
           <p className="text-sm text-gray-500 font-light">
-            Tham gia đấu giá ngay hoặc đợi đến lịch đôi giày được đấu giá và
+            Tham gia đấu giá ngay hoặc đợi đến lịch sản phẩm được đấu giá và
             tham gia
           </p>
         </div>
@@ -56,7 +56,7 @@ const StepSection: React.FC<IStepSectionProps> = props => {
             Mang sản phẩm về nhà
           </p>
           <p className="text-sm text-gray-500 font-light">
-            Chiến thắng sản phẩm, chọn phương thức vận chuyện và mang nó về nhà
+            Chiến thắng sản phẩm và mang nó về nhà
           </p>
         </div>
       </div>
