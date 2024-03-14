@@ -22,6 +22,7 @@ import { toast } from 'react-toastify'
 import { Formik } from 'formik'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
+import SelectCustomFieldComponent from '@/components/SelectCustomField'
 
 interface ILeftSideProps {}
 
@@ -64,6 +65,9 @@ const validationSchema = yup.object().shape<{ [k in keyof IFormValue]: any }>({
 
 const LeftSide: React.FC<ILeftSideProps> = props => {
   const { user } = useAppSelector((state: IRootState) => state.auth)
+  const { currentCategory } = useAppSelector(
+    (state: IRootState) => state.category,
+  )
   const [initialValues, setInitialValues] = useState<IFormValue>({
     productName: '',
     brand: '',
@@ -75,6 +79,16 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     size: '',
     color: '',
   })
+
+  const [customFields, setCustomFields] = useState<
+    {
+      name: string
+      type: string
+      options?: string[]
+      value?: string
+    }[]
+  >((currentCategory as IProductCategory)?.properties)
+
   const brands: IOption[] = [
     {
       id: '1',
@@ -360,6 +374,12 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     } catch (error) {}
   }
 
+  console.log('custom fields is', customFields)
+
+  useEffect(() => {
+    setCustomFields((currentCategory as IProductCategory)?.properties)
+  }, [currentCategory])
+
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-6">
       <h1 className="text-gray-600 font-bold text-2xl mb-2">
@@ -372,10 +392,55 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
         validationSchema={validationSchema}
       >
         {({ handleSubmit, submitForm, errors }) => {
-          console.log('ERRORS', { errors })
           return (
             <div className="grid grid-cols-2 gap-x-10 gap-y-5 mt-5">
-              <InputText
+              {(currentCategory as IProductCategory)?.properties?.map(
+                (property, propertyIndex) =>
+                  !!property?.options?.length ? (
+                    <>
+                      <SelectCustomFieldComponent
+                        placeholder={`Chọn trường ${property?.name}`}
+                        name={property.name}
+                        label={`${property?.name}`}
+                        options={property?.options}
+                        optionSelected={
+                          customFields?.[propertyIndex]?.value || ''
+                        }
+                        onSelect={option => {
+                          let cloneFieldValue = [...customFields]
+                          cloneFieldValue[propertyIndex] = {
+                            ...customFields[propertyIndex],
+                            value: option,
+                          }
+                          setCustomFields([...cloneFieldValue])
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      {property.type == 'text' ? (
+                        <InputText
+                          name={`${property?.name}`}
+                          value={'100'}
+                          label={`${property?.name}`}
+                          placeholder={`Nhập ${property?.name} của sản phẩm`}
+                        />
+                      ) : (
+                        <>
+                          {property.type == 'number' ? (
+                            <InputNumber
+                              name={`${property?.name}`}
+                              value={'100'}
+                              label={`${property?.name}`}
+                              placeholder={`Nhập ${property?.name} của sản phẩm`}
+                            />
+                          ) : null}
+                        </>
+                      )}
+                    </>
+                  ),
+              )}
+              {/* <InputText
                 name="productName"
                 value={initialValues.productName}
                 label="Tên sản phẩm"
@@ -476,7 +541,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
                 <MultipleUploadImage
                   onSelect={listImage => setImagesSelected(listImage)}
                 />
-              </div>
+              </div> */}
 
               <div className="col-span-2 mt-2">
                 <Button

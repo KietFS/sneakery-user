@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 //design
 import InputSearch from '@/designs/InputSearch'
-import { UserIcon, UserPlusIcon } from '@heroicons/react/20/solid'
-import { Bars3Icon } from '@heroicons/react/24/outline'
+import { Bars4Icon, UserIcon, UserPlusIcon } from '@heroicons/react/20/solid'
+import { Bars3Icon, ShoppingCartIcon } from '@heroicons/react/24/outline'
 import UserCard from '../UserCard'
 
 //store
@@ -23,6 +23,9 @@ import {
   setUser,
   setUserBalance,
 } from '@/redux/slices/auth'
+import axios from 'axios'
+import { Config } from '@/config/api'
+import { CategoryOutlined } from '@mui/icons-material'
 
 interface IHeaderV2Props {}
 
@@ -32,6 +35,10 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
 
   //state
   const [openLogin, setOpenLogin] = useState<boolean>(false)
+  const [isGettingProductCategory, setIsGettingProductCategory] =
+    useState<boolean>(false)
+  const [displayMenu, setDisplayMenu] = useState<boolean>(false)
+  const [categories, setCategories] = useState<IProductCategory[]>([])
   const [openRegister, setOpenRegister] = useState<boolean>(false)
   const { openEmailSentDialog } = useAppSelector(
     (state: IRootState) => state.auth,
@@ -48,7 +55,24 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
     if (balanceInfo) {
       store.dispatch(setUserBalance(balanceInfo?.balance))
     }
+
+    getProductCategories()
   }, [])
+
+  const getProductCategories = async () => {
+    try {
+      setIsGettingProductCategory(true)
+      const response = await axios.get(`${Config.API_URL}/categories/`)
+
+      if (response?.data?.success) {
+        console.log('RESPONSE', response)
+        setIsGettingProductCategory(false)
+        setCategories(response?.data?.data)
+      }
+    } catch (error) {
+      setIsGettingProductCategory(false)
+    }
+  }
 
   return (
     <div className="w-full shadow-lg pb-4 laptop:pb-0 ">
@@ -78,43 +102,29 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
             </div>
           )}
         </div>
-        <div className="laptop:w-[230px] desktop:w-[400px] hidden laptop:flex">
+        <div className="laptop:w-[300px] desktop:w-[600px] hidden laptop:flex">
           <InputSearch />
         </div>
         <div className="laptop:flex justify-between items-center space-x-10 hidden">
-          <p
-            className=" text-gray-500 font-bold text-sm cursor-pointer hover:text-gray-700"
-            onClick={() => {
-              dispatch(setCategory('nam'))
-              router.push('/category')
-            }}
+          {/* {categories?.length > 0 &&
+            categories?.map((category, categoryIndex) => (
+              <p className="text-sm text-gray-600 font-semibold">
+                {category?.name}
+              </p>
+            ))} */}
+
+          <button
+            className="flex items-center group-hover:text-blue-500 hover:text-blue-500"
+            onMouseOver={() => setDisplayMenu(true)}
           >
-            Nam
-          </p>
-          <p
-            className=" text-gray-500 font-bold text-sm cursor-pointer hover:text-gray-700 "
-            onClick={() => {
-              dispatch(setCategory('nu'))
-              router.push('/category')
-            }}
-          >
-            Nữ
-          </p>
-          <p
-            className=" text-gray-500 font-bold text-sm cursor-pointer hover:text-gray-700"
-            onClick={() => {
-              dispatch(setCategory('unisex'))
-              router.push('/category')
-            }}
-          >
-            Unisex
-          </p>
-          <p
-            className=" text-gray-500 font-bold text-sm cursor-pointer hover:text-gray-700"
-            onClick={() => router.push('/cart')}
-          >
-            Giỏ hàng
-          </p>
+            <Bars4Icon className="w-5 h-5 text-gray-600 mr-2 " />
+            <p className="text-sm text-gray-600 font-semibold ">Danh mục</p>
+          </button>
+
+          <button className="flex items-center group-hover:text-blue-500 hover:text-blue-500">
+            <ShoppingCartIcon className="w-5 h-5 text-gray-600 mr-2 " />
+            <p className="text-sm text-gray-600 font-semibold">Giỏ hàng</p>
+          </button>
         </div>
         <div className="hidden laptop:flex">
           {!!user ? (
@@ -160,6 +170,22 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
           open={openEmailSentDialog}
           onClose={() => dispatch(setOpenEmailSentDialog(false))}
         />
+      ) : null}
+      {displayMenu ? (
+        <div
+          className=" z-0 px-20 justify-center flex bg-blue-200 "
+          onMouseLeave={() => setDisplayMenu(false)}
+        >
+          <div className="w-3/5 mx-auto  absolute top-20 mr-20 h-[200px] bg-white shadow-xl px-4 z-50  py-4 grid grid-cols-4 grid-row-4 flex-wrap gap-y-2">
+            {categories?.map((category, categoryIndex) => (
+              <button className="h-fit">
+                <p className="text-gray-600 text-xs text-left hover:text-blue-500 ">
+                  {category?.name}
+                </p>
+              </button>
+            ))}
+          </div>
+        </div>
       ) : null}
     </div>
   )

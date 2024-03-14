@@ -3,23 +3,19 @@ import React, { ReactNode, useRef } from 'react'
 //styles
 import { Select, MenuItem } from '@mui/material'
 
-interface ISelectProps<T = any> {
+interface ISelectCustomFieldProps {
   name: string
   label: string
   placeholder: string
-  options: T[]
-  optionSelected: T
-  onSelect: (option: T) => void
-  keyValue?: string
-  keyLabel?: string
-  renderOption?: (item: T[]) => ReactNode
+  options: string[]
+  optionSelected: string
+  onSelect: (option: string) => void
+  renderOption?: (item: string[]) => ReactNode
   error?: string
   customStyles?: React.CSSProperties
 }
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
 
-const SelectComponent: React.FC<ISelectProps> = props => {
+const SelectCustomFieldComponent: React.FC<ISelectCustomFieldProps> = props => {
   const ref = useRef()
   const {
     name,
@@ -27,8 +23,6 @@ const SelectComponent: React.FC<ISelectProps> = props => {
     placeholder = '',
     options,
     optionSelected,
-    keyValue = 'id',
-    keyLabel = 'name',
     onSelect,
     renderOption,
     error = '',
@@ -60,9 +54,7 @@ const SelectComponent: React.FC<ISelectProps> = props => {
           }}
           renderValue={value => (
             <div className="flex h-full items-center">
-              <p className="text-gray-900 text-sm items-center  ">
-                {value[keyLabel]}
-              </p>
+              <p className="text-gray-900 text-sm items-center  ">{value}</p>
             </div>
           )}
           sx={{
@@ -76,11 +68,11 @@ const SelectComponent: React.FC<ISelectProps> = props => {
             ? renderOption(options)
             : options?.map((option, index) => (
                 <MenuItem
-                  value={option[keyValue]}
+                  value={option}
                   onClick={() => onSelect(option)}
                   key={index.toString()}
                 >
-                  {option[keyLabel]}
+                  {option}
                 </MenuItem>
               ))}
         </Select>
@@ -92,4 +84,4 @@ const SelectComponent: React.FC<ISelectProps> = props => {
   )
 }
 
-export default SelectComponent
+export default SelectCustomFieldComponent

@@ -15,7 +15,7 @@ import AddressDialog from '@/components/AddressDialog'
 import AccountDialog from '@/components/AccountDialog'
 import OrderHistoryDialog from '@/components/OrderHistoryDialog'
 import LogoutConfirmDialog from '@/components/LogoutConfirmDialog'
-import PostedDialog from '@/components/PostedDialog'
+import SelectCategoryDialog from '@/components/PostedDialog'
 import WalletDialog from '@/components/WalletDialog'
 import WithDrawDialog from '@/components/WithDrawDialog'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
@@ -223,7 +223,7 @@ export default function MultipleSelectPlaceholder() {
       ) : null}
 
       {openPostedDialog ? (
-        <PostedDialog
+        <SelectCategoryDialog
           open={openPostedDialog}
           onClose={() => setOpenPostedDialog(false)}
         />

@@ -25,7 +25,7 @@ const DatePicker: React.FC<IDatePickerProps> = props => {
   //state
   const [dayError, setError] = useState<string | null>(null)
   const [value, setValue] = React.useState<Dayjs | null>(
-    dayjs('2022-12-31T21:12:00'),
+    dayjs(Date.now() + 1000 * 60 * 60 * 24),
   )
 
   useEffect(() => {

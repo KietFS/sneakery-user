@@ -123,6 +123,12 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
                       type="submit"
                       name="submit-login"
                       onClick={() => handleSubmit()}
+                      onKeyDown={e => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          submitForm()
+                        }
+                      }}
                       className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
                     >
                       {loginLoading ? (
