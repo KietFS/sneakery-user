@@ -29,6 +29,8 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
   const { open, onClose } = props
   const router = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [listCategories, setListCategories] = useState<IProductCategory[]>([])
+
   const dispatch = useDispatch()
   const { currentCategory } = useAppSelector(
     (state: IRootState) => state.category,
@@ -41,65 +43,28 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
     router.push('/createProduct')
   }
 
+  const getListProductCategories = async () => {
+    try {
+      setIsLoading(true)
+      const response = await axios.get(`${Config.API_URL}/categories/`)
+      if (response?.data?.success) {
+        setListCategories(response?.data?.data)
+        setIsLoading(false)
+      } else {
+        setIsLoading(false)
+        console.log('Get list product categories failed', response?.data)
+      }
+    } catch (error) {
+      setIsLoading(false)
+      console.log('Get list product categories failed', error)
+    }
+  }
+
   const handlePressClose = () => onClose()
 
-  const listCategory = [
-    {
-      id: 1,
-      name: 'Watches',
-      properties: [
-        {
-          name: 'Brand',
-          type: 'text',
-        },
-        {
-          name: 'Water Resistance',
-          type: 'boolean',
-        },
-        {
-          name: 'Price',
-          type: 'number',
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: 'Shoes',
-      properties: [
-        {
-          name: 'Brand',
-          type: 'text',
-          options: ['Nike', 'Adidas', 'Puma'],
-        },
-        {
-          name: 'Size',
-          type: 'text',
-        },
-        {
-          name: 'Color',
-          type: 'text',
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: 'Clothes',
-      properties: [
-        {
-          name: 'Brand',
-          type: 'text',
-        },
-        {
-          name: 'Size',
-          type: 'text',
-        },
-        {
-          name: 'Material',
-          type: 'text',
-        },
-      ],
-    },
-  ]
+  useEffect(() => {
+    getListProductCategories()
+  }, [])
 
   return (
     <Dialog
@@ -121,29 +86,58 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
           </div>
           {isLoading ? (
             <div>
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>{' '}
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+              <div className="grid grid-cols-6 gap-x-4 gap-y-4">
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+              </div>
+              <div className="flex justify-between items-center mt-12">
+                <div></div>
+                <div className="flex items-center">
+                  <Button
+                    variant="secondary"
+                    onClick={handlePressClose}
+                    title="Đóng"
+                  />
+                  <Button
+                    type="submit"
+                    title="Xác nhận"
+                    variant="primary"
+                    onClick={handlePressConfirm}
+                    className="ml-2"
+                  />
+                </div>
+              </div>
             </div>
           ) : (
             <>
               <div className="">
-                <SelectComponent
-                  customStyles={{ width: '850px', height: 50 }}
-                  name="category"
-                  label="Chọn danh mục sản phẩm"
-                  optionSelected={currentCategory}
-                  onSelect={option => {
-                    dispatchSetCurrentCategory(option)
-                  }}
-                  keyValue="id"
-                  keyLabel="name"
-                  options={listCategory}
-                  placeholder="Chọn quận bạn muốn giao hàng đến"
-                />
+                <div className="grid grid-cols-6 gap-x-4 gap-y-4">
+                  {listCategories?.map((category, categoryIndex) => (
+                    <button
+                      onClick={() => dispatchSetCurrentCategory(category)}
+                      className={`px-2 h-[60px] bg-white ${currentCategory?.name == category?.name ? `border-blue-500 bg-blue-100` : `border-gray-300`}  border   hover:opacity-60 shadow-lg rounded-lg`}
+                    >
+                      <p
+                        className={`text-gray-500 text-xs ${currentCategory?.name == category?.name ? `text-blue-500` : `text-gray-600`}`}
+                      >
+                        {category?.name}
+                      </p>
+                    </button>
+                  ))}
+                </div>
                 <div className="flex justify-between items-center mt-12">
                   <div></div>
                   <div className="flex items-center">

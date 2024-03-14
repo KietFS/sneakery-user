@@ -8,7 +8,7 @@ import InputNumber from '@/designs/InputNumber'
 import InputText from '@/designs/InputText'
 import UploadImage from '@/designs/UploadImage'
 import MultipleUploadImage from '@/designs/MultipleUploadImage'
-import { MenuItem } from '@mui/material'
+import { IconButton, MenuItem, Tooltip } from '@mui/material'
 
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
@@ -23,6 +23,9 @@ import { Formik } from 'formik'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import SelectCustomFieldComponent from '@/components/SelectCustomField'
+import RadioButton from '@/designs/RadioButton'
+import { PencilIcon, TagIcon } from '@heroicons/react/24/outline'
+import SelectCategoryDialog from '@/components/SelectCategoryDialog'
 
 interface ILeftSideProps {}
 
@@ -88,359 +91,123 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       value?: string
     }[]
   >((currentCategory as IProductCategory)?.properties)
-
-  const brands: IOption[] = [
-    {
-      id: '1',
-      name: 'Nike',
-    },
-    {
-      id: '2',
-      name: 'Adidas',
-    },
-    {
-      id: '3',
-      name: 'Puma',
-    },
-    {
-      id: '4',
-      name: 'Balenciaga',
-    },
-    {
-      id: '5',
-      name: 'Saint Laurent',
-    },
-    {
-      id: '6',
-      name: 'Dior',
-    },
-    {
-      id: '7',
-      name: 'Balenciaga',
-    },
-    {
-      id: '8',
-      name: 'Chanel',
-    },
-  ]
-  const conditions: IOption[] = [
-    {
-      id: 'fullbox',
-      name: 'Nguyên seal',
-    },
-    {
-      id: 'used',
-      name: 'Đã qua sử dụng',
-    },
-  ]
-  const categories: IOption[] = [
-    {
-      id: 'nam',
-      name: 'Nam',
-    },
-    {
-      id: 'nu',
-      name: 'Nữ',
-    },
-    {
-      id: 'unisex',
-      name: 'Unisex',
-    },
-  ]
-  const sizes: IOption[] = [
-    {
-      id: '36',
-      name: 'Size 36 (VN) - 5.5 (US)',
-    },
-    {
-      id: '37',
-      name: 'Size 37 (VN) - 6 (US)',
-    },
-
-    {
-      id: '38',
-      name: 'Size 38 (VN) - 7 (US)',
-    },
-    {
-      id: '39',
-      name: 'Size 39 (VN) - 8 (US)',
-    },
-    {
-      id: '40',
-      name: 'Size 40 (VN) - 8.5 (US)',
-    },
-    {
-      id: '41',
-      name: 'Size 41 (VN) - 9.5 (US)',
-    },
-    {
-      id: '42',
-      name: 'Size 42 (VN) - 10 (US)',
-    },
-    {
-      id: '43',
-      name: 'Size 43 (VN) - 11 (US)',
-    },
-    {
-      id: '44',
-      name: 'Size 44 (VN) - 11.5 (US)',
-    },
-    {
-      id: '45',
-      name: 'Size 45 (VN) - 12.5 (US)',
-    },
-  ]
-  const colors: IColor[] = [
-    {
-      id: 'white',
-      name: 'Trắng',
-      bg: 'bg-white',
-    },
-    {
-      id: 'silver',
-      name: 'Bạc',
-      bg: 'bg-silver-500',
-    },
-    {
-      id: 'gray',
-      name: 'Xám',
-      bg: 'bg-gray-500',
-    },
-    {
-      id: 'black',
-      name: 'Đen',
-      bg: 'bg-black-500',
-    },
-    {
-      id: 'denim',
-      name: 'Denim',
-      bg: 'bg-denim-500',
-    },
-    {
-      id: 'cream',
-      name: 'Kem',
-      bg: 'bg-cream-500',
-    },
-    {
-      id: 'red',
-      name: 'Đỏ',
-      bg: 'bg-red-500',
-    },
-    {
-      id: 'pink',
-      name: 'Hồng',
-      bg: 'bg-pink-500',
-    },
-    {
-      id: 'green',
-      name: 'Xanh lá',
-      bg: 'bg-green-500',
-    },
-    {
-      id: 'yellow',
-      name: 'Màu vàng',
-      bg: 'bg-yellow-500',
-    },
-    {
-      id: 'brown',
-      name: 'Màu nâu',
-      bg: 'bg-brown-500',
-    },
-  ]
-
-  //state
-  const [brandSelected, setBrandSelected] = useState<IOption | null>(null)
-  const [conditionSelected, setConditionSelected] = useState<IOption | null>(
-    null,
-  )
-  const [categorySelected, setCategorySelected] = useState<IOption | null>(null)
-  const [sizeSelected, setSizeSelected] = useState<IOption | null>(null)
-  const [colorSelected, setColorSelected] = useState<IColor | null>(null)
-  const [thumbnailSelected, setThumbnailSelected] = useState<any[] | null>(null)
-  const [imagesSelected, setImagesSelected] = useState<any[] | null>(null)
-  const [brandError, setBrandError] = useState<string>('')
-  const [categoryError, setCategoryError] = useState<string>('')
-  const [colorError, setColorError] = useState<string>('')
-  const [conditionError, setConditionError] = useState<string>('')
-  const [sizeError, setSizeError] = useState<string>('')
-  const [createLoading, setCreateLoading] = useState<boolean>(false)
-  const [address, setAddress] = useState<any | null>(null)
-
-  //hooks
-  const router = useRouter()
+  const [openSelectCategory, setOpenSelectCategory] = useState<boolean>(false)
 
   //functions
-  const handleSubmit = async (values: IFormValue) => {
-    const newDate = values.bidClosingDate?.split('T')
-    let isAM = newDate?.[1].slice(-2)
-    if (brandSelected === null) {
-      setBrandError('Vui lòng chọn thương hiệu')
-    }
-    if (categorySelected === null) {
-      setCategoryError('Vui lòng chọn danh mục')
-    }
-    if (colorSelected === null) {
-      setColorError('Vui lòng chọn màu')
-    }
-    if (conditionSelected === null) {
-      setConditionError('Vui lòng chọn tình trạng')
-    }
-    if (sizeSelected === null) {
-      setSizeError('vui lòng chọn size')
-    }
-    if (
-      brandSelected === null ||
-      categorySelected === null ||
-      colorSelected === null ||
-      conditionSelected === null ||
-      sizeSelected === null
-    ) {
-    } else {
-      const payload = {
-        name: values.productName,
-        condition: conditionSelected?.id.toUpperCase(),
-        category: categorySelected?.id,
-        brand: brandSelected?.name,
-        color: colorSelected?.id as string,
-        size: Number(sizeSelected.id),
-        bidClosingDateTime: values.bidClosingDate,
-        priceStart: Number(values.priceStart?.split(',').join('')),
-        stepBid: Number(values.stepBid?.split(',').join('')),
-      }
-      let formData = new FormData()
-      const json = JSON.stringify(payload)
-      const blob = new Blob([json], {
-        type: 'application/json',
-      })
-      formData.append('thumbnail', thumbnailSelected?.[0])
-      imagesSelected?.map(image => formData.append('images', image))
-      formData.append('bidCreateRequest', blob)
-      try {
-        setCreateLoading(true)
-        const response = await axios({
-          method: 'post',
-          url: `${Config.API_URL}/bids`,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${user?.token}`,
-          },
-          data: formData,
-        })
-        const { data, isSuccess, error } = configResponse(response)
-        if (isSuccess) {
-          toast.success('Tạo sản phẩm thành công', {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-          })
-          router.push('/')
-        }
-      } catch (error) {
-        console.log('CREATE BID ERROR', { error })
-      } finally {
-        setCreateLoading(false)
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (user) {
-      getUserAddress()
-    }
-  }, [user])
-
-  const getUserAddress = async () => {
-    try {
-      const response = await axios.get(
-        `${Config.API_URL}/addresses/${user?.id}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        },
-      )
-      const { data, isSuccess, error } = configResponse(response)
-
-      if (isSuccess) {
-        setAddress(data?.data)
-      } else {
-        console.log('Error', error)
-      }
-    } catch (error) {}
-  }
-
-  console.log('custom fields is', customFields)
+  const handleSubmit = async (values: IFormValue) => {}
 
   useEffect(() => {
     setCustomFields((currentCategory as IProductCategory)?.properties)
   }, [currentCategory])
 
   return (
-    <div className="bg-white border-gray-200 border rounded-xl h-full p-6">
-      <h1 className="text-gray-600 font-bold text-2xl mb-2">
-        Thêm sản phẩm đấu giá
-      </h1>
-      <Formik
-        initialValues={initialValues}
-        enableReinitialize
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        {({ handleSubmit, submitForm, errors }) => {
-          return (
-            <div className="grid grid-cols-2 gap-x-10 gap-y-5 mt-5">
-              {(currentCategory as IProductCategory)?.properties?.map(
-                (property, propertyIndex) =>
-                  !!property?.options?.length ? (
-                    <>
-                      <SelectCustomFieldComponent
-                        placeholder={`Chọn trường ${property?.name}`}
-                        name={property.name}
-                        label={`${property?.name}`}
-                        options={property?.options}
-                        optionSelected={
-                          customFields?.[propertyIndex]?.value || ''
-                        }
-                        onSelect={option => {
-                          let cloneFieldValue = [...customFields]
-                          cloneFieldValue[propertyIndex] = {
-                            ...customFields[propertyIndex],
-                            value: option,
-                          }
-                          setCustomFields([...cloneFieldValue])
-                        }}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      {property.type == 'text' ? (
-                        <InputText
-                          name={`${property?.name}`}
-                          value={'100'}
+    <>
+      <div className="bg-white border-gray-200 border rounded-xl h-full p-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-gray-600 font-bold text-2xl mb-2">
+            Thêm sản phẩm đấu giá
+          </h1>
+          <Tooltip title="Thay đổi danh mục">
+            <IconButton onClick={() => setOpenSelectCategory(true)}>
+              <TagIcon className="w-6 h-6 text-gray-500 font-semibold" />
+            </IconButton>
+          </Tooltip>
+        </div>
+        <Formik
+          initialValues={initialValues}
+          enableReinitialize
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          {({ handleSubmit, submitForm, errors }) => {
+            return (
+              <div className="grid grid-cols-2 gap-x-10 gap-y-5 mt-5">
+                <InputText
+                  name={`name`}
+                  label={`Tên sản phẩm`}
+                  placeholder={`Nhập tên của sản phẩm`}
+                />
+                <InputNumber
+                  name={`startPrice`}
+                  label={`Giá khởi điểm`}
+                  placeholder={`Nhập giá khởi điểm của sản phẩm`}
+                />
+                <InputNumber
+                  name={`bidIncrement`}
+                  label={`Bước giá`}
+                  placeholder={`Nhập bước giá của sản phẩm`}
+                />
+
+                {(currentCategory as IProductCategory)?.properties?.map(
+                  (property, propertyIndex) =>
+                    !!property?.options?.length ? (
+                      <>
+                        <SelectCustomFieldComponent
+                          placeholder={`Chọn trường ${property?.name}`}
+                          name={property.name}
                           label={`${property?.name}`}
-                          placeholder={`Nhập ${property?.name} của sản phẩm`}
+                          options={property?.options}
+                          optionSelected={
+                            customFields?.[propertyIndex]?.value || ''
+                          }
+                          onSelect={option => {
+                            let cloneFieldValue = [...customFields]
+                            cloneFieldValue[propertyIndex] = {
+                              ...customFields[propertyIndex],
+                              value: option,
+                            }
+                            setCustomFields([...cloneFieldValue])
+                          }}
                         />
-                      ) : (
-                        <>
-                          {property.type == 'number' ? (
-                            <InputNumber
-                              name={`${property?.name}`}
-                              value={'100'}
-                              label={`${property?.name}`}
-                              placeholder={`Nhập ${property?.name} của sản phẩm`}
-                            />
-                          ) : null}
-                        </>
-                      )}
-                    </>
-                  ),
-              )}
-              {/* <InputText
+                      </>
+                    ) : (
+                      <>
+                        {property.type == 'text' ? (
+                          <InputText
+                            name={`${property?.name}`}
+                            value={'100'}
+                            label={`${property?.name}`}
+                            placeholder={`Nhập ${property?.name} của sản phẩm`}
+                          />
+                        ) : (
+                          <>
+                            {property.type == 'number' ? (
+                              <InputNumber
+                                name={`${property?.name}`}
+                                value={'100'}
+                                label={`${property?.name}`}
+                                placeholder={`Nhập ${property?.name} của sản phẩm`}
+                              />
+                            ) : (
+                              <SelectComponent
+                                name={`${property?.name}`}
+                                onSelect={option => {}}
+                                label={`${property.name}`}
+                                placeholder={`Chọn ${property?.name}`}
+                                optionSelected={{ id: true, name: 'Đúng' }}
+                                options={[
+                                  { id: true, name: 'Đúng' },
+                                  { id: false, name: 'Sai' },
+                                ]}
+                              />
+                            )}
+                          </>
+                        )}
+                      </>
+                    ),
+                )}
+
+                {/* <UploadImage
+                onSelect={listImage => {
+                  // setThumbnailSelected(listImage)
+                }}
+              />
+              <MultipleUploadImage
+                onSelect={listImage => {
+                  // setImagesSelected(listImage)
+                }}
+              /> */}
+                {/* <InputText
                 name="productName"
                 value={initialValues.productName}
                 label="Tên sản phẩm"
@@ -543,20 +310,28 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
                 />
               </div> */}
 
-              <div className="col-span-2 mt-2">
-                <Button
-                  variant="primary"
-                  isLoading={createLoading}
-                  type="submit"
-                  title="Đăng sản phẩm"
-                  onClick={() => handleSubmit(initialValues as any)}
-                />
+                <div className="col-span-2 mt-2">
+                  <Button
+                    variant="primary"
+                    isLoading={false}
+                    type="submit"
+                    title="Đăng sản phẩm"
+                    onClick={() => handleSubmit(initialValues as any)}
+                  />
+                </div>
               </div>
-            </div>
-          )
-        }}
-      </Formik>
-    </div>
+            )
+          }}
+        </Formik>
+      </div>
+
+      {openSelectCategory ? (
+        <SelectCategoryDialog
+          open={openSelectCategory}
+          onClose={() => setOpenSelectCategory(false)}
+        />
+      ) : null}
+    </>
   )
 }
 

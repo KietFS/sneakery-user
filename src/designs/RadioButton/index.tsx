@@ -11,6 +11,8 @@ interface IRadioButtonProps<T = any> {
   renderOption?: (item: T) => ReactNode
   keyLabel: string
   keyValue: string
+  accordition?: boolean
+  customLabel?: React.ReactNode
 }
 
 const RadioButton: React.FC<IRadioButtonProps> = props => {
@@ -22,46 +24,62 @@ const RadioButton: React.FC<IRadioButtonProps> = props => {
     keyLabel,
     keyValue,
     options,
+    accordition = true,
+    customLabel = null,
   } = props
   const [openBelow, setOpenBelow] = useState<boolean>(true)
   return (
     <div className="mt-4">
       <div
         className="flex gap-x-1 items-center hover:opacity-60 cursor-pointer"
-        onClick={() => setOpenBelow(!openBelow)}
+        onClick={() => {
+          accordition ? setOpenBelow(!openBelow) : {}
+        }}
       >
-        <p className="text-gray-600 text-lg font-semibold">{label}</p>
-        {!openBelow ? (
-          <ChevronDownIcon className="w-6 h-6 text-gray-600" />
+        {customLabel ? (
+          customLabel
         ) : (
-          <ChevronUpIcon className="w-6 h-6 text-gray-600" />
+          <p className="text-gray-600 text-lg font-semibold">{label}</p>
         )}
-      </div>
-      {openBelow ? (
-        <div className="flex flex-col mt-2 gap-y-2">
-          {options?.map(option => (
-            <div
-              className="flex flex-row gap-x-3 cursor-pointer items-center text-gray-500 justify-between"
-              onClick={() =>
-                optionSelected?.[keyValue] === option?.[keyValue]
-                  ? onSelect(null)
-                  : onSelect(option)
-              }
-            >
-              <p className="text-gray-600 text-sm">{option?.[keyLabel]}</p>
-              {optionSelected?.[keyValue] === option?.[keyValue] ? (
-                <div className="w-4 h-4 rounded-full border border-blue-500 bg-white justify-center items-center flex">
-                  <div className="w-3 h-3 mx-auto bg-blue-500 rounded-full" />
-                </div>
+        <>
+          {accordition ? (
+            <>
+              {!openBelow ? (
+                <ChevronDownIcon className="w-6 h-6 text-gray-600" />
               ) : (
-                <div className="w-4 h-4 rounded-full border border-gray-500 bg-white justify-center items-center flex">
-                  <div className="w-3 h-3 mx-auto bg-white rounded-full" />
-                </div>
+                <ChevronUpIcon className="w-6 h-6 text-gray-600" />
               )}
-            </div>
-          ))}
-        </div>
-      ) : null}
+            </>
+          ) : null}
+        </>
+      </div>
+      <>
+        {openBelow ? (
+          <div className="flex flex-col mt-2 gap-y-2">
+            {options?.map(option => (
+              <div
+                className="flex flex-row gap-x-3 cursor-pointer items-center text-gray-500 justify-between"
+                onClick={() =>
+                  optionSelected?.[keyValue] === option?.[keyValue]
+                    ? onSelect(null)
+                    : onSelect(option)
+                }
+              >
+                <p className="text-gray-600 text-sm">{option?.[keyLabel]}</p>
+                {optionSelected?.[keyValue] === option?.[keyValue] ? (
+                  <div className="w-4 h-4 rounded-full border border-blue-500 bg-white justify-center items-center flex">
+                    <div className="w-3 h-3 mx-auto bg-blue-500 rounded-full" />
+                  </div>
+                ) : (
+                  <div className="w-4 h-4 rounded-full border border-gray-500 bg-white justify-center items-center flex">
+                    <div className="w-3 h-3 mx-auto bg-white rounded-full" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </>
     </div>
   )
 }
