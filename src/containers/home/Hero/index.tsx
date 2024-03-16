@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import HeroImage from '@/assets/images/HeroImage.png'
 import { MapPinIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
-import SelectCategoryDialog from '@/components/SelectCategoryDialog'
+import SelectCategoryDialog from '@/designs/SelectCategoryDialog'
 
 interface IHeroSectionProps {}
 

@@ -16,8 +16,6 @@ interface ISelectProps<T = any> {
   error?: string
   customStyles?: React.CSSProperties
 }
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
 
 const SelectComponent: React.FC<ISelectProps> = props => {
   const ref = useRef()

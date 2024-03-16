@@ -1,31 +1,22 @@
 import React, { useEffect, useState } from 'react'
 
 //styles
-import SelectComponent from '@/components/Select'
+import SelectComponent from '@/designs/Select'
 import Button from '@/designs/Button'
-import DatePicker from '@/designs/DatePicker'
-import InputNumber from '@/designs/InputNumber'
-import InputText from '@/designs/InputText'
-import UploadImage from '@/designs/UploadImage'
-import MultipleUploadImage from '@/designs/MultipleUploadImage'
 import { IconButton, MenuItem, Tooltip } from '@mui/material'
 
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
-import { useRouter } from 'next/router'
 
 //utils
-import axios from 'axios'
 import * as yup from 'yup'
 import { IRootState } from '@/redux'
-import { toast } from 'react-toastify'
-import { Formik } from 'formik'
-import { Config } from '@/config/api'
-import { configResponse } from '@/utils/request'
 import SelectCustomFieldComponent from '@/components/SelectCustomField'
-import RadioButton from '@/designs/RadioButton'
-import { PencilIcon, TagIcon } from '@heroicons/react/24/outline'
-import SelectCategoryDialog from '@/components/SelectCategoryDialog'
+import { TagIcon } from '@heroicons/react/24/outline'
+import SelectCategoryDialog from '@/designs/SelectCategoryDialog'
+import InputHookForm from '@/designs/InputHookForm'
+import { useForm } from 'react-hook-form'
+import SelectCustomFieldHookForm from '@/designs/SelectCustomFieldHookForm'
 
 interface ILeftSideProps {}
 
@@ -60,28 +51,12 @@ export interface IAddressResponse {
   ward: IOption
 }
 
-const validationSchema = yup.object().shape<{ [k in keyof IFormValue]: any }>({
-  productName: yup.string().required('Vui lòng nhập tên sản phẩm'),
-  priceStart: yup.string().required('Vui lòng giá khởi điển'),
-  stepBid: yup.string().required('Vui lòng nhập bước giá'),
-})
-
 const LeftSide: React.FC<ILeftSideProps> = props => {
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const { currentCategory } = useAppSelector(
     (state: IRootState) => state.category,
   )
-  const [initialValues, setInitialValues] = useState<IFormValue>({
-    productName: '',
-    brand: '',
-    condition: '',
-    category: '',
-    priceStart: '',
-    stepBid: '',
-    bidClosingDate: '',
-    size: '',
-    color: '',
-  })
+  const { control, register, handleSubmit, getValues } = useForm()
 
   const [customFields, setCustomFields] = useState<
     {
@@ -94,7 +69,9 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const [openSelectCategory, setOpenSelectCategory] = useState<boolean>(false)
 
   //functions
-  const handleSubmit = async (values: IFormValue) => {}
+  const handlePressCreateProduct = (values: any) => {
+    console.log('VALUES IS', values)
+  }
 
   useEffect(() => {
     setCustomFields((currentCategory as IProductCategory)?.properties)
@@ -113,91 +90,88 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
             </IconButton>
           </Tooltip>
         </div>
-        <Formik
-          initialValues={initialValues}
-          enableReinitialize
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          {({ handleSubmit, submitForm, errors }) => {
-            return (
-              <div className="grid grid-cols-2 gap-x-10 gap-y-5 mt-5">
-                <InputText
-                  name={`name`}
-                  label={`Tên sản phẩm`}
-                  placeholder={`Nhập tên của sản phẩm`}
-                />
-                <InputNumber
-                  name={`startPrice`}
-                  label={`Giá khởi điểm`}
-                  placeholder={`Nhập giá khởi điểm của sản phẩm`}
-                />
-                <InputNumber
-                  name={`bidIncrement`}
-                  label={`Bước giá`}
-                  placeholder={`Nhập bước giá của sản phẩm`}
-                />
+        <div className="grid grid-cols-2 gap-x-10 gap-y-5 mt-5">
+          <InputHookForm
+            control={control}
+            label={`Tên sản phẩm`}
+            placeholder={`Nhập tên của sản phẩm`}
+            {...register('name', { required: 'Bạn chưa nhập tên sản phẩm' })}
+          />
+          <InputHookForm
+            control={control}
+            label={`Giá khởi điểm`}
+            placeholder={`Nhập giá khởi điểm của sản phẩm`}
+            {...register('startPrice', {
+              required: 'Bạn chưa nhập giá khởi điểm của sản phẩm',
+            })}
+          />
+          <InputHookForm
+            control={control}
+            label={`Bước giá`}
+            placeholder={`Nhập bước giá của sản phẩm`}
+            {...register('bidIncrement', {
+              required: 'Bạn chưa nhập bước giá của sản phẩm',
+            })}
+          />
 
-                {(currentCategory as IProductCategory)?.properties?.map(
-                  (property, propertyIndex) =>
-                    !!property?.options?.length ? (
-                      <>
-                        <SelectCustomFieldComponent
-                          placeholder={`Chọn trường ${property?.name}`}
-                          name={property.name}
+          {(currentCategory as IProductCategory)?.properties?.map(
+            (property, propertyIndex) =>
+              !!property?.options?.length ? (
+                <>
+                  <SelectCustomFieldHookForm
+                    placeholder={`Chọn trường ${property?.name}`}
+                    name={`properties.${property?.name}`}
+                    label={`Chọn ${property?.name}`}
+                    options={property?.options}
+                    control={control}
+                    onSelect={option => {
+                      let cloneFieldValue = [...customFields]
+                      cloneFieldValue[propertyIndex] = {
+                        ...customFields[propertyIndex],
+                        value: option,
+                      }
+                      setCustomFields([...cloneFieldValue])
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  {property.type == 'text' ? (
+                    <InputHookForm
+                      control={control}
+                      label={`${property?.name}`}
+                      placeholder={`Nhập ${property?.name} của sản phẩm`}
+                      {...register(`properties.${property?.name}`)}
+                    />
+                  ) : (
+                    <>
+                      {property.type == 'number' ? (
+                        <InputHookForm
+                          {...register(`properties.${property?.name}`)}
+                          control={control}
                           label={`${property?.name}`}
-                          options={property?.options}
-                          optionSelected={
-                            customFields?.[propertyIndex]?.value || ''
-                          }
-                          onSelect={option => {
-                            let cloneFieldValue = [...customFields]
-                            cloneFieldValue[propertyIndex] = {
-                              ...customFields[propertyIndex],
-                              value: option,
-                            }
-                            setCustomFields([...cloneFieldValue])
-                          }}
+                          placeholder={`Nhập ${property?.name} của sản phẩm`}
                         />
-                      </>
-                    ) : (
-                      <>
-                        {property.type == 'text' ? (
-                          <InputText
-                            name={`${property?.name}`}
-                            value={'100'}
-                            label={`${property?.name}`}
-                            placeholder={`Nhập ${property?.name} của sản phẩm`}
-                          />
-                        ) : (
-                          <>
-                            {property.type == 'number' ? (
-                              <InputNumber
-                                name={`${property?.name}`}
-                                value={'100'}
-                                label={`${property?.name}`}
-                                placeholder={`Nhập ${property?.name} của sản phẩm`}
-                              />
-                            ) : (
-                              <SelectComponent
-                                name={`${property?.name}`}
-                                onSelect={option => {}}
-                                label={`${property.name}`}
-                                placeholder={`Chọn ${property?.name}`}
-                                optionSelected={{ id: true, name: 'Đúng' }}
-                                options={[
-                                  { id: true, name: 'Đúng' },
-                                  { id: false, name: 'Sai' },
-                                ]}
-                              />
-                            )}
-                          </>
-                        )}
-                      </>
-                    ),
-                )}
+                      ) : (
+                        <SelectComponent
+                          {...register(`properties.${property?.name}`)}
+                          onSelect={option => {}}
+                          label={`${property.name}`}
+                          placeholder={`Chọn ${property?.name}`}
+                          optionSelected={{ id: true, name: 'Đúng' }}
+                          options={[
+                            { id: true, name: 'Đúng' },
+                            { id: false, name: 'Sai' },
+                          ]}
+                        />
+                      )}
+                    </>
+                  )}
+                </>
+              ),
+          )}
 
-                {/* <UploadImage
+          {/* <UploadImage
                 onSelect={listImage => {
                   // setThumbnailSelected(listImage)
                 }}
@@ -207,7 +181,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
                   // setImagesSelected(listImage)
                 }}
               /> */}
-                {/* <InputText
+          {/* <InputText
                 name="productName"
                 value={initialValues.productName}
                 label="Tên sản phẩm"
@@ -310,19 +284,16 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
                 />
               </div> */}
 
-                <div className="col-span-2 mt-2">
-                  <Button
-                    variant="primary"
-                    isLoading={false}
-                    type="submit"
-                    title="Đăng sản phẩm"
-                    onClick={() => handleSubmit(initialValues as any)}
-                  />
-                </div>
-              </div>
-            )
-          }}
-        </Formik>
+          <div className="col-span-2 mt-2">
+            <Button
+              variant="primary"
+              isLoading={false}
+              type="submit"
+              title="Đăng sản phẩm"
+              onClick={handleSubmit(handlePressCreateProduct)}
+            />
+          </div>
+        </div>
       </div>
 
       {openSelectCategory ? (

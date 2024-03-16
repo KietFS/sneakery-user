@@ -3,7 +3,7 @@ import * as React from 'react'
 //style
 import InputText from '@/designs/InputText'
 import Button from '@/designs/Button'
-import SelectComponent from '../Select'
+import SelectComponent from '../../designs/Select'
 import Image from 'next/image'
 import RichTextInput from '@/designs/RichTextInput'
 import GHNLogo from '@/assets/images/GHNLogo.png'

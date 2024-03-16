@@ -3,7 +3,7 @@ import * as React from 'react'
 //styles
 import RichTextInput from '@/designs/RichTextInput'
 import Button from '@/designs/Button'
-import SelectComponent from '@/components/Select'
+import SelectComponent from '@/designs/Select'
 import Dialog from '@mui/material/Dialog'
 import { DialogContent } from '@mui/material'
 
