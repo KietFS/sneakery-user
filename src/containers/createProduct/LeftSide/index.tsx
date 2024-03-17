@@ -53,12 +53,14 @@ export interface IAddressResponse {
 }
 
 const LeftSide: React.FC<ILeftSideProps> = props => {
+  //hooks
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const { currentCategory } = useAppSelector(
     (state: IRootState) => state.category,
   )
   const { control, register, handleSubmit, getValues } = useForm()
 
+  //local state
   const [customFields, setCustomFields] = useState<
     {
       name: string
@@ -70,8 +72,10 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const [openSelectCategory, setOpenSelectCategory] = useState<boolean>(false)
 
   //functions
-  const handlePressCreateProduct = (values: any) => {
-    console.log('VALUES IS', values)
+  const handleCreateBid = (values: any) => {
+    console.log('VALUES is', values)
+    try {
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -285,7 +289,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
               isLoading={false}
               type="submit"
               title="Đăng sản phẩm"
-              onClick={handleSubmit(handlePressCreateProduct)}
+              onClick={handleSubmit(handleCreateBid)}
             />
           </div>
         </div>

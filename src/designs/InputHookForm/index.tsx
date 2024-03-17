@@ -51,12 +51,12 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
                   onChange(e.target.value)
                   customOnChange?.(e.target.value)
                 }}
-                className={`px-2 py-1  bg-gray-100 text-gray-700 rounded-lg w-full h-10 text-sm focus:bg-blue-50 outline-none ring-0 outline-white border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent`}
+                className={`px-2 py-1 mt-2  bg-gray-100 text-gray-700 rounded-lg w-full h-[40px] text-sm focus:bg-blue-50 outline-none ring-0 outline-white border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent`}
               />
             </div>
             {!!error && (
               <p className="text-red-500 text-xs font-semibold mt-1">
-                {JSON.stringify(error)}
+                {error?.message}
               </p>
             )}
           </div>
