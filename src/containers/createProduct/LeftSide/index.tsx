@@ -18,6 +18,12 @@ import InputHookForm from '@/designs/InputHookForm'
 import { useForm } from 'react-hook-form'
 import SelectCustomFieldHookForm from '@/designs/SelectCustomFieldHookForm'
 import RadioButtonHookForm from '@/designs/RadioButtonHookForm'
+import UploadImage from '@/designs/UploadImage'
+import MultipleUploadImage from '@/designs/MultipleUploadImage'
+import axios from 'axios'
+import { Config } from '@/config/api'
+import DatePickerHookForm from '@/designs/DatePickerHookForm'
+import { toast } from 'react-toastify'
 
 interface ILeftSideProps {}
 
@@ -58,7 +64,16 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const { currentCategory } = useAppSelector(
     (state: IRootState) => state.category,
   )
-  const { control, register, handleSubmit, getValues } = useForm()
+  const { control, register, handleSubmit, getValues, setValue, watch } =
+    useForm()
+  const formTool = {
+    control,
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+    watch,
+  }
 
   //local state
   const [customFields, setCustomFields] = useState<
@@ -70,12 +85,83 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     }[]
   >((currentCategory as IProductCategory)?.properties)
   const [openSelectCategory, setOpenSelectCategory] = useState<boolean>(false)
+  const [thumbnailSelected, setThumbnailSelected] = useState<any[] | null>(null)
+  const [imagesSelected, setImagesSelected] = useState<any[] | null>(null)
+  const [createLoading, setCreateLoading] = useState<boolean>(false)
 
   //functions
-  const handleCreateBid = (values: any) => {
-    console.log('VALUES is', values)
+
+  const formatDate = (dateString: string) => {
+    // Chuỗi ngày tháng ban đầu
+
+    // Tạo một đối tượng Date từ chuỗi ban đầu
+    var originalDate = new Date(dateString)
+
+    // Thêm 3 ngày vào ngày ban đầu
+    originalDate.setDate(originalDate.getDate() + 3)
+
+    // Thiết lập giờ, phút và giây mới
+    originalDate.setHours(12)
+    originalDate.setMinutes(0)
+    originalDate.setSeconds(0)
+
+    // Lấy các thành phần ngày tháng năm mới
+    var newYear = originalDate.getFullYear()
+    var newMonth = originalDate.getMonth() + 1 // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+    var newDay = originalDate.getDate()
+
+    // Định dạng lại chuỗi ngày tháng năm mới theo yêu cầu
+    var newDateString =
+      newYear +
+      '-' +
+      (newMonth < 10 ? '0' : '') +
+      newMonth +
+      '-' +
+      (newDay < 10 ? '0' : '') +
+      newDay +
+      'T12:00:00'
+
+    return newDateString
+  }
+
+  const handleCreateBid = async (values: any) => {
+    const payload = {
+      ...values,
+      bidClosingDate: formatDate(values?.bidClosingDate),
+      priceStart: Number(values?.priceStart),
+      stepBid: Number(values?.stepBid),
+      categoryId: currentCategory?.id,
+    }
+    let formData = new FormData()
+    const payloadJSON = JSON.stringify(payload)
+    const payloadBlob = new Blob([payloadJSON], {
+      type: 'application/json',
+    })
+    formData.append('bidCreateRequest', payloadBlob)
+    //add image and thumbnail and we done
+    formData.append('thumbnail', thumbnailSelected?.[0])
+    imagesSelected?.map(image => formData.append('images', image))
+
     try {
-    } catch (error) {}
+      setCreateLoading(true)
+      const response = await axios({
+        method: 'post',
+        url: `${Config.API_URL}/bids`,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${user?.token}`,
+        },
+        data: formData,
+      })
+
+      if (response?.data?.success) {
+        setCreateLoading(false)
+        toast.success('Tạo sản phẩm đấu giá thành công')
+      }
+    } catch (error) {
+      setCreateLoading(false)
+      console.log('Create bid item error', error)
+    }
   }
 
   useEffect(() => {
@@ -106,7 +192,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
             control={control}
             label={`Giá khởi điểm`}
             placeholder={`Nhập giá khởi điểm của sản phẩm`}
-            {...register('startPrice', {
+            {...register('priceStart', {
               required: 'Bạn chưa nhập giá khởi điểm của sản phẩm',
             })}
           />
@@ -114,7 +200,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
             control={control}
             label={`Bước giá`}
             placeholder={`Nhập bước giá của sản phẩm`}
-            {...register('bidIncrement', {
+            {...register('stepBid', {
               required: 'Bạn chưa nhập bước giá của sản phẩm',
             })}
           />
@@ -170,123 +256,32 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
               ),
           )}
 
-          {/* <UploadImage
-                onSelect={listImage => {
-                  // setThumbnailSelected(listImage)
-                }}
-              />
-              <MultipleUploadImage
-                onSelect={listImage => {
-                  // setImagesSelected(listImage)
-                }}
-              /> */}
-          {/* <InputText
-                name="productName"
-                value={initialValues.productName}
-                label="Tên sản phẩm"
-                placeholder="Nhập tên sản phẩm"
-              />
-              <SelectComponent
-                keyLabel="name"
-                keyValue="id"
-                name="brand"
-                optionSelected={brandSelected}
-                options={brands}
-                label="Chọn thương hiệu"
-                placeholder=""
-                onSelect={brand => setBrandSelected(brand)}
-                error={brandError}
-              />
-              <SelectComponent
-                keyLabel="name"
-                keyValue="id"
-                name="condition"
-                optionSelected={conditionSelected}
-                options={conditions}
-                label="Chọn tình trạng hiệu"
-                placeholder=""
-                onSelect={condition => setConditionSelected(condition)}
-                error={conditionError}
-              />
-              <SelectComponent
-                keyLabel="name"
-                keyValue="id"
-                name="category"
-                optionSelected={categorySelected}
-                options={categories}
-                label="Chọn danh mục"
-                placeholder=""
-                onSelect={category => setCategorySelected(category)}
-                error={categoryError}
-              />
-              <SelectComponent
-                keyLabel="name"
-                keyValue="id"
-                name="size"
-                optionSelected={sizeSelected}
-                options={sizes}
-                label="Chọn size"
-                placeholder=""
-                onSelect={size => setSizeSelected(size)}
-                error={sizeError}
-              />
-              <SelectComponent
-                keyLabel="name"
-                keyValue="id"
-                name="color"
-                optionSelected={colorSelected}
-                options={colors}
-                label="Chọn màu"
-                error={colorError}
-                placeholder=""
-                onSelect={size => setSizeSelected(size)}
-                renderOption={options => {
-                  return options?.map((option: any) => (
-                    <MenuItem
-                      value={option.id}
-                      onClick={() => setColorSelected(option)}
-                    >
-                      <div className="w-full p-2 flex justify-between items-center ">
-                        <p className="text-sm text-gray-600">
-                          {option.id.toUpperCase()}
-                        </p>
-                        <div
-                          className={`${option.bg} w-6 h-6 rounded-full border-gray-200 border`}
-                        ></div>
-                      </div>
-                    </MenuItem>
-                  ))
-                }}
-              />
-              <InputNumber
-                name="priceStart"
-                value={initialValues?.priceStart}
-                label="Giá khởi điểm"
-                placeholder="Nhập mức giá khởi điểm của sản phẩm"
-              />
-              <InputNumber
-                name="stepBid"
-                value={initialValues?.stepBid}
-                label="Bước giá"
-                placeholder="Nhập bước giá của sản phẩm"
-              />
-              <DatePicker
-                label="Chọn ngày kết thúc đấu giá"
-                name="bidClosingDate"
-              />
-              <div className="col-span-2 mt-2">
-                <UploadImage
-                  onSelect={listImage => setThumbnailSelected(listImage)}
-                />
-                <MultipleUploadImage
-                  onSelect={listImage => setImagesSelected(listImage)}
-                />
-              </div> */}
+          <DatePickerHookForm
+            {...register('bidClosingDate', {
+              required: 'Vui lòng chọn ngày kết thúc đấu giá',
+            })}
+            label="Chọn thời điểm kết thúc đấu giá"
+            control={control}
+          />
+          <div></div>
+
+          <div className="flex flex-col w-full">
+            <UploadImage
+              onSelect={listImage => {
+                setThumbnailSelected(listImage)
+              }}
+            />
+            <MultipleUploadImage
+              onSelect={listImage => {
+                setImagesSelected(listImage)
+              }}
+            />
+          </div>
 
           <div className="col-span-2 mt-2">
             <Button
               variant="primary"
-              isLoading={false}
+              isLoading={createLoading}
               type="submit"
               title="Đăng sản phẩm"
               onClick={handleSubmit(handleCreateBid)}

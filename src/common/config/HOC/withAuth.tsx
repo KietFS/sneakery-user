@@ -19,7 +19,7 @@ export function withAuthorization<T>(
     useEffect(() => {
       const isExited = localStorage.getItem('user')
       if (user === null && !isExited) {
-        toast.error('Cần đăng nhập trước khi vào giỏ hàng')
+        // toast.error('Cần đăng nhập trước khi vào giỏ hàng')
       }
     }, [user])
     // );

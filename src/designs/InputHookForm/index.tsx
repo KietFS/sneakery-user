@@ -21,7 +21,7 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
     placeholder,
     defaultValue = '',
   } = props
-  console.log('name', name)
+
   return (
     <Controller
       name={name}

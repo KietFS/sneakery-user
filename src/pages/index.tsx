@@ -64,11 +64,15 @@ export const getStaticProps: GetStaticProps<{
   const response = await axios.get(`${Config.API_URL}/products/homepage`)
   let products: IProductHomePageResponse[] = []
 
-  const { isSuccess, data, error } = configResponse(response)
+  // const { isSuccess, data, error } = configResponse(response)
 
-  if (isSuccess) {
-    products = data?.data as IProductHomePageResponse[]
-  }
+  // if (isSuccess) {
+  //   products = (data?.data as IProductHomePageResponse[]) || []
+  // } else {
+  //   products = []
+  // }
+
+  products = []
 
   return { props: { products } }
 }
