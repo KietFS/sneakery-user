@@ -17,6 +17,7 @@ import SelectCategoryDialog from '@/designs/SelectCategoryDialog'
 import InputHookForm from '@/designs/InputHookForm'
 import { useForm } from 'react-hook-form'
 import SelectCustomFieldHookForm from '@/designs/SelectCustomFieldHookForm'
+import RadioButtonHookForm from '@/designs/RadioButtonHookForm'
 
 interface ILeftSideProps {}
 
@@ -153,16 +154,10 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
                           placeholder={`Nhập ${property?.name} của sản phẩm`}
                         />
                       ) : (
-                        <SelectComponent
-                          {...register(`properties.${property?.name}`)}
-                          onSelect={option => {}}
-                          label={`${property.name}`}
-                          placeholder={`Chọn ${property?.name}`}
-                          optionSelected={{ id: true, name: 'Đúng' }}
-                          options={[
-                            { id: true, name: 'Đúng' },
-                            { id: false, name: 'Sai' },
-                          ]}
+                        <RadioButtonHookForm
+                          name={`properties.${property?.name}`}
+                          control={control}
+                          label={`${property?.name}`}
                         />
                       )}
                     </>
