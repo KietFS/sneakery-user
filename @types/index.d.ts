@@ -1,20 +1,17 @@
 declare module '@heroicons/react/outline'
 
-type IProductCondition = 'Used' | 'Fullbox'
+interface IProductProperties {
+  [key: string]: string
+}
 
-type ICategoryProps = 'Nam' | 'Nữ' | 'Unisex'
-
-interface IProduct {
+interface IProductDetail {
   id: string
   name: string
-  condition: IProductCondition
+  category: string
+  properties: IProductProperties
   startPrice: number
   currentPrice: number
   imagePath: string[]
-  category: ICategoryProps
-  brand: string
-  color: string
-  size: string
   bidIncrement: number
   bidClosingDate: string
 }
@@ -36,6 +33,7 @@ interface IProductHomePageResponse {
   currentPrice: number
   imagePath: string
   username: string
+  bidClosingDate: Date
 }
 
 declare interface String {

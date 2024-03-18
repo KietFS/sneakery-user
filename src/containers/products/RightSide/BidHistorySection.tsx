@@ -5,7 +5,7 @@ import axios from 'axios'
 import { Config } from '@/config/api'
 
 interface IBidHistorySectionProps {
-  product: IProduct
+  product: IProductDetail
   bidHistory: IProductBidHistoryItem[]
 }
 

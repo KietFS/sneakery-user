@@ -31,7 +31,7 @@ const InputSearch: React.FC<IInputSearchProps> = props => {
   })
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
-  const [results, setResults] = useState<IProduct[]>([])
+  const [results, setResults] = useState<IProductDetail[]>([])
   const [openRecommendDialog, setOpenRecommendDialog] = useState<boolean>(false)
 
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm, 500)

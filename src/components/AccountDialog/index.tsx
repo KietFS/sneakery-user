@@ -22,7 +22,7 @@ interface IFormValue {
 export interface IAccountDialogProps {
   open: boolean
   onClose: () => void
-  product?: IProduct
+  product?: IProductDetail
 }
 
 function OrderShippingInfoDialog(props: IAccountDialogProps) {

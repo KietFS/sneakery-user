@@ -30,7 +30,7 @@ export interface IBidDialogProps {
   open: boolean
   onClose: () => void
   onSuccess: () => void
-  product: IProduct
+  product: IProductDetail
 }
 
 function BidDialog(props: IBidDialogProps) {

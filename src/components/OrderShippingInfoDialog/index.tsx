@@ -30,7 +30,7 @@ import { setAuth, setUser, setUserBalance } from '@/redux/slices/auth'
 export interface IOrderShippingInfoDialog {
   open: boolean
   onClose: () => void
-  product?: IProduct
+  product?: IProductDetail
   orderId: string
   totalProduct: number
 }

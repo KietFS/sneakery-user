@@ -15,6 +15,7 @@ import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
 import { Config } from '@/config/api'
+import ProductDescription from '@/containers/products/Description'
 
 const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
@@ -67,8 +68,10 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </div>
         </div>
         <div className="w-5/6 mx-auto flex">
+          <ProductDescription properties={props.product.properties} />
+        </div>
+        <div className="w-5/6 mx-auto flex">
           <SimilarProduct
-            brand={props.product.brand}
             category={props.product.category}
             currentProductId={Number(props.product.id)}
           />
@@ -101,7 +104,7 @@ export const getStaticPaths: GetStaticPaths<{}> = async () => {
 }
 
 export const getStaticProps: GetStaticProps<{
-  product: IProduct
+  product: IProductDetail
 }> = async ({ params }: any) => {
   try {
     // Use Promise.all to fetch both product and bid history concurrently

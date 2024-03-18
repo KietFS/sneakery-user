@@ -17,7 +17,7 @@ interface IProductBidHistoryDialogProps {
   onClose: () => void
   open: boolean
   bidHistory: IProductBidHistoryItem[]
-  product: IProduct
+  product: IProductDetail
 }
 
 const ProductBidHistoryDialog: React.FC<

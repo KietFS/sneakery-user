@@ -41,15 +41,10 @@ export interface IUserBidHistoryItem {
 interface IProductInCart {
   id: string
   name: string
-  condition: IProductCondition
   startPrice: number
   currentPrice: number
   imagePath: string
-  category: ICategoryProps
-  brand: string
-  color: string
   username: string
-  size: string
   bidIncrement: number
   bidClosingDate: string
 }

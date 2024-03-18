@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Slider from 'react-slick'
 
 interface ILeftSideProps {
-  product?: IProduct
+  product?: IProductDetail
 }
 
 const LeftSide: React.FC<ILeftSideProps> = props => {

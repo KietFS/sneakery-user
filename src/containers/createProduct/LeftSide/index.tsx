@@ -36,7 +36,7 @@ interface IFormValue {
   category?: string
   priceStart: string
   stepBid: string
-  bidClosingDate?: string
+  bidClosingDateTime?: string
 }
 
 interface IOption {
@@ -127,7 +127,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const handleCreateBid = async (values: any) => {
     const payload = {
       ...values,
-      bidClosingDate: formatDate(values?.bidClosingDate),
+      bidClosingDateTime: formatDate(values?.bidClosingDateTime),
       priceStart: Number(values?.priceStart),
       stepBid: Number(values?.stepBid),
       categoryId: currentCategory?.id,
@@ -257,7 +257,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           )}
 
           <DatePickerHookForm
-            {...register('bidClosingDate', {
+            {...register('bidClosingDateTime', {
               required: 'Vui lòng chọn ngày kết thúc đấu giá',
             })}
             label="Chọn thời điểm kết thúc đấu giá"

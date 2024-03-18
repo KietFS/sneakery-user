@@ -9,7 +9,6 @@ import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 
 interface ISimilarProduct {
-  brand: string
   currentProductId: number
   category: string
 }
@@ -21,8 +20,10 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
   const getSimilarProducts = async () => {
     try {
       setLoading(true)
-      const url = `${Config.API_URL}/products?category=${props.category}&brand=${props.brand}`
+      const url = `${Config.API_URL}/products?category=${props.category}`
       const response = await axios.get(url)
+
+      console.log('url', url)
       const { isSuccess, data, error } = configResponse(response)
       if (isSuccess) {
         setListProduct(data.data)
@@ -36,6 +37,8 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
     }
   }
 
+  console.log('CATEGORY is', props.category)
+
   useEffect(() => {
     getSimilarProducts()
   }, [])
@@ -43,7 +46,7 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
   return (
     <div className="h-fit rounded-lg shadow-lg bg-white mt-10 border border-gray-200 w-full px-8 pt-4 pb-8">
       <h2 className="text-xl laptop:text-2xl text-blue-500 font-bold">
-        Sản phẩm tương tự
+        Sản phẩm cùng danh mục
       </h2>
       <div className="mt-10 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-4 gap-x-5 gap-y-5">
         {listProduct.map((item, index) => {

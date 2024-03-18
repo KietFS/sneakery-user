@@ -14,7 +14,7 @@ import axios from 'axios'
 import { Config } from '@/config/api'
 
 interface IRightSideProps {
-  product: IProduct
+  product: IProductDetail
   bidHistory: IProductBidHistoryItem[]
   onPlaceBid: () => void
 }
@@ -67,10 +67,10 @@ const RightSide: React.FC<IRightSideProps> = props => {
   return (
     <div className="px-8 py-4">
       <h1 className="text-gray-600 font-bold text-4xl">{product?.name}</h1>
-      <div className="mt-2 flex items-center">
+      {/* <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Thương hiệu : </h3>
         <h3 className="text-gray-600 ml-1 text-lg cursor-pointer">Nike</h3>
-      </div>
+      </div> */}
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Giá khởi điểm : </h3>
         <h3 className="text-gray-500 text-lg ml-1  cursor-pointer">
