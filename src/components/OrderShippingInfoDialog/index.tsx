@@ -11,7 +11,7 @@ import Dialog from '@mui/material/Dialog'
 import { DialogContent } from '@mui/material'
 
 //store
-import store, { IRootState } from '@/redux'
+import { IRootState } from '@/redux'
 
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
@@ -26,6 +26,7 @@ import { toast } from 'react-toastify'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import { setAuth, setUser, setUserBalance } from '@/redux/slices/auth'
+import { useAuth } from '@/hooks/useAuth'
 
 export interface IOrderShippingInfoDialog {
   open: boolean
@@ -68,6 +69,8 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   ]
 
   const { open, onClose } = props
+  const { accessToken } = useAuth()
+
   //state
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
     ward: null,
@@ -201,7 +204,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
           }`,
           {
             headers: {
-              Authorization: `Bearer ${user?.token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         )
@@ -286,7 +289,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
         `${Config.API_URL}/addresses/${user?.id}/`,
         {
           headers: {
-            Authorization: `Bearer ${user?.token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       )

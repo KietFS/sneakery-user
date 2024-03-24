@@ -7,7 +7,7 @@ import { Bars3Icon, ShoppingCartIcon } from '@heroicons/react/24/outline'
 import UserCard from '../UserCard'
 
 //store
-import store, { IRootState } from '@/redux'
+import { IRootState } from '@/redux'
 
 //hooks
 import { useRouter } from 'next/router'
@@ -32,9 +32,10 @@ import { toast } from 'react-toastify'
 interface IHeaderV2Props {}
 
 const HeaderV2: React.FC<IHeaderV2Props> = props => {
-  const { user, isAuth, openVerifyPhoneNumberDialog } = useAppSelector(
+  const { user, openVerifyPhoneNumberDialog } = useAppSelector(
     (state: IRootState) => state.auth,
   )
+  const { isAuthenticated, accessToken } = useAuth()
   const { register, regsiterLoading } = useAuth()
   const router = useRouter()
 
@@ -53,15 +54,6 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
   const dispatch = useDispatch()
 
   React.useEffect(() => {
-    let userInfo = JSON.parse(localStorage.getItem('user') as string)
-    let balanceInfo = JSON.parse(localStorage.getItem('balanceInfo') as string)
-    if (userInfo) {
-      store.dispatch(setUser(userInfo))
-      store.dispatch(setAuth(true))
-    }
-    if (balanceInfo) {
-      store.dispatch(setUserBalance(balanceInfo?.balance))
-    }
     getProductCategories()
   }, [])
 
@@ -111,7 +103,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
           Sneakery
         </p>
         <div className="flex w-1/3 laptop:hidden laptop:w-0 flex-row-reverse">
-          {isAuth ? (
+          {isAuthenticated ? (
             <UserCard />
           ) : (
             <div className="flex flex-row-reverse laptop:hidden  w-1/3 laptop:w-0">
@@ -142,7 +134,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
           </button>
         </div>
         <div className="hidden laptop:flex">
-          {!!user ? (
+          {isAuthenticated ? (
             <UserCard />
           ) : (
             <div className="hidden laptop:flex flex-end space-x-0.5 items-center w-64">

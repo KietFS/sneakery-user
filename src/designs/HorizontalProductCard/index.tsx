@@ -27,7 +27,7 @@ const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = props => {
           <div className="flex items-center gap-x-1">
             <p className="text-xs text-gray-600">Bán bởi:</p>
             <div className="rounded-full bg-blue-200 text-blue-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
-              {product.username}
+              {product.userName}
             </div>
           </div>
         </div>

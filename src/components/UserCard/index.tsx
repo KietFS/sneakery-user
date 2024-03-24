@@ -30,6 +30,8 @@ import { toast } from 'react-toastify'
 import FormControl from '@mui/material/FormControl'
 import { IRootState } from '@/redux'
 import WinningDialog from '../WinningDialog'
+import { useDispatch } from 'react-redux'
+import { setAccessToken } from '@/redux/slices/auth'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -57,6 +59,7 @@ export default function MultipleSelectPlaceholder() {
     React.useState<boolean>(false)
   const [walletDialog, setWalletDialo] = React.useState<boolean>(false)
   const [openWithDraw, setOpenWithDraw] = React.useState<boolean>(false)
+  const dispatch = useDispatch()
 
   //functions
   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
@@ -75,6 +78,7 @@ export default function MultipleSelectPlaceholder() {
     try {
       localStorage.removeItem('user')
       localStorage.removeItem('token')
+      dispatch(setAccessToken(''))
       toast.success('Đăng xuất thành công', {
         position: 'top-right',
         hideProgressBar: true,

@@ -24,6 +24,7 @@ import axios from 'axios'
 import { Config } from '@/config/api'
 import DatePickerHookForm from '@/designs/DatePickerHookForm'
 import { toast } from 'react-toastify'
+import { useAuth } from '@/hooks/useAuth'
 
 interface ILeftSideProps {}
 
@@ -74,6 +75,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     setValue,
     watch,
   }
+  const { accessToken } = useAuth()
 
   //local state
   const [customFields, setCustomFields] = useState<
@@ -149,7 +151,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
         url: `${Config.API_URL}/bids`,
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${user?.token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         data: formData,
       })

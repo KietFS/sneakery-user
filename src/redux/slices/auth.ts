@@ -7,6 +7,7 @@ export type IInputMode = 'INPUT_OTP' | 'INPUT_PHONE_NUMBER'
 interface IInitialState {
   isAuth: boolean
   user: IUser | null
+  accessToken: string
   openEmailSentDialog: boolean
   openVerifyPhoneNumberDialog: boolean
   balance: number
@@ -15,6 +16,7 @@ interface IInitialState {
 const initialState: IInitialState = {
   isAuth: false,
   user: null,
+  accessToken: '',
   openEmailSentDialog: false,
   openVerifyPhoneNumberDialog: false,
   balance: 0,
@@ -26,6 +28,9 @@ const authSlice = createSlice({
   reducers: {
     setAuth: (state, actions: PayloadAction<boolean>) => {
       state.isAuth = actions.payload
+    },
+    setAccessToken: (state, actions: PayloadAction<string>) => {
+      state.accessToken = actions.payload
     },
     setUser: (state, actions: PayloadAction<IUser | null>) => {
       state.user = actions.payload
@@ -51,5 +56,6 @@ export const {
   setOpenEmailSentDialog,
   setOpenVerifyPhoneNumberDialog,
   setUserBalance,
+  setAccessToken,
 } = authSlice.actions
 export default authSlice.reducer

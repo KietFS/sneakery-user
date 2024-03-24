@@ -66,7 +66,7 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
                       Được bán bởi:{' '}
                     </p>
                     <p className="text-xs font-semibold text-blue-500">
-                      {item.username}
+                      {item?.userName}
                     </p>
                   </div>
                   <div className="flex items-center justify-center">

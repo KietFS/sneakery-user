@@ -21,6 +21,7 @@ import { toast } from 'react-toastify'
 import { configResponse } from '@/utils/request'
 import { Config } from '@/config/api'
 import Spinner from '../Spinner'
+import { useAuth } from '@/hooks/useAuth'
 
 interface IFormValue {
   ward?: IWard | null
@@ -70,6 +71,7 @@ function AddressForm(props: IAddressFormProps) {
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const [address, setAddress] = React.useState<any | null>(null)
   const [isExistedAddress, setIsExistedAddress] = React.useState<boolean>(false)
+  const { accessToken } = useAuth()
 
   //utils
   const validationSchema = yup
@@ -150,7 +152,7 @@ function AddressForm(props: IAddressFormProps) {
         `${Config.API_URL}/addresses/${user?.id}/`,
         {
           headers: {
-            Authorization: `Bearer ${user?.token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       )
@@ -189,7 +191,7 @@ function AddressForm(props: IAddressFormProps) {
           payload,
           {
             headers: {
-              Authorization: `Bearer ${user?.token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         )
@@ -212,7 +214,7 @@ function AddressForm(props: IAddressFormProps) {
           payload,
           {
             headers: {
-              Authorization: `Bearer ${user?.token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         )

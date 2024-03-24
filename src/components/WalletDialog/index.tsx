@@ -11,7 +11,7 @@ import Spinner from '@/components/Spinner'
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
 import { useDispatch } from 'react-redux'
-import store, { IRootState } from '@/redux'
+import { IRootState } from '@/redux'
 
 //utils
 import { setUserBalance } from '@/redux/slices/auth'
@@ -20,6 +20,7 @@ import axios from 'axios'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import { toast } from 'react-toastify'
+import { useAuth } from '@/hooks/useAuth'
 
 interface IWalletDialogProps {
   open: boolean
@@ -47,6 +48,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
   const [chargeAmount, setChargeAmount] = useState<string | null>(null)
   const [isWatch, setIsWatch] = useState<boolean>(false)
   const [transactions, setTransactions] = useState<ITransactionHistory[]>([])
+  const { accessToken } = useAuth()
 
   //functions
   const dispatch = useDispatch()
@@ -78,7 +80,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
     try {
       const response = await axios.get(`${Config.API_URL}/transaction`, {
         headers: {
-          Authorization: `Bearer ${user?.token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       })
       const { isSuccess, data, error } = configResponse(response)
@@ -123,7 +125,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
         },
         {
           headers: {
-            Authorization: `Bearer ${user?.token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       )
@@ -145,20 +147,9 @@ const WalletDialog: React.FC<IWalletDialogProps> = props => {
   }, [chargeAmount])
 
   useEffect(() => {
+    getTransactionHistory()
     getWallet()
   }, [])
-
-  React.useEffect(() => {
-    let userInfo = JSON.parse(localStorage.getItem('user') as string)
-    let balanceInfo = JSON.parse(localStorage.getItem('balance') as string)
-    if (balanceInfo) {
-      store.dispatch(setUserBalance(balanceInfo?.balance))
-    }
-  }, [])
-
-  useEffect(() => {
-    user && getTransactionHistory()
-  }, [user])
 
   return (
     <Dialog

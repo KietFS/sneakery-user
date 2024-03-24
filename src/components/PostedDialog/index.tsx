@@ -13,6 +13,7 @@ import { useAppSelector } from '@/hooks/useRedux'
 import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
+import { useAuth } from '@/hooks/useAuth'
 
 interface IPostedDialogProps {
   open: boolean
@@ -40,6 +41,7 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
   const [items, setItems] = useState<IPostedProduct[]>([])
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { accessToken } = useAuth()
 
   const getPostedItems = async () => {
     try {
@@ -49,7 +51,7 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
         `${Config.API_URL}/bids/uploaded-products/`,
         {
           headers: {
-            Authorization: `Bearer ${user?.token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       )

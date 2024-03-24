@@ -17,6 +17,7 @@ import Button from '@/designs/Button'
 import axios from 'axios'
 import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
+import { useAuth } from '@/hooks/useAuth'
 
 const Cancel: React.FC = props => {
   const router = useRouter()
@@ -24,6 +25,7 @@ const Cancel: React.FC = props => {
   const { paymentId, token, PayerID } = router.query
   const [loading, setLoading] = useState<boolean>(false)
   const [call, setCall] = useState<number>(0)
+  const { accessToken } = useAuth()
 
   const processCharge = async () => {
     try {
@@ -31,7 +33,7 @@ const Cancel: React.FC = props => {
       const url = `${Config.API_URL}/transaction/deposit/success?paymentId=${paymentId}&payerId=${PayerID}`
       const response = await axios.get(url, {
         headers: {
-          Authorization: `Bearer ${user?.token}`,
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
       })

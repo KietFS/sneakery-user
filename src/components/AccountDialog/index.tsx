@@ -17,6 +17,7 @@ import { Formik } from 'formik'
 interface IFormValue {
   name: string
   email: string
+  phoneNumber: string
 }
 
 export interface IAccountDialogProps {
@@ -34,6 +35,7 @@ function OrderShippingInfoDialog(props: IAccountDialogProps) {
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
     name: user?.username as string,
     email: user?.email as string,
+    phoneNumber: user?.phoneNumber as string,
   })
   const [loading, setLoading] = React.useState<boolean>(false)
 
@@ -54,6 +56,7 @@ function OrderShippingInfoDialog(props: IAccountDialogProps) {
     .shape<{ [k in keyof IFormValue]: any }>({
       name: yup.string().required('Vui lòng điền tên của bạn'),
       email: yup.string().required(''),
+      phoneNumber: yup.string().required(''),
     })
 
   return (
@@ -94,6 +97,12 @@ function OrderShippingInfoDialog(props: IAccountDialogProps) {
                       placeholder="Email"
                     />
                   </div>
+                  <InputText
+                    name="phoneNumber"
+                    value={initialValues?.phoneNumber}
+                    label="Số điện thoại"
+                    placeholder="Số điện thoại của bạn"
+                  />
                 </div>
                 <div className="flex justify-between items-center">
                   <div></div>

@@ -1,16 +1,17 @@
-type IRole = "ROLE_USER";
+type IRole = 'ROLE_USER'
 
 export interface IUser {
-  id: string;
-  username: string;
-  email: string;
-  roles: IRole[];
-  token: string;
+  id: string
+  username: string
+  email: string
+  phoneNumber: string
+  roles: IRole[]
+  token: string
 }
 
 export interface IAddress {
-  city: string;
-  district: string;
-  ward: string;
-  addressDetail: string;
+  city: string
+  district: string
+  ward: string
+  addressDetail: string
 }

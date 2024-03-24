@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 
 //utils and types
 import {
+  setAccessToken,
   setAuth,
   setOpenEmailSentDialog,
   setOpenVerifyPhoneNumberDialog,
@@ -17,7 +18,7 @@ import {
 } from '@/redux/slices/auth'
 import { isExistedEmail, loginService, registerService } from '@/services/api'
 import { IUser } from '@/types/user'
-import store, { IRootState } from '@/redux'
+import { IRootState } from '@/redux'
 import { toast } from 'react-toastify'
 import { auth } from '@/common/config/firebase'
 import { configResponse } from '@/utils/request'
@@ -29,57 +30,16 @@ export const useAuth = () => {
   //local state
   const [loginError, setLoginError] = useState<string>()
   const [loginLoading, setLoginLoading] = useState<boolean>(false)
-  const [existed, setExisted] = useState<boolean | null>(null)
   const [registerError, setRegisterError] = useState<any>()
   const [regsiterLoading, setRegisterLoading] = useState<boolean>(false)
-  const [loginWithGoogle, googleUser] = useSignInWithGoogle(auth)
-  const [loginWithFacebook] = useSignInWithFacebook(auth)
 
   //store
-  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const { user, accessToken } = useAppSelector(
+    (state: IRootState) => state.auth,
+  )
 
   //hooks
   const dispatch = useDispatch()
-
-  React.useEffect(() => {
-    let userInfo = JSON.parse(localStorage.getItem('user') as string)
-    let balanceInfo = JSON.parse(localStorage.getItem('balanceInfo') as string)
-    if (userInfo) {
-      store.dispatch(setUser(userInfo))
-      store.dispatch(setAuth(true))
-    }
-    if (balanceInfo) {
-      store.dispatch(setUserBalance(balanceInfo?.balance))
-    }
-  }, [])
-
-  const getWallet = async () => {
-    try {
-      const response = await axios.get(`${Config.API_URL}/wallet/${user?.id}`)
-      const { isSuccess, data, error } = configResponse(response)
-      if (isSuccess) {
-        if (data?.data === null) {
-          await localStorage.setItem('balance', JSON.stringify({ balance: 0 }))
-        } else {
-          await localStorage.setItem(
-            'balance',
-            JSON.stringify({ balance: data?.data.balance }),
-          )
-        }
-      } else {
-        return 0
-      }
-    } catch (error) {
-      return 0
-    } finally {
-    }
-  }
-
-  useEffect(() => {
-    if (!!user) {
-      getWallet()
-    }
-  }, [user])
 
   //functions
   const login = async (email: string, password: string) => {
@@ -96,11 +56,9 @@ export const useAuth = () => {
             hideProgressBar: true,
           })
 
+          console.log('LOGIN DATA', response?.data?.data)
           dispatch(setUser(response?.data?.data as IUser))
-          await localStorage.setItem(
-            'user',
-            JSON.stringify(response?.data?.data),
-          )
+          dispatch(setAccessToken(response?.data?.data?.token))
           dispatch(setAuth(true))
         } else {
           console.log(error)
@@ -138,10 +96,6 @@ export const useAuth = () => {
     }
   }
 
-  useEffect(() => {
-    user && localStorage.setItem('user', JSON.stringify(user))
-  }, [user])
-
   return {
     user,
     login,
@@ -150,5 +104,7 @@ export const useAuth = () => {
     register,
     registerError,
     regsiterLoading,
+    isAuthenticated: !!accessToken,
+    accessToken,
   }
 }

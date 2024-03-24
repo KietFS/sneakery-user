@@ -15,6 +15,7 @@ import axios from 'axios'
 import { IRootState } from '@/redux'
 import { configResponse } from '@/utils/request'
 import { Config } from '@/config/api'
+import { useAuth } from '@/hooks/useAuth'
 
 interface IWalletDialogProps {
   open: boolean
@@ -33,6 +34,7 @@ const WithDrawDialog: React.FC<IWalletDialogProps> = props => {
   const { user, balance } = useAppSelector((state: IRootState) => state.auth)
   const [loading, setLoading] = useState<boolean>(false)
   const [chargeAmount, setChargeAmount] = useState<string | null>(null)
+  const { accessToken } = useAuth()
 
   const withDraw = async () => {
     if (Number(chargeAmount?.split(',').join('')) > balance) {
@@ -46,7 +48,7 @@ const WithDrawDialog: React.FC<IWalletDialogProps> = props => {
             .join('')}`,
           {
             headers: {
-              Authorization: `Bearer ${user?.token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         )

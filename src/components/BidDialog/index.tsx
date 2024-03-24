@@ -21,6 +21,7 @@ import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import { useDispatch } from 'react-redux'
 import { setUserBalance } from '@/redux/slices/auth'
+import { useAuth } from '@/hooks/useAuth'
 
 interface IFormValue {
   amount?: string
@@ -44,7 +45,7 @@ function BidDialog(props: IBidDialogProps) {
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IFormValue]: any }>({})
-  const dispatch = useDispatch()
+  const { accessToken } = useAuth()
 
   const handleSubmit = async (values: IFormValue) => {
     if (
@@ -68,7 +69,7 @@ function BidDialog(props: IBidDialogProps) {
           },
           {
             headers: {
-              Authorization: `Bearer ${user?.token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         )

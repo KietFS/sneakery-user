@@ -15,11 +15,13 @@ import Head from 'next/head'
 import axios from 'axios'
 import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
+import { useAuth } from '@/hooks/useAuth'
 
 const Verify: React.FC = props => {
   const router = useRouter()
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const { code } = router.query
+  const { accessToken } = useAuth()
 
   //state
   const [loading, setLoading] = useState<boolean>(false)
@@ -31,7 +33,7 @@ const Verify: React.FC = props => {
       const url = `${Config.API_URL}/auth/verify/${code}`
       const response = await axios.get(url, {
         headers: {
-          Authorization: `Bearer ${user?.token}`,
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
       })

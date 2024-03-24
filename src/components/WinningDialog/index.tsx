@@ -20,6 +20,7 @@ import { configResponse } from '@/utils/request'
 import { CheckBadgeIcon } from '@heroicons/react/24/outline'
 import ConfirmDialog from '../ConfirmDialog'
 import { toast } from 'react-toastify'
+import { useAuth } from '@/hooks/useAuth'
 
 interface IWinningDialogProps {
   open: boolean
@@ -48,6 +49,7 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
   const [actionLoading, setActionLoading] = useState<boolean>(false)
   const [orderSelected, setOrderSelected] = useState<string | number>('')
+  const { accessToken } = useAuth()
 
   const getWinningItems = async () => {
     try {
@@ -57,7 +59,7 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
         `${Config.API_URL}/orders/users/${user.id}?q=PENDING`,
         {
           headers: {
-            Authorization: `Bearer ${user?.token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       )
@@ -81,7 +83,7 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
         `${Config.API_URL}/orders/users/${user.id}?q=PENDING`,
         {
           headers: {
-            Authorization: `Bearer ${user?.token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       )
@@ -107,7 +109,7 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
         },
         {
           headers: {
-            Authorization: `Bearer ${user?.token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       )

@@ -15,6 +15,7 @@ import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import ConfirmDialog from '../ConfirmDialog'
 import { toast } from 'react-toastify'
+import { useAuth } from '@/hooks/useAuth'
 
 interface IOrderHistoryDialogProps {
   open: boolean
@@ -54,6 +55,7 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
   const [loading, setLoading] = useState<boolean>(false)
   const [items, setItems] = useState<IUserBidHistoryItem[]>([])
   const { user } = useAppSelector((state: IRootState) => state.auth)
+  const { accessToken } = useAuth()
 
   const [actionLoading, setActionLoading] = useState<boolean>(false)
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
@@ -84,7 +86,7 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
       setLoading(true)
       const response = await axios.get(`${Config.API_URL}/bid-history/user`, {
         headers: {
-          Authorization: `Bearer ${user?.token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       })
       const { isSuccess, error, data } = configResponse(response)
@@ -103,7 +105,7 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
     try {
       const response = await axios.get(`${Config.API_URL}/bid-history/user`, {
         headers: {
-          Authorization: `Bearer ${user?.token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       })
       const { isSuccess, error, data } = configResponse(response)

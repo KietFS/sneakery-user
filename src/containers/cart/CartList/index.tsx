@@ -14,6 +14,7 @@ import { IRootState } from '@/redux'
 import { setGlobalCartItems } from '@/redux/slices/cart'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
+import { useAuth } from '@/hooks/useAuth'
 
 interface ICartList {}
 
@@ -35,6 +36,7 @@ const CartList: React.FC<ICartList> = props => {
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const [items, setItems] = useState<ICartItem[]>([])
   const dispatch = useDispatch()
+  const { accessToken } = useAuth()
 
   const getItems = async () => {
     try {
@@ -42,7 +44,7 @@ const CartList: React.FC<ICartList> = props => {
         `${Config.API_URL}/orders/users/${user.id}?q=APPROVE`,
         {
           headers: {
-            Authorization: `Bearer ${user?.token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       )
