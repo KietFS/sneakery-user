@@ -69,22 +69,6 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
     }
   }, [user])
 
-  // const sendOTP = async () => {
-  //   try {
-  //     const recapcha = new RecaptchaVerifier('recaptcha', {}, auth)
-
-  //     const confirmination = await signInWithPhoneNumber(
-  //       auth,
-  //       '+84932784203',
-  //       recapcha,
-  //     )
-
-  //     console.log('CONFIRM', confirmination)
-  //   } catch (error) {
-  //     console.log('send otp error', error)
-  //   }
-  // }
-
   return (
     <Dialog
       onClose={onclickClose}
@@ -156,6 +140,7 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
                       )}
                     </button>
 
+                    {/* <button onClick={() => sendOTP()}>SNED</button> */}
                     {/* <div className="space-y-3">
                       <p className="text-gray-700 text-xs">
                         Hoặc đăng nhập với

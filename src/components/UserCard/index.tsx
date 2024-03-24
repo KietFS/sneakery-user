@@ -31,7 +31,7 @@ import FormControl from '@mui/material/FormControl'
 import { IRootState } from '@/redux'
 import WinningDialog from '../WinningDialog'
 import { useDispatch } from 'react-redux'
-import { setAccessToken } from '@/redux/slices/auth'
+import { setAccessToken, setUser } from '@/redux/slices/auth'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -79,6 +79,7 @@ export default function MultipleSelectPlaceholder() {
       localStorage.removeItem('user')
       localStorage.removeItem('token')
       dispatch(setAccessToken(''))
+      dispatch(setUser(null))
       toast.success('Đăng xuất thành công', {
         position: 'top-right',
         hideProgressBar: true,

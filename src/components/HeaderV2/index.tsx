@@ -165,6 +165,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
           onclickClose={() => setOpenLogin(false)}
         />
       ) : null}
+
       {openRegister ? (
         <RegisterDialog
           onSubmitRegisterValues={values => {

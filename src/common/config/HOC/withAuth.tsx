@@ -5,28 +5,23 @@ import { useAuth } from '../../../hooks/useAuth'
 import { useAppSelector } from '../../../hooks/useRedux'
 import { IRootState } from '../../../redux'
 import { toast } from 'react-toastify'
-export function withAuthorization<T>(
-  Component: React.FC<T>,
-  //   authorizations: string[],
-  //   Placeholder?: React.FC
-) {
+
+export function withAuthorization<T>(Component: React.FC<T>) {
   return (props: T) => {
     const router = useRouter()
-    const { user } = useAppSelector((state: IRootState) => state.auth)
-    // const index = authorizations.findIndex(
-    //   (authorization) => authorization === “manager”
+    const { accessToken } = useAuth()
 
     useEffect(() => {
-      const isExited = localStorage.getItem('user')
-      if (user === null && !isExited) {
-        // toast.error('Cần đăng nhập trước khi vào giỏ hàng')
+      if (!accessToken) {
+        toast.error('Cần đăng nhập trước khi vào giỏ hàng')
+        router?.push('/')
       }
-    }, [user])
-    // );
+    }, [accessToken, router])
 
-    return <Component {...(props as any)} />
-    // if (authorizations.length === 0 || index !== -1)
-    //   return <Component {...(props as any)} />;
-    // return Placeholder ? <Placeholder /> : <></>;
+    if (!accessToken) {
+      return null // Prevent rendering of the component if not authorized
+    } else {
+      return <Component {...(props as any)} />
+    }
   }
 }

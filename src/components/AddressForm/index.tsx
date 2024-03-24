@@ -237,10 +237,8 @@ function AddressForm(props: IAddressFormProps) {
     if (listDistrict?.length == 0) {
       getListDistricts(202)
     }
-    if (user) {
-      getUserAddress()
-    }
-  }, [user])
+    getUserAddress()
+  }, [])
 
   React.useEffect(() => {
     if (districtSelected) {

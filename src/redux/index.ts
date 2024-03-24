@@ -15,7 +15,7 @@ import {
   REGISTER,
 } from 'redux-persist'
 
-const saveSubsetAuthReducer = createFilter('auth', ['accessToken'])
+const saveSubsetAuthReducer = createFilter('auth', ['accessToken', 'user'])
 
 const persistConfig = {
   key: 'root',
