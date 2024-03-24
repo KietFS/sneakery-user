@@ -32,7 +32,7 @@ interface IProductHomePageResponse {
   startPrice: number
   currentPrice: number
   imagePath: string
-  username: string
+  userName: string
   bidClosingDate: Date
 }
 

@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import {
   setAuth,
   setOpenEmailSentDialog,
+  setOpenVerifyPhoneNumberDialog,
   setUser,
   setUserBalance,
 } from '@/redux/slices/auth'
@@ -118,17 +119,22 @@ export const useAuth = () => {
     email: string,
     password: string,
     username: string,
+    phoneNumber: string,
   ) => {
     try {
       setRegisterLoading(true)
-      const data = await registerService(email, password, username)
-
+      dispatch(setOpenVerifyPhoneNumberDialog(true))
+      const data = await registerService(email, password, username, phoneNumber)
       if (data?.data.success === true) {
-        dispatch(setOpenEmailSentDialog(true))
+        toast.success('Đăng ký người dùng thành công')
+        dispatch(setOpenVerifyPhoneNumberDialog(false))
       }
     } catch (error) {
+      console.log('ERROR', error)
+      dispatch(setOpenVerifyPhoneNumberDialog(false))
     } finally {
       setRegisterLoading(false)
+      dispatch(setOpenVerifyPhoneNumberDialog(false))
     }
   }
 
@@ -136,55 +142,11 @@ export const useAuth = () => {
     user && localStorage.setItem('user', JSON.stringify(user))
   }, [user])
 
-  useEffect(() => {
-    googleUser && checkIsFirstTimeWithGoogle(googleUser?.user?.email as string)
-  }, [googleUser])
-
-  useEffect(() => {
-    if (googleUser) {
-      if (existed === true) {
-        login(
-          googleUser?.user?.email as string,
-          googleUser?.user?.uid as string,
-        )
-      } else {
-        registerService(
-          googleUser.user.uid as string,
-          googleUser.user.displayName as string,
-          googleUser.user.email as string,
-        )
-      }
-    }
-  }, [existed])
-
-  const checkIsFirstTimeWithGoogle = async (email: string) => {
-    try {
-      const isExisted = await isExistedEmail(email)
-      isExisted && setExisted(true)
-    } catch (error) {
-      setExisted(false)
-    }
-  }
-
-  const googleLogin = async () => {
-    try {
-      setLoginLoading(true)
-      await loginWithGoogle()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   return {
     user,
     login,
     loginError,
-    googleLogin,
-
     loginLoading,
-    loginWithFacebook,
-    loginWithGoogle,
-
     register,
     registerError,
     regsiterLoading,

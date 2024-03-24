@@ -19,6 +19,8 @@ import { IRootState } from '@/redux'
 
 import LoginBackground from '@/assets/images/LoginBackground.png'
 import { XCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+import { auth } from '@/common/config/firebase'
 
 interface IFormValue {
   email: string
@@ -52,7 +54,7 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
     })
 
   //hooks
-  const { googleLogin, login, loginLoading, loginError } = useAuth()
+  const { login, loginLoading, loginError } = useAuth()
 
   //store
   const { user, isAuth } = useAppSelector((state: IRootState) => state.auth)
@@ -66,6 +68,22 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
       onclickClose()
     }
   }, [user])
+
+  // const sendOTP = async () => {
+  //   try {
+  //     const recapcha = new RecaptchaVerifier('recaptcha', {}, auth)
+
+  //     const confirmination = await signInWithPhoneNumber(
+  //       auth,
+  //       '+84932784203',
+  //       recapcha,
+  //     )
+
+  //     console.log('CONFIRM', confirmination)
+  //   } catch (error) {
+  //     console.log('send otp error', error)
+  //   }
+  // }
 
   return (
     <Dialog
@@ -137,7 +155,8 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
                         'Đăng nhập'
                       )}
                     </button>
-                    <div className="space-y-3">
+
+                    {/* <div className="space-y-3">
                       <p className="text-gray-700 text-xs">
                         Hoặc đăng nhập với
                       </p>
@@ -160,7 +179,7 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
                           />
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     {/* <div className="space-y-2">
                       <div className="flex justify-center">
                         <p className="text-xs text-gray-700">

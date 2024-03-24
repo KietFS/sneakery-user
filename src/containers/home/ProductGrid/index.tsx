@@ -5,6 +5,7 @@ import Image from 'next/image'
 
 //hook
 import { useRouter } from 'next/router'
+import { ClockIcon, FireIcon, TagIcon } from '@heroicons/react/20/solid'
 
 interface IProductGridProps {
   listProducts: IProductHomePageResponse[]
@@ -40,12 +41,29 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
           if (index <= toSee)
             return (
               <div
-                className="h-fit py-10 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer shadow-md min-h-[300px]"
+                className="max-h-[300px] h-[300px] py-4 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
                 key={index.toString()}
                 onClick={() => router.push(`/products/${item.id}`)}
               >
-                <img src={item.imagePath} width={200} height={150} />
-                <div className="justify-center px-4 space-y-1 mx-auto">
+                {index <= 3 ? (
+                  <div className="w-full flex-initial mb-2 pl-3">
+                    <div className="bg-red-500 rounded-lg px-2 py-1 w-fit animate-pulse flex items-center">
+                      <FireIcon className="w-5 h-5 font-bold text-white mr-1" />
+                      <p className="text-white text-xs font-bold">
+                        Sản phẩm đang hot
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="rounded-lg px-2 py-1 w-fit animate-pulse flex items-center h-[30px]"></div>
+                )}
+                <img
+                  src={item.imagePath}
+                  width={200}
+                  height={150}
+                  className="min-h-[150px]"
+                />
+                <div className="justify-center px-4 space-y-1 mx-auto mt-4">
                   <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
                     {item.name.truncate(30)}
                   </h1>
@@ -54,7 +72,7 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
                       Được bán bởi:{' '}
                     </p>
                     <p className="text-xs font-semibold text-blue-500">
-                      {item.username}
+                      {item.userName}
                     </p>
                   </div>
                   <div className="flex items-center justify-center">

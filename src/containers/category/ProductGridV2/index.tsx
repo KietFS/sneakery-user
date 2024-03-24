@@ -17,7 +17,7 @@ const ProductGridV2: React.FC<IProductGridV2Props> = props => {
             {listProducts?.map((item, index) => {
               return (
                 <div
-                  className="h-fit py-10 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
+                  className="max-h-[300px] h-[300px] py-10 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
                   key={index.toString()}
                   onClick={() => router.push(`/products/${item.id}`)}
                 >
@@ -36,7 +36,7 @@ const ProductGridV2: React.FC<IProductGridV2Props> = props => {
                         Được bán bởi:{' '}
                       </p>
                       <p className="text-xs font-semibold text-blue-500">
-                        {item.username}
+                        {item.userName}
                       </p>
                     </div>
                     <div className="flex items-center justify-center">

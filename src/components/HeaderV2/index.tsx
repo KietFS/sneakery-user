@@ -8,29 +8,34 @@ import UserCard from '../UserCard'
 
 //store
 import store, { IRootState } from '@/redux'
-import { setCategory } from '@/redux/slices/filter'
 
 //hooks
 import { useRouter } from 'next/router'
 import { useAppSelector } from '@/hooks/useRedux'
 import { useDispatch } from 'react-redux'
 import LoginDialog from '../LoginDialog'
-import RegisterDialog from '../RegisterDialog'
+import RegisterDialog, { IRegisterFormValue } from '../RegisterDialog'
 import EmailSentDialog from '../EmailSentDialog'
 import {
   setAuth,
-  setOpenEmailSentDialog,
+  setOpenVerifyPhoneNumberDialog,
   setUser,
   setUserBalance,
 } from '@/redux/slices/auth'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { CategoryOutlined } from '@mui/icons-material'
+import VerifyPhoneNumberDialog from '../VerifyPhoneNumberDIalog'
+import { useAuth } from '@/hooks/useAuth'
+import { toast } from 'react-toastify'
 
 interface IHeaderV2Props {}
 
 const HeaderV2: React.FC<IHeaderV2Props> = props => {
-  const { user, isAuth } = useAppSelector((state: IRootState) => state.auth)
+  const { user, isAuth, openVerifyPhoneNumberDialog } = useAppSelector(
+    (state: IRootState) => state.auth,
+  )
+  const { register, regsiterLoading } = useAuth()
   const router = useRouter()
 
   //state
@@ -40,9 +45,11 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
   const [displayMenu, setDisplayMenu] = useState<boolean>(false)
   const [categories, setCategories] = useState<IProductCategory[]>([])
   const [openRegister, setOpenRegister] = useState<boolean>(false)
-  const { openEmailSentDialog } = useAppSelector(
-    (state: IRootState) => state.auth,
+  const [registerValue, setRegisterValue] = useState<IRegisterFormValue | null>(
+    null,
   )
+  const [confirmination, setConfirmination] = useState<any | null>(null)
+  const [verifyOTPLoading, setVerifyOTPLoading] = useState<boolean>(false)
   const dispatch = useDispatch()
 
   React.useEffect(() => {
@@ -55,7 +62,6 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
     if (balanceInfo) {
       store.dispatch(setUserBalance(balanceInfo?.balance))
     }
-
     getProductCategories()
   }, [])
 
@@ -65,12 +71,28 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
       const response = await axios.get(`${Config.API_URL}/categories/`)
 
       if (response?.data?.success) {
-        console.log('RESPONSE', response)
+        //SET CATEGORIES
         setIsGettingProductCategory(false)
         setCategories(response?.data?.data)
       }
     } catch (error) {
       setIsGettingProductCategory(false)
+    }
+  }
+
+  const onSubmitOTP = async (otp: string) => {
+    try {
+      setVerifyOTPLoading(true)
+      const response = await confirmination?.confirm(otp)
+      //condition to register user
+      if (!!response?.user?.accessToken && registerValue) {
+        setVerifyOTPLoading(false)
+        const { email, fullName, password, phoneNumber } = registerValue
+        register(password, fullName, email, phoneNumber)
+      }
+    } catch (error) {
+      setVerifyOTPLoading(false)
+      console.log('CONFIRM OTP ERROR', error)
     }
   }
 
@@ -106,13 +128,6 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
           <InputSearch />
         </div>
         <div className="laptop:flex justify-between items-center space-x-10 hidden">
-          {/* {categories?.length > 0 &&
-            categories?.map((category, categoryIndex) => (
-              <p className="text-sm text-gray-600 font-semibold">
-                {category?.name}
-              </p>
-            ))} */}
-
           <button
             className="flex items-center group-hover:text-blue-500 hover:text-blue-500"
             onMouseOver={() => setDisplayMenu(true)}
@@ -160,26 +175,37 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
       ) : null}
       {openRegister ? (
         <RegisterDialog
+          onSubmitRegisterValues={values => {
+            setOpenRegister(false)
+            dispatch(setOpenVerifyPhoneNumberDialog(true))
+            setRegisterValue(values)
+          }}
+          onSubmitConfirminationValues={values => {
+            setConfirmination(values)
+          }}
           isOpen={openRegister}
           onClickClose={() => setOpenRegister(false)}
         />
       ) : null}
 
-      {openEmailSentDialog ? (
-        <EmailSentDialog
-          open={openEmailSentDialog}
-          onClose={() => dispatch(setOpenEmailSentDialog(false))}
+      {openVerifyPhoneNumberDialog && !!registerValue ? (
+        <VerifyPhoneNumberDialog
+          onSubmitOTP={onSubmitOTP}
+          open={openVerifyPhoneNumberDialog}
+          onClose={() => setOpenVerifyPhoneNumberDialog(false)}
+          buttonLoading={verifyOTPLoading || regsiterLoading}
         />
       ) : null}
+
       {displayMenu ? (
         <div
           className=" z-0 px-20 justify-center flex bg-blue-200 "
           onMouseLeave={() => setDisplayMenu(false)}
         >
-          <div className="w-3/5 mx-auto  absolute top-20 mr-20 h-[200px] bg-white shadow-xl px-4 z-50  py-4 grid grid-cols-4 grid-row-4 flex-wrap gap-y-2">
+          <div className="w-3/5 mx-auto  absolute top-20 mr-20 h-[200px] bg-white shadow-xl px-4 z-50  py-4 grid grid-cols-4 grid-row-4 flex-wrap gap-y-2 rounded-b-lg">
             {categories?.map((category, categoryIndex) => (
               <button className="h-fit">
-                <p className="text-gray-600 text-xs text-left hover:text-blue-500 ">
+                <p className="text-gray-600 text-sm text-left hover:text-blue-500 ">
                   {category?.name}
                 </p>
               </button>

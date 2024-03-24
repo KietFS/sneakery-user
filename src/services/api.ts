@@ -28,12 +28,14 @@ export const registerService = async (
   password: string,
   username: string,
   email: string,
+  phoneNumber: string,
 ) => {
   try {
     const data = await axios.post(`${Config.API_URL}/auth/signup`, {
       username,
       email,
       password,
+      phoneNumber,
     })
     if (data) return data
   } catch (error: any) {
