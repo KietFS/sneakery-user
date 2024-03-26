@@ -267,12 +267,14 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           />
           <div></div>
 
-          <div className="flex flex-col w-full">
+          <div className="flex col-span-2 flex-col w-full">
             <UploadImage
               onSelect={listImage => {
                 setThumbnailSelected(listImage)
               }}
             />
+          </div>
+          <div className="flex flex-col w-full col-span-2">
             <MultipleUploadImage
               onSelect={listImage => {
                 setImagesSelected(listImage)

@@ -66,7 +66,9 @@ const Category = (props: IProductProps) => {
 
   //effects
   useEffect(() => {
-    getAllProducts()
+    if (filterStringDebounce?.length > 0) {
+      getAllProducts()
+    }
   }, [filterStringDebounce, currentPage])
 
   useEffect(() => {

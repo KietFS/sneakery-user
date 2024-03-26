@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 //styles
 import Image from 'next/image'
@@ -9,6 +9,12 @@ interface ILeftSideProps {
 }
 
 const LeftSide: React.FC<ILeftSideProps> = props => {
+  const { product } = props
+  const [isMobile, setIsMobile] = useState<boolean>(false)
+  const [slide, setSlideToShow] = useState<number>(0)
+
+  const sliderRef = useRef<any>(null)
+
   const settings = {
     dots: true,
     infinite: true,
@@ -16,9 +22,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     slidesToShow: 1,
     slidesToScroll: 1,
   }
-
-  const { product } = props
-  const [isMobile, setIsMobile] = useState<boolean>(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -36,6 +39,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     <div className="border-r border-r-gray-200 h-full py-8 px-4">
       <Slider
         {...settings}
+        ref={sliderRef as any}
         className={`block justify-center  laptop:w-[500px] w-[300px] laptop:h-[375px] h-[200px] rounded-lg mx-auto`}
       >
         {product?.imagePath?.map((item, index) => {
@@ -54,7 +58,10 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       </Slider>
       <div className={`grid grid-cols-4 gap-x-5 mt-20`}>
         {product?.imagePath?.map((item, index) => (
-          <div className="p-2 border border-gray-200 rounded-xl cursor-pointer hover:opacity-50">
+          <div
+            className="p-2 border border-gray-200 rounded-xl cursor-pointer hover:opacity-50"
+            onClick={() => (sliderRef as any)?.current?.slickGoTo(index)}
+          >
             <img src={item} key={index.toString()} width={120} height={90} />
           </div>
         ))}
