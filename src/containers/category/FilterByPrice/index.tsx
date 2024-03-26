@@ -29,16 +29,24 @@ export default function RangeSlider() {
       label: '0',
     },
     {
+      value: 10,
+      label: '1k$',
+    },
+    {
       value: 20,
-      label: '20k$',
+      label: '2000$',
     },
     {
       value: 50,
-      label: '50k$',
+      label: '5000$',
+    },
+    {
+      value: 80,
+      label: '8000$',
     },
     {
       value: 100,
-      label: '100k$',
+      label: '10k$',
     },
   ]
 
@@ -48,12 +56,12 @@ export default function RangeSlider() {
     if (value[0] === 0) {
       dispatch(setPriceStart('0'))
     } else {
-      dispatch(setPriceStart(`${value[0].toString()}000`))
+      dispatch(setPriceStart(`${value[0].toString()}00`))
     }
     if (value[1] === 0) {
       dispatch(setPriceEnd('0'))
     } else {
-      dispatch(setPriceEnd(`${value[1].toString()}000`))
+      dispatch(setPriceEnd(`${value[1].toString()}00`))
     }
   }, [value])
 
@@ -84,7 +92,7 @@ export default function RangeSlider() {
             valueLabelDisplay="auto"
             getAriaValueText={valuetext}
             aria-label="Custom marks"
-            step={10}
+            step={1}
             marks={marks}
             size="small"
           />

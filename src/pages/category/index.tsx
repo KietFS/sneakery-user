@@ -36,7 +36,7 @@ const Category = (props: IProductProps) => {
   const [filterString, setFilterString] = useState<string>('')
 
   //redux
-  const { keyWord, category, priceStart, priceEnd } = useAppSelector(
+  const { keyWord, category, priceStart, priceEnd, sortType } = useAppSelector(
     (state: IRootState) => state.filter,
   )
   const dispatch = useDispatch()
@@ -75,9 +75,9 @@ const Category = (props: IProductProps) => {
         category !== null ? `&category=${category?.id}` : ''
       }${priceStart !== null ? `&priceStart=${priceStart}` : ''}${
         priceEnd !== null ? `&priceEnd=${priceEnd}` : ''
-      }`,
+      }${sortType !== null ? `&sort=${sortType}` : ''}`,
     )
-  }, [category, keyWord, priceEnd, priceStart])
+  }, [category, keyWord, priceEnd, priceStart, sortType])
 
   return (
     <>
@@ -110,8 +110,14 @@ const Category = (props: IProductProps) => {
               <SelectSortType />
             </div>
             {loading ? (
-              <div className="w-full flex justify-center items-center h-[500px] font-bold">
-                <Spinner />
+              <div className="grid grid-flow-row grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 w-full gap-x-5 gap-y-10 mt-[30px]">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]?.map(
+                  (item, index) => (
+                    <div className="max-h-[300px] h-[300px] py-4 border border-gray-200 bg-gray-300 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer animate-pulse">
+                      {' '}
+                    </div>
+                  ),
+                )}
               </div>
             ) : (
               <>
@@ -128,12 +134,12 @@ const Category = (props: IProductProps) => {
                     </p>
                   </div>
                 ) : (
-                  <>
+                  <div className="mt-8">
                     <ProductGridV2 listProducts={listProduct} />
                     <div className="w-full mt-4 justify-between flex items-center">
                       <div></div>
                     </div>
-                  </>
+                  </div>
                 )}
               </>
             )}
