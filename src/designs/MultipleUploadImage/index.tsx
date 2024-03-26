@@ -40,11 +40,9 @@ const UploadImage: React.FC<IUploadImageProps> = props => {
   }
 
   const remove = (index: any) => {
-    console.log(index)
     const temp = imgShow
     const cloned = temp
     cloned.splice(index, 1)
-    console.log(cloned)
     setImgShow([...cloned])
 
     const temp2 = baseImage

@@ -55,8 +55,6 @@ export const useAuth = () => {
             theme: 'colored',
             hideProgressBar: true,
           })
-
-          console.log('LOGIN DATA', response?.data?.data)
           dispatch(setUser(response?.data?.data as IUser))
           dispatch(setAccessToken(response?.data?.data?.token))
           dispatch(setAuth(true))

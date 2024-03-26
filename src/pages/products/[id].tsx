@@ -87,8 +87,6 @@ export const getStaticPaths: GetStaticPaths<{}> = async () => {
 
   const products = response.data?.data || []
 
-  console.log('Static path products', products)
-
   const paths = products.map((item: number) => ({
     params: {
       id: `${item.toString()}`,

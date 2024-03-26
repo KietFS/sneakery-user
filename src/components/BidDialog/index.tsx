@@ -56,7 +56,6 @@ function BidDialog(props: IBidDialogProps) {
     } else if (
       Number(balance) < Number(product?.currentPrice + product.bidIncrement)
     ) {
-      console.log('balance', balance)
       setError('Tài khoản của bạn không đủ để thực hiện lượt bid này')
     } else {
       try {

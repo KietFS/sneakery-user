@@ -37,8 +37,6 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
     }
   }
 
-  console.log('CATEGORY is', props.category)
-
   useEffect(() => {
     getSimilarProducts()
   }, [])

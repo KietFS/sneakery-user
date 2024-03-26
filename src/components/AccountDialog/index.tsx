@@ -49,7 +49,6 @@ function OrderShippingInfoDialog(props: IAccountDialogProps) {
       setLoading(false)
     }
   }
-  console.log('user', user)
 
   const validationSchema = yup
     .object()

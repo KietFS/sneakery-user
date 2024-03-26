@@ -72,6 +72,12 @@ const Category = (props: IProductProps) => {
   }, [filterStringDebounce, currentPage])
 
   useEffect(() => {
+    if (category == null) {
+      getAllProducts()
+    }
+  }, [category])
+
+  useEffect(() => {
     setFilterString(
       `${keyWord !== null ? `keyword=${keyWord}` : ''}${
         category !== null ? `&category=${category?.id}` : ''
