@@ -11,6 +11,7 @@ interface IInitialState {
   priceStart: string | null
   sortType: string | null
   keyWord: string | null
+  totalProducts: number | null
 }
 
 const initialState: IInitialState = {
@@ -23,6 +24,7 @@ const initialState: IInitialState = {
   priceEnd: null,
   sortType: null,
   keyWord: null,
+  totalProducts: null,
 }
 
 const filterSlice = createSlice({
@@ -56,6 +58,9 @@ const filterSlice = createSlice({
     setKeyWord: (state, actions: PayloadAction<string | null>) => {
       state.keyWord = actions.payload
     },
+    setTotalProducts: (state, actions: PayloadAction<number | null>) => {
+      state.totalProducts = actions.payload
+    },
   },
 })
 
@@ -69,5 +74,6 @@ export const {
   setPriceStart,
   setSortType,
   setKeyWord,
+  setTotalProducts,
 } = filterSlice.actions
 export default filterSlice.reducer

@@ -14,8 +14,6 @@ import '../utils/prototype'
 import NProgress from 'nprogress'
 import Router from 'next/router'
 
-//utils
-import { setAuth, setUser, setUserBalance } from '@/redux/slices/auth'
 
 import type {} from '@mui/x-date-pickers/themeAugmentation'
 

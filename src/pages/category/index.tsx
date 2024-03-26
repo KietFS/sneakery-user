@@ -22,6 +22,8 @@ import Head from 'next/head'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import useDebounce from '@/hooks/useDebounce'
+import { useDispatch } from 'react-redux'
+import { DEFAULT_PAGE_SIZE } from '@/config/constant'
 
 interface IProductProps {}
 
@@ -29,22 +31,29 @@ const Category = (props: IProductProps) => {
   //states
   const [listProduct, setListProduct] = useState<IProductHomePageResponse[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [pageSelected, setPageSelected] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPage, setTotalPage] = useState<number>(1)
   const [filterString, setFilterString] = useState<string>('')
 
   //redux
-  const { keyWord, category } = useAppSelector(
+  const { keyWord, category, priceStart, priceEnd } = useAppSelector(
     (state: IRootState) => state.filter,
   )
+  const dispatch = useDispatch()
 
+  //constanst
   const filterStringDebounce = useDebounce<string>(filterString, 500)
 
+  //functions
   const getAllProducts = async () => {
     try {
       setLoading(true)
-      const url = `${Config.API_URL}/products?${filterStringDebounce}`
+      const url = `${Config.API_URL}/products?${filterStringDebounce}&page=${
+        currentPage - 1
+      }&size=${DEFAULT_PAGE_SIZE}`
       const response = await axios.get(url)
-      if (response) {
+      if (response?.data?.success) {
+        setTotalPage(response?.data?._totalPage)
         setListProduct(response.data.data)
       }
     } catch (error) {
@@ -55,19 +64,20 @@ const Category = (props: IProductProps) => {
     }
   }
 
+  //effects
   useEffect(() => {
-    if (filterStringDebounce.length > 0) {
-      getAllProducts()
-    }
-  }, [filterStringDebounce])
-
-  console.log('FILTER STRING IS', category)
+    getAllProducts()
+  }, [filterStringDebounce, currentPage])
 
   useEffect(() => {
     setFilterString(
-      `${keyWord !== null ? `keyword=${keyWord}` : ''}${category !== null ? `&category=${category?.id}` : ''}`,
+      `${keyWord !== null ? `keyword=${keyWord}` : ''}${
+        category !== null ? `&category=${category?.id}` : ''
+      }${priceStart !== null ? `&priceStart=${priceStart}` : ''}${
+        priceEnd !== null ? `&priceEnd=${priceEnd}` : ''
+      }`,
     )
-  }, [category, keyWord])
+  }, [category, keyWord, priceEnd, priceStart])
 
   return (
     <>
@@ -91,6 +101,12 @@ const Category = (props: IProductProps) => {
                 </div>
               )}
 
+              <Pagination
+                onChange={(event, changedPage) => setCurrentPage(changedPage)}
+                count={totalPage}
+                defaultPage={1}
+                page={currentPage}
+              />
               <SelectSortType />
             </div>
             {loading ? (
