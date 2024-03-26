@@ -27,7 +27,6 @@ interface IFormValue {
   ward?: IWard | null
   district?: IDistrict | null
   addressDetail?: string
-  phoneNumber?: string
 }
 
 export interface IAddressFormProps {
@@ -57,7 +56,6 @@ function AddressForm(props: IAddressFormProps) {
     ward: null,
     district: null,
     addressDetail: '',
-    phoneNumber: '',
   })
   const [loading, setLoading] = React.useState<boolean>(false)
   const [initialLoading, setInitialLoading] = React.useState<boolean>(false)
@@ -181,7 +179,6 @@ function AddressForm(props: IAddressFormProps) {
       districtCode: districtSelected?.DistrictID,
       cityCode: 202,
       wardCode: Number(wardSelected?.WardCode),
-      phoneNumber: values.phoneNumber,
     }
 
     if (isExistedAddress == false) {
@@ -277,7 +274,6 @@ function AddressForm(props: IAddressFormProps) {
 
       setInitialValues({
         addressDetail: address?.homeNumber,
-        phoneNumber: address?.phoneNumber,
         district: listDistrict.find(item => {
           return item.DistrictID == address?.districtCode
         }),
@@ -359,12 +355,6 @@ function AddressForm(props: IAddressFormProps) {
                       value={initialValues?.addressDetail}
                       label="Số nhà,tên đường"
                       placeholder="Nhập địa chỉ cụ thể của bạn"
-                    />
-                    <RichTextInput
-                      name="phoneNumber"
-                      value={initialValues?.phoneNumber}
-                      label="Số điện thoại"
-                      placeholder="Nhập số điện thoại"
                     />
                   </div>
                 </div>

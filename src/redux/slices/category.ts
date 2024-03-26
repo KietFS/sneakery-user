@@ -3,14 +3,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface IInitialState {
   currentCategory: IProductCategory | null
+  listCategory: IProductCategory[]
 }
 
 const initialState: IInitialState = {
   currentCategory: null,
+  listCategory: [],
 }
 
 const categorySlice = createSlice({
-  name: 'auth',
+  name: 'category',
   initialState,
   reducers: {
     setCurrentProductCategory: (
@@ -19,8 +21,12 @@ const categorySlice = createSlice({
     ) => {
       state.currentCategory = actions.payload
     },
+    setListCategory: (state, actions: PayloadAction<IProductCategory[]>) => {
+      state.listCategory = actions.payload
+    },
   },
 })
 
-export const { setCurrentProductCategory } = categorySlice.actions
+export const { setCurrentProductCategory, setListCategory } =
+  categorySlice.actions
 export default categorySlice.reducer

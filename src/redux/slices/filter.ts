@@ -5,7 +5,7 @@ interface IInitialState {
   brand: string[]
   size: string[]
   color: string[]
-  category: string | null
+  category: IProductCategory | null
   condition: string | null
   priceEnd: string | null
   priceStart: string | null
@@ -32,7 +32,7 @@ const filterSlice = createSlice({
     setBrand: (state, actions: PayloadAction<string[]>) => {
       state.brand = actions.payload
     },
-    setCategory: (state, actions: PayloadAction<string | null>) => {
+    setCategory: (state, actions: PayloadAction<IProductCategory | null>) => {
       state.category = actions.payload
     },
     setCondition: (state, actions: PayloadAction<string | null>) => {

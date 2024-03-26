@@ -18,11 +18,11 @@ const FilterSideBar: React.FC<IFilterSideBarProps> = props => {
       </h3>
       <div className="flex flex-col gap-y-5 mt-5">
         <FilterByCategory />
-        <FilterByCondition />
+        {/* <FilterByCondition /> */}
         <FilterByPrice />
-        <FilterByBrandsCheckBox />
-        <FilterBySize />
-        <FilterByColors />
+        {/* <FilterByBrandsCheckBox /> */}
+        {/* <FilterBySize />
+        <FilterByColors /> */}
       </div>
     </div>
   )

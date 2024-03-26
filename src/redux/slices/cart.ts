@@ -11,7 +11,7 @@ const initialState: IInitialState = {
 }
 
 const cartSlice = createSlice({
-  name: 'auth',
+  name: 'cart',
   initialState,
   reducers: {
     setGlobalCartItems: (state, actions: PayloadAction<ICartItem[]>) => {

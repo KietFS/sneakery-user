@@ -10,58 +10,42 @@ import { useDispatch } from 'react-redux'
 //utils and types
 import { IRootState } from '@/redux'
 import { setCategory } from '@/redux/slices/filter'
+import axios from 'axios'
+import { Config } from '@/config/api'
 
 interface IFilterCategoryProps {}
 
-interface ICategory {
-  id: string
-  name: string
-}
-
 const FilterByCategory: React.FC<IFilterCategoryProps> = props => {
-  const categoryList: ICategory[] = [
-    {
-      id: 'nam',
-      name: 'Nam',
-    },
-    {
-      id: 'nu',
-      name: 'Nữ',
-    },
-    {
-      id: 'unisex',
-      name: 'Unisex',
-    },
-  ]
-  const { category } = useAppSelector((state: IRootState) => state.filter)
-  const [categorySelected, setCategorySelected] = useState<ICategory | null>(
-    null,
-  )
+  const [categoryList, setCategoryList] = useState<IProductCategory[]>([])
+  const [isGettingProductCategory, setIsGettingProductCategory] =
+    useState<boolean>(false)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (category) {
-      categoryList.map(item => {
-        if (item.id === category) {
-          setCategorySelected(item)
-        }
-      })
-    }
-  }, [category])
+  React.useEffect(() => {
+    getProductCategories()
+  }, [])
 
-  useEffect(() => {
-    if (categorySelected !== null) {
-      dispatch(setCategory(categorySelected.id))
-    } else {
-      dispatch(setCategory(null))
+  const getProductCategories = async () => {
+    try {
+      setIsGettingProductCategory(true)
+      const response = await axios.get(`${Config.API_URL}/categories/`)
+
+      if (response?.data?.success) {
+        //SET CATEGORIES
+        setIsGettingProductCategory(false)
+        setCategoryList(response?.data?.data)
+      }
+    } catch (error) {
+      setIsGettingProductCategory(false)
     }
-  }, [categorySelected])
+  }
+  const { category } = useAppSelector((state: IRootState) => state.filter)
 
   return (
     <RadioButton
       options={categoryList}
-      optionSelected={categorySelected}
-      onSelect={category => setCategorySelected(category)}
+      optionSelected={category}
+      onSelect={category => dispatch(setCategory(category))}
       label="Theo danh mục"
       keyValue="id"
       keyLabel="name"

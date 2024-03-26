@@ -30,39 +30,26 @@ const Category = (props: IProductProps) => {
   const [listProduct, setListProduct] = useState<IProductHomePageResponse[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [pageSelected, setPageSelected] = useState<number>(1)
-  const [error, setError] = useState<boolean>(false)
   const [filterString, setFilterString] = useState<string>('')
-  const [totalCount, setTotalCount] = useState<number>(3)
 
   //redux
-  const {
-    brand,
-    category,
-    condition,
-    color,
-    priceEnd,
-    priceStart,
-    sortType,
-    keyWord,
-    size,
-  } = useAppSelector((state: IRootState) => state.filter)
+  const { keyWord, category } = useAppSelector(
+    (state: IRootState) => state.filter,
+  )
 
   const filterStringDebounce = useDebounce<string>(filterString, 500)
 
   const getAllProducts = async () => {
     try {
       setLoading(true)
-      const url = `${
-        Config.API_URL
-      }/products?${filterStringDebounce}&page=${0}&size=9`
+      const url = `${Config.API_URL}/products?${filterStringDebounce}`
       const response = await axios.get(url)
       if (response) {
-        setError(false)
         setListProduct(response.data.data)
       }
     } catch (error) {
+      setLoading(false)
       console.log(error)
-      setError(true)
     } finally {
       setLoading(false)
     }
@@ -72,45 +59,15 @@ const Category = (props: IProductProps) => {
     if (filterStringDebounce.length > 0) {
       getAllProducts()
     }
-  }, [filterStringDebounce, pageSelected])
+  }, [filterStringDebounce])
+
+  console.log('FILTER STRING IS', category)
 
   useEffect(() => {
     setFilterString(
-      `  ${keyWord !== null ? `keyword=${keyWord}` : ''}${
-        condition !== null ? `&condition=${condition}` : ''
-      }${category !== null ? `&category=${category}` : ''}${
-        brand.length > 0
-          ? `&brand=${brand.map((item: any, index: number) =>
-              index !== brand.length ? `${item}` : `${item}`,
-            )}`
-          : ''
-      }${
-        color.length > 0
-          ? `&color=${color.map((item: any, index: number) =>
-              index !== color.length ? `${item}` : `${item}`,
-            )}`
-          : ''
-      }${
-        size.length > 0
-          ? `&sizes=${size.map((item: any, index: number) =>
-              index !== size.length ? `${item}` : `${item}`,
-            )}`
-          : ''
-      }${priceStart !== null ? `&priceStart=${priceStart}` : ''}${
-        priceEnd !== null ? `&priceEnd=${priceEnd}` : ''
-      }${sortType !== null ? `&sorting=${sortType}` : ''}`,
+      `${keyWord !== null ? `keyword=${keyWord}` : ''}${category !== null ? `&category=${category?.id}` : ''}`,
     )
-  }, [
-    category,
-    condition,
-    brand,
-    size,
-    color,
-    priceStart,
-    priceEnd,
-    sortType,
-    keyWord,
-  ])
+  }, [category, keyWord])
 
   return (
     <>
@@ -142,7 +99,7 @@ const Category = (props: IProductProps) => {
               </div>
             ) : (
               <>
-                {error === true && loading == false ? (
+                {listProduct?.length == 0 && loading == false ? (
                   <div className="flex flex-col items-center justify-center gap-y-5 mt-16">
                     <Image
                       src={NotFound}
@@ -151,7 +108,7 @@ const Category = (props: IProductProps) => {
                       height={300}
                     />
                     <p className="text-xl text-gray-500 font-semibold">
-                      Không tìm thấy sản phẩm mà bạn yêu cầu, vui lòng thử lại
+                      Không tìm thấy sản phẩm phù hợp, vui lòng thử lại
                     </p>
                   </div>
                 ) : (
