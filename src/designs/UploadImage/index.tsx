@@ -39,7 +39,7 @@ const UploadImage: React.FC<IUploadImageProps> = props => {
   }
 
   return (
-    <div className="w-full mt-1">
+    <div className="w-full">
       <p className="text-sm font-bold text-gray-600 mb-1">
         Chọn thumbnail cho sản phẩm
       </p>

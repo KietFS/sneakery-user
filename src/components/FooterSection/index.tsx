@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react'
 
 interface IFooterSectionProps {}
 
-const FooterSection: React.FC<IFooterSectionProps> = (props) => {
+const FooterSection: React.FC<IFooterSectionProps> = props => {
   return (
     <div className="py-10 px-8 laptop:px-28 bg-gray-50 h-fit mt-40 laptop:mt-20">
       <div className="space-y-5">
@@ -11,7 +11,7 @@ const FooterSection: React.FC<IFooterSectionProps> = (props) => {
             Sneakery Aution
           </h2>
           <p className="text-lg text-gray-500 font-normal text-left">
-            2022 - Designed and Developed by HKMN Group - All rights reserve
+            2024 - Designed and Developed by Sneakery Team - All right reservers
           </p>
         </div>
         <div className="grid grid-cols-2 tablet:grid-cols-2 laptop:grid-cols-6 gap-x-10 gap-y-10">
@@ -23,24 +23,10 @@ const FooterSection: React.FC<IFooterSectionProps> = (props) => {
               Chính sách bảo mật
             </p>
             <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Trần Quốc Siêu
+              Thông tin chi phí
             </p>
             <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Võ Huỳnh anh Nhật
-            </p>
-          </div>
-          <div className="space-y-2">
-            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Điều khoản
-            </p>
-            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Chính sách bảo mật
-            </p>
-            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Trần Quốc Siêu
-            </p>
-            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Võ Huỳnh anh Nhật
+              Career
             </p>
           </div>
           <div className="space-y-2">
@@ -51,10 +37,10 @@ const FooterSection: React.FC<IFooterSectionProps> = (props) => {
               Chính sách bảo mật
             </p>
             <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Trần Quốc Siêu
+              Thông tin chi phí
             </p>
             <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Võ Huỳnh anh Nhật
+              Career
             </p>
           </div>
           <div className="space-y-2">
@@ -65,16 +51,30 @@ const FooterSection: React.FC<IFooterSectionProps> = (props) => {
               Chính sách bảo mật
             </p>
             <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Trần Quốc Siêu
+              Thông tin chi phí
             </p>
             <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Võ Huỳnh anh Nhật
+              Career
+            </p>
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
+              Điều khoản
+            </p>
+            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
+              Chính sách bảo mật
+            </p>
+            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
+              Thông tin chi phí
+            </p>
+            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
+              Career
             </p>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FooterSection;
+export default FooterSection

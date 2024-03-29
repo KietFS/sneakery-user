@@ -11,7 +11,6 @@ interface ILeftSideProps {
 const LeftSide: React.FC<ILeftSideProps> = props => {
   const { product } = props
   const [isMobile, setIsMobile] = useState<boolean>(false)
-  const [slide, setSlideToShow] = useState<number>(0)
 
   const sliderRef = useRef<any>(null)
 

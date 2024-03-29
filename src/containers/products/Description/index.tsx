@@ -31,7 +31,11 @@ const ProductDescription: React.FC<IProductDescriptionProps> = props => {
               {capitalizeFirstLetter(key.toLowerCase())}:
             </p>
             <p className="text-gray-500 text-sm ml-2">
-              {` ${capitalizeFirstLetter(value.toLowerCase())}`}
+              {value == 'True'
+                ? 'Có'
+                : value == 'False'
+                  ? 'Sai'
+                  : `${capitalizeFirstLetter(value.toLowerCase())}`}
             </p>
           </div>
         ))}
