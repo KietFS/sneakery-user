@@ -26,7 +26,9 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
   const getData = async () => {
     try {
       setLoadingProduct(true)
-      const response = await axios.get(`${Config.API_URL}/products/homepage`)
+      const response = await axios.get(
+        `${Config.API_URL}/products/homepage/?page=0&size=12  `,
+      )
       const { isSuccess, data } = configResponse(response)
       if (isSuccess) {
         setLoadingProduct(false)

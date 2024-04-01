@@ -119,7 +119,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     return newDateString
   }
 
-  const handleCreateBid = async (values: any) => {
+  const handleCreateBidValue = async (values: any) => {
     const payload = {
       ...values,
       bidClosingDateTime: formatDate(values?.bidClosingDateTime),
@@ -127,16 +127,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       stepBid: Number(values?.stepBid),
       categoryId: currentCategory?.id,
     }
-    let formData = new FormData()
-    const payloadJSON = JSON.stringify(payload)
-    const payloadBlob = new Blob([payloadJSON], {
-      type: 'application/json',
-    })
-    formData.append('bidCreateRequest', payloadBlob)
-    //add image and thumbnail and we done
-    formData.append('thumbnail', thumbnailSelected?.[0])
-    imagesSelected?.map(image => formData.append('images', image))
-
     try {
       setCreateLoading(true)
       const response = await axios({
@@ -146,7 +136,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${accessToken}`,
         },
-        data: formData,
+        data: payload,
       })
 
       if (response?.data?.success) {
@@ -156,6 +146,22 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     } catch (error) {
       setCreateLoading(false)
       console.log('Create bid item error', error)
+    }
+  }
+
+  const handlePressPost = async (values: any) => {
+    try {
+      let formData = new FormData()
+      //add image and thumbnail and we done
+      formData.append('thumbnail', thumbnailSelected?.[0])
+      imagesSelected?.map(image => formData.append('images', image))
+      // console.log('FORM DATA', imagesSelected, thumbnailSelected)
+      if (true) {
+        // const reponse = await handleCreateBidValue(values)
+      }
+    } catch (error) {
+      toast.error('Đăng ảnh không thành công')
+      console.log('UPLOAD IMAGE ERROR', error)
     }
   }
 
@@ -192,7 +198,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
         <StepFour
           formTool={formTool as any}
           onPressOpenCategory={() => setOpenSelectCategory(true)}
-          onPressCreateBid={() => {}}
+          onPressCreateBid={values => handlePressPost(values)}
         />
       </Slider>
 
