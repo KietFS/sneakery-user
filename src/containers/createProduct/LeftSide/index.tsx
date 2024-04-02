@@ -87,25 +87,16 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   //functions
 
   const formatDate = (dateString: string) => {
-    // Chuỗi ngày tháng ban đầu
-
-    // Tạo một đối tượng Date từ chuỗi ban đầu
     var originalDate = new Date(dateString)
-
-    // Thêm 3 ngày vào ngày ban đầu
     originalDate.setDate(originalDate.getDate() + 3)
-
-    // Thiết lập giờ, phút và giây mới
     originalDate.setHours(12)
     originalDate.setMinutes(0)
     originalDate.setSeconds(0)
 
-    // Lấy các thành phần ngày tháng năm mới
     var newYear = originalDate.getFullYear()
-    var newMonth = originalDate.getMonth() + 1 // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+    var newMonth = originalDate.getMonth() + 1
     var newDay = originalDate.getDate()
 
-    // Định dạng lại chuỗi ngày tháng năm mới theo yêu cầu
     var newDateString =
       newYear +
       '-' +

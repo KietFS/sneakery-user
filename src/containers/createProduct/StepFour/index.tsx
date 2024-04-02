@@ -12,7 +12,7 @@ import { Control, UseFormReturn } from 'react-hook-form'
 interface IStepFourProps {
   formTool: UseFormReturn<any>
   onPressOpenCategory: () => void
-  onPressCreateBid: () => void
+  onPressCreateBid: (values: any) => void
 }
 
 const StepFour: React.FC<IStepFourProps> = ({
@@ -20,7 +20,7 @@ const StepFour: React.FC<IStepFourProps> = ({
   onPressCreateBid,
   onPressOpenCategory,
 }) => {
-  const { control, register } = formTool
+  const { control, register, handleSubmit } = formTool
   const { currentCategory } = useAppSelector(
     (state: IRootState) => state.category,
   )
@@ -52,7 +52,7 @@ const StepFour: React.FC<IStepFourProps> = ({
           variant="primary"
           type="submit"
           title="Đăng sản phẩm"
-          onClick={onPressCreateBid}
+          onClick={handleSubmit(onPressCreateBid)}
         />
       </div>
     </div>
