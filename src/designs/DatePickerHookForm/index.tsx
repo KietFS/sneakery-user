@@ -21,7 +21,7 @@ interface IDatePicketHookFormProps {
 }
 
 const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
-  const { label, name, control } = props
+  const { label, name, control, defaultValue } = props
   const [localError, setLocalError] = useState<boolean>(false)
 
   const currentDate = new Date(Date.now() + 36000)
@@ -34,43 +34,52 @@ const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
       render={({
         field: { value, onChange: onFieldChange },
         fieldState: { error },
-      }) => (
-        <div className="mt-1">
-          <p className="text-sm font-bold text-gray-600 mb-2 mr-1">{label}</p>
-          <div className=" z-50">
-            <DateTimePicker
-              value={value}
-              InputProps={{ style: { height: 40, backgroundColor: '#f7f8f8' } }}
-              onChange={changedValue => {
-                let temp = new Date(changedValue)
-                if (temp < currentDate) {
-                  setLocalError(true)
-                } else {
-                  setLocalError(false)
-                  onFieldChange(changedValue?.toDate())
-                }
-              }}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  className="w-full z-1"
-                  style={{
-                    height: 40,
-                    zIndex: 1,
-                    borderRadius: 7,
-                  }}
-                />
-              )}
-            />
+      }) => {
+        useEffect(() => {
+          if (defaultValue) {
+            onFieldChange(defaultValue)
+          }
+        }, [defaultValue])
+        return (
+          <div className="mt-1">
+            <p className="text-sm font-bold text-gray-600 mb-2 mr-1">{label}</p>
+            <div className=" z-50">
+              <DateTimePicker
+                value={value}
+                InputProps={{
+                  style: { height: 40, backgroundColor: '#f7f8f8' },
+                }}
+                onChange={changedValue => {
+                  let temp = new Date(changedValue)
+                  if (temp < currentDate) {
+                    setLocalError(true)
+                  } else {
+                    setLocalError(false)
+                    onFieldChange(changedValue?.toDate())
+                  }
+                }}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    className="w-full z-1"
+                    style={{
+                      height: 40,
+                      zIndex: 1,
+                      borderRadius: 7,
+                    }}
+                  />
+                )}
+              />
+            </div>
+            {(!!error || !!localError) && (
+              <p className="text-red-500 text-sm mt-2 font-semibold">
+                {'Thời điểm kết thúc đấu giá phải diễn ra sau bây giờ' ||
+                  error?.message}
+              </p>
+            )}
           </div>
-          {(!!error || !!localError) && (
-            <p className="text-red-500 text-sm mt-2 font-semibold">
-              {'Thời điểm kết thúc đấu giá phải diễn ra sau bây giờ' ||
-                error?.message}
-            </p>
-          )}
-        </div>
-      )}
+        )
+      }}
     />
   )
 }

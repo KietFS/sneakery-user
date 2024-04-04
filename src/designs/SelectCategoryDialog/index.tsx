@@ -16,7 +16,10 @@ import { configResponse } from '@/utils/request'
 import SelectComponent from '../Select'
 import Button from '@/designs/Button'
 import { useDispatch } from 'react-redux'
-import { setCurrentProductCategory } from '@/redux/slices/category'
+import {
+  setCurrentProductCategory,
+  setListCategory,
+} from '@/redux/slices/category'
 //hooks
 import { useRouter } from 'next/router'
 
@@ -29,10 +32,9 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
   const { open, onClose } = props
   const router = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [listCategories, setListCategories] = useState<IProductCategory[]>([])
 
   const dispatch = useDispatch()
-  const { currentCategory } = useAppSelector(
+  const { currentCategory, listCategory } = useAppSelector(
     (state: IRootState) => state.category,
   )
 
@@ -41,6 +43,7 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
 
   const handlePressConfirm = () => {
     router.push('/createProduct')
+    onClose()
   }
 
   const getListProductCategories = async () => {
@@ -48,7 +51,7 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
       setIsLoading(true)
       const response = await axios.get(`${Config.API_URL}/categories/`)
       if (response?.data?.success) {
-        setListCategories(response?.data?.data)
+        dispatch(setListCategory(response?.data?.data))
         setIsLoading(false)
       } else {
         setIsLoading(false)
@@ -63,8 +66,10 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
   const handlePressClose = () => onClose()
 
   useEffect(() => {
-    getListProductCategories()
-  }, [])
+    if (!listCategory) {
+      getListProductCategories()
+    }
+  }, [listCategory])
 
   return (
     <Dialog
@@ -125,18 +130,20 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
             <>
               <div className="">
                 <div className="grid grid-cols-6 gap-x-4 gap-y-4">
-                  {listCategories?.map((category, categoryIndex) => (
-                    <button
-                      onClick={() => dispatchSetCurrentCategory(category)}
-                      className={`px-2 h-[60px] bg-white ${currentCategory?.name == category?.name ? `border-blue-500 bg-blue-100` : `border-gray-300`}  border   hover:opacity-60 shadow-lg rounded-lg`}
-                    >
-                      <p
-                        className={`text-gray-500 text-sm ${currentCategory?.name == category?.name ? `text-blue-500` : `text-gray-600`}`}
+                  {listCategory?.map(
+                    (category: IProductCategory, categoryIndex: number) => (
+                      <button
+                        onClick={() => dispatchSetCurrentCategory(category)}
+                        className={`px-2 h-[60px] bg-white ${currentCategory?.name == category?.name ? `border-blue-500 bg-blue-100` : `border-gray-300`}  border   hover:opacity-60 shadow-lg rounded-lg`}
                       >
-                        {category?.name}
-                      </p>
-                    </button>
-                  ))}
+                        <p
+                          className={`text-gray-500 text-sm ${currentCategory?.name == category?.name ? `text-blue-500` : `text-gray-600`}`}
+                        >
+                          {category?.name}
+                        </p>
+                      </button>
+                    ),
+                  )}
                 </div>
                 <div className="flex justify-between items-center mt-12">
                   <div></div>

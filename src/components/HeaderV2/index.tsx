@@ -29,6 +29,7 @@ import VerifyPhoneNumberDialog from '../VerifyPhoneNumberDIalog'
 import { useAuth } from '@/hooks/useAuth'
 import { toast } from 'react-toastify'
 import { setCategory } from '@/redux/slices/filter'
+import { setListCategory } from '@/redux/slices/category'
 
 interface IHeaderV2Props {}
 
@@ -36,6 +37,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
   const { user, openVerifyPhoneNumberDialog } = useAppSelector(
     (state: IRootState) => state.auth,
   )
+  const { listCategory } = useAppSelector((state: IRootState) => state.category)
   const { isAuthenticated, accessToken } = useAuth()
   const { register, regsiterLoading } = useAuth()
   const router = useRouter()
@@ -45,7 +47,6 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
   const [isGettingProductCategory, setIsGettingProductCategory] =
     useState<boolean>(false)
   const [displayMenu, setDisplayMenu] = useState<boolean>(false)
-  const [categories, setCategories] = useState<IProductCategory[]>([])
   const [openRegister, setOpenRegister] = useState<boolean>(false)
   const [registerValue, setRegisterValue] = useState<IRegisterFormValue | null>(
     null,
@@ -55,8 +56,10 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
   const dispatch = useDispatch()
 
   React.useEffect(() => {
-    getProductCategories()
-  }, [])
+    if (!listCategory) {
+      getProductCategories()
+    }
+  }, [listCategory])
 
   const getProductCategories = async () => {
     try {
@@ -66,7 +69,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
       if (response?.data?.success) {
         //SET CATEGORIES
         setIsGettingProductCategory(false)
-        setCategories(response?.data?.data)
+        dispatch(setListCategory(response?.data?.data))
       }
     } catch (error) {
       setIsGettingProductCategory(false)
@@ -197,7 +200,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
           onMouseLeave={() => setDisplayMenu(false)}
         >
           <div className="w-3/5 mx-auto  absolute top-20 mr-20 h-[200px] bg-white shadow-xl px-4 z-50  py-4 grid grid-cols-4 grid-row-4 flex-wrap gap-y-2 rounded-b-lg">
-            {categories?.map((category, categoryIndex) => (
+            {listCategory?.map((category: any, categoryIndex: number) => (
               <button
                 className="h-fit"
                 onClick={() => {

@@ -4,7 +4,14 @@ import RadioButtonHookForm from '@/designs/RadioButtonHookForm'
 import SelectCustomFieldHookForm from '@/designs/SelectCustomFieldHookForm'
 import { useAppSelector } from '@/hooks/useRedux'
 import { IRootState } from '@/redux'
-import { TagIcon } from '@heroicons/react/20/solid'
+import {
+  ArrowSmallLeftIcon,
+  CheckBadgeIcon,
+  CheckCircleIcon,
+  CheckIcon,
+  TagIcon,
+} from '@heroicons/react/20/solid'
+import {} from '@heroicons/react/24/outline'
 import { IconButton, Tooltip } from '@mui/material'
 import React, { useState } from 'react'
 import { Control, UseFormReturn } from 'react-hook-form'
@@ -13,12 +20,16 @@ interface IStepFourProps {
   formTool: UseFormReturn<any>
   onPressOpenCategory: () => void
   onPressCreateBid: (values: any) => void
+  buttonLoading?: boolean
+  onPressBack: () => void
 }
 
 const StepFour: React.FC<IStepFourProps> = ({
   formTool,
   onPressCreateBid,
   onPressOpenCategory,
+  onPressBack,
+  buttonLoading = false,
 }) => {
   const { control, register, handleSubmit } = formTool
   const { currentCategory } = useAppSelector(
@@ -48,12 +59,18 @@ const StepFour: React.FC<IStepFourProps> = ({
       </div>
       <div className="col-span-2 mt-2 flex justify-between">
         <div></div>
-        <Button
-          variant="primary"
-          type="submit"
-          title="Đăng sản phẩm"
-          onClick={handleSubmit(onPressCreateBid)}
-        />
+        <div className="flex items-center gap-x-2">
+          <Tooltip title="Quay về bước trước">
+            <IconButton onClick={onPressBack}>
+              <ArrowSmallLeftIcon className="w-10 h-10 text-gray-400 hover:text-gray-600" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Hoàn tất việc đăng sản phẩm">
+            <IconButton onClick={handleSubmit(onPressCreateBid)}>
+              <CheckIcon className="w-8 h-8 text-gray-600 hover:text-blue-500" />
+            </IconButton>
+          </Tooltip>
+        </div>
       </div>
     </div>
   )

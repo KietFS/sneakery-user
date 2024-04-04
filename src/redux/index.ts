@@ -16,12 +16,13 @@ import {
 } from 'redux-persist'
 
 const saveSubsetAuthReducer = createFilter('auth', ['accessToken', 'user'])
+const saveSubsetCategoryReducer = createFilter('category', ['currentCategory'])
 
 const persistConfig = {
   key: 'root',
   storage,
-  transforms: [saveSubsetAuthReducer],
-  whitelist: ['auth'], // TODO
+  transforms: [saveSubsetAuthReducer, saveSubsetCategoryReducer],
+  whitelist: ['auth', 'category'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

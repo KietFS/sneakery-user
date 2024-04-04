@@ -12,6 +12,8 @@ import React from 'react'
 interface IStepThreeProps {
   setThumbnailSelected: (listImage: any[]) => void
   setImagesSelected: (listImage: any[]) => void
+  imagesSelected: any | null
+  thumbnailSelected: any | null
   onPressOpenCategory: () => void
   onPressNext: () => void
   onPressBack: () => void
@@ -24,7 +26,12 @@ const StepThree: React.FC<IStepThreeProps> = props => {
     onPressOpenCategory,
     onPressNext,
     onPressBack,
+    imagesSelected,
+    thumbnailSelected,
   } = props
+
+  const isDisabled = !thumbnailSelected || !imagesSelected
+
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">
       <div>
@@ -62,8 +69,10 @@ const StepThree: React.FC<IStepThreeProps> = props => {
             </IconButton>
           </Tooltip>
           <Tooltip title="Qua bước tiếp theo">
-            <IconButton onClick={onPressNext}>
-              <ArrowSmallRightIcon className="w-10 h-10 text-gray-600 hover:text-blue-500" />
+            <IconButton onClick={onPressNext} disabled={isDisabled}>
+              <ArrowSmallRightIcon
+                className={`w-10 h-10 text-gray-600 hover:text-blue-500 ${isDisabled ? 'opacity-30' : ''}`}
+              />
             </IconButton>
           </Tooltip>
         </div>

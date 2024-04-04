@@ -1,6 +1,7 @@
 import Button from '@/designs/Button'
 import DatePickerHookForm from '@/designs/DatePickerHookForm'
 import InputHookForm from '@/designs/InputHookForm'
+import RadioButtonHookForm from '@/designs/RadioButtonHookForm'
 import {
   ArrowSmallLeftIcon,
   ArrowSmallRightIcon,
@@ -23,7 +24,36 @@ const StepTwo: React.FC<IStepTwoProps> = ({
   onPressNext,
   onPressBack,
 }) => {
-  const { control, register } = formTool
+  const { control, register, getValues, watch } = formTool
+  const currentDate = new Date()
+
+  const formatDate = (dateString: string) => {
+    var originalDate = new Date(dateString)
+    originalDate.setDate(originalDate.getDate() + 3)
+    originalDate.setHours(12)
+    originalDate.setMinutes(0)
+    originalDate.setSeconds(0)
+
+    var newYear = originalDate.getFullYear()
+    var newMonth = originalDate.getMonth() + 1
+    var newDay = originalDate.getDate()
+
+    var newDateString =
+      newYear +
+      '-' +
+      (newMonth < 10 ? '0' : '') +
+      newMonth +
+      '-' +
+      (newDay < 10 ? '0' : '') +
+      newDay +
+      'T12:00:00'
+
+    return newDateString
+  }
+
+  const isDisable =
+    !watch('priceStart') || !watch('stepBid') || !watch('bidClosingDateTime')
+
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">
       <div>
@@ -58,10 +88,16 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             {...register('bidClosingDateTime', {
               required: 'Vui lòng chọn ngày kết thúc đấu giá',
             })}
+            defaultValue={formatDate(currentDate.toString())}
             label="Chọn thời điểm kết thúc đấu giá"
             control={control}
           />
-          <div></div>
+          <RadioButtonHookForm
+            control={control}
+            name="isBidSniping"
+            placeholder="Cho phép bid snipping"
+            label="Bid snipping"
+          />
         </div>
       </div>
       <div className="col-span-2 mt-2 flex justify-between">
@@ -73,8 +109,18 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             </IconButton>
           </Tooltip>
           <Tooltip title="Qua bước tiếp theo">
-            <IconButton onClick={onPressNext}>
-              <ArrowSmallRightIcon className="w-10 h-10 text-gray-600 hover:text-blue-500" />
+            <IconButton
+              disabled={isDisable}
+              onClick={() => {
+                if (isDisable) {
+                } else {
+                  onPressNext()
+                }
+              }}
+            >
+              <ArrowSmallRightIcon
+                className={`w-10 h-10  text-gray-600 hover:text-blue-500 ${isDisable ? 'opacity-30' : ''}`}
+              />
             </IconButton>
           </Tooltip>
         </div>

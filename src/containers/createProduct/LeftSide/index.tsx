@@ -47,13 +47,21 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const { currentCategory } = useAppSelector(
     (state: IRootState) => state.category,
   )
-  const { control, register, handleSubmit, getValues, setValue, watch } =
-    useForm()
+  const {
+    control,
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+    getFieldState,
+    watch,
+  } = useForm()
   const formTool = {
     control,
     register,
     handleSubmit,
     getValues,
+
     setValue,
     watch,
   }
@@ -83,7 +91,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
 
   const sliderRef = useRef<any>(null)
 
-  const [step, setStep] = useState<number>(1)
   //functions
 
   const formatDate = (dateString: string) => {
@@ -110,13 +117,15 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     return newDateString
   }
 
-  const handleCreateBidValue = async (values: any) => {
+  const handleCreateBidValue = async (values: any, imageIds: number[]) => {
     const payload = {
       ...values,
       bidClosingDateTime: formatDate(values?.bidClosingDateTime),
       priceStart: Number(values?.priceStart),
       stepBid: Number(values?.stepBid),
       categoryId: currentCategory?.id,
+      imageIds: imageIds,
+      description: '',
     }
     try {
       setCreateLoading(true)
@@ -124,7 +133,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
         method: 'post',
         url: `${Config.API_URL}/bids`,
         headers: {
-          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${accessToken}`,
         },
         data: payload,
@@ -142,17 +150,32 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
 
   const handlePressPost = async (values: any) => {
     try {
+      setCreateLoading(true)
       let formData = new FormData()
       //add image and thumbnail and we done
       formData.append('thumbnail', thumbnailSelected?.[0])
       imagesSelected?.map(image => formData.append('images', image))
-      // console.log('FORM DATA', imagesSelected, thumbnailSelected)
-      if (true) {
-        // const reponse = await handleCreateBidValue(values)
+      const uploadMediaResponse = await axios.post(
+        `${Config.API_URL}/medias/upload-images`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+
+      if (uploadMediaResponse?.data?.success) {
+        let returnedIds = uploadMediaResponse?.data?.data?.map(
+          (image: any, imageIndex: number) => image?.id,
+        )
+        await handleCreateBidValue(values, returnedIds)
       }
     } catch (error) {
+      setCreateLoading(false)
+      console.log('UPLOAD MEDIA ERROR', error)
       toast.error('Đăng ảnh không thành công')
-      console.log('UPLOAD IMAGE ERROR', error)
     }
   }
 
@@ -184,11 +207,15 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           onPressNext={() => (sliderRef as any)?.current?.slickGoTo(3)}
           onPressBack={() => (sliderRef as any)?.current?.slickGoTo(1)}
           onPressOpenCategory={() => setOpenSelectCategory(true)}
+          imagesSelected={imagesSelected}
+          thumbnailSelected={thumbnailSelected}
         />
 
         <StepFour
           formTool={formTool as any}
+          buttonLoading={createLoading}
           onPressOpenCategory={() => setOpenSelectCategory(true)}
+          onPressBack={() => (sliderRef as any)?.current?.slickGoTo(2)}
           onPressCreateBid={values => handlePressPost(values)}
         />
       </Slider>
