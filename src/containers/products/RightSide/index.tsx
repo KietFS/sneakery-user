@@ -129,7 +129,7 @@ const RightSide: React.FC<IRightSideProps> = props => {
         <div className="mt-2">
           <h3 className="text-gray-400 text-lg">Chấp nhận thanh toán : </h3>
           <div className="flex w-full items-center space-x-3">
-            <div className="w-[120px] h-[70px] border border-gray-200 justify-center items-center flex rounded-lg cursor-pointer hover:opacity-70 p-[5px] ">
+            <div className="w-[120px] h-[70px] border border-gray-200 justify-center items-center flex rounded-lg cursor-pointer hover:opacity-70 p-[5px]">
               <Image
                 src={PaypalLogo}
                 className="w-[100px] h-[50px] rounded-lg my-auto"

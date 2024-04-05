@@ -18,11 +18,12 @@ import axios from 'axios'
 import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
 import { useAuth } from '@/hooks/useAuth'
+import { configResponse } from '@/utils/request'
 
 const Cancel: React.FC = props => {
   const router = useRouter()
   const { user } = useAppSelector((state: IRootState) => state.auth)
-  const { paymentId, token, PayerID } = router.query
+  const { paymentId, token, PayerID, paymentType } = router.query
   const [loading, setLoading] = useState<boolean>(false)
   const [call, setCall] = useState<number>(0)
   const { accessToken } = useAuth()
@@ -30,13 +31,18 @@ const Cancel: React.FC = props => {
   const processCharge = async () => {
     try {
       setLoading(true)
-      const url = `${Config.API_URL}/transaction/deposit/success?paymentId=${paymentId}&payerId=${PayerID}`
+      const url = `${Config.API_URL}/transaction/deposit/success?paymentId=${paymentId}&payerId=${PayerID}&paymentType=PRE_SALE_FEE`
+      console.log('URL IS', url)
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
       })
+      const { isSuccess, data } = configResponse(response)
+      if (isSuccess) {
+        console.log('DATA', data)
+      }
     } catch (error) {
       console.log('PROCESS CHARGE ERROR', error)
     } finally {
