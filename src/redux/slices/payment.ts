@@ -22,8 +22,14 @@ const paymentSlice = createSlice({
     setPaymentId: (state, actions: PayloadAction<string | null>) => {
       state.paymentId = actions.payload
     },
+    setPayerId: (state, actions: PayloadAction<string | null>) => {
+      state.payerId = actions.payload
+    },
+    setPaymentType: (state, actions: PayloadAction<IPaymentType | null>) => {
+      state.paymentType = actions.payload
+    },
   },
 })
 
-export const { setPaymentId } = paymentSlice.actions
+export const { setPaymentId, setPayerId, setPaymentType } = paymentSlice.actions
 export default paymentSlice.reducer

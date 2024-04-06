@@ -19,6 +19,12 @@ import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
 import { useAuth } from '@/hooks/useAuth'
 import { configResponse } from '@/utils/request'
+import { useDispatch } from 'react-redux'
+import {
+  setPayerId,
+  setPaymentId,
+  setPaymentType,
+} from '@/redux/slices/payment'
 
 const Cancel: React.FC = props => {
   const router = useRouter()
@@ -28,30 +34,17 @@ const Cancel: React.FC = props => {
   const [call, setCall] = useState<number>(0)
   const { accessToken } = useAuth()
 
-  const processCharge = async () => {
-    try {
-      setLoading(true)
-      const url = `${Config.API_URL}/transaction/deposit/success?paymentId=${paymentId}&payerId=${PayerID}&paymentType=PRE_SALE_FEE`
-      console.log('URL IS', url)
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      })
-      const { isSuccess, data } = configResponse(response)
-      if (isSuccess) {
-        console.log('DATA', data)
-      }
-    } catch (error) {
-      console.log('PROCESS CHARGE ERROR', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const dispatch = useDispatch()
+
+
   useEffect(() => {
+    if (!!paymentId && !!PayerID) {
+      dispatch(setPaymentId(paymentId as string))
+      dispatch(setPayerId(PayerID as string))
+      dispatch(setPaymentType('PRE_SALE_FEE'))
+    }
     window?.close()
-  }, [])
+  }, [paymentId, PayerID])
 
   return (
     <>

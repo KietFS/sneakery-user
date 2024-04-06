@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 //styles
 
@@ -19,6 +19,7 @@ import StepTwo from '../StepTwo'
 import Slider from 'react-slick'
 import StepThree from '../StepThree'
 import StepFour from '../StepFour'
+import { configResponse } from '@/utils/request'
 
 interface ILeftSideProps {}
 
@@ -46,6 +47,9 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const { currentCategory } = useAppSelector(
     (state: IRootState) => state.category,
+  )
+  const { paymentId, payerId, paymentType } = useAppSelector(
+    (state: IRootState) => state.payment,
   )
   const {
     control,
@@ -88,6 +92,8 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const [thumbnailSelected, setThumbnailSelected] = useState<any[] | null>(null)
   const [imagesSelected, setImagesSelected] = useState<any[] | null>(null)
   const [createLoading, setCreateLoading] = useState<boolean>(false)
+  const [verfiyPaymentLoading, setVerifyPaymentLoading] =
+    useState<boolean>(false)
 
   const sliderRef = useRef<any>(null)
 
@@ -115,6 +121,28 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       'T12:00:00'
 
     return newDateString
+  }
+
+  const processCharge = async () => {
+    try {
+      setVerifyPaymentLoading(true)
+      const url = `${Config.API_URL}/transaction/deposit/success?paymentId=${paymentId}&payerId=${payerId}&paymentType=${paymentType}`
+      console.log('URL IS', url)
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      const { isSuccess, data } = configResponse(response)
+      if (isSuccess) {
+        alert('THANH TOAN THANH CONG')
+      }
+    } catch (error) {
+      console.log('PROCESS CHARGE ERROR', error)
+    } finally {
+      setVerifyPaymentLoading(false)
+    }
   }
 
   const handleCreateBidValue = async (values: any, imageIds: number[]) => {
@@ -178,6 +206,12 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       toast.error('Đăng ảnh không thành công')
     }
   }
+
+  useEffect(() => {
+    if (!!paymentId && !!payerId && !!paymentType) {
+      processCharge()
+    }
+  }, [paymentId, payerId, paymentType])
 
   return (
     <>

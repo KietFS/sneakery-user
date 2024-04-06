@@ -17,10 +17,6 @@ const CreateProduct: React.FC<ICreateProductProps> = props => {
   const [loadingPaymentInfo, setLoadingPaymentInfo] = useState<boolean>(false)
   const { accessToken } = useAuth()
 
-  useEffect(() => {
-    window?.close()
-  }, [])
-
   return (
     <>
       <div className="bg-white">
