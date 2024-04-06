@@ -36,14 +36,17 @@ const Cancel: React.FC = props => {
 
   const dispatch = useDispatch()
 
+  console.log('PAYER ID', PayerID)
+  console.log('payment ID', paymentId)
 
   useEffect(() => {
     if (!!paymentId && !!PayerID) {
       dispatch(setPaymentId(paymentId as string))
       dispatch(setPayerId(PayerID as string))
       dispatch(setPaymentType('PRE_SALE_FEE'))
+
+      window?.close()
     }
-    window?.close()
   }, [paymentId, PayerID])
 
   return (
