@@ -134,9 +134,12 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           'Content-Type': 'application/json',
         },
       })
+
+      if (response) {
+        console.log('RESPONSE', response)
+      }
       const { isSuccess, data } = configResponse(response)
       if (isSuccess) {
-        alert('THANH TOAN THANH CONG')
       }
     } catch (error) {
       console.log('PROCESS CHARGE ERROR', error)
