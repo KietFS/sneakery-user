@@ -216,6 +216,10 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     }
   }, [paymentId, payerId, paymentType])
 
+  console.log('PAYMENT TYPE', paymentType)
+  console.log('PayerID', payerId)
+  console.log('PAYMENT ID', paymentId)
+
   return (
     <>
       <Slider
