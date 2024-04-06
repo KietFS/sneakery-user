@@ -17,12 +17,17 @@ import {
 
 const saveSubsetAuthReducer = createFilter('auth', ['accessToken', 'user'])
 const saveSubsetCategoryReducer = createFilter('category', ['currentCategory'])
+const saveSubsetPaymentReducer = createFilter('payment', ['paymentId'])
 
 const persistConfig = {
   key: 'root',
   storage,
-  transforms: [saveSubsetAuthReducer, saveSubsetCategoryReducer],
-  whitelist: ['auth', 'category'],
+  transforms: [
+    saveSubsetAuthReducer,
+    saveSubsetCategoryReducer,
+    saveSubsetPaymentReducer,
+  ],
+  whitelist: ['auth', 'category', 'payment'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

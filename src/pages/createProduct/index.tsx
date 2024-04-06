@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 //styles
 import FooterSection from '@/components/FooterSection'
@@ -9,10 +9,18 @@ import Head from 'next/head'
 
 //utils
 import { withAuthorization } from '@/common/config/HOC/withAuth'
+import { useAuth } from '@/hooks/useAuth'
 
 interface ICreateProductProps {}
 
 const CreateProduct: React.FC<ICreateProductProps> = props => {
+  const [loadingPaymentInfo, setLoadingPaymentInfo] = useState<boolean>(false)
+  const { accessToken } = useAuth()
+
+  useEffect(() => {
+    window?.close()
+  }, [])
+
   return (
     <>
       <div className="bg-white">

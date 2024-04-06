@@ -49,13 +49,9 @@ const Cancel: React.FC = props => {
       setLoading(false)
     }
   }
-
   useEffect(() => {
-    if (paymentId && PayerID) {
-      setCall(call + 1)
-      processCharge()
-    }
-  }, [paymentId])
+    window?.close()
+  }, [])
 
   return (
     <>
