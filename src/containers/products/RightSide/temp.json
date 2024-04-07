@@ -1,0 +1,19 @@
+{
+  "id": 9,
+  "name": "Saint Laurent SL-24 Mid\\r\\nDistressed Optic White Black Red",
+  "properties": {
+    "size": "38",
+    "Màu sắc": "Optic White/Black/Red",
+    "Tình trạng": "FULLBOX",
+    "Thương hiệu": "Saint Laurent"
+  },
+  "description": null,
+  "startPrice": 422,
+  "currentPrice": 540,
+  "bidIncrement": 40,
+  "imagePath": [
+    "https://images.stockx.com/images/Saint-Laurent-SL-24-Mid-Distressed-Optic-White-Black-Red.jpg"
+  ],
+  "category": "Giày dép",
+  "bidClosingDate": "2024-05-13T00:00:00"
+}

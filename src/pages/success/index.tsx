@@ -20,13 +20,8 @@ import { Config } from '@/config/api'
 import { useAuth } from '@/hooks/useAuth'
 import { configResponse } from '@/utils/request'
 import { useDispatch } from 'react-redux'
-import {
-  setPayerId,
-  setPaymentId,
-  setPaymentType,
-} from '@/redux/slices/payment'
 
-const Cancel: React.FC = props => {
+const Success: React.FC = props => {
   const router = useRouter()
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const { paymentId: hehe } = useAppSelector(
@@ -34,7 +29,6 @@ const Cancel: React.FC = props => {
   )
   const { paymentId, token, PayerID, paymentType } = router.query
   const [loading, setLoading] = useState<boolean>(false)
-  const [call, setCall] = useState<number>(0)
   const { accessToken } = useAuth()
 
   const dispatch = useDispatch()
@@ -74,4 +68,4 @@ const Cancel: React.FC = props => {
   return <></>
 }
 
-export default Cancel
+export default Success

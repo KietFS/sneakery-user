@@ -37,6 +37,23 @@ const RightSide: React.FC<IRightSideProps> = props => {
   const [textHour, setTextHour] = useState<string>('')
   const [textMinute, setTextMinute] = useState<string>('')
   const [textSecond, setTextSecond] = useState<string>('')
+  const [productDetail, setProductDetail] = useState<IProductDetail | null>(
+    null,
+  )
+
+  const getProductDetail = async () => {
+    try {
+      const productResponse = await axios.get(
+        `${Config.API_URL}/products/${product?.id}`,
+      )
+
+      if (productResponse?.data?.success) {
+        setProductDetail(productResponse?.data?.data)
+      }
+    } catch (error) {
+      console.log('GET PRODUCT DETAIL ERROR', error)
+    }
+  }
 
   //functions
   useEffect(() => {
@@ -64,6 +81,12 @@ const RightSide: React.FC<IRightSideProps> = props => {
     }
   }, [])
 
+  useEffect(() => {
+    getProductDetail()
+  }, [])
+
+  // console.log('Product detail is', productDetail)
+
   return (
     <div className="px-8 py-4">
       <h1 className="text-gray-600 font-bold text-4xl">{product?.name}</h1>
@@ -74,19 +97,19 @@ const RightSide: React.FC<IRightSideProps> = props => {
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Giá khởi điểm : </h3>
         <h3 className="text-gray-500 text-lg ml-1  cursor-pointer">
-          {product?.startPrice.toString().prettyMoney()}$
+          {productDetail?.startPrice.toString().prettyMoney()}$
         </h3>
       </div>
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Bước giá : </h3>
         <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
-          {(product?.bidIncrement).toString().prettyMoney()}$
+          {(product?.bidIncrement as number).toString().prettyMoney()}$
         </h3>
       </div>
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Giá hiện tại : </h3>
         <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
-          {(product?.currentPrice).toString().prettyMoney()}$
+          {(product?.currentPrice as number).toString().prettyMoney()}$
         </h3>
       </div>
       <div className="mt-2 flex items-center">
