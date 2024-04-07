@@ -11,6 +11,8 @@ import PartnerSection from '@/containers/home/PartnerSection'
 import ContactSection from '@/containers/home/ContactSection'
 import FooterSection from '@/components/FooterSection'
 import Head from 'next/head'
+import { useAppSelector } from '@/hooks/useRedux'
+import { IRootState } from '@/redux'
 
 const Home = (props: any) => {
   //function

@@ -56,10 +56,10 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
   const dispatch = useDispatch()
 
   React.useEffect(() => {
-    if (!listCategory) {
+    if (listCategory?.length == 0) {
       getProductCategories()
     }
-  }, [listCategory])
+  }, [])
 
   const getProductCategories = async () => {
     try {

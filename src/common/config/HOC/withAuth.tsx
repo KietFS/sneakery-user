@@ -13,7 +13,7 @@ export function withAuthorization<T>(Component: React.FC<T>) {
 
     useEffect(() => {
       if (!accessToken) {
-        toast.error('Cần đăng nhập trước khi vào giỏ hàng')
+        toast.error('Cần đăng nhập trước khi vào trang này')
         router?.push('/')
       }
     }, [accessToken, router])

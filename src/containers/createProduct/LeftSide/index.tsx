@@ -20,6 +20,7 @@ import Slider from 'react-slick'
 import StepThree from '../StepThree'
 import StepFour from '../StepFour'
 import { configResponse } from '@/utils/request'
+import { useRouter } from 'next/router'
 
 interface ILeftSideProps {}
 
@@ -48,9 +49,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const { currentCategory } = useAppSelector(
     (state: IRootState) => state.category,
   )
-  const { paymentId, payerId, paymentType } = useAppSelector(
-    (state: IRootState) => state.payment,
-  )
+
   const {
     control,
     register,
@@ -94,6 +93,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const [createLoading, setCreateLoading] = useState<boolean>(false)
   const [verfiyPaymentLoading, setVerifyPaymentLoading] =
     useState<boolean>(false)
+  const router = useRouter()
 
   const sliderRef = useRef<any>(null)
 
@@ -123,31 +123,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     return newDateString
   }
 
-  const processCharge = async () => {
-    try {
-      setVerifyPaymentLoading(true)
-      const url = `${Config.API_URL}/transaction/deposit/success?paymentId=${paymentId}&payerId=${payerId}&paymentType=${paymentType}`
-      console.log('URL IS', url)
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (response) {
-        console.log('RESPONSE', response)
-      }
-      const { isSuccess, data } = configResponse(response)
-      if (isSuccess) {
-      }
-    } catch (error) {
-      console.log('PROCESS CHARGE ERROR', error)
-    } finally {
-      setVerifyPaymentLoading(false)
-    }
-  }
-
   const handleCreateBidValue = async (values: any, imageIds: number[]) => {
     const payload = {
       ...values,
@@ -171,6 +146,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
 
       if (response?.data?.success) {
         setCreateLoading(false)
+        router?.push('/')
         toast.success('Tạo sản phẩm đấu giá thành công')
       }
     } catch (error) {
@@ -210,21 +186,13 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     }
   }
 
-  useEffect(() => {
-    if (!!paymentId && !!payerId && !!paymentType) {
-      processCharge()
-    }
-  }, [paymentId, payerId, paymentType])
-
-  console.log('PAYMENT TYPE', paymentType)
-  console.log('PayerID', payerId)
-  console.log('PAYMENT ID', paymentId)
-
   return (
     <>
       <Slider
         ref={sliderRef as any}
         {...settings}
+        swipeToSlide={false}
+        swipe={false}
         className={`block justify-center  w-full laptop:h-[500px] h-[400px] rounded-lg mx-auto`}
       >
         <StepOne
