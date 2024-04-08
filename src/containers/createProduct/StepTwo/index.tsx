@@ -13,14 +13,12 @@ import { UseFormReturn } from 'react-hook-form'
 
 interface IStepTwoProps {
   formTool: UseFormReturn<any>
-  onPressOpenCategory: () => void
   onPressNext: () => void
   onPressBack: () => void
 }
 
 const StepTwo: React.FC<IStepTwoProps> = ({
   formTool,
-  onPressOpenCategory,
   onPressNext,
   onPressBack,
 }) => {
@@ -29,7 +27,7 @@ const StepTwo: React.FC<IStepTwoProps> = ({
 
   const formatDate = (dateString: string) => {
     var originalDate = new Date(dateString)
-    originalDate.setDate(originalDate.getDate() + 3)
+    originalDate.setDate(originalDate.getDate())
     originalDate.setHours(12)
     originalDate.setMinutes(0)
     originalDate.setSeconds(0)

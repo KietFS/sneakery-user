@@ -207,7 +207,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           formTool={formTool as any}
           onPressNext={() => (sliderRef as any)?.current?.slickGoTo(2)}
           onPressBack={() => (sliderRef as any)?.current?.slickGoTo(0)}
-          onPressOpenCategory={() => setOpenSelectCategory(true)}
         />
 
         <StepThree

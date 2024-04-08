@@ -37,7 +37,6 @@ const Verify: React.FC = props => {
           'Content-Type': 'application/json',
         },
       })
-      response && console.log('PROCESS CHARGE', response)
     } catch (error) {
       console.log('PROCESS CHARGE ERROR', error)
     } finally {

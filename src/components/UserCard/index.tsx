@@ -172,24 +172,6 @@ export default function MultipleSelectPlaceholder() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
-              setWalletDialo(true)
-            }}
-          >
-            <p className="text-gray-500 text-sm ">Nạp tiền vào ví</p>
-            <WalletIcon className="h-5 w-5 text-gray-500" />
-          </div>
-          <div
-            className="py-2 px-4 cursor-pointer flex justify-between items-center"
-            onClick={() => {
-              setOpenWithDraw(true)
-            }}
-          >
-            <p className="text-gray-500 text-sm ">Rút tiền</p>
-            <ArrowsRightLeftIcon className="h-5 w-5 text-gray-500" />
-          </div>
-          <div
-            className="py-2 px-4 cursor-pointer flex justify-between items-center"
-            onClick={() => {
               setOpenLogoutDialog(true)
             }}
           >

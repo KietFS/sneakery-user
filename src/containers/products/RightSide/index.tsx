@@ -16,7 +16,7 @@ import { Config } from '@/config/api'
 interface IRightSideProps {
   product: IProductDetail
   bidHistory: IProductBidHistoryItem[]
-  onPlaceBid: () => void
+  onPlaceBid: (onActionSuccess: () => void) => void
 }
 
 export interface IProductBidHistoryItem {
@@ -81,11 +81,9 @@ const RightSide: React.FC<IRightSideProps> = props => {
     }
   }, [])
 
-  useEffect(() => {
-    getProductDetail()
-  }, [])
-
-  // console.log('Product detail is', productDetail)
+  // useEffect(() => {
+  //   getProductDetail()
+  // }, [])
 
   return (
     <div className="px-8 py-4">
@@ -97,19 +95,34 @@ const RightSide: React.FC<IRightSideProps> = props => {
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Giá khởi điểm : </h3>
         <h3 className="text-gray-500 text-lg ml-1  cursor-pointer">
-          {productDetail?.startPrice.toString().prettyMoney()}$
+          {(
+            (productDetail?.startPrice as number) ||
+            (product?.startPrice as number)
+          )
+            .toString()
+            .prettyMoney()}
+          $
         </h3>
       </div>
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Bước giá : </h3>
         <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
-          {(product?.bidIncrement as number).toString().prettyMoney()}$
+          {(productDetail?.bidIncrement || (product?.bidIncrement as number))
+            .toString()
+            .prettyMoney()}
+          $
         </h3>
       </div>
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Giá hiện tại : </h3>
         <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
-          {(product?.currentPrice as number).toString().prettyMoney()}$
+          {(
+            (productDetail?.currentPrice as number) ||
+            (product?.currentPrice as number)
+          )
+            .toString()
+            .prettyMoney()}
+          $
         </h3>
       </div>
       <div className="mt-2 flex items-center">
@@ -136,7 +149,7 @@ const RightSide: React.FC<IRightSideProps> = props => {
         ) : (
           <button
             onClick={() => {
-              onPlaceBid()
+              onPlaceBid(() => getProductDetail)
             }}
             className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg"
           >

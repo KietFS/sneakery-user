@@ -14,9 +14,6 @@ import { useAuth } from '@/hooks/useAuth'
 interface ICreateProductProps {}
 
 const CreateProduct: React.FC<ICreateProductProps> = props => {
-  const [loadingPaymentInfo, setLoadingPaymentInfo] = useState<boolean>(false)
-  const { accessToken } = useAuth()
-
   return (
     <>
       <div className="bg-white">

@@ -22,8 +22,6 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
       setLoading(true)
       const url = `${Config.API_URL}/products?category=${props.category}`
       const response = await axios.get(url)
-
-      console.log('url', url)
       const { isSuccess, data, error } = configResponse(response)
       if (isSuccess) {
         setListProduct(data.data)

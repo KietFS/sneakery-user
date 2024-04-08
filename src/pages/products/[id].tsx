@@ -20,6 +20,9 @@ import ProductDescription from '@/containers/products/Description'
 const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [bidHistory, setBidHistory] = useState<IProductBidHistoryItem[]>([])
+  const [getProductDetailCallBack, setGetProductDetailCallback] = useState<
+    any | null
+  >(null)
 
   const getProductBidHistory = async (productId: string | number) => {
     try {
@@ -42,7 +45,10 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
       <BidDialog
-        onSuccess={() => getProductBidHistory(props.product.id)}
+        onSuccess={() => {
+          getProductBidHistory(props.product.id)
+          getProductDetailCallBack()
+        }}
         open={openDialog}
         onClose={() => setOpenDialog(false)}
         product={props.product}
@@ -62,7 +68,10 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               <RightSide
                 bidHistory={bidHistory}
                 product={props.product}
-                onPlaceBid={() => setOpenDialog(true)}
+                onPlaceBid={onReload => {
+                  setGetProductDetailCallback(onReload)
+                  setOpenDialog(true)
+                }}
               />
             </div>
           </div>
