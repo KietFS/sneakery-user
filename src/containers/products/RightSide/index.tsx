@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import BidHistorySection from './BidHistorySection'
 import axios from 'axios'
 import { Config } from '@/config/api'
+import CountDownTimer from '@/components/CountDownTimer'
 
 interface IRightSideProps {
   product: IProductDetail
@@ -67,10 +68,7 @@ const RightSide: React.FC<IRightSideProps> = props => {
   return (
     <div className="px-8 py-4">
       <h1 className="text-gray-600 font-bold text-4xl">{product?.name}</h1>
-      {/* <div className="mt-2 flex items-center">
-        <h3 className="text-gray-400 text-lg">Thương hiệu : </h3>
-        <h3 className="text-gray-600 ml-1 text-lg cursor-pointer">Nike</h3>
-      </div> */}
+
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Giá khởi điểm : </h3>
         <h3 className="text-gray-500 text-lg ml-1  cursor-pointer">
@@ -90,37 +88,17 @@ const RightSide: React.FC<IRightSideProps> = props => {
         </h3>
       </div>
       <div className="mt-2 flex items-center">
-        {true ? (
-          <h3 className="text-red-500 ml-1 text-lg  cursor-pointer">
-            Sản phẩm đã hết phiên đấu giá
-          </h3>
-        ) : (
-          <>
-            <h3 className="text-gray-400 text-lg">Ngày hết hạn : </h3>
-            <h3 className="text-red-500 ml-1 text-lg  cursor-pointer">
-              {`${textDay} ngày : ${textHour} giờ : ${textMinute} phút : ${textSecond} giây`}
-            </h3>
-          </>
-        )}
+        <CountDownTimer bidClosingDate={product.bidClosingDate} />
       </div>
       <div className="flex items-center">
-        {true ? (
-          <>
-            <button className="items-center rounded-lg px-4 py-2 opacity-50 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg">
-              Đấu giá ngay
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={() => {
-              onPlaceBid()
-            }}
-            className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg"
-          >
-            Đấu giá ngay
-          </button>
-        )}
-
+        <button
+          onClick={() => {
+            onPlaceBid()
+          }}
+          className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg"
+        >
+          Đấu giá ngay
+        </button>
         <button className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-white text-blue-500 border border-blue-500 font-semibold text-lg ml-2">
           Yêu thích
         </button>

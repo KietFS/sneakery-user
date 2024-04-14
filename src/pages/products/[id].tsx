@@ -131,11 +131,6 @@ export const getStaticProps: GetStaticProps<{
     )
 
     const product = productResponse.data.data
-
-    if (product.id == 1446) {
-      console.log('HEHE', product)
-    }
-
     return {
       props: {
         product: product,
