@@ -24,7 +24,7 @@ const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
   const { label, name, control, defaultValue } = props
   const [localError, setLocalError] = useState<boolean>(false)
 
-  const currentDate = new Date(Date.now() + 36000)
+  const currentDate = new Date(Date.now() + 0)
 
   return (
     <Controller
@@ -50,12 +50,11 @@ const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
                   style: { height: 40, backgroundColor: '#f7f8f8' },
                 }}
                 onChange={changedValue => {
-                  let temp = new Date(changedValue)
-                  if (temp < currentDate) {
+                  if (changedValue < currentDate) {
                     setLocalError(true)
                   } else {
                     setLocalError(false)
-                    onFieldChange(changedValue?.toDate())
+                    onFieldChange(changedValue) // Sử dụng giá trị changedValue trực tiếp
                   }
                 }}
                 renderInput={params => (

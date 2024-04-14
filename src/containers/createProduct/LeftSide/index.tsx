@@ -101,10 +101,10 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
 
   const formatDate = (dateString: string) => {
     var originalDate = new Date(dateString)
-    originalDate.setDate(originalDate.getDate() + 3)
-    originalDate.setHours(12)
-    originalDate.setMinutes(0)
-    originalDate.setSeconds(0)
+    originalDate.setDate(originalDate.getDate())
+    originalDate.setHours(originalDate.getHours())
+    originalDate.setMinutes(originalDate.getMinutes())
+    originalDate.setSeconds(originalDate.getSeconds())
 
     var newYear = originalDate.getFullYear()
     var newMonth = originalDate.getMonth() + 1
@@ -118,7 +118,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       '-' +
       (newDay < 10 ? '0' : '') +
       newDay +
-      'T12:00:00'
+      `T${originalDate.getHours()}:${originalDate.getMinutes()}:${originalDate.getSeconds() || '00'}`
 
     return newDateString
   }

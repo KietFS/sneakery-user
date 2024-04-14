@@ -20,9 +20,9 @@ import ProductDescription from '@/containers/products/Description'
 const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [bidHistory, setBidHistory] = useState<IProductBidHistoryItem[]>([])
-  const [getProductDetailCallBack, setGetProductDetailCallback] = useState<
-    any | null
-  >(null)
+  const [productDetail, setProductDetail] = useState<IProductDetail>(
+    props.product,
+  )
 
   const getProductBidHistory = async (productId: string | number) => {
     try {
@@ -38,6 +38,20 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     }
   }
 
+  const getProductDetail = async () => {
+    try {
+      const productResponse = await axios.get(
+        `${Config.API_URL}/products/${props.product?.id}`,
+      )
+
+      if (productResponse?.data?.success) {
+        setProductDetail(productResponse?.data?.data)
+      }
+    } catch (error) {
+      console.log('GET PRODUCT DETAIL ERROR', error)
+    }
+  }
+
   useEffect(() => {
     getProductBidHistory(props.product.id)
   }, [])
@@ -47,31 +61,28 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
       <BidDialog
         onSuccess={() => {
           getProductBidHistory(props.product.id)
-          getProductDetailCallBack()
+          getProductDetail()
         }}
         open={openDialog}
         onClose={() => setOpenDialog(false)}
-        product={props.product}
+        product={productDetail}
       />
       <div className="bg-white">
         <Head>
           <title>Sneakery - {props.product?.name}</title>
           <link rel="icon" />
         </Head>
-        <div className="pb-16 bg-white">
+        <div className="pb-10 bg-white">
           <HeaderV2 />
           <div className="flex flex-col laptop:flex-row  rounded-lg bg-white border border-gray-100 shadow-lg mt-10 w-5/6 mx-auto min-h-[650px]">
             <div className="w-full laptop:w-3/5 desktop:w-1/2">
-              <LeftSide product={props.product} />
+              <LeftSide product={productDetail} />
             </div>
             <div className=" w-full laptop:w-2/5 desktop:w-1/2">
               <RightSide
                 bidHistory={bidHistory}
-                product={props.product}
-                onPlaceBid={onReload => {
-                  setGetProductDetailCallback(onReload)
-                  setOpenDialog(true)
-                }}
+                product={productDetail}
+                onPlaceBid={() => setOpenDialog(true)}
               />
             </div>
           </div>
@@ -80,10 +91,10 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           <ProductDescription properties={props.product.properties} />
         </div>
         <div className="w-5/6 mx-auto flex">
-          <SimilarProduct
+          {/* <SimilarProduct
             category={props.product.category}
             currentProductId={Number(props.product.id)}
-          />
+          /> */}
         </div>
         <FooterSection />
       </div>
@@ -120,6 +131,10 @@ export const getStaticProps: GetStaticProps<{
     )
 
     const product = productResponse.data.data
+
+    if (product.id == 1446) {
+      console.log('HEHE', product)
+    }
 
     return {
       props: {

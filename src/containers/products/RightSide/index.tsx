@@ -16,7 +16,7 @@ import { Config } from '@/config/api'
 interface IRightSideProps {
   product: IProductDetail
   bidHistory: IProductBidHistoryItem[]
-  onPlaceBid: (onActionSuccess: () => void) => void
+  onPlaceBid: () => void
 }
 
 export interface IProductBidHistoryItem {
@@ -37,23 +37,6 @@ const RightSide: React.FC<IRightSideProps> = props => {
   const [textHour, setTextHour] = useState<string>('')
   const [textMinute, setTextMinute] = useState<string>('')
   const [textSecond, setTextSecond] = useState<string>('')
-  const [productDetail, setProductDetail] = useState<IProductDetail | null>(
-    null,
-  )
-
-  const getProductDetail = async () => {
-    try {
-      const productResponse = await axios.get(
-        `${Config.API_URL}/products/${product?.id}`,
-      )
-
-      if (productResponse?.data?.success) {
-        setProductDetail(productResponse?.data?.data)
-      }
-    } catch (error) {
-      console.log('GET PRODUCT DETAIL ERROR', error)
-    }
-  }
 
   //functions
   useEffect(() => {
@@ -81,10 +64,6 @@ const RightSide: React.FC<IRightSideProps> = props => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   getProductDetail()
-  // }, [])
-
   return (
     <div className="px-8 py-4">
       <h1 className="text-gray-600 font-bold text-4xl">{product?.name}</h1>
@@ -95,38 +74,23 @@ const RightSide: React.FC<IRightSideProps> = props => {
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Giá khởi điểm : </h3>
         <h3 className="text-gray-500 text-lg ml-1  cursor-pointer">
-          {(
-            (productDetail?.startPrice as number) ||
-            (product?.startPrice as number)
-          )
-            .toString()
-            .prettyMoney()}
-          $
+          {(product?.startPrice as number).toString().prettyMoney()}$
         </h3>
       </div>
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Bước giá : </h3>
         <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
-          {(productDetail?.bidIncrement || (product?.bidIncrement as number))
-            .toString()
-            .prettyMoney()}
-          $
+          {(product?.bidIncrement as number).toString().prettyMoney()}$
         </h3>
       </div>
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Giá hiện tại : </h3>
         <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
-          {(
-            (productDetail?.currentPrice as number) ||
-            (product?.currentPrice as number)
-          )
-            .toString()
-            .prettyMoney()}
-          $
+          {(product?.currentPrice as number).toString().prettyMoney()}$
         </h3>
       </div>
       <div className="mt-2 flex items-center">
-        {Date.now() > newBidClosingDate.getTime() ? (
+        {true ? (
           <h3 className="text-red-500 ml-1 text-lg  cursor-pointer">
             Sản phẩm đã hết phiên đấu giá
           </h3>
@@ -140,7 +104,7 @@ const RightSide: React.FC<IRightSideProps> = props => {
         )}
       </div>
       <div className="flex items-center">
-        {Date.now() > newBidClosingDate.getTime() ? (
+        {true ? (
           <>
             <button className="items-center rounded-lg px-4 py-2 opacity-50 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg">
               Đấu giá ngay
@@ -149,7 +113,7 @@ const RightSide: React.FC<IRightSideProps> = props => {
         ) : (
           <button
             onClick={() => {
-              onPlaceBid(() => getProductDetail)
+              onPlaceBid()
             }}
             className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg"
           >

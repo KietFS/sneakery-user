@@ -47,16 +47,20 @@ function BidDialog(props: IBidDialogProps) {
     .shape<{ [k in keyof IFormValue]: any }>({})
   const { accessToken } = useAuth()
 
+  React.useEffect(() => {
+    if (!!product) {
+      setInitialValues({
+        amount: (product.currentPrice + product.bidIncrement).toString(),
+      })
+    }
+  }, [product])
+
   const handleSubmit = async (values: IFormValue) => {
     if (
       Number(values?.amount?.split(',').join('')) <
       Number(product.currentPrice + product.bidIncrement)
     ) {
       setError('Vui lòng nhập bid cao hơn mức bid hiện tại cộng với bước giá !')
-    } else if (
-      Number(balance) < Number(product?.currentPrice + product.bidIncrement)
-    ) {
-      setError('Tài khoản của bạn không đủ để thực hiện lượt bid này')
     } else {
       try {
         setLoading(true)

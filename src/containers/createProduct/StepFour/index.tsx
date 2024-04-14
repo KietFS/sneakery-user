@@ -120,12 +120,7 @@ const StepFour: React.FC<IStepFourProps> = ({
               </p>
 
               <p className="text-md italic font-semibold text-blue-500 ml-1">
-                {(watch('priceStart') as string)?.prettyMoney()} * 15% ={' '}
-                {((watch('priceStart') * 15) / 100)
-                  ?.toFixed(2)
-                  ?.toString()
-                  ?.prettyMoney()}
-                $ 
+                {(1)?.toFixed(2)?.toString()?.prettyMoney()}$
               </p>
             </div>
 
