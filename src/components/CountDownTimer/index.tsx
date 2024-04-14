@@ -37,7 +37,8 @@ const CountDownTimer: React.FC<ICountDownTimer> = props => {
     return () => {
       clearInterval(intervalId)
     }
-  }, [])
+  }, [props.bidClosingDate]) // thêm props.bidClosingDate vào dependency array
+
   return (
     <>
       <h3 className="text-gray-400 text-lg">Ngày hết hạn : </h3>

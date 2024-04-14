@@ -16,6 +16,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import ProductDescription from '@/containers/products/Description'
+import { url } from 'inspector'
 
 const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
