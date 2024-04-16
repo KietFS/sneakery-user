@@ -131,6 +131,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       stepBid: Number(values?.stepBid),
       categoryId: currentCategory?.id,
       imageIds: imageIds,
+      reservePrice: Number(values?.reservePrice) || 0,
       description: '',
     }
     try {

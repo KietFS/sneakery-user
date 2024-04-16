@@ -2,6 +2,7 @@ import Button from '@/designs/Button'
 import DatePickerHookForm from '@/designs/DatePickerHookForm'
 import InputHookForm from '@/designs/InputHookForm'
 import RadioButtonHookForm from '@/designs/RadioButtonHookForm'
+import ReservePriceInput from '@/designs/ReserverdPriceInput'
 import {
   ArrowSmallLeftIcon,
   ArrowSmallRightIcon,
@@ -95,6 +96,13 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             name="isBidSniping"
             placeholder="Cho phép bid snipping"
             label="Bid snipping"
+          />
+          <ReservePriceInput
+            control={control}
+            name="reservePrice"
+            error={Number(watch('priceStart')) >= Number(watch('reservePrice'))}
+            placeholder="Đặt ngưỡng giá tối thiểu"
+            label="Đặt ngưỡng giá tối thiểu"
           />
         </div>
       </div>

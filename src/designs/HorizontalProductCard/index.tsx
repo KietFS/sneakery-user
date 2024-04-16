@@ -13,7 +13,9 @@ const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = props => {
   const router = useRouter()
 
   return (
-    <a href={`http://localhost:3000/products/${product.id}`}>
+    <a
+      href={`${process.env.NODE_ENV === 'development' ? `https://sneakery.vercel.app/products/${product.id}` : `http://localhost:3000/products/${product.id}`}`}
+    >
       <div
         className=" border-b border-gray-200 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80"
         onClick={() => {}}
