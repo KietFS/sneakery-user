@@ -1,6 +1,6 @@
 //utils and types
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ICartItem } from '@/containers/cart/CartList'
+import { ICartItem } from '@/layouts/cart/CartList'
 
 interface IInitialState {
   items: ICartItem[]

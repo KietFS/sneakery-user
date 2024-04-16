@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react'
 
 //styles
-import HeaderV2 from '@/components/HeaderV2'
-import LeftSide from '@/containers/products/LeftSide'
-import RightSide, {
-  IProductBidHistoryItem,
-} from '@/containers/products/RightSide'
-import FooterSection from '@/components/FooterSection'
-import SimilarProduct from '@/containers/cart/SimilarProduct'
-import BidDialog from '@/components/BidDialog'
+import HeaderV2 from '@/components/organisms/HeaderV2'
+import LeftSide from '@/layouts/products/LeftSide'
+import RightSide, { IProductBidHistoryItem } from '@/layouts/products/RightSide'
+import FooterSection from '@/components/molecules/FooterSection'
+import SimilarProduct from '@/layouts/cart/SimilarProduct'
+import BidDialog from '@/components/templates/BidDialog'
 import Head from 'next/head'
 
 //utils
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
 import { Config } from '@/config/api'
-import ProductDescription from '@/containers/products/Description'
+import ProductDescription from '@/layouts/products/Description'
 import { url } from 'inspector'
 
 const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {

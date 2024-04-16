@@ -6,12 +6,12 @@ import { useRouter } from 'next/router'
 
 //styles
 import Head from 'next/head'
-import HeaderV2 from '@/components/HeaderV2'
+import HeaderV2 from '@/components/organisms/HeaderV2'
 import PaymentProcess from '@/assets/images/PaymentProcess.png'
 import Image from 'next/image'
-import FooterSection from '@/components/FooterSection'
-import Spinner from '@/components/Spinner'
-import Button from '@/designs/Button'
+import FooterSection from '@/components/molecules/FooterSection'
+import Spinner from '@/components/atoms/Spinner'
+import Button from '@/components/atoms/Button'
 
 //utils
 import axios from 'axios'

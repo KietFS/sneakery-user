@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
 //styles
-import FooterSection from '@/components/FooterSection'
-import HeaderV2 from '@/components/HeaderV2'
-import LeftSide from '@/containers/createProduct/LeftSide'
-import RightSide from '@/containers/createProduct/RightSide'
+import FooterSection from '@/components/molecules/FooterSection'
+import HeaderV2 from '@/components/organisms/HeaderV2'
+import LeftSide from '@/layouts/createProduct/LeftSide'
+import RightSide from '@/layouts/createProduct/RightSide'
 import Head from 'next/head'
 
 //utils

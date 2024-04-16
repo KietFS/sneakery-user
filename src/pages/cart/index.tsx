@@ -2,10 +2,10 @@ import Head from 'next/head'
 import React from 'react'
 
 //styles
-import CartList from '@/containers/cart/CartList'
-import CartPayment from '@/containers/cart/CartPayment'
-import FooterSection from '@/components/FooterSection'
-import HeaderV2 from '@/components/HeaderV2'
+import CartList from '@/layouts/cart/CartList'
+import CartPayment from '@/layouts/cart/CartPayment'
+import FooterSection from '@/components/molecules/FooterSection'
+import HeaderV2 from '@/components/organisms/HeaderV2'
 
 //utils
 import { withAuthorization } from '@/common/config/HOC/withAuth'

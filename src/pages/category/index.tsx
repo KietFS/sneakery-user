@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 //styles
-import HeaderV2 from '@/components/HeaderV2'
-import FooterSection from '@/components/FooterSection'
-import ProductGridV2 from '@/containers/category/ProductGridV2'
-import FilterSideBar from '@/containers/category/FilterSideBar'
-import Spinner from '@/components/Spinner'
+import HeaderV2 from '@/components/organisms/HeaderV2'
+import FooterSection from '@/components/molecules/FooterSection'
+import ProductGridV2 from '@/layouts/category/ProductGridV2'
+import FilterSideBar from '@/layouts/category/FilterSideBar'
+import Spinner from '@/components/atoms/Spinner'
 import NotFound from '@/assets/images/NotFound.png'
 import Image from 'next/image'
 
@@ -17,7 +17,7 @@ import { IRootState } from '@/redux'
 import { Pagination } from '@mui/material'
 
 //utils
-import SelectSortType from '@/containers/category/SelectSortType'
+import SelectSortType from '@/layouts/category/SelectSortType'
 import Head from 'next/head'
 import axios from 'axios'
 import { Config } from '@/config/api'

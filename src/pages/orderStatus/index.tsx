@@ -3,9 +3,9 @@ import React from 'react'
 //styles
 import ShippingOrder from '@/assets/images/ShippingOrder.png'
 import Image from 'next/image'
-import Button from '@/designs/Button'
-import HeaderV2 from '@/components/HeaderV2'
-import FooterSection from '@/components/FooterSection'
+import Button from '@/components/atoms/Button'
+import HeaderV2 from '@/components/organisms/HeaderV2'
+import FooterSection from '@/components/molecules/FooterSection'
 import Head from 'next/head'
 
 //hooks

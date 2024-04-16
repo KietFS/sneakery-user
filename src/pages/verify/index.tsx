@@ -7,8 +7,8 @@ import { useAppSelector } from '@/hooks/useRedux'
 //styles
 import VerifyingEmail from '@/assets/images/VerifyingEmail.png'
 import Image from 'next/image'
-import Spinner from '@/components/Spinner'
-import Button from '@/designs/Button'
+import Spinner from '@/components/atoms/Spinner'
+import Button from '@/components/atoms/Button'
 import Head from 'next/head'
 
 //utils
