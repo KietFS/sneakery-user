@@ -32,6 +32,11 @@ module.exports = {
     './src/pages/**/*.{js,ts,jsx,tsx}',
     './src/containers/**/*.{js,ts,jsx,tsx}',
     './src/components/**/*.{js,ts,jsx,tsx}',
+    './src/components/atoms/**/*.{js,ts,jsx,tsx}',
+    './src/components/molecules/**/*.{js,ts,jsx,tsx}',
+    './src/components/organisms/**/*.{js,ts,jsx,tsx}',
+    './src/components/templates/**/*.{js,ts,jsx,tsx}',
+    './src/layouts/**/*.{js,ts,jsx,tsx}',
     './src/designs/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
