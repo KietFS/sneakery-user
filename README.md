@@ -1,34 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### General Information
+Sneakery is a dynamic bidding platform akin to the renowned E-Bay auction system, designed to facilitate users in posting products for bidding, referred to as "bid deals." Users can participate by placing bids to potentially win the product.
 
-## Getting Started
+### Tech Stacks
+Our platform is built on a robust foundation of modern technologies:
 
-First, run the development server:
+- Atomic Design Pattern: Ensures a scalable and maintainable design system, facilitating efficient development and extensibility.
+- Next.js (v12): Leveraging features like Static Site Generation (SSG), Incremental Static Regeneration (ISR), and Server-Side Rendering (SSR) to deliver a     seamless and performant user experience.
+- Tailwind CSS: Empowering rapid UI development with its utility-first approach and extensive component library.
+- Redux, Redux Toolkit: Providing a reliable state management solution to maintain application state and facilitate seamless data flow.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Get Started
