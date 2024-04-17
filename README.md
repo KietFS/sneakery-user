@@ -9,4 +9,4 @@ Our platform is built on a robust foundation of modern technologies:
 - Tailwind CSS: Empowering rapid UI development with its utility-first approach and extensive component library.
 - Redux, Redux Toolkit: Providing a reliable state management solution to maintain application state and facilitate seamless data flow.
 
-### Get Started
+### Getting Started
