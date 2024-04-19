@@ -100,27 +100,8 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   //functions
 
   const formatDate = (dateString: string) => {
-    var originalDate = new Date(dateString)
-    originalDate.setDate(originalDate.getDate())
-    originalDate.setHours(originalDate.getHours())
-    originalDate.setMinutes(originalDate.getMinutes())
-    originalDate.setSeconds(originalDate.getSeconds())
-
-    var newYear = originalDate.getFullYear()
-    var newMonth = originalDate.getMonth() + 1
-    var newDay = originalDate.getDate()
-
-    var newDateString =
-      newYear +
-      '-' +
-      (newMonth < 10 ? '0' : '') +
-      newMonth +
-      '-' +
-      (newDay < 10 ? '0' : '') +
-      newDay +
-      `T${originalDate.getHours()}:${originalDate.getMinutes()}:${originalDate.getSeconds() || '00'}`
-
-    return newDateString
+    var originalDate = new Date(dateString).toISOString()
+    return originalDate
   }
 
   const handleCreateBidValue = async (values: any, imageIds: number[]) => {
@@ -145,10 +126,16 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
         data: payload,
       })
 
-      if (response?.data?.success) {
+      const { isSuccess, error, data } = configResponse(response)
+
+      if (isSuccess) {
         setCreateLoading(false)
         router?.push('/')
         toast.success('Tạo sản phẩm đấu giá thành công')
+      } else {
+        setCreateLoading(false)
+        router?.push('/')
+        toast.success('Tạo sản phẩm đấu giá thất bại, vui lòng thử lại sau')
       }
     } catch (error) {
       setCreateLoading(false)

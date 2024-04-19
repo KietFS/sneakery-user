@@ -23,6 +23,7 @@ import { configResponse } from '@/utils/request'
 import { useAuth } from '@/hooks/useAuth'
 import { toast } from 'react-toastify'
 import PaidSuccessDailog from '@/components/organisms/PaidSuccessDailog'
+import PaySuccess from '@/assets/images/PaySuccess.png'
 
 interface IStepFourProps {
   formTool: UseFormReturn<any>
@@ -70,6 +71,11 @@ const StepFour: React.FC<IStepFourProps> = ({
     } catch (error) {
       setIsPayingPreFee(false)
     }
+  }
+
+  const handlePressCreateBid = (values: any) => {
+    onPressCreateBid(values)
+    // setIsPaySuccess(false)
   }
 
   //Check if the paid is complete
@@ -125,11 +131,21 @@ const StepFour: React.FC<IStepFourProps> = ({
             </div>
 
             {isPaySuccess ? (
-              <div className="mt-4 flex items-center">
+              <div className="w-full flex justify-center">
+                <Image
+                  src={PaySuccess}
+                  className="w-[300px] h-[300px]"
+                  width={300}
+                  height={300}
+                />
+              </div>
+            ) : null}
+
+            {isPaySuccess ? (
+              <div className="mt-4 flex items-center justify-center">
                 <CheckBadgeIcon className="text-green-500 font-bold w-5 h-5" />
                 <p className="font-semibold text-green-500 ml-2">
-                  Bạn đã thanh toán thành công, bấm nút xác nhận để đăng sản
-                  phẩm
+                  Bạn đã thanh toán thành công, bấm nút đăng để đăng sản phẩm
                 </p>
               </div>
             ) : (
@@ -158,18 +174,13 @@ const StepFour: React.FC<IStepFourProps> = ({
                 <ArrowSmallLeftIcon className="w-10 h-10 text-gray-400 hover:text-gray-600" />
               </IconButton>
             </Tooltip>
-            <Tooltip
-              title={`${isPaySuccess ? 'Hoàn tất việc đăng sản phẩm' : 'Bạn cần thanh toán trước khi có thể đăng giày'}`}
-            >
-              <IconButton
-                disabled={!isPaySuccess}
-                onClick={handleSubmit(onPressCreateBid)}
-              >
-                <CheckIcon
-                  className={`w-8 h-8 text-gray-600 hover:text-blue-500 ${!isPaySuccess ? 'opacity-30' : ''}`}
-                />
-              </IconButton>
-            </Tooltip>
+
+            <Button
+              title="Đăng sản phẩm"
+              disable={!isPaySuccess}
+              onClick={handleSubmit(onPressCreateBid)}
+              isLoading={buttonLoading}
+            />
           </div>
         </div>
       </div>

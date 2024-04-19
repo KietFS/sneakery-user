@@ -1,3 +1,4 @@
+import { Switch } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 
@@ -24,21 +25,7 @@ const ReservePriceInput: React.FC<IReservePriceInputProps> = props => {
           <button
             className={`h-[40px] border-gray-300 border-2 rounded-lg bg-gray-100 w-full px-2 py-1 flex items-center mt-2 ${enable ? '' : 'opacity-30'}`}
           >
-            {enable ? (
-              <button
-                onClick={() => setEnable(!enable)}
-                className={`w-4 h-4 rounded-full border border-blue-500 bg-white justify-center items-center flex`}
-              >
-                <div className="w-3 h-3 mx-auto bg-blue-500 rounded-full" />
-              </button>
-            ) : (
-              <button
-                onClick={() => setEnable(!enable)}
-                className="w-4 h-4 rounded-full border border-gray-500 bg-white justify-center items-center flex opacity-50"
-              >
-                <div className="w-3 h-3 mx-auto bg-white rounded-full" />
-              </button>
-            )}
+            <Switch value={enable} onClick={() => setEnable(!enable)} />
 
             {enable ? (
               <input

@@ -11,6 +11,7 @@ interface IButtonProps {
   type?: IButtonType
   title?: string
   isLoading?: boolean
+  disable?: boolean
 }
 
 const Button: React.FC<IButtonProps> = props => {
@@ -21,11 +22,12 @@ const Button: React.FC<IButtonProps> = props => {
     type = 'submit',
     title = '',
     isLoading = false,
+    disable = false,
   } = props
 
   return (
     <button
-      className={`items-center min-w-[120px] justify-center rounded-lg px-4 py-2 text-center w-fit flex hover:opacity-50 ${className} ${
+      className={`items-center min-w-[120px] justify-center rounded-lg px-4 py-2 text-center w-fit flex hover:opacity-50 ${disable ? 'opacity-10' : ''} ${className} ${
         variant === 'primary' && 'bg-blue-500'
       } ${variant === 'secondary' && 'bg-white'}
       ${variant === 'red' && 'bg-red-500'} ${
@@ -33,7 +35,7 @@ const Button: React.FC<IButtonProps> = props => {
       } border ${
         variant === 'secondary' ? 'border-blue-500' : 'border-transparent'
       } font-semibold text-lg`}
-      onClick={() => onClick?.()}
+      onClick={() => (disable ? {} : onClick?.())}
       type={type}
     >
       {isLoading ? (
