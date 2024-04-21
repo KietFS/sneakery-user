@@ -68,7 +68,10 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
         <div className="grid grid-flow-row grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 w-full gap-x-5 gap-y-10">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]?.map(
             (item, index) => (
-              <div className="max-h-[300px] h-[300px] py-4 border border-gray-200 bg-gray-300 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer animate-pulse">
+              <div
+                key={`skeleton-${index}`}
+                className="max-h-[300px] h-[300px] py-4 border border-gray-200 bg-gray-300 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer animate-pulse"
+              >
                 {' '}
               </div>
             ),
@@ -130,7 +133,7 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
       {loadingProduct ? null : (
         <button
           className="px-4 py-2 bg-blue-500 text-white text-lg font-semibold rounded-lg hover:opacity-70 active:opacity-80"
-          onClick={() => {}}
+          onClick={() => router.push('/category/')}
         >
           Xem thêm
         </button>

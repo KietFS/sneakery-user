@@ -133,6 +133,7 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
                   {listCategory?.map(
                     (category: IProductCategory, categoryIndex: number) => (
                       <button
+                        key={`category-index-${categoryIndex}`}
                         onClick={() => dispatchSetCurrentCategory(category)}
                         className={`px-2 h-[60px] bg-white ${currentCategory?.name == category?.name ? `border-blue-500 bg-blue-100` : `border-gray-300`}  border   hover:opacity-60 shadow-lg rounded-lg`}
                       >

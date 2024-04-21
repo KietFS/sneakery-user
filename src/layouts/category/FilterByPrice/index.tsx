@@ -9,7 +9,7 @@ import Slider from '@mui/material/Slider'
 import { useDispatch } from 'react-redux'
 
 //utils
-import { setPriceEnd, setPriceStart } from '@/redux/slices/filter'
+import { setKeyWord, setPriceEnd, setPriceStart } from '@/redux/slices/filter'
 
 function valuetext(value: number) {
   return `${value}°C`
@@ -21,6 +21,7 @@ export default function RangeSlider() {
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[])
+    dispatch(setKeyWord(null))
   }
 
   const marks = [

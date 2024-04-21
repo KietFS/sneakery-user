@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 
 //utils and types
 import { IRootState } from '@/redux'
-import { setCategory } from '@/redux/slices/filter'
+import { setCategory, setKeyWord } from '@/redux/slices/filter'
 import axios from 'axios'
 import { Config } from '@/config/api'
 
@@ -45,7 +45,10 @@ const FilterByCategory: React.FC<IFilterCategoryProps> = props => {
     <RadioButton
       options={categoryList}
       optionSelected={category}
-      onSelect={category => dispatch(setCategory(category))}
+      onSelect={category => {
+        dispatch(setCategory(category))
+        dispatch(setKeyWord(null))
+      }}
       label="Theo danh mục"
       keyValue="id"
       keyLabel="name"

@@ -53,8 +53,9 @@ const MultipleCheckBox: React.FC<IMultipleCheckBoxProps> = props => {
       </div>
       {openBelow ? (
         <div className="flex flex-col mt-2 gap-y-2">
-          {options?.map(option => (
+          {options?.map((option, index) => (
             <div
+              key={`option-${index}`}
               className="flex flex-row gap-x-3 cursor-pointer items-center text-gray-500 justify-between"
               onClick={() =>
                 listOptionSelected?.has(option)

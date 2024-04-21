@@ -11,16 +11,24 @@ export const loginService = async (email: string, password: string) => {
     if (data) return data
   } catch (error: any) {
     console.log('REGISTER ERROR', error)
-    toast.error(error.response.data.message, {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'colored',
-    })
+    if (error?.response?.status == '401') {
+      toast.error('Tên đăng nhập hoặc mật khẩu không đúng')
+    } else {
+      toast.error(
+        'Đăng nhập thất bại, vui lòng thử lại sau',
+        error.response.data.error ||
+          error?.response?.data?.message || {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          },
+      )
+    }
   }
 }
 

@@ -48,6 +48,8 @@ export const useAuth = () => {
       const response = await loginService(email, password)
       if (response) {
         const { data, isSuccess, error } = configResponse(response)
+
+        console.log('IS SUCCESS', isSuccess)
         if (isSuccess) {
           toast.success('Đăng nhập thành công', {
             position: 'top-right',
@@ -61,11 +63,23 @@ export const useAuth = () => {
         } else {
           console.log(error)
           setLoginError(error?.message as string)
+          toast.error(`${'Đăng nhập thất bại' || error?.message}`, {
+            position: 'top-right',
+            autoClose: 0,
+            theme: 'colored',
+            hideProgressBar: true,
+          })
         }
       }
     } catch (error) {
       console.log(error)
       setLoginError(error as string)
+      toast.error(`${'Email hoặc mật khẩu không đúng'}`, {
+        position: 'top-right',
+        autoClose: 0,
+        theme: 'colored',
+        hideProgressBar: true,
+      })
     } finally {
       setLoginLoading(false)
     }

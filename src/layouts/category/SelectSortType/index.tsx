@@ -14,7 +14,7 @@ import {
 import { useDispatch } from 'react-redux'
 
 //utils
-import { setSortType } from '@/redux/slices/filter'
+import { setKeyWord, setSortType } from '@/redux/slices/filter'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -32,6 +32,7 @@ const SelectSortType = () => {
     null,
   )
   const handleChange = (event: SelectChangeEvent<typeof sortTypeSelected>) => {
+    dispatch(setKeyWord(null))
     setSortTypeSelected(event.target.value)
   }
   const dispatch = useDispatch()
