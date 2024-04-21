@@ -2,11 +2,7 @@ import { AxiosResponse } from 'axios'
 
 export interface RequestResponse {
   isSuccess: boolean
-  data: {
-    success: boolean
-    message: string
-    data: any
-  } | null
+  data: any
   error?: {
     message: string
     status: number | null
@@ -44,7 +40,7 @@ export function configResponse(
   } catch (error: any) {
     return {
       isSuccess: false,
-      data: null,
+      data: '',
       error: { message: error.message, status: null, problem: null },
     }
   }
