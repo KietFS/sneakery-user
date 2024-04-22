@@ -51,7 +51,7 @@ const StepFour: React.FC<IStepFourProps> = ({
   const handlePressPayPreFee = async () => {
     try {
       const payload = {
-        amount: (watch('priceStart') * 15) / 100,
+        amount: 1,
         userId: user?.id,
       }
       setIsPayingPreFee(true)

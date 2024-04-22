@@ -41,12 +41,12 @@ const StepOne: React.FC<IStepOneProps> = ({
   onPressOpenCategory,
   onPressNext,
 }) => {
-  const { control, register, getValues, getFieldState } = formTool
+  const { control, register, getValues, getFieldState, watch } = formTool
   const { currentCategory } = useAppSelector(
     (state: IRootState) => state.category,
   )
 
-  const disableButton = !getValues('name') || !getValues('properties')
+  const disableButton = !watch('name') || !watch('properties')
 
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">
