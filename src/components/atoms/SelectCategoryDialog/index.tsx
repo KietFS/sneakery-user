@@ -66,9 +66,7 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
   const handlePressClose = () => onClose()
 
   useEffect(() => {
-    if (listCategory?.length == 0) {
-      getListProductCategories()
-    }
+    getListProductCategories()
   }, [])
 
   return (
