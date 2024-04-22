@@ -16,10 +16,10 @@ import {
 } from 'redux-persist'
 
 const saveSubsetAuthReducer = createFilter('auth', ['accessToken', 'user'])
-const saveSubsetCategoryReducer = createFilter('category', [
-  'currentCategory',
-  'listCategory',
-])
+// const saveSubsetCategoryReducer = createFilter('category', [
+//   'currentCategory',
+//   'listCategory',
+// ])
 // const saveSubsetPaymentReducer = createFilter('payment', [
 //   'paymentId',
 //   'payerId',
@@ -31,7 +31,7 @@ const persistConfig = {
   storage,
   transforms: [
     saveSubsetAuthReducer,
-    saveSubsetCategoryReducer,
+    // saveSubsetCategoryReducer,
     // saveSubsetPaymentReducer,
   ],
   whitelist: ['auth', 'category'],
