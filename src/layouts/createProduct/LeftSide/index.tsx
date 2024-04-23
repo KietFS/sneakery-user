@@ -103,10 +103,8 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const formatDate = (dateString: string) => {
     let temp = new Date(dateString)
     temp.setHours(temp.getHours() + 7) // Giảm 7 giờ
-    return temp.toISOString()
+    return temp?.toISOString()
   }
-
-  console.log('TEMP', formatDate(watch('bidClosingDateTime')))
 
   const handleCreateBidValue = async (values: any, imageIds: number[]) => {
     const payload = {
