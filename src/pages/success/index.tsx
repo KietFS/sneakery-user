@@ -46,8 +46,11 @@ const Success: React.FC = props => {
       )
       const { data, isSuccess, error } = configResponse(response)
       if (isSuccess) {
-        localStorage.setItem('isPaidPreSaleFee', JSON.stringify(isSuccess))
-        window?.close()
+        await localStorage.setItem(
+          'isPaidPreSaleFee',
+          JSON.stringify(isSuccess),
+        )
+        // window?.close()
       }
     } catch (error) {
       setLoading(false)
