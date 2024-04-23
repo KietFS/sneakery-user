@@ -50,7 +50,11 @@ const StepOne: React.FC<IStepOneProps> = ({
     // Duyệt qua các key của đối tượng
     for (let key in obj) {
       // Kiểm tra xem giá trị của key có phải là undefined hoặc null không
-      if (obj[key] === undefined || obj[key] === null) {
+      if (
+        obj[key] === undefined ||
+        obj[key] === null ||
+        obj[key]?.length == 0
+      ) {
         return false // Nếu bất kỳ key nào là undefined hoặc null, trả về false
       }
     }
