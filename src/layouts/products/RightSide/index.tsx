@@ -31,7 +31,7 @@ export interface IProductBidHistoryItem {
 const RightSide: React.FC<IRightSideProps> = props => {
   const { product, onPlaceBid, bidHistory } = props
 
-  console.log('PRICE', product?.currentPrice)
+  const isDisable = Date.now() > new Date(product.bidClosingDate)?.getTime()
 
   return (
     <div className="px-8 py-4">
@@ -56,14 +56,21 @@ const RightSide: React.FC<IRightSideProps> = props => {
         </h3>
       </div>
       <div className="mt-2 flex items-center">
-        <CountDownTimer bidClosingDate={product.bidClosingDate} />
+        {isDisable ? (
+          'Sản phẩm đã hết phiên đấu giá'
+        ) : (
+          <CountDownTimer bidClosingDate={product.bidClosingDate} />
+        )}
       </div>
       <div className="flex items-center">
         <button
+          disabled={isDisable}
           onClick={() => {
+            if (isDisable) {
+            }
             onPlaceBid()
           }}
-          className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg"
+          className={`items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg ${isDisable ? 'opacity-20' : ''}`}
         >
           Đấu giá ngay
         </button>
