@@ -51,7 +51,12 @@ const StepTwo: React.FC<IStepTwoProps> = ({
   }
 
   const isDisable =
-    !watch('priceStart') || !watch('stepBid') || !watch('bidClosingDateTime')
+    !watch('priceStart') ||
+    !watch('stepBid') ||
+    !watch('bidClosingDateTime') ||
+    Number(watch('priceStart')) >= Number(watch('reservePrice'))
+
+  console.log('WATCH', watch('reservePrice'))
 
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">

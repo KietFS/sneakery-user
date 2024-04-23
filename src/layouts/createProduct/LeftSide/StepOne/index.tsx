@@ -46,7 +46,19 @@ const StepOne: React.FC<IStepOneProps> = ({
     (state: IRootState) => state.category,
   )
 
-  const disableButton = !watch('name') || !watch('properties')
+  function checkUndefinedOrNull(obj: any) {
+    // Duyệt qua các key của đối tượng
+    for (let key in obj) {
+      // Kiểm tra xem giá trị của key có phải là undefined hoặc null không
+      if (obj[key] === undefined || obj[key] === null) {
+        return false // Nếu bất kỳ key nào là undefined hoặc null, trả về false
+      }
+    }
+    return true // Nếu không có key nào là undefined hoặc null, trả về true
+  }
+
+  const disableButton =
+    !watch('name') || !checkUndefinedOrNull(watch('properties'))
 
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">

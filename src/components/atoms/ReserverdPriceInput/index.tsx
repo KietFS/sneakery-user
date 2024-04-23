@@ -25,11 +25,20 @@ const ReservePriceInput: React.FC<IReservePriceInputProps> = props => {
           <button
             className={`h-[40px] border-gray-300 border-2 rounded-lg bg-gray-100 w-full px-2 py-1 flex items-center mt-2 ${enable ? '' : 'opacity-30'}`}
           >
-            <Switch value={enable} onClick={() => setEnable(!enable)} />
+            <Switch
+              value={enable}
+              onClick={() => {
+                if (enable == false) {
+                  onChange(0)
+                }
+                setEnable(!enable)
+              }}
+            />
 
             {enable ? (
               <input
                 onChange={onChange}
+                defaultValue={0}
                 value={value}
                 placeholder="Nhập ngưỡng giá"
                 disabled={!enable}
