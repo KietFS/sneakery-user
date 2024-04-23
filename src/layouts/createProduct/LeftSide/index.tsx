@@ -21,6 +21,7 @@ import StepThree from './StepThree'
 import StepFour from './StepFour'
 import { configResponse } from '@/utils/request'
 import { useRouter } from 'next/router'
+import dayjs from 'dayjs'
 
 interface ILeftSideProps {}
 
@@ -100,9 +101,12 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   //functions
 
   const formatDate = (dateString: string) => {
-    var originalDate = new Date(dateString).toISOString()
-    return originalDate
+    let temp = new Date(dateString)
+    temp.setHours(temp.getHours() + 7) // Giảm 7 giờ
+    return temp.toISOString()
   }
+
+  console.log('TEMP', formatDate(watch('bidClosingDateTime')))
 
   const handleCreateBidValue = async (values: any, imageIds: number[]) => {
     const payload = {
