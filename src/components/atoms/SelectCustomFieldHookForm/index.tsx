@@ -50,8 +50,8 @@ const SelectCustomFieldHookForm: React.FC<
                 style={{
                   width: '100%',
                   height: 40,
-                  borderWidth: 0,
-                  borderColor: 'transparent',
+                  borderWidth: 1,
+                  borderColor: '#d1d5db',
                   background: '#f3f4f6',
                   borderRadius: 7,
                   maxHeight: '200px',
@@ -86,6 +86,11 @@ const SelectCustomFieldHookForm: React.FC<
                       </MenuItem>
                     ))}
               </Select>
+              {!value && (
+                <p className="text-gray-500 text-sm relative bottom-8 left-4">
+                  {props.placeholder}
+                </p>
+              )}
             </div>
             {error && (
               <p className="text-red-500 text-xs font-semibold mt-1">

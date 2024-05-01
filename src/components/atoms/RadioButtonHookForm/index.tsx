@@ -20,7 +20,7 @@ const RadioButtonHookForm: React.FC<IRadioButtonHookFormProps> = props => {
         <div>
           <p className="text-gray-600 text-[14px] font-semibold">{label}</p>
           <button
-            className="h-[40px] rounded-lg bg-gray-100 w-full px-2 py-1 flex items-center mt-2"
+            className="h-[40px] rounded-lg bg-gray-100 border-gray-300 border w-full px-2 py-1 flex items-center mt-2"
             onClick={() => onChange(!value)}
           >
             {value == true ? (

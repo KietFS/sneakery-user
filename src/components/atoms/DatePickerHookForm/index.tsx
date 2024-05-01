@@ -47,7 +47,15 @@ const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
               <DateTimePicker
                 value={value}
                 InputProps={{
-                  style: { height: 40, backgroundColor: '#f7f8f8' },
+                  style: {
+                    height: 40,
+                    borderRadius: 10,
+                    backgroundColor: '#f3f4f6',
+                    border: 1,
+                    color: '#6b7280',
+                    fontSize: 14,
+                    borderColor: '#d1d5db',
+                  },
                 }}
                 onChange={changedValue => {
                   if (changedValue < currentDate) {

@@ -56,8 +56,6 @@ const StepTwo: React.FC<IStepTwoProps> = ({
     !watch('bidClosingDateTime') ||
     Number(watch('priceStart')) >= Number(watch('reservePrice'))
 
-  console.log('WATCH', watch('reservePrice'))
-
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">
       <div>
@@ -71,8 +69,9 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             </IconButton>
           </Tooltip> */}
         </div>
-        <div className="grid grid-cols-2 gap-x-10 gap-y-5 mt-5">
+        <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-10 gap-y-5 mt-5">
           <InputHookForm
+            mode="text"
             control={control}
             label={`Giá khởi điểm`}
             placeholder={`Nhập giá khởi điểm của sản phẩm`}
@@ -81,6 +80,7 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             })}
           />
           <InputHookForm
+            mode="text"
             control={control}
             label={`Bước giá`}
             placeholder={`Nhập bước giá của sản phẩm`}

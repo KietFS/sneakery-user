@@ -201,7 +201,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
           className=" z-0 px-20 justify-center flex bg-blue-200 "
           onMouseLeave={() => setDisplayMenu(false)}
         >
-          <div className="w-3/5 mx-auto  absolute top-20 mr-20 h-[200px] bg-white shadow-xl px-4 z-50  py-4 grid grid-cols-4 grid-row-4 flex-wrap gap-y-2 rounded-b-lg">
+          <div className="w-3/5 mx-auto  absolute top-20 mr-20 h-[120px] bg-white shadow-xl px-4 z-50  py-4 grid grid-cols-4 grid-row-4 flex-wrap rounded-b-lg">
             {listCategory?.map((category: any, categoryIndex: number) => (
               <button
                 className="h-fit"

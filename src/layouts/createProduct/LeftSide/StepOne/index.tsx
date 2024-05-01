@@ -78,8 +78,9 @@ const StepOne: React.FC<IStepOneProps> = ({
           </Tooltip>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-10 gap-y-5 mt-5">
+        <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-10 gap-y-4 tablet:gap-y-5 mt-5 w-full">
           <InputHookForm
+            mode="text"
             control={control}
             label={`Tên sản phẩm`}
             placeholder={`Nhập tên của sản phẩm`}
@@ -109,6 +110,7 @@ const StepOne: React.FC<IStepOneProps> = ({
                 <>
                   {property.type == 'text' ? (
                     <InputHookForm
+                      mode="text"
                       control={control}
                       label={`${property?.name}`}
                       placeholder={`Nhập ${property?.name} của sản phẩm`}
@@ -118,6 +120,7 @@ const StepOne: React.FC<IStepOneProps> = ({
                     <>
                       {property.type == 'number' ? (
                         <InputHookForm
+                          mode="text"
                           {...register(`properties.${property?.name}`)}
                           control={control}
                           label={`${property?.name}`}

@@ -23,7 +23,7 @@ const ReservePriceInput: React.FC<IReservePriceInputProps> = props => {
         <div>
           <p className="text-gray-600 text-[14px] font-semibold">{label}</p>
           <button
-            className={`h-[40px] border-gray-300 border-2 rounded-lg bg-gray-100 w-full px-2 py-1 flex items-center mt-2 ${enable ? '' : 'opacity-30'}`}
+            className={`h-[40px] border-gray-300 border rounded-lg bg-gray-100 w-full px-2 py-1 flex items-center mt-2 ${enable ? '' : ''}`}
           >
             <Switch
               value={enable}

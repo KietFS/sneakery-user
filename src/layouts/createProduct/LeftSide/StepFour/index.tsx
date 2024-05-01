@@ -48,7 +48,7 @@ const StepFour: React.FC<IStepFourProps> = ({
     useState<boolean>(false)
   const { accessToken } = useAuth()
 
-  const handlePressPayPreFee = async () => {
+  const handlePressPaywithPaypal = async () => {
     try {
       const payload = {
         amount: 1,
@@ -154,7 +154,7 @@ const StepFour: React.FC<IStepFourProps> = ({
                   Thanh toán ngay qua Paypal
                 </p>
                 <button
-                  onClick={handlePressPayPreFee}
+                  onClick={handlePressPaywithPaypal}
                   className="w-[320px] h-[170px] border border-gray-200 justify-center items-center flex rounded-lg cursor-pointer hover:opacity-70 p-[5px]"
                 >
                   <Image
