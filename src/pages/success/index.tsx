@@ -37,7 +37,7 @@ const Success: React.FC = props => {
     try {
       setLoading(true)
       const response = await axios.get(
-        `${Config.API_URL}/transactions/success?paymentId=${paymentPayload.paymentId}&payerId=${paymentPayload?.payerId}&paymentType=${paymentPayload?.paymentType}`,
+        `${Config.API_URL}/transactions/paypal/success?paymentId=${paymentPayload.paymentId}&payerId=${paymentPayload?.payerId}&paymentType=${paymentPayload?.paymentType}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

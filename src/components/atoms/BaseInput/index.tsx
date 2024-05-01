@@ -131,20 +131,21 @@ const BaseInput: React.FC<IBaseInputProps> = props => {
           focus && !isError
             ? 'border-2 border-blue-500'
             : isError
-            ? 'border-2 border-red-500'
-            : ''
+              ? 'border-2 border-red-500'
+              : 'border border-gray-300'
         } items-center ${
           focus && !isError
             ? 'bg-blue-50'
             : isError
-            ? 'bg-red-50'
-            : 'bg-gray-100'
+              ? 'bg-red-50'
+              : 'bg-gray-100'
         } px-2 py-1 rounded-lg h-10  ${className}`}
       >
         <div className="border-r border-gray-500 pr-2">
           <>{(objectTypes as any)?.[mode]?.icon}</>
         </div>
         <input
+          autoComplete="off"
           placeholder={(objectTypes as any)?.[mode]?.placeholder || ''}
           {...field}
           onBlur={handleOnBlur}
@@ -159,8 +160,8 @@ const BaseInput: React.FC<IBaseInputProps> = props => {
             focus && !isError
               ? 'bg-blue-50'
               : isError
-              ? 'bg-red-50'
-              : 'bg-gray-100'
+                ? 'bg-red-50'
+                : 'bg-gray-100'
           } text-gray-700 rounded-lg w-80 h-8 text-sm  outline-none ring-0 border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent`}
         />
       </div>

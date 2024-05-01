@@ -56,7 +56,7 @@ const StepFour: React.FC<IStepFourProps> = ({
       }
       setIsPayingPreFee(true)
       const response = await axios.post(
-        `${Config.API_URL}/transactions/payment`,
+        `${Config.API_URL}/transactions/paypal`,
         payload,
         {
           headers: {
