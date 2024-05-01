@@ -65,7 +65,7 @@ const StepOne: React.FC<IStepOneProps> = ({
     !watch('name') || !checkUndefinedOrNull(watch('properties'))
 
   return (
-    <div className="bg-white border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">
+    <div className="bg-white shadow-sm border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">
       <div>
         <div className="flex justify-between items-center">
           <h1 className="text-gray-600 font-bold text-2xl mb-2">
@@ -78,7 +78,7 @@ const StepOne: React.FC<IStepOneProps> = ({
           </Tooltip>
         </div>
 
-        <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-10 gap-y-4 tablet:gap-y-5 mt-5 w-full">
+        <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-10 gap-y-4 tablet:gap-y-4 mt-5 w-full">
           <InputHookForm
             mode="text"
             control={control}

@@ -183,9 +183,9 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
         {...settings}
         swipeToSlide={false}
         swipe={false}
-        className={`block justify-center  w-full laptop:h-[500px] h-[400px] rounded-lg mx-auto`}
+        className={`block justify-center bg-gray-50 w-full laptop:h-[500px] h-[400px] rounded-lg mx-auto`}
       >
-        <StepOne
+        {/* <StepOne
           formTool={formTool as any}
           customFields={customFields}
           setCustomFields={setCustomFields}
@@ -207,7 +207,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           onPressOpenCategory={() => setOpenSelectCategory(true)}
           imagesSelected={imagesSelected}
           thumbnailSelected={thumbnailSelected}
-        />
+        /> */}
 
         <StepFour
           formTool={formTool as any}

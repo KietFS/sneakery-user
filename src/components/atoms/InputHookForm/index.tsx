@@ -93,7 +93,7 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
               </div>
             </div>
             <div
-              className={`flex  ${
+              className={`flex mt-1 ${
                 focus && !error
                   ? 'border-2 border-blue-500'
                   : !!error
