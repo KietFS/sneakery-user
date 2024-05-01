@@ -74,7 +74,7 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
       onClose={onClose}
       open={open}
       className="rounded-lg"
-      maxWidth="md"
+      maxWidth="sm"
       fullWidth={true}
     >
       <DialogContent className="max-h-[1200px]">
@@ -89,14 +89,7 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
           </div>
           {isLoading ? (
             <div>
-              <div className="grid grid-cols-6 gap-x-4 gap-y-4">
-                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
-                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
-                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
-                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
-                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
-                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
-                <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
+              <div className="grid grid-cols-4 gap-x-2 gap-y-2">
                 <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
                 <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
                 <div className="mt-4 w-[120px] h-[60px] rounded-lg bg-gray-300"></div>
@@ -127,7 +120,7 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
           ) : (
             <>
               <div className="">
-                <div className="grid grid-cols-6 gap-x-4 gap-y-4">
+                <div className="grid grid-cols-4 gap-x-4 gap-y-4">
                   {listCategory?.map(
                     (category: IProductCategory, categoryIndex: number) => (
                       <button
