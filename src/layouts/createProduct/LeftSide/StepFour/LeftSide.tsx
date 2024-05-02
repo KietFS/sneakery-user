@@ -84,7 +84,7 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
 
       {/* Main content go here */}
 
-      {true ? (
+      {isPaySuccess ? (
         <>
           <div className="w-full flex justify-center">
             <Image
