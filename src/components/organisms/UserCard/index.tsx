@@ -79,6 +79,7 @@ export default function MultipleSelectPlaceholder() {
       localStorage.removeItem('token')
       dispatch(setAccessToken(''))
       dispatch(setUser(null))
+      window.location.reload()
       toast.success('Đăng xuất thành công', {
         position: 'top-right',
         hideProgressBar: true,

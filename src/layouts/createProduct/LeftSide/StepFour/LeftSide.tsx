@@ -13,6 +13,8 @@ import StripeLogo from '@/assets/images/StripeLogo.png'
 import { IPaymentMethod } from '@/types/user'
 import { Radio } from '@mui/material'
 import Button from '@/components/atoms/Button'
+import { useDispatch } from 'react-redux'
+import { setMethodSelected } from '@/redux/slices/payment'
 
 interface IStepFourLeftSideProps {
   isPaySuccess: boolean
@@ -23,8 +25,11 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
   const [isPaySuccess, setIsPaySuccess] = useState<boolean>(false)
   const [isPayingPreFee, setIsPayingPreFee] = useState<boolean>(false)
   const { user } = useAppSelector((state: IRootState) => state.auth)
+  const { methodSelected } = useAppSelector(
+    (state: IRootState) => state.payment,
+  )
   const { accessToken } = useAuth()
-  const [methodSelected, setMethodSelected] = useState<IPaymentMethod>('paypal')
+  const dispatch = useDispatch()
 
   const handlePressPay = async () => {
     try {
@@ -34,7 +39,7 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
       }
       setIsPayingPreFee(true)
       const response = await axios.post(
-        `${Config.API_URL}/transactions/paypal`,
+        `${Config.API_URL}/transactions/${methodSelected}`,
         payload,
         {
           headers: {
@@ -51,9 +56,9 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
     }
   }
 
-  const handleSelectPayPal = () => setMethodSelected('paypal')
+  const handleSelectPayPal = () => dispatch(setMethodSelected('paypal'))
 
-  const handleSelectStripe = () => setMethodSelected('stripe')
+  const handleSelectStripe = () => dispatch(setMethodSelected('stripe'))
 
   return (
     <div className="border-gray-200 border p-6  h-full min-h-[500px] w-3/4 rounded-lg">

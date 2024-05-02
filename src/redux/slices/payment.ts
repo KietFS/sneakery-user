@@ -2,17 +2,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type IPaymentType = 'PRE_SALE_FEE' | 'AUCTION_FEE'
+type IMethodSelected = 'paypal' | 'stripe'
 
 interface IInitialState {
   paymentId: string | null
   payerId: string | null
   paymentType: IPaymentType | null
+  methodSelected: IMethodSelected
 }
 
 const initialState: IInitialState = {
   paymentId: null,
   payerId: null,
   paymentType: null,
+  methodSelected: 'paypal',
 }
 
 const paymentSlice = createSlice({
@@ -28,8 +31,12 @@ const paymentSlice = createSlice({
     setPaymentType: (state, actions: PayloadAction<IPaymentType | null>) => {
       state.paymentType = actions.payload
     },
+    setMethodSelected: (state, actions: PayloadAction<IMethodSelected>) => {
+      state.methodSelected = actions.payload
+    },
   },
 })
 
-export const { setPaymentId, setPayerId, setPaymentType } = paymentSlice.actions
+export const { setPaymentId, setPayerId, setPaymentType, setMethodSelected } =
+  paymentSlice.actions
 export default paymentSlice.reducer
