@@ -71,6 +71,7 @@ const StepFour: React.FC<IStepFourProps> = ({
     <>
       <div className="bg-white flex justify-between gap-x-5">
         <StepFourLeftSide
+          handleGoBack={onPressBack}
           isPaySuccess={isPaySuccess}
           setIsPaySuccess={setIsPaySuccess}
         />
@@ -80,6 +81,7 @@ const StepFour: React.FC<IStepFourProps> = ({
           onPressBack={onPressBack}
           handleSubmit={handleSubmit}
           onPressCreateBid={onPressCreateBid}
+          formTool={formTool}
           buttonLoading={buttonLoading}
         />
       </div>

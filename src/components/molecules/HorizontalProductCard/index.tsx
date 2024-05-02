@@ -28,7 +28,7 @@ const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = props => {
             </p>
 
             <p className="text-xs text-gray-600">
-              {product.startPrice.toString().prettyMoney()}
+              {product.startPrice?.toString().prettyMoney()}
             </p>
             <div className="flex items-center gap-x-1">
               <p className="text-xs text-gray-600">Bán bởi:</p>

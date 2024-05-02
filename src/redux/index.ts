@@ -20,11 +20,7 @@ const saveSubsetAuthReducer = createFilter('auth', ['accessToken', 'user'])
 //   'currentCategory',
 //   'listCategory',
 // ])
-// const saveSubsetPaymentReducer = createFilter('payment', [
-//   'paymentId',
-//   'payerId',
-//   'paymentType',
-// ])
+const saveSubsetPaymentReducer = createFilter('payment', ['methodSelected'])
 
 const persistConfig = {
   key: 'root',
@@ -32,9 +28,9 @@ const persistConfig = {
   transforms: [
     saveSubsetAuthReducer,
     // saveSubsetCategoryReducer,
-    // saveSubsetPaymentReducer,
+    saveSubsetPaymentReducer,
   ],
-  whitelist: ['auth', 'category'],
+  whitelist: ['auth', 'category', 'payment'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

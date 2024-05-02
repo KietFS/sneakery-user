@@ -86,11 +86,11 @@ const SelectCustomFieldHookForm: React.FC<
                       </MenuItem>
                     ))}
               </Select>
-              {!value && (
+              {/* {!value && (
                 <p className="text-gray-500 text-sm relative bottom-8 left-4">
                   {props.placeholder}
                 </p>
-              )}
+              )} */}
             </div>
             {error && (
               <p className="text-red-500 text-xs font-semibold mt-1">

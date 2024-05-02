@@ -19,10 +19,11 @@ import { setMethodSelected } from '@/redux/slices/payment'
 interface IStepFourLeftSideProps {
   isPaySuccess: boolean
   setIsPaySuccess: (p: boolean) => void
+  handleGoBack: () => void
 }
 
 const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
-  const [isPaySuccess, setIsPaySuccess] = useState<boolean>(false)
+  const { isPaySuccess, setIsPaySuccess } = props
   const [isPayingPreFee, setIsPayingPreFee] = useState<boolean>(false)
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const { methodSelected } = useAppSelector(
@@ -35,7 +36,7 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
     try {
       const payload = {
         amount: 1,
-        userId: user?.id,
+        purpose: 'Phí đăng sản phẩm',
       }
       setIsPayingPreFee(true)
       const response = await axios.post(
@@ -60,6 +61,8 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
 
   const handleSelectStripe = () => dispatch(setMethodSelected('stripe'))
 
+  console.log('is pay success', isPaySuccess)
+
   return (
     <div className="border-gray-200 border p-6  h-full min-h-[500px] w-3/4 rounded-lg">
       <div className="flex justify-between items-center">
@@ -80,8 +83,9 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
       </p>
 
       {/* Main content go here */}
-      <div>
-        {isPaySuccess ? (
+
+      {true ? (
+        <>
           <div className="w-full flex justify-center">
             <Image
               src={PaySuccess}
@@ -90,16 +94,15 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
               height={300}
             />
           </div>
-        ) : null}
-
-        {isPaySuccess ? (
           <div className="mt-4 flex items-center justify-center">
             <CheckBadgeIcon className="text-green-500 font-bold w-5 h-5" />
             <p className="font-semibold text-green-500 ml-2">
               Bạn đã thanh toán thành công, bấm nút đăng để đăng sản phẩm
             </p>
           </div>
-        ) : (
+        </>
+      ) : (
+        <div>
           <div className="mt-4">
             <p className="text-xl italic mb-2 text-gray-600 font-bold">
               Phương thức thanh toán
@@ -128,12 +131,12 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
               />
               <div className="flex items-center">
                 <p className="text-gray-500 font-semibold text-sm">
-                  Thanh toán qua Stripe
+                  Thanh toán qua
                 </p>
                 <Image
                   src={StripeLogo}
-                  width={120}
-                  height={50}
+                  width={140}
+                  height={40}
                   className="rounded-lg my-auto"
                 />
               </div>
@@ -142,28 +145,37 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
               <p className="text-sm text-gray-500 italic">
                 {methodSelected == 'paypal'
                   ? 'Để hoàn thành giao dịch của bạn, chúng tôi sẽ chuyển bạn qua máy chủ an toàn của PayPal'
-                  : 'Để hoàn thành giao dịch của bạn, chúng tôi sẽ chuyển bạn qua máy chủ an toàn của Stripe'}
+                  : 'Để hoàn thành giao dịch của bạn, chúng tôi sẽ chuyển bạn qua máy chủ an toàn của Stripe để thực hiện thanh toán qua các loại thẻ Visa, Mastercard,...'}
               </p>
             </div>
           </div>
-        )}
-        <div className="mt-4 flex items-center">
-          <p className="text-lg italic  text-gray-600 font-bold">
-            Phí đăng bạn cần trả:{' '}
-          </p>
-          <p className="text-lg italic font-semibold text-blue-500 ml-1">
-            {(1)?.toFixed(2)?.toString()?.prettyMoney()}$
-          </p>
-        </div>
+          <div className="mt-4 flex items-center">
+            <p className="text-lg italic  text-gray-600 font-bold">
+              Phí đăng bạn cần trả:{' '}
+            </p>
+            <p className="text-lg italic font-semibold text-blue-500 ml-1">
+              {(1)?.toFixed(2)?.toString()?.prettyMoney()}$
+            </p>
+          </div>
 
-        <div className="flex flex-row-reverse">
-          <Button
-            title="Thanh toán"
-            isLoading={isPayingPreFee}
-            onClick={handlePressPay}
-          />
+          <div className="flex flex-row-reverse">
+            <div className="flex items-center">
+              <Button
+                title="Quay lại"
+                variant="secondary"
+                onClick={props.handleGoBack}
+                className="mr-2"
+              />
+              <Button
+                disable={isPaySuccess}
+                title="Thanh toán"
+                isLoading={false}
+                onClick={handlePressPay}
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

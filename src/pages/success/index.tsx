@@ -24,16 +24,14 @@ import { useDispatch } from 'react-redux'
 const Success: React.FC = props => {
   const router = useRouter()
   const { user } = useAppSelector((state: IRootState) => state.auth)
-  const { paymentId: hehe } = useAppSelector(
+  const { paymentId: hehe, methodSelected } = useAppSelector(
     (state: IRootState) => state.payment,
   )
-  const { paymentId, token, PayerID, paymentType } = router.query
+  const { paymentId, token, PayerID, paymentType, sessionId } = router.query
   const [loading, setLoading] = useState<boolean>(false)
   const { accessToken } = useAuth()
 
-  const dispatch = useDispatch()
-
-  const handleUpdatePaidStatus = async (paymentPayload: any) => {
+  const handleUpdatePaypalStatus = async (paymentPayload: any) => {
     try {
       setLoading(true)
       const response = await axios.get(
@@ -57,16 +55,59 @@ const Success: React.FC = props => {
     }
   }
 
-  useEffect(() => {
-    if (paymentId && PayerID) {
-      const payload = {
-        paymentId: paymentId,
-        payerId: PayerID,
-        paymentType: 'PRE_SALE_FEE',
+  const handleUpdateStripeStatus = async (payload: any) => {
+    try {
+      setLoading(true)
+      const response = await axios.get(
+        `${Config.API_URL}/transactions/stripe/success?sessionId=${payload?.sessionId}&paymentType=${payload?.paymentType}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      const { data, isSuccess, error } = configResponse(response)
+      if (isSuccess) {
+        await localStorage.setItem(
+          'isPaidPreSaleFee',
+          JSON.stringify(isSuccess),
+        )
+        // window?.close()
       }
-      handleUpdatePaidStatus(payload)
+    } catch (error) {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (methodSelected == 'paypal') {
+      console.log('BBBB')
+      if (paymentId && PayerID) {
+        const payload = {
+          paymentId: paymentId,
+          payerId: PayerID,
+          paymentType: 'PRE_SALE_FEE',
+        }
+        handleUpdatePaypalStatus(payload)
+      }
     }
   }, [paymentId, PayerID])
+
+  console.log('method', methodSelected)
+
+  useEffect(() => {
+    if (methodSelected == 'stripe') {
+      console.log('AAAAA')
+      if (sessionId) {
+        const payload = {
+          paymentType: 'PRE_SALE_FEE',
+          sessionId: sessionId,
+        }
+        handleUpdateStripeStatus(payload)
+      }
+    } else if (methodSelected == 'stripe') {
+    }
+  }, [sessionId, paymentType])
 
   return <></>
 }

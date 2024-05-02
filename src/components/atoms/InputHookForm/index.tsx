@@ -123,7 +123,7 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
                 }
                 onFocus={() => setFocus(true)}
                 onChange={e => onChange(e.target.value)}
-                className={`px-2 py-1  ${
+                className={`px-2 py-1 w-[90%]  ${
                   focus && !error
                     ? 'bg-blue-50'
                     : error

@@ -67,7 +67,7 @@ const ProductGridV2: React.FC<IProductGridV2Props> = props => {
                       Giá khởi điểm:{' '}
                     </p>
                     <p className="text-xs font-bold text-gray-500">
-                      {item.startPrice.toString().prettyMoney()}$
+                      {item.startPrice?.toString().prettyMoney()}$
                     </p>
                   </div>
                 </div>

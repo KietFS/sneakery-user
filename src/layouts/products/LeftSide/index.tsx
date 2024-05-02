@@ -32,8 +32,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     }
   }, [])
 
-  //REFACTOR RESPONSIVE
-
+  //refactor
   return (
     <div className="border-r border-r-gray-200 h-full py-8 px-4">
       <Slider
