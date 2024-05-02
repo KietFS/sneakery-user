@@ -157,7 +157,11 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
         </div>
 
         <div className="flex flex-row-reverse">
-          <Button title="Thanh toán" isLoading={false} />
+          <Button
+            title="Thanh toán"
+            isLoading={isPayingPreFee}
+            onClick={handlePressPay}
+          />
         </div>
       </div>
     </div>

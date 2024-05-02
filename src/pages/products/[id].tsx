@@ -19,9 +19,7 @@ import { url } from 'inspector'
 const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [bidHistory, setBidHistory] = useState<IProductBidHistoryItem[]>([])
-  const [productDetail, setProductDetail] = useState<IProductDetail>(
-    props.product,
-  )
+  const [productDetail, setProductDetail] = useState<IProductDetail>()
 
   const getProductBidHistory = async (productId: string | number) => {
     try {
@@ -53,19 +51,22 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
   useEffect(() => {
     getProductBidHistory(props.product.id)
+    getProductDetail()
   }, [])
 
   return (
     <>
-      <BidDialog
-        onSuccess={() => {
-          getProductBidHistory(props.product.id)
-          getProductDetail()
-        }}
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        product={productDetail}
-      />
+      {!!productDetail ? (
+        <BidDialog
+          onSuccess={() => {
+            getProductBidHistory(props.product.id)
+            getProductDetail()
+          }}
+          open={openDialog}
+          onClose={() => setOpenDialog(false)}
+          product={productDetail}
+        />
+      ) : null}
       <div className="bg-white">
         <Head>
           <title>Sneakery - {props.product?.name}</title>
@@ -78,11 +79,13 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               <LeftSide product={productDetail} />
             </div>
             <div className=" w-full laptop:w-2/5 desktop:w-1/2">
-              <RightSide
-                bidHistory={bidHistory}
-                product={productDetail}
-                onPlaceBid={() => setOpenDialog(true)}
-              />
+              {!!productDetail ? (
+                <RightSide
+                  bidHistory={bidHistory}
+                  product={productDetail}
+                  onPlaceBid={() => setOpenDialog(true)}
+                />
+              ) : null}
             </div>
           </div>
         </div>

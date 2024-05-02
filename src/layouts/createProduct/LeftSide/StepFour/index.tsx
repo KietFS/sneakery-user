@@ -46,31 +46,6 @@ const StepFour: React.FC<IStepFourProps> = ({
     useState<boolean>(false)
   const { accessToken } = useAuth()
 
-  const handlePressPaywithPaypal = async () => {
-    try {
-      const payload = {
-        amount: 1,
-        userId: user?.id,
-      }
-      setIsPayingPreFee(true)
-      const response = await axios.post(
-        `${Config.API_URL}/transactions/paypal`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      )
-      const { data, isSuccess, error } = configResponse(response)
-      if (response?.data?.success) {
-        window.open(data.message)
-      }
-    } catch (error) {
-      setIsPayingPreFee(false)
-    }
-  }
-
   //Check if the paid is complete
   useEffect(() => {
     const handleStorageChange = async (event: any) => {
