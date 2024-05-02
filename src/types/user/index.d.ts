@@ -15,3 +15,5 @@ export interface IAddress {
   ward: string
   addressDetail: string
 }
+
+export type IPaymentMethod = 'stripe' | 'paypal'

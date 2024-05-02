@@ -39,9 +39,9 @@ const Button: React.FC<IButtonProps> = props => {
       type={type}
     >
       {isLoading ? (
-        <>
-          <CircularProgress sx={{ color: 'white' }} size={25} />
-        </>
+        <div className={`w-[${title?.length * 8}px]`}>
+          <CircularProgress sx={{ color: 'white' }} size={20} />
+        </div>
       ) : (
         title
       )}

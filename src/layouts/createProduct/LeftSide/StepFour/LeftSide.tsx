@@ -9,6 +9,10 @@ import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import { CheckBadgeIcon } from '@heroicons/react/24/outline'
 import PaypalLogo from '@/assets/images/PayPalLogo.png'
+import StripeLogo from '@/assets/images/StripeLogo.png'
+import { IPaymentMethod } from '@/types/user'
+import { Radio } from '@mui/material'
+import Button from '@/components/atoms/Button'
 
 interface IStepFourLeftSideProps {
   isPaySuccess: boolean
@@ -20,8 +24,9 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
   const [isPayingPreFee, setIsPayingPreFee] = useState<boolean>(false)
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const { accessToken } = useAuth()
+  const [methodSelected, setMethodSelected] = useState<IPaymentMethod>('paypal')
 
-  const handlePressPaywithPaypal = async () => {
+  const handlePressPay = async () => {
     try {
       const payload = {
         amount: 1,
@@ -46,6 +51,10 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
     }
   }
 
+  const handleSelectPayPal = () => setMethodSelected('paypal')
+
+  const handleSelectStripe = () => setMethodSelected('stripe')
+
   return (
     <div className="border-gray-200 border p-6  h-full min-h-[500px] w-3/4 rounded-lg">
       <div className="flex justify-between items-center">
@@ -60,21 +69,13 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
       </div>
       <p className="text-sm italic text-gray-500">
         *Bạn cần thanh toán trước phí để có thể đăng sản phẩm. Tham khảo mục
-        Thông tin chi phí
+        Thông tin chi phí <br></br>
+        Khi nhấn vào nút thanh toán, bạn đã đồng ý với chính sách và điều khoản
+        sử dụng của chúng tôi
       </p>
 
       {/* Main content go here */}
       <div>
-        <div className="mt-4 flex items-center">
-          <p className="text-md font-semibold text-gray-600">
-            Phí đăng sản phẩm cần phải trả:{' '}
-          </p>
-
-          <p className="text-md italic font-semibold text-blue-500 ml-1">
-            {(1)?.toFixed(2)?.toString()?.prettyMoney()}$
-          </p>
-        </div>
-
         {isPaySuccess ? (
           <div className="w-full flex justify-center">
             <Image
@@ -95,20 +96,64 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
           </div>
         ) : (
           <div className="mt-4">
-            <p className="text-sm italic mb-2 text-gray-500">
-              Thanh toán ngay qua Paypal
+            <p className="text-xl italic mb-2 text-gray-600 font-bold">
+              Phương thức thanh toán
             </p>
-            <button
-              onClick={handlePressPaywithPaypal}
-              className="w-[320px] h-[170px] border border-gray-200 justify-center items-center flex rounded-lg cursor-pointer hover:opacity-70 p-[5px]"
-            >
-              <Image
-                src={PaypalLogo}
-                className="w-[300px] h-[150px] rounded-lg my-auto"
+            <div className="w-full bg-gray-50 flex items-center px-4 border-t h-[80px]">
+              <Radio
+                checked={methodSelected === 'paypal'}
+                onClick={handleSelectPayPal}
               />
-            </button>
+              <div className="flex items-center">
+                <p className="text-gray-500 font-semibold text-sm">
+                  Thanh toán qua Paypal
+                </p>
+                <Image
+                  src={PaypalLogo}
+                  width={120}
+                  height={80}
+                  className="rounded-lg my-auto"
+                />
+              </div>
+            </div>
+            <div className="w-full bg-gray-50 flex items-center px-4 border-t h-[80px]">
+              <Radio
+                checked={methodSelected === 'stripe'}
+                onClick={handleSelectStripe}
+              />
+              <div className="flex items-center">
+                <p className="text-gray-500 font-semibold text-sm">
+                  Thanh toán qua Stripe
+                </p>
+                <Image
+                  src={StripeLogo}
+                  width={120}
+                  height={50}
+                  className="rounded-lg my-auto"
+                />
+              </div>
+            </div>
+            <div className="w-full bg-gray-50 flex items-center px-8 py-2 border-t h-[60px]">
+              <p className="text-sm text-gray-500 italic">
+                {methodSelected == 'paypal'
+                  ? 'Để hoàn thành giao dịch của bạn, chúng tôi sẽ chuyển bạn qua máy chủ an toàn của PayPal'
+                  : 'Để hoàn thành giao dịch của bạn, chúng tôi sẽ chuyển bạn qua máy chủ an toàn của Stripe'}
+              </p>
+            </div>
           </div>
         )}
+        <div className="mt-4 flex items-center">
+          <p className="text-lg italic  text-gray-600 font-bold">
+            Phí đăng bạn cần trả:{' '}
+          </p>
+          <p className="text-lg italic font-semibold text-blue-500 ml-1">
+            {(1)?.toFixed(2)?.toString()?.prettyMoney()}$
+          </p>
+        </div>
+
+        <div className="flex flex-row-reverse">
+          <Button title="Thanh toán" isLoading={false} />
+        </div>
       </div>
     </div>
   )
