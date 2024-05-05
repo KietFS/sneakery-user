@@ -55,11 +55,12 @@ export default function RangeSlider() {
 
   React.useEffect(() => {
     if (value[0] === 0) {
+      dispatch(setPriceStart('0'))
     } else {
       dispatch(setPriceStart(`${value[0].toString()}00`))
     }
     if (value[1] === 0) {
-      dispatch(setPriceEnd('0'))
+      dispatch(setPriceEnd('1000000'))
     } else {
       dispatch(setPriceEnd(`${value[1].toString()}00`))
     }
@@ -86,7 +87,8 @@ export default function RangeSlider() {
       {openBelow ? (
         <Box sx={{ width: '92%', mx: 'auto', mt: 1 }}>
           <Slider
-            min={100}
+            getAriaLabel={() => 'Temperature range'}
+            value={value}
             onChange={handleChange}
             valueLabelDisplay="auto"
             getAriaValueText={valuetext}
