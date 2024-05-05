@@ -141,15 +141,7 @@ export default function MultipleSelectPlaceholder() {
             <p className="text-gray-500 text-sm ">Quản lý địa chỉ</p>
             <MapPinIcon className="h-5 w-5 text-gray-500" />
           </div>
-          <div
-            className="py-2 px-4 cursor-pointer flex justify-between items-center"
-            onClick={() => {
-              setOpenOrderHistory(true)
-            }}
-          >
-            <p className="text-gray-500 text-sm ">Lịch sử đấu giá</p>
-            <ClockIcon className="h-5 w-5 text-gray-500" />
-          </div>
+
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {

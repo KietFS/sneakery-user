@@ -94,9 +94,6 @@ const ProductBidHistoryDialog: React.FC<
                 <p className="text-gray-600 text-sm cursor-pointer w-1/5">
                   Trạng thái
                 </p>
-                <p className="text-gray-600 text-sm cursor-pointer w-1/5 text-center">
-                  Hành động
-                </p>
               </div>
             </div>
             <div className="flex flex-col gap-y-5">
@@ -112,7 +109,7 @@ const ProductBidHistoryDialog: React.FC<
                     {item?.bidAmount.toString().prettyMoney()}$
                   </p>
                   <p className="text-gray-600 text-sm cursor-pointer w-1/5">
-                    {item?.createdAt.toString().replace('T', ' ')}
+                    {item?.createdAt.toString()?.prettyDateTime()}
                   </p>
                   <div className=" w-1/5">
                     {item?.status == 'SUCCESS' && (
@@ -126,7 +123,7 @@ const ProductBidHistoryDialog: React.FC<
                       </div>
                     )}
                   </div>
-                  <div className="w-1/5 flex justify-between">
+                  {/* <div className="w-1/5 flex justify-between">
                     <div></div>
                     {item?.userName == user?.username &&
                     item?.status == 'SUCCESS' ? (
@@ -141,7 +138,7 @@ const ProductBidHistoryDialog: React.FC<
                         </IconButton>
                       </Tooltip>
                     ) : null}
-                  </div>
+                  </div> */}
                 </div>
               ))}
             </div>

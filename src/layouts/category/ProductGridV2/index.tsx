@@ -58,14 +58,24 @@ const ProductGridV2: React.FC<IProductGridV2Props> = props => {
                   <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
                     {item.name.truncate(30)}
                   </h1>
-                  <div className="flex items-center justify-center">
-                    <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                      Người đang giữ giá:{' '}
-                    </p>
-                    <p className="text-xs font-semibold text-blue-500">
-                      {item?.holder}
-                    </p>
-                  </div>
+                  {!!item?.holder ? (
+                    <div className="flex items-center justify-center">
+                      <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                        Người đang giữ giá:{' '}
+                      </p>
+                      <p className="text-xs font-semibold text-blue-500">
+                        {item?.holder}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center">
+                      <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                        Chưa có ai đâu giá sản phẩm này
+                      </p>
+                      <p className="text-xs font-semibold text-blue-500"></p>
+                    </div>
+                  )}
+
                   <div className="flex items-center justify-center">
                     <p className="text-xs text-gray-500 font-normal text-center mr-1">
                       Số lượt đấu giá:{' '}
