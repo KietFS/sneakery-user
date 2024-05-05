@@ -106,21 +106,21 @@ const ProductBidHistoryDialog: React.FC<
                   key={index.toString()}
                 >
                   <p className="text-lg text-gray-500 font-bold w-1/5">
-                    {item.userName}
+                    {item?.userName}
                   </p>
                   <p className="text-blue-500 font-bold text-sm cursor-pointer mr-1 w-1/5">
-                    {item.bidAmount.toString().prettyMoney()}$
+                    {item?.bidAmount.toString().prettyMoney()}$
                   </p>
                   <p className="text-gray-600 text-sm cursor-pointer w-1/5">
-                    {item.createdAt.toString().replace('T', ' ')}
+                    {item?.createdAt.toString().replace('T', ' ')}
                   </p>
                   <div className=" w-1/5">
-                    {item.status == 'SUCCESS' && (
+                    {item?.status == 'SUCCESS' && (
                       <div className="rounded-full bg-green-200 text-green-800 font-semibold px-[10px] py-[4px] text-[12px] w-fit">
                         Thành công
                       </div>
                     )}
-                    {item.status == 'REMOVE' && (
+                    {item?.status == 'REMOVE' && (
                       <div className="rounded-full bg-red-100 text-red-800 font-semibold px-[10px] py-[4px] text-[12px] w-fit">
                         Đã bị hủy
                       </div>
@@ -128,8 +128,8 @@ const ProductBidHistoryDialog: React.FC<
                   </div>
                   <div className="w-1/5 flex justify-between">
                     <div></div>
-                    {item.userName == user.username &&
-                    item.status == 'SUCCESS' ? (
+                    {item?.userName == user?.username &&
+                    item?.status == 'SUCCESS' ? (
                       <Tooltip title="Hủy lượt đấu giá">
                         <IconButton
                           onClick={() => {
