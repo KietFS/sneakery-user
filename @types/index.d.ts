@@ -14,6 +14,7 @@ interface IProductDetail {
   imagePath: string[]
   bidIncrement: number
   bidClosingDate: string
+  holder: string
 }
 
 interface IProductCategory {

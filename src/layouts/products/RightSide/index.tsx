@@ -56,6 +56,12 @@ const RightSide: React.FC<IRightSideProps> = props => {
         </h3>
       </div>
       <div className="mt-2 flex items-center">
+        <h3 className="text-gray-400 text-lg">Người đang giữ giá: </h3>
+        <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
+          {product?.holder as string}
+        </h3>
+      </div>
+      <div className="mt-2 flex items-center">
         {isDisable ? (
           'Sản phẩm đã hết phiên đấu giá'
         ) : (
