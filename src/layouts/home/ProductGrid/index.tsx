@@ -139,7 +139,7 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
                   </div>
                   <div className="flex items-center justify-center">
                     <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                      Giá hiện tại{' '}
+                      Giá hiện tại:{' '}
                     </p>
                     <p className="text-xs font-bold text-gray-500">
                       {item.currentPrice?.toString().prettyMoney()}$
