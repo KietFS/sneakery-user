@@ -34,6 +34,9 @@ interface IProductHomePageResponse {
   imagePath: string
   userName: string
   bidClosingDate: Date
+  bidCreatingDate: Date
+  holder: string
+  numberOfBids?: number
 }
 
 declare interface String {
@@ -43,6 +46,7 @@ declare interface String {
 declare interface String {
   prettyMoney: () => string
   prettyDate: () => string
+  prettyDateTime: () => string
 }
 
 declare interface Array<T> {

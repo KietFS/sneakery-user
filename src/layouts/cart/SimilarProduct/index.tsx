@@ -7,6 +7,7 @@ import Image from 'next/image'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
+import CountDownTimer from '@/components/atoms/CountDownTimer'
 
 interface ISimilarProduct {
   currentProductId: number
@@ -34,6 +35,7 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
       setLoading(false)
     }
   }
+  console.log('list product', listProduct)
 
   useEffect(() => {
     getSimilarProducts()
@@ -59,18 +61,18 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
                   </h1>
                   <div className="flex items-center justify-center">
                     <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                      Được bán bởi:{' '}
+                      Người đang giữ giá:{' '}
                     </p>
                     <p className="text-xs font-semibold text-blue-500">
-                      {item?.userName}
+                      {item?.holder}
                     </p>
                   </div>
                   <div className="flex items-center justify-center">
                     <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                      Giá khởi điểm:{' '}
+                      Giá hiện tại:{' '}
                     </p>
                     <p className="text-xs font-bold text-gray-500">
-                      {item.startPrice?.toString().prettyMoney()}$
+                      {item.currentPrice?.toString().prettyMoney()}$
                     </p>
                   </div>
                 </div>

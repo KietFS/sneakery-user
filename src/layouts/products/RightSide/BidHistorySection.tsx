@@ -37,7 +37,7 @@ const BidHistorySection: React.FC<IBidHistorySectionProps> = ({
                     {item.bidAmount.toString().prettyMoney()}$ -
                   </p>
                   <p className="text-gray-600 text-sm cursor-pointer">
-                    {item.createdAt.toString().replace('T', ' ')}
+                    {item.createdAt.toString()?.prettyDateTime()}
                   </p>
                 </div>
               )

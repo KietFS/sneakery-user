@@ -9,6 +9,8 @@ import { ClockIcon, FireIcon, TagIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
+import CountDownTimer from '@/components/atoms/CountDownTimer'
+import SmallCountdownTimer from '@/components/atoms/SmallCountdownTimer'
 
 interface IProductGridProps {}
 
@@ -47,6 +49,8 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
     getData()
   }, [])
 
+  console.log('list products', listProducts)
+
   return (
     <div className="flex flex-col space-y-10 items-center justify-center">
       <div className="space-y-2">
@@ -82,7 +86,7 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
           {listProducts?.map((item, index) => {
             return (
               <div
-                className="max-h-[300px] h-[300px] py-4 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
+                className="max-h-[350px] h-[350px] py-4 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
                 key={index.toString()}
                 onClick={() => router.push(`/products/${item.id}`)}
               >
@@ -108,20 +112,44 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
                   <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
                     {item.name.truncate(30)}
                   </h1>
+                  {!!item?.holder ? (
+                    <div className="flex items-center justify-center">
+                      <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                        Người đang giữ giá:{' '}
+                      </p>
+                      <p className="text-xs font-semibold text-blue-500">
+                        {item?.holder}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center">
+                      <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                        Chưa có ai đâu giá sản phẩm này
+                      </p>
+                      <p className="text-xs font-semibold text-blue-500"></p>
+                    </div>
+                  )}
                   <div className="flex items-center justify-center">
                     <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                      Được bán bởi:{' '}
+                      Số lượt đấu giá:{' '}
                     </p>
-                    <p className="text-xs font-semibold text-blue-500">
-                      {item.userName}
+                    <p className="text-xs font-bold text-gray-500">
+                      {item?.numberOfBids}
                     </p>
                   </div>
                   <div className="flex items-center justify-center">
                     <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                      Giá khởi điểm:{' '}
+                      Giá hiện tại{' '}
                     </p>
                     <p className="text-xs font-bold text-gray-500">
-                      {item.startPrice?.toString().prettyMoney()}$
+                      {item.currentPrice?.toString().prettyMoney()}$
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <p className="text-xs font-bold text-gray-500">
+                      <SmallCountdownTimer
+                        bidClosingDate={item?.bidClosingDate as any}
+                      />
                     </p>
                   </div>
                 </div>
