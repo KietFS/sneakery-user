@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 
 //styles
 import PostedCard from '@/components/molecules/PostedCard'
@@ -14,6 +14,7 @@ import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import { useAuth } from '@/hooks/useAuth'
+import { useRouter } from 'next/router'
 
 interface IPostedDialogProps {
   open: boolean
@@ -42,6 +43,7 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { accessToken } = useAuth()
+  const router = useRouter()
 
   const getPostedItems = async () => {
     try {
@@ -69,68 +71,82 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
   }
 
   useEffect(() => {
-    getPostedItems()
-  }, [])
+    if (open == true && items?.length == 0) {
+      getPostedItems()
+    }
+  }, [open])
 
   return (
-    <Dialog
-      onClose={onClose}
-      open={open}
-      className="rounded-lg"
-      maxWidth="xs"
-      fullWidth={true}
-    >
-      <DialogContent className="max-h-[600px]">
-        <div className="flex flex-col gap-y-5">
-          <div className="flex justify-between items-center">
-            <h1 className="text-gray-600 font-bold text-2xl mb-2">
-              Sản phẩm bạn đã đăng
-            </h1>
-            <Tooltip onClick={() => onClose()} title="Đóng">
-              <XMarkIcon className="w-8    h-8 p-1 hover:bg-gray-200 rounded-full cursor-pointer" />
-            </Tooltip>
-          </div>
-          {isLoading ? (
-            <div>
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>{' '}
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
-              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
-            </div>
-          ) : (
-            <>
-              {items.length > 0 ? (
-                <div className="flex flex-col gap-y-5">
-                  {items.map((item, index) => (
-                    <PostedCard
-                      key={index.toString()}
-                      title={item.product.name}
-                      status={item.priceWin === null ? 'pending' : 'success'}
-                      imagePath={item.product.imagePath}
-                      createdAt={item.bidStartingDate?.toString().prettyDate()}
-                    />
-                  ))}
+    <>
+      {props.open ? (
+        <Dialog
+          onClose={onClose}
+          open={open}
+          className="rounded-lg"
+          maxWidth="xs"
+          fullWidth={true}
+        >
+          <DialogContent className="max-h-[600px]">
+            <div className="flex flex-col gap-y-5">
+              <div className="flex justify-between items-center">
+                <h1 className="text-gray-600 font-bold text-2xl mb-2">
+                  Sản phẩm bạn đã đăng
+                </h1>
+                <Tooltip onClick={() => onClose()} title="Đóng">
+                  <XMarkIcon className="w-8    h-8 p-1 hover:bg-gray-200 rounded-full cursor-pointer" />
+                </Tooltip>
+              </div>
+              {isLoading ? (
+                <div>
+                  <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+                  <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+                  <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+                  <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>{' '}
+                  <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+                  <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
                 </div>
               ) : (
-                <div className="flex items-center">
-                  <InformationCircleIcon
-                    width={20}
-                    height={20}
-                    className="text-gray-600 mr-2"
-                  />
-                  <h1 className="text-gray-500 font-regular text-md">
-                    Bạn chưa đăng sản phẩm nào
-                  </h1>
-                </div>
+                <>
+                  {items.length > 0 ? (
+                    <div className="flex flex-col gap-y-5">
+                      {items.map((item, index) => (
+                        <PostedCard
+                          key={index.toString()}
+                          id={item?.bidId}
+                          title={item.product.name}
+                          onNavigateToEdit={() => {
+                            router.replace(`/updateProduct/id=${item?.bidId}`)
+                          }}
+                          status={
+                            item.priceWin === null ? 'pending' : 'success'
+                          }
+                          imagePath={item.product.imagePath}
+                          createdAt={item.bidStartingDate
+                            ?.toString()
+                            .prettyDate()}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <InformationCircleIcon
+                        width={20}
+                        height={20}
+                        className="text-gray-600 mr-2"
+                      />
+                      <h1 className="text-gray-500 font-regular text-md">
+                        Bạn chưa đăng sản phẩm nào
+                      </h1>
+                    </div>
+                  )}
+                </>
               )}
-            </>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
+            </div>
+          </DialogContent>
+        </Dialog>
+      ) : null}
+    </>
   )
 }
 
-export default PostedDialog
+export default memo(PostedDialog)

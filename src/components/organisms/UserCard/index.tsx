@@ -15,7 +15,7 @@ import AddressDialog from '@/components/organisms/AddressDialog'
 import AccountDialog from '@/components/organisms/AccountDialog'
 import OrderHistoryDialog from '@/components/organisms/OrderHistoryDialog'
 import LogoutConfirmDialog from '@/components/organisms/LogoutConfirmDialog'
-import SelectCategoryDialog from '@/components/templates/PostedDialog'
+import PostedDialog from '@/components/templates/PostedDialog'
 import WithDrawDialog from '@/components/organisms/WithDrawDialog'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import OutlinedInput from '@mui/material/OutlinedInput'
@@ -200,12 +200,10 @@ export default function MultipleSelectPlaceholder() {
         />
       ) : null}
 
-      {openPostedDialog ? (
-        <SelectCategoryDialog
-          open={openPostedDialog}
-          onClose={() => setOpenPostedDialog(false)}
-        />
-      ) : null}
+      <PostedDialog
+        open={openPostedDialog}
+        onClose={() => setOpenPostedDialog(false)}
+      />
 
       {openWinningDialog ? (
         <WinningDialog
