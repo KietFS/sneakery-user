@@ -17,3 +17,11 @@ export interface IAddress {
 }
 
 export type IPaymentMethod = 'stripe' | 'paypal'
+
+export interface IAddressResponse {
+  addressId: number
+  homeNumber: string
+  cityName: string
+  district: IOption
+  ward: IOption
+}

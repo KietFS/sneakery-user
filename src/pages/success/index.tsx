@@ -32,6 +32,7 @@ const Success: React.FC = props => {
   const { accessToken } = useAuth()
 
   const handleUpdatePaypalStatus = async (paymentPayload: any) => {
+    await localStorage.setItem('isPaidPreSaleFee', JSON.stringify(null))
     try {
       setLoading(true)
       const response = await axios.get(
@@ -43,11 +44,14 @@ const Success: React.FC = props => {
         },
       )
       const { data, isSuccess, error } = configResponse(response)
-      if (isSuccess) {
+      if (response?.data?.success == true) {
         await localStorage.setItem(
           'isPaidPreSaleFee',
           JSON.stringify(isSuccess),
         )
+        var event
+        event = new CustomEvent('isPaidPreSaleFee')
+        window.dispatchEvent(event)
         // window?.close()
       }
     } catch (error) {
@@ -56,6 +60,7 @@ const Success: React.FC = props => {
   }
 
   const handleUpdateStripeStatus = async (payload: any) => {
+    await localStorage.setItem('isPaidPreSaleFee', JSON.stringify(null))
     try {
       setLoading(true)
       const response = await axios.get(
@@ -81,7 +86,6 @@ const Success: React.FC = props => {
 
   useEffect(() => {
     if (methodSelected == 'paypal') {
-      console.log('BBBB')
       if (paymentId && PayerID) {
         const payload = {
           paymentId: paymentId,
@@ -93,8 +97,6 @@ const Success: React.FC = props => {
     }
   }, [paymentId, PayerID])
 
-  console.log('method', methodSelected)
-
   useEffect(() => {
     if (methodSelected == 'stripe') {
       console.log('AAAAA')
@@ -105,7 +107,6 @@ const Success: React.FC = props => {
         }
         handleUpdateStripeStatus(payload)
       }
-    } else if (methodSelected == 'stripe') {
     }
   }, [sessionId, paymentType])
 

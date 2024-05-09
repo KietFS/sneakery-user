@@ -86,7 +86,7 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
           {listProducts?.map((item, index) => {
             return (
               <div
-                className="max-h-[350px] h-[350px] py-4 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
+                className="max-h-[350px] shadow-lg drop-shadow-sm h-[350px] py-4 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
                 key={index.toString()}
                 onClick={() => router.push(`/products/${item.id}`)}
               >

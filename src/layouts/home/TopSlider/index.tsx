@@ -46,7 +46,7 @@ const TopSlider: React.FC<ITopSliderProps> = props => {
         {benefits?.map((item, index) => (
           <div
             key={`slider-${index}`}
-            className="border-2 border-gray-200 rounded-lg h-fit justify-between  min-h-[300px] px-4 py-4 laptop:px-0 laptop:justify-center items-center flex flex-row laptop:flex-col space-y-2 cursor-pointer hover:opacity-70 "
+            className="border-2 shadow-lg  border-gray-200 rounded-lg h-fit justify-between  min-h-[300px] px-4 py-4 laptop:px-0 laptop:justify-center items-center flex flex-row laptop:flex-col space-y-2 cursor-pointer hover:opacity-70 "
           >
             {item.icon}
             <div className="space-y-1 justify-center laptop:px-4 w-2/3 laptop:w-full">

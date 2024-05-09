@@ -21,6 +21,7 @@ import { CheckBadgeIcon } from '@heroicons/react/24/outline'
 import ConfirmDialog from '../ConfirmDialog'
 import { toast } from 'react-toastify'
 import { useAuth } from '@/hooks/useAuth'
+import { PaymentOutlined } from '@mui/icons-material'
 
 interface IWinningDialogProps {
   open: boolean
@@ -43,7 +44,7 @@ interface ICartItem {
 
 const WinningDialog: React.FC<IWinningDialogProps> = props => {
   const { open, onClose } = props
-  const [items, setItems] = useState<ICartItem[]>([])
+  const [items, setItems] = useState<any[]>([])
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
@@ -55,14 +56,11 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
     try {
       setIsLoading(true)
       //THIS NEED TO FIX
-      const response = await axios.get(
-        `${Config.API_URL}/orders/users/${user.id}?q=PENDING`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+      const response = await axios.get(`${Config.API_URL}/bids/win`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-      )
+      })
       const { isSuccess, data, error } = configResponse(response)
       if (isSuccess) {
         setIsLoading(false)
@@ -79,14 +77,11 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
   const resetWinningItems = async () => {
     try {
       //THIS NEED TO FIX
-      const response = await axios.get(
-        `${Config.API_URL}/orders/users/${user.id}?q=PENDING`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+      const response = await axios.get(`${Config.API_URL}/bids/win`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-      )
+      })
       const { isSuccess, data, error } = configResponse(response)
       if (isSuccess) {
         setItems(data?.data)
@@ -185,36 +180,21 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
                             </p>
                           </div>
                           <div className="flex gap-x-1 items-center">
-                            <p className="text-xs text-gray-600">Bán bởi: </p>
-                            <div className="rounded-full bg-blue-200 text-blue-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
-                              {item.product.userName}
-                            </div>
+                            <p className="text-xs text-gray-600">
+                              Số lượt đấu giá: {item?.product?.numberOfBids}
+                            </p>
                           </div>
-                          {item.status == 'PENDING' && (
-                            <div className="rounded-full bg-yellow-200 text-yellow-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
-                              Đang đợi xác nhận
-                            </div>
-                          )}
-                          {item.status == 'APPROVED' && (
-                            <div className="rounded-full bg-green-100 text-green-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
-                              Đã xác nhận
-                            </div>
-                          )}
                         </div>
-                        <div>
-                          {item.status == 'PENDING' ? (
-                            <Tooltip title="Thêm vào giỏ hàng">
-                              <IconButton
-                                onClick={() => {
-                                  setOpenConfirmDialog(true)
-                                  setOrderSelected(item.id)
-                                }}
-                              >
-                                <ShoppingCartIcon width={20} height={20} />
-                              </IconButton>
-                            </Tooltip>
-                          ) : null}
-                        </div>
+                        <Tooltip title="Thanh toán">
+                          <IconButton
+                            onClick={() => {
+                              setOpenConfirmDialog(true)
+                              setOrderSelected(item.id)
+                            }}
+                          >
+                            <PaymentOutlined width={20} height={20} />
+                          </IconButton>
+                        </Tooltip>
                       </div>
                     ))}
                   </div>

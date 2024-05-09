@@ -3,7 +3,11 @@ import React, { useState } from 'react'
 //design
 import InputSearch from '@/components/atoms/InputSearch'
 import { Bars4Icon, UserIcon, UserPlusIcon } from '@heroicons/react/20/solid'
-import { Bars3Icon, ShoppingCartIcon } from '@heroicons/react/24/outline'
+import {
+  Bars3Icon,
+  ShoppingBagIcon,
+  ShoppingCartIcon,
+} from '@heroicons/react/24/outline'
 import UserCard from '../UserCard'
 
 //store
@@ -134,9 +138,14 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
             <p className="text-sm text-gray-600 font-semibold ">Danh mục</p>
           </button>
 
-          <button className="flex items-center group-hover:text-blue-500 hover:text-blue-500">
-            <ShoppingCartIcon className="w-5 h-5 text-gray-600 mr-2 " />
-            <p className="text-sm text-gray-600 font-semibold">Giỏ hàng</p>
+          <button
+            onClick={() => router.replace('/wonProducts')}
+            className="flex items-center group-hover:text-blue-500 hover:text-blue-500"
+          >
+            <ShoppingBagIcon className="w-5 h-5 text-gray-600 mr-2 " />
+            <p className="text-sm text-gray-600 font-semibold">
+              Sản phẩm đã thắng
+            </p>
           </button>
         </div>
         <div className="hidden laptop:flex">

@@ -42,8 +42,10 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
     dispatch(setCurrentProductCategory(category))
 
   const handlePressConfirm = () => {
-    router.push('/createProduct')
-    onClose()
+    if (!!currentCategory) {
+      router.push('/createProduct')
+      onClose()
+    }
   }
 
   const getListProductCategories = async () => {
@@ -147,6 +149,7 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
                     />
                     <Button
                       type="submit"
+                      disable={!currentCategory}
                       title="Xác nhận"
                       variant="primary"
                       onClick={handlePressConfirm}
