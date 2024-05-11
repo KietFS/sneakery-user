@@ -135,16 +135,8 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
             onMouseOver={() => setDisplayMenu(true)}
           >
             <Bars4Icon className="w-5 h-5 text-gray-600 mr-2 " />
-            <p className="text-sm text-gray-600 font-semibold ">Danh mục</p>
-          </button>
-
-          <button
-            onClick={() => router.replace('/wonProducts')}
-            className="flex items-center group-hover:text-blue-500 hover:text-blue-500"
-          >
-            <ShoppingBagIcon className="w-5 h-5 text-gray-600 mr-2 " />
-            <p className="text-sm text-gray-600 font-semibold">
-              Sản phẩm đã thắng
+            <p className="text-sm text-gray-600 font-semibold ">
+              Danh mục sản phẩm
             </p>
           </button>
         </div>

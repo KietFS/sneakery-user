@@ -21,8 +21,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { useAppSelector } from '@/hooks/useRedux'
 import { IRootState } from '@/redux'
-import { ArrowDownIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
-import SelectCategoryDialog from '@/components/atoms/SelectCategoryDialog'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import PostedDialog from '@/components/templates/PostedDialog'
 
 interface IUserCardV2Props {}
@@ -48,11 +47,8 @@ const UserCardV2: React.FC<IUserCardV2Props> = props => {
     setAnchorEl(null)
   }
 
-  const dispatch = useDispatch()
-
   return (
     <>
-      {' '}
       <React.Fragment>
         <Box
           sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}
@@ -160,29 +156,6 @@ const UserCardV2: React.FC<IUserCardV2Props> = props => {
               <ClipboardDocumentListIcon className="h-5 w-5 text-gray-500" />
             </div>
           </MenuItem>
-
-          {/* <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem> */}
         </Menu>
       </React.Fragment>
       {openPostedDialog ? (

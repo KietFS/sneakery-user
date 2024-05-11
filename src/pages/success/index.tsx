@@ -5,13 +5,7 @@ import { useAppSelector } from '@/hooks/useRedux'
 import { useRouter } from 'next/router'
 
 //styles
-import Head from 'next/head'
-import HeaderV2 from '@/components/organisms/HeaderV2'
-import PaymentProcess from '@/assets/images/PaymentProcess.png'
-import Image from 'next/image'
-import FooterSection from '@/components/molecules/FooterSection'
 import Spinner from '@/components/atoms/Spinner'
-import Button from '@/components/atoms/Button'
 
 //utils
 import axios from 'axios'
@@ -19,11 +13,9 @@ import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
 import { useAuth } from '@/hooks/useAuth'
 import { configResponse } from '@/utils/request'
-import { useDispatch } from 'react-redux'
 
 const Success: React.FC = props => {
   const router = useRouter()
-  const { user } = useAppSelector((state: IRootState) => state.auth)
   const { paymentId: hehe, methodSelected } = useAppSelector(
     (state: IRootState) => state.payment,
   )
@@ -99,7 +91,6 @@ const Success: React.FC = props => {
 
   useEffect(() => {
     if (methodSelected == 'stripe') {
-      console.log('AAAAA')
       if (sessionId) {
         const payload = {
           paymentType: 'PRE_SALE_FEE',
@@ -110,7 +101,11 @@ const Success: React.FC = props => {
     }
   }, [sessionId, paymentType])
 
-  return <></>
+  return (
+    <div className="w-screen h-screen">
+      <Spinner size={100} />
+    </div>
+  )
 }
 
 export default Success

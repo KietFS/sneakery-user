@@ -22,6 +22,10 @@ import ConfirmDialog from '../ConfirmDialog'
 import { toast } from 'react-toastify'
 import { useAuth } from '@/hooks/useAuth'
 import { PaymentOutlined } from '@mui/icons-material'
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
+import { setWonProductSelected } from '@/redux/slices/payment'
+import { IWonProduct } from '@/types/product'
 
 interface IWinningDialogProps {
   open: boolean
@@ -44,13 +48,15 @@ interface ICartItem {
 
 const WinningDialog: React.FC<IWinningDialogProps> = props => {
   const { open, onClose } = props
-  const [items, setItems] = useState<any[]>([])
+  const [items, setItems] = useState<IWonProduct[]>([])
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
   const [actionLoading, setActionLoading] = useState<boolean>(false)
   const [orderSelected, setOrderSelected] = useState<string | number>('')
   const { accessToken } = useAuth()
+  const router = useRouter()
+  const dispatch = useDispatch()
 
   const getWinningItems = async () => {
     try {
@@ -188,8 +194,8 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
                         <Tooltip title="Thanh toán">
                           <IconButton
                             onClick={() => {
-                              setOpenConfirmDialog(true)
-                              setOrderSelected(item.id)
+                              dispatch(setWonProductSelected(item))
+                              router.replace('/checkOut')
                             }}
                           >
                             <PaymentOutlined width={20} height={20} />
