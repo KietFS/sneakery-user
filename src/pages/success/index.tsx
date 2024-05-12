@@ -102,8 +102,11 @@ const Success: React.FC = props => {
   }, [sessionId, paymentType])
 
   return (
-    <div className="w-screen h-screen">
-      <Spinner size={100} />
+    <div className="w-screen h-screen flex flex-col items-center justify-center">
+      <p className="text-2xl text-gray-600 font-semibold mb-10">
+        Chúng tôi đang hoàn thành giao dịch của bạn
+      </p>
+      <Spinner size={60} />
     </div>
   )
 }

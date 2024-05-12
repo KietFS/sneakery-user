@@ -15,6 +15,7 @@ interface IProductDetail {
   bidIncrement: number
   bidClosingDate: string
   holder: string
+  description: string
 }
 
 interface IProductCategory {

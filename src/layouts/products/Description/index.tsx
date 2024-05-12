@@ -9,11 +9,13 @@ import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 
 interface IProductDescriptionProps {
-  properties: IProductProperties
+  productDetail: IProductDetail
 }
 
 const ProductDescription: React.FC<IProductDescriptionProps> = props => {
-  const { properties } = props
+  const {
+    productDetail: { properties },
+  } = props
 
   function capitalizeFirstLetter(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1)
@@ -51,20 +53,8 @@ const ProductDescription: React.FC<IProductDescriptionProps> = props => {
         </p>
 
         <p className="text-gray-500 text-sm mt-2">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam
-          ducimus eaque, possimus dolore odio dicta alias cumque corporis saepe
-          aut? Est, quaerat. Deleniti incidunt non quod corporis id,
-          perspiciatis ipsum. Lorem ipsum dolor sit amet consectetur adipisicing
-          elit. Necessitatibus nobis sint est neque? Hic amet asperiores nobis
-          et consectetur, architecto laboriosam minus voluptatem. Ratione
-          inventore obcaecati assumenda accusantium dolor incidunt. Lorem ipsum
-          dolor sit amet consectetur adipisicing elit. Nihil laboriosam quidem,
-          totam ad ut modi sequi excepturi qui doloribus laborum reiciendis
-          atque. Reprehenderit distinctio quis voluptate optio dolor sint
-          fugiat. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Ducimus ipsum harum neque, laboriosam soluta quasi temporibus
-          praesentium ipsam sequi, error rem deserunt. Numquam quaerat qui
-          corrupti deserunt dolorem quasi voluptates!
+          {props?.productDetail?.description ||
+            'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non minima dicta, culpa quas deserunt reprehenderit voluptatum eos sunt officiis harum. Tenetur magnam, facilis voluptatem deleniti expedita nobis! Optio, fugiat commodi'}
         </p>
       </div>
     </div>

@@ -115,8 +115,9 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       categoryId: currentCategory?.id,
       imageIds: imageIds,
       reservePrice: Number(values?.reservePrice) || 0,
-      description: '',
     }
+
+    console.log('Description is', payload.description)
     try {
       setCreateLoading(true)
       const response = await axios({

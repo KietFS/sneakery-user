@@ -1,95 +1,82 @@
-import {
-  ChangeEvent,
-  DetailedHTMLProps,
-  InputHTMLAttributes,
-  useEffect,
-} from 'react'
+import React, { useState } from 'react'
+import { Control, Controller } from 'react-hook-form'
 
-//hook
-import { useField, useFormikContext } from 'formik'
-
-interface IRichTextInputProps
-  extends DetailedHTMLProps<
-    InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  > {
+interface IRichTextInputProps {
   name: string
+  control: Control
+  onChangeValue?: (value: string) => void
   className?: string
-  label?: string | null
-  subLabel?: string
-  disabled?: boolean
-  requiblue?: boolean
   placeholder?: string
-  hasEvent?: boolean
-  isBorder?: boolean
-  onClickEvent?: () => void
-  onChangeValue?: (value: string | number) => void
-  readonly onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  label: string
 }
 
 const RichTextInput: React.FC<IRichTextInputProps> = props => {
-  const {
-    name,
-    className,
-    required,
-    label = null,
-    subLabel = '',
-    hasEvent = false,
-    onClickEvent,
-    autoComplete = 'off',
-    onChangeValue,
-    isBorder = true,
-    ...rest
-  } = props
-  const { setFieldValue } = useFormikContext()
-  const [field, meta] = useField(props.name)
-  useEffect(() => {
-    onChangeValue && onChangeValue(field.value || '')
-  }, [field.value])
-
-  const isError: boolean = !!meta.touched && !!meta.error
-
-  const onValueChange = (phoneNumber: string) => {
-    setFieldValue(name, phoneNumber)
-  }
+  const { name, control, onChangeValue, className, placeholder, label } = props
+  const [focus, setFocus] = useState<boolean>(false)
 
   return (
-    <div
-      className={`w-full rounded-sm ${
-        isError ? 'text-blue-500' : 'text-neutral-300'
-      }`}
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex">
-          <p className="text-sm font-bold text-gray-600 mb-1 mr-1">{label}</p>
-          {required && <p className="text-red-500 font-bold">*</p>}
-        </div>
-        {hasEvent && (
+    <Controller
+      name={name}
+      control={control}
+      render={({
+        field: { onChange, value },
+        fieldState: { error },
+        formState: {},
+      }) => {
+        return (
           <div
-            className="duration-300 cursor-default text-base hover:text-gray-500 text-blue-500"
-            onClick={() => {
-              onClickEvent && onClickEvent()
-            }}
+            className={`w-full rounded-sm ${
+              !!error ? 'text-blue-500' : 'text-neutral-300'
+            }  `}
           >
-            Change
+            <div className="flex items-center justify-between">
+              <div className="flex">
+                <p className="text-md font-bold text-gray-700 mr-1">{label}</p>
+                {false && <p className="text-blue-500 font-bold">*</p>}
+              </div>
+            </div>
+            <div
+              className={`flex mt-1 ${
+                focus && !error
+                  ? 'border-2 border-blue-500'
+                  : !!error
+                    ? 'border-2 border-red-500'
+                    : 'border border-gray-300'
+              } ${
+                focus && !error
+                  ? 'bg-blue-50'
+                  : error
+                    ? 'bg-red-50'
+                    : 'bg-gray-100'
+              } px-2 py-1 rounded-lg h-20  ${className}`}
+            >
+              <input
+                autoComplete="off"
+                placeholder={props.placeholder || ''}
+                value={value}
+                multiple
+                onBlur={() => setFocus(false)}
+                type="text"
+                onFocus={() => setFocus(true)}
+                onChange={e => onChange(e.target.value)}
+                className={`px-2 py-1 w-[100%]  ${
+                  focus && !error
+                    ? 'bg-blue-50'
+                    : error
+                      ? 'bg-red-50'
+                      : 'bg-gray-100'
+                } text-gray-700 rounded-lg w-80 h-8 text-sm  outline-none ring-0 border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent`}
+              />
+            </div>
+            {error && (
+              <p className="text-red-500 text-xs font-semibold mt-1">
+                {error?.message}
+              </p>
+            )}
           </div>
-        )}
-      </div>
-      <div
-        className={`flex items-center bg-gray-100  py-1 rounded-lg h-10 focus-within:bg-blue-50 w-full`}
-      >
-        <input
-          placeholder="abcdefg@gmail.com"
-          {...(rest as any)}
-          {...field}
-          onChange={e => onValueChange(e.target.value)}
-          className={`px-2 py-1  bg-gray-100 text-gray-700 rounded-lg w-full text-sm focus:bg-blue-50 outline-none ring-0 outline-white border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent h-10`}
-        />
-      </div>
-      {isError && (
-        <p className="text-red-500 text-xs font-semibold mt-1">{meta.error}</p>
-      )}
-    </div>
+        )
+      }}
+    />
   )
 }
 

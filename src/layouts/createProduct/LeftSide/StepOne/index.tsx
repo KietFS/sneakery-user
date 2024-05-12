@@ -1,7 +1,6 @@
-import Button from '@/components/atoms/Button'
-import DescriptionInput from '@/components/atoms/DescriptionInput'
 import InputHookForm from '@/components/atoms/InputHookForm'
 import RadioButtonHookForm from '@/components/atoms/RadioButtonHookForm'
+import RichTextInput from '@/components/atoms/RichTextInput'
 import SelectCustomFieldHookForm from '@/components/atoms/SelectCustomFieldHookForm'
 import { useAppSelector } from '@/hooks/useRedux'
 import { IRootState } from '@/redux'
@@ -138,13 +137,11 @@ const StepOne: React.FC<IStepOneProps> = ({
                 </>
               ),
           )}
-          {/* <div className="col-span-2 mt-8 w-full">
-            <DescriptionInput
-              control={control}
-              name="description"
-              label="Mô tả"
-            />
-          </div> */}
+          <RichTextInput
+            name="description"
+            label="Mô tả của sản phẩm"
+            control={control}
+          />
         </div>
       </div>
       <div className="col-span-2 mt-2 flex justify-between">

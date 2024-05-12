@@ -90,7 +90,7 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </div>
         </div>
         <div className="w-5/6 mx-auto flex">
-          <ProductDescription properties={props?.product?.properties} />
+          <ProductDescription productDetail={props?.product} />
         </div>
         <div className="w-5/6 mx-auto flex">
           {/* <SimilarProduct
