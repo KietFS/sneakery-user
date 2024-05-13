@@ -53,9 +53,12 @@ const UploadImage: React.FC<IUploadImageProps> = props => {
 
   return (
     <div className="w-full">
-      <p className="text-sm font-bold text-gray-600 mb-1">
-        Chọn các ảnh khác cho sản phẩm
-      </p>
+      <div className="flex items-center">
+        <p className="text-sm font-bold text-gray-600 mb-1 mr-1">
+          Chọn các ảnh khác cho sản phẩm
+        </p>
+        <p className="text-sm font-bold text-red-500 ">*</p>
+      </div>
       <input
         type="file"
         multiple

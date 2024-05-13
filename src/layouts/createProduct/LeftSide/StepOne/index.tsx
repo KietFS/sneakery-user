@@ -4,6 +4,7 @@ import RichTextInput from '@/components/atoms/RichTextInput'
 import SelectCustomFieldHookForm from '@/components/atoms/SelectCustomFieldHookForm'
 import { useAppSelector } from '@/hooks/useRedux'
 import { IRootState } from '@/redux'
+import { IProductCategory } from '@/types'
 import {
   ArrowSmallLeftIcon,
   ArrowSmallRightIcon,
@@ -80,6 +81,7 @@ const StepOne: React.FC<IStepOneProps> = ({
         <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-10 gap-y-4 tablet:gap-y-4 mt-5 w-full">
           <InputHookForm
             mode="text"
+            required
             control={control}
             label={`Tên sản phẩm`}
             placeholder={`Nhập tên của sản phẩm`}
@@ -90,6 +92,7 @@ const StepOne: React.FC<IStepOneProps> = ({
               !!property?.options?.length ? (
                 <>
                   <SelectCustomFieldHookForm
+                    required
                     placeholder={`Chọn trường ${property?.name}`}
                     name={`properties.${property?.name}`}
                     label={`Chọn ${property?.name}`}
@@ -109,6 +112,7 @@ const StepOne: React.FC<IStepOneProps> = ({
                 <>
                   {property.type == 'text' ? (
                     <InputHookForm
+                      required
                       mode="text"
                       control={control}
                       label={`${property?.name}`}
@@ -119,6 +123,7 @@ const StepOne: React.FC<IStepOneProps> = ({
                     <>
                       {property.type == 'number' ? (
                         <InputHookForm
+                          required
                           mode="text"
                           {...register(`properties.${property?.name}`)}
                           control={control}

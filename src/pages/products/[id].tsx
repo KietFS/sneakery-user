@@ -14,12 +14,14 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import ProductDescription from '@/layouts/products/Description'
-import { url } from 'inspector'
+import { IProductDetail } from '@/types'
+import ProblemWithBidDialog from '@/components/organisms/ProblemWithBidDialog'
 
 const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [bidHistory, setBidHistory] = useState<IProductBidHistoryItem[]>([])
   const [productDetail, setProductDetail] = useState<IProductDetail>()
+  const [openProblemWithBid, setOpenProblemWithBid] = useState<boolean>(false)
 
   const getProductBidHistory = async (productId: string | number) => {
     try {
@@ -62,11 +64,20 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
             getProductBidHistory(props.product.id)
             getProductDetail()
           }}
+          onProblemWithBid={() => setOpenProblemWithBid(true)}
           open={openDialog}
           onClose={() => setOpenDialog(false)}
           product={productDetail}
         />
       ) : null}
+
+      {openProblemWithBid ? (
+        <ProblemWithBidDialog
+          open={openProblemWithBid}
+          onClose={() => setOpenProblemWithBid(false)}
+        />
+      ) : null}
+
       <div className="bg-white">
         <Head>
           <title>Sneakery - {props.product?.name}</title>

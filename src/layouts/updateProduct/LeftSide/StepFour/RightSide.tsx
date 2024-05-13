@@ -25,7 +25,6 @@ const StepFourRightSide: React.FC<IStepFourRightSideProps> = props => {
     formTool,
   } = props
   const { watch } = formTool
-  console.log('is pay success', isPaySuccess)
 
   return (
     <div className="border-gray-200 border p-6  h-full min-h-[500px] w-1/4 rounded-lg flex flex-col justify-between">

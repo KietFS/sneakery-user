@@ -22,6 +22,7 @@ import StepFour from './StepFour'
 import { configResponse } from '@/utils/request'
 import { useRouter } from 'next/router'
 import dayjs from 'dayjs'
+import { IProductCategory } from '@/types'
 
 interface ILeftSideProps {}
 

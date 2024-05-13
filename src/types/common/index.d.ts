@@ -9,3 +9,9 @@ export interface IListResponse<T = any> {
   _totalRecords: number
   _totalPage: number
 }
+
+export interface IActionResponseData {
+  success: boolean
+  message: string
+  status?: string
+}

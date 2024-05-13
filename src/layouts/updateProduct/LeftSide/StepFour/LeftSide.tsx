@@ -61,8 +61,6 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
 
   const handleSelectStripe = () => dispatch(setMethodSelected('stripe'))
 
-  console.log('is pay success', isPaySuccess)
-
   return (
     <div className="border-gray-200 border p-6  h-full min-h-[500px] w-3/4 rounded-lg">
       <div className="flex justify-between items-center">

@@ -14,7 +14,6 @@ const PayPostSaleFee: React.FC<IPayPostSaleFeeProps> = props => {
   const { wonProductSelected } = useAppSelector(
     (state: IRootState) => state.payment,
   )
-
   //Check if the paid is complete
   useEffect(() => {
     const handleStorageChange = async (event: any) => {
@@ -26,7 +25,6 @@ const PayPostSaleFee: React.FC<IPayPostSaleFeeProps> = props => {
     window.addEventListener('storage', handleStorageChange)
     return () => {
       localStorage.removeItem('isPaidPreSaleFee')
-      window.removeEventListener('storage', handleStorageChange)
     }
   }, [])
 

@@ -22,6 +22,7 @@ import { toast } from 'react-toastify'
 import PaySuccess from '@/assets/images/PaySuccess.png'
 import StepFourLeftSide from './LeftSide'
 import StepFourRightSide from './RightSide'
+import { PAY_PREE_SALE_FEE_SUCCESS } from '@/constants'
 
 interface IStepFourProps {
   formTool: UseFormReturn<any>
@@ -53,12 +54,8 @@ const StepFour: React.FC<IStepFourProps> = ({
       }
     }
     window.addEventListener('storage', handleStorageChange)
-    window.addEventListener('isPaidPreSaleFee', () => {
-      console.log('KIET HUYnh')
-    })
     return () => {
       localStorage.removeItem('isPaidPreSaleFee')
-      window.removeEventListener('storage', handleStorageChange)
     }
   }, [])
 

@@ -7,7 +7,7 @@ import Image from 'next/image'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
-import CountDownTimer from '@/components/atoms/CountDownTimer'
+import { IProductHomePageResponse } from '@/types'
 
 interface ISimilarProduct {
   currentProductId: number
@@ -35,7 +35,6 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
       setLoading(false)
     }
   }
-  console.log('list product', listProduct)
 
   useEffect(() => {
     getSimilarProducts()

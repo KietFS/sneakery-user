@@ -13,6 +13,8 @@ import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
 import { useAuth } from '@/hooks/useAuth'
 import { configResponse } from '@/utils/request'
+import { PAY_PREE_SALE_FEE_SUCCESS } from '@/constants'
+import { CheckBadgeIcon } from '@heroicons/react/20/solid'
 
 const Success: React.FC = props => {
   const router = useRouter()
@@ -20,12 +22,13 @@ const Success: React.FC = props => {
     (state: IRootState) => state.payment,
   )
   const { paymentId, token, PayerID, paymentType, sessionId } = router.query
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const { accessToken } = useAuth()
 
   const handleUpdatePaypalStatus = async (paymentPayload: any) => {
-    await localStorage.setItem('isPaidPreSaleFee', JSON.stringify(null))
+    setLoading(true)
     try {
+      await localStorage.setItem('isPaidPreSaleFee', JSON.stringify(null))
       setLoading(true)
       const response = await axios.get(
         `${Config.API_URL}/transactions/paypal/success?paymentId=${paymentPayload.paymentId}&payerId=${paymentPayload?.payerId}&paymentType=${paymentPayload?.paymentType}`,
@@ -37,24 +40,28 @@ const Success: React.FC = props => {
       )
       const { data, isSuccess, error } = configResponse(response)
       if (response?.data?.success == true) {
+        //emit an event when pay pre sale fee success
+        let event
+        event = new CustomEvent(PAY_PREE_SALE_FEE_SUCCESS)
+        window.dispatchEvent(event)
         await localStorage.setItem(
           'isPaidPreSaleFee',
           JSON.stringify(isSuccess),
         )
-        var event
-        event = new CustomEvent('isPaidPreSaleFee')
-        window.dispatchEvent(event)
+        setLoading(false)
         // window?.close()
       }
     } catch (error) {
+      setLoading(false)
+    } finally {
       setLoading(false)
     }
   }
 
   const handleUpdateStripeStatus = async (payload: any) => {
-    await localStorage.setItem('isPaidPreSaleFee', JSON.stringify(null))
     try {
       setLoading(true)
+      await localStorage.setItem('isPaidPreSaleFee', JSON.stringify(null))
       const response = await axios.get(
         `${Config.API_URL}/transactions/stripe/success?sessionId=${payload?.sessionId}&paymentType=${payload?.paymentType}`,
         {
@@ -69,9 +76,12 @@ const Success: React.FC = props => {
           'isPaidPreSaleFee',
           JSON.stringify(isSuccess),
         )
+        setLoading(false)
         // window?.close()
       }
     } catch (error) {
+      setLoading(false)
+    } finally {
       setLoading(false)
     }
   }
@@ -101,12 +111,26 @@ const Success: React.FC = props => {
     }
   }, [sessionId, paymentType])
 
+  useEffect(() => {
+    if (loading == false) {
+      setTimeout(() => window.close(), 2500)
+    }
+  }, [loading])
+
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
       <p className="text-2xl text-gray-600 font-semibold mb-10">
-        Chúng tôi đang hoàn thành giao dịch của bạn
+        {loading
+          ? 'Chúng tôi đang hoàn thành giao dịch của bạn'
+          : 'Giao dịch của bạn đã được hoàn tất'}
       </p>
-      <Spinner size={60} />
+      <div>
+        {loading ? (
+          <Spinner size={60} />
+        ) : (
+          <CheckBadgeIcon className="w-20 h-20 text-green-500 font-bold" />
+        )}
+      </div>
     </div>
   )
 }

@@ -1,15 +1,10 @@
-import Button from '@/components/atoms/Button'
-import DescriptionInput from '@/components/atoms/DescriptionInput'
 import InputHookForm from '@/components/atoms/InputHookForm'
 import RadioButtonHookForm from '@/components/atoms/RadioButtonHookForm'
 import SelectCustomFieldHookForm from '@/components/atoms/SelectCustomFieldHookForm'
 import { useAppSelector } from '@/hooks/useRedux'
 import { IRootState } from '@/redux'
-import {
-  ArrowSmallLeftIcon,
-  ArrowSmallRightIcon,
-  TagIcon,
-} from '@heroicons/react/20/solid'
+import { IProductCategory } from '@/types'
+import { ArrowSmallRightIcon, TagIcon } from '@heroicons/react/20/solid'
 import { IconButton, Tooltip } from '@mui/material'
 import React, { useState } from 'react'
 import { Control, UseFormReturn } from 'react-hook-form'

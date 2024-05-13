@@ -71,6 +71,7 @@ const StepTwo: React.FC<IStepTwoProps> = ({
         </div>
         <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-10 gap-y-5 mt-5">
           <InputHookForm
+            required
             mode="text"
             control={control}
             label={`Giá khởi điểm`}
@@ -80,6 +81,7 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             })}
           />
           <InputHookForm
+            required
             mode="text"
             control={control}
             label={`Bước giá`}
@@ -89,6 +91,7 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             })}
           />
           <DatePickerHookForm
+            required
             {...register('bidClosingDateTime', {
               required: 'Vui lòng chọn ngày kết thúc đấu giá',
             })}
@@ -99,8 +102,8 @@ const StepTwo: React.FC<IStepTwoProps> = ({
           <RadioButtonHookForm
             control={control}
             name="isBidSniping"
-            placeholder="Cho phép bid snipping"
-            label="Bid snipping"
+            placeholder="Chặn bid sniping"
+            label="Bid sniping"
           />
           <ReservePriceInput
             control={control}

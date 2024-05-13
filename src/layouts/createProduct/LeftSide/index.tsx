@@ -22,6 +22,7 @@ import StepFour from './StepFour'
 import { configResponse } from '@/utils/request'
 import { useRouter } from 'next/router'
 import dayjs from 'dayjs'
+import { IProductCategory } from '@/types'
 
 interface ILeftSideProps {}
 
@@ -116,8 +117,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       imageIds: imageIds,
       reservePrice: Number(values?.reservePrice) || 0,
     }
-
-    console.log('Description is', payload.description)
     try {
       setCreateLoading(true)
       const response = await axios({

@@ -99,8 +99,8 @@ const StepTwo: React.FC<IStepTwoProps> = ({
           <RadioButtonHookForm
             control={control}
             name="isBidSniping"
-            placeholder="Cho phép bid snipping"
-            label="Bid snipping"
+            placeholder="Chặn bid sniping"
+            label="Bid sniping"
           />
           <ReservePriceInput
             control={control}

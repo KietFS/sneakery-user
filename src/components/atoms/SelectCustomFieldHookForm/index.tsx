@@ -10,7 +10,7 @@ interface ISelectCustomFieldHookFormProps {
   options: string[]
   onSelect: (option: string) => void
   renderOption?: (item: string[]) => ReactNode
-
+  required?: boolean
   customStyles?: React.CSSProperties
 }
 
@@ -26,6 +26,7 @@ const SelectCustomFieldHookForm: React.FC<
     renderOption,
     onSelect,
     customStyles,
+    required = false,
   } = props
   const ref = useRef()
   return (
@@ -35,7 +36,12 @@ const SelectCustomFieldHookForm: React.FC<
       render={({ field: { value, onChange }, fieldState: { error } }) => {
         return (
           <div className="flex flex-col gap-y-1">
-            <p className="text-sm font-bold text-gray-600 mb-1 mr-1">{label}</p>
+            <div className="flex items-center">
+              <p className="text-sm font-bold text-gray-600 mb-1 mr-1">
+                {label}
+              </p>
+              {required && <p className="text-sm font-bold text-red-500">*</p>}
+            </div>
             <div className="max-h-[200px]">
               <Select
                 MenuProps={{

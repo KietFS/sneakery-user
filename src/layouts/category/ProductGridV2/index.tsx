@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { FireIcon } from '@heroicons/react/20/solid'
 import CountDownTimer from '@/components/atoms/CountDownTimer'
 import SmallCountdownTimer from '@/components/atoms/SmallCountdownTimer'
+import { IProductHomePageResponse } from '@/types'
 
 interface IProductGridV2Props {
   listProducts: IProductHomePageResponse[]
@@ -13,7 +14,6 @@ interface IProductGridV2Props {
 const ProductGridV2: React.FC<IProductGridV2Props> = props => {
   const { listProducts, isLoadingProducts = false } = props
   const router = useRouter()
-  console.log('list product', listProducts)
 
   return (
     <>

@@ -89,7 +89,7 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
             <div className="flex items-center justify-between">
               <div className="flex">
                 <p className="text-md font-bold text-gray-700 mr-1">{label}</p>
-                {false && <p className="text-blue-500 font-bold">*</p>}
+                {required && <p className="text-red-500 font-bold">*</p>}
               </div>
             </div>
             <div

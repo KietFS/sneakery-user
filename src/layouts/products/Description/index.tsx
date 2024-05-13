@@ -4,9 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 //utils
-import axios from 'axios'
-import { Config } from '@/config/api'
-import { configResponse } from '@/utils/request'
+import { IProductDetail } from '@/types'
 
 interface IProductDescriptionProps {
   productDetail: IProductDetail

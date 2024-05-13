@@ -15,13 +15,14 @@ import { Control, Controller, UseFormReturn } from 'react-hook-form'
 
 interface IDatePicketHookFormProps {
   defaultValue?: string
+  required?: boolean
   label: string
   name: string
   control: Control<any>
 }
 
 const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
-  const { label, name, control, defaultValue } = props
+  const { label, name, control, defaultValue, required = false } = props
   const [localError, setLocalError] = useState<boolean>(false)
 
   const currentDate = new Date(Date.now())
@@ -42,7 +43,12 @@ const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
         }, [defaultValue])
         return (
           <div className="mt-1">
-            <p className="text-sm font-bold text-gray-600 mb-2 mr-1">{label}</p>
+            <div className="flex items-center">
+              <p className="text-sm font-bold text-gray-600 mb-2 mr-1">
+                {label}
+              </p>
+              {required && <p className="text-sm font-bold text-red-500">*</p>}
+            </div>
             <div className=" z-50">
               <DateTimePicker
                 value={value}

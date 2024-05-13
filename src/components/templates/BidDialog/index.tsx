@@ -22,6 +22,7 @@ import { configResponse } from '@/utils/request'
 import { useDispatch } from 'react-redux'
 import { setUserBalance } from '@/redux/slices/auth'
 import { useAuth } from '@/hooks/useAuth'
+import { IActionResponseData, IProductDetail } from '@/types'
 
 interface IFormValue {
   amount?: string
@@ -31,11 +32,12 @@ export interface IBidDialogProps {
   open: boolean
   onClose: () => void
   onSuccess: () => void
+  onProblemWithBid: () => void
   product: IProductDetail
 }
 
 function BidDialog(props: IBidDialogProps) {
-  const { open, onClose, product, onSuccess } = props
+  const { open, onClose, product, onSuccess, onProblemWithBid } = props
   const [initialValues, setInitialValues] = React.useState<IFormValue>({
     amount: (product.currentPrice + product.bidIncrement).toString(),
   })
@@ -75,9 +77,8 @@ function BidDialog(props: IBidDialogProps) {
             },
           },
         )
-        const { data, error } = configResponse(response)
-
-        if (data) {
+        const data = response?.data as IActionResponseData
+        if (data?.success) {
           toast.success('Bid sản phẩm thành công', {
             position: 'top-right',
             autoClose: 5000,
@@ -90,20 +91,24 @@ function BidDialog(props: IBidDialogProps) {
           })
           onSuccess()
           onClose()
-        } else if (error) {
-          toast.error(
-            error?.message || 'Đã có lỗi xảy ra, vui lòng thử lại sau',
-            {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'colored',
-            },
-          )
+        } else if (data?.success == false) {
+          //handle if this is a ghost bid
+          if (data?.status == 'ghost') {
+          } else {
+            toast.error(
+              data?.message || 'Đã có lỗi xảy ra, vui lòng thử lại sau',
+              {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored',
+              },
+            )
+          }
           onClose()
         }
       } catch (error) {

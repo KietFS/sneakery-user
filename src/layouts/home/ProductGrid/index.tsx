@@ -11,6 +11,7 @@ import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import CountDownTimer from '@/components/atoms/CountDownTimer'
 import SmallCountdownTimer from '@/components/atoms/SmallCountdownTimer'
+import { IProductHomePageResponse } from '@/types'
 
 interface IProductGridProps {}
 
@@ -48,8 +49,6 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
   useEffect(() => {
     getData()
   }, [])
-
-  console.log('list products', listProducts)
 
   return (
     <div className="flex flex-col space-y-10 items-center justify-center">

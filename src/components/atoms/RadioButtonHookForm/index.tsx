@@ -33,7 +33,7 @@ const RadioButtonHookForm: React.FC<IRadioButtonHookFormProps> = props => {
               </div>
             )}
             <p className="text-gray-500 text-xs ml-2">
-              {`Có ${label}` || placeholder}
+              {placeholder || `Có ${label}`}
             </p>
           </button>
         </div>

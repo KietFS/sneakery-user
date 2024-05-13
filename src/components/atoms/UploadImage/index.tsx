@@ -7,10 +7,11 @@ import { XCircleIcon } from '@heroicons/react/20/solid'
 
 interface IUploadImageProps {
   onSelect: (listImage: any[]) => void
+  required?: boolean
 }
 
 const UploadImage: React.FC<IUploadImageProps> = props => {
-  const { onSelect } = props
+  const { onSelect, required = false } = props
   const [baseImage, setBaseImage] = useState<any[]>([])
   const [imgShow, setImgShow] = useState<any[]>([])
 
@@ -40,9 +41,12 @@ const UploadImage: React.FC<IUploadImageProps> = props => {
 
   return (
     <div className="w-full">
-      <p className="text-sm font-bold text-gray-600 mb-1">
-        Chọn thumbnail cho sản phẩm
-      </p>
+      <div className="flex items-center">
+        <p className="text-sm font-bold text-gray-600 mb-1 mr-1">
+          Chọn thumbnail cho sản phẩm
+        </p>
+        <p className="text-sm font-bold text-red-500 ">*</p>
+      </div>
       <input
         value=""
         type="file"

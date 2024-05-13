@@ -1,18 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-
-//styles
-import Image from 'next/image'
 import Slider from 'react-slick'
+import { IProductDetail } from '@/types'
 
 interface ILeftSideProps {
   product?: IProductDetail
 }
 
-const LeftSide: React.FC<ILeftSideProps> = props => {
-  const { product } = props
-  const [isMobile, setIsMobile] = useState<boolean>(false)
-
-  const sliderRef = useRef<any>(null)
+const LeftSide: React.FC<ILeftSideProps> = ({ product }) => {
+  const [isMobile, setIsMobile] = useState(false)
+  const sliderRef = useRef(null)
 
   const settings = {
     dots: true,
@@ -20,47 +16,45 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    adaptiveHeight: true, // This makes the slider adapt to the image height
   }
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (window.innerWidth < 700) {
-        setIsMobile(true)
-      } else {
-        setIsMobile(false)
-      }
-    }
+    const handleResize = () => setIsMobile(window.innerWidth < 700)
+    window.addEventListener('resize', handleResize)
+    handleResize() // Initial check
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  //refactor
   return (
-    <div className="border-r border-r-gray-200 h-full py-8 px-4">
-      <Slider
-        {...settings}
-        ref={sliderRef as any}
-        className={`block justify-center  laptop:w-[500px] w-[300px] laptop:h-[375px] h-[200px] rounded-lg mx-auto`}
-      >
-        {product?.imagePath?.map((item, index) => {
-          return (
-            <div className="desktop:w-[500px] laptop:w-[400px] laptop:h[300px] w-[300px] desktop:h-[375px] h-[200px] block">
-              <img
-                src={item}
-                key={product.id.toString()}
-                width={500}
-                height={375}
-                className="rounded-lg cursor-pointer hover:opacity-80 mx-auto"
-              />
-            </div>
-          )
-        })}
-      </Slider>
-      <div className={`grid grid-cols-4 gap-x-5 mt-20`}>
+    <div className="border-r border-gray-200 h-full py-8 px-4">
+      <Slider ref={sliderRef} {...settings} className="rounded-lg mx-auto">
         {product?.imagePath?.map((item, index) => (
           <div
-            className="p-2 border border-gray-200 rounded-xl cursor-pointer hover:opacity-50"
-            onClick={() => (sliderRef as any)?.current?.slickGoTo(index)}
+            key={index}
+            className="rounded-lg cursor-pointer hover:opacity-80 w-full justify-center flex"
           >
-            <img src={item} key={index.toString()} width={120} height={90} />
+            <img
+              src={item}
+              alt={`Product image ${index + 1}`}
+              className="w-full max-w-[400px] max-h-[400px] h-auto rounded-lg mx-auto"
+            />
+          </div>
+        ))}
+      </Slider>
+      <div className="grid grid-cols-4 gap-x-5 mt-20">
+        {product?.imagePath?.map((item, index) => (
+          <div
+            key={index}
+            className="p-2 border border-gray-200 rounded-xl cursor-pointer hover:opacity-50"
+            onClick={() => (sliderRef.current as any)?.slickGoTo(index)}
+          >
+            <img
+              src={item}
+              alt={`Thumbnail ${index + 1}`}
+              width={120}
+              height={90}
+            />
           </div>
         ))}
       </div>
