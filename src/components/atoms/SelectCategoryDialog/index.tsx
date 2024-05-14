@@ -22,6 +22,7 @@ import {
 } from '@/redux/slices/category'
 //hooks
 import { useRouter } from 'next/router'
+import { IProductCategory } from '@/types'
 
 interface ISelectCategoryDialogProps {
   open: boolean
@@ -128,10 +129,18 @@ const SelectCategoryDialog: React.FC<ISelectCategoryDialogProps> = props => {
                       <button
                         key={`category-index-${categoryIndex}`}
                         onClick={() => dispatchSetCurrentCategory(category)}
-                        className={`px-2 h-[60px] bg-white ${currentCategory?.name == category?.name ? `border-blue-500 bg-blue-100` : `border-gray-300`}  border   hover:opacity-60 shadow-lg rounded-lg`}
+                        className={`px-2 h-[60px] bg-white ${
+                          currentCategory?.name == category?.name
+                            ? `border-blue-500 bg-blue-100`
+                            : `border-gray-300`
+                        }  border   hover:opacity-60 shadow-lg rounded-lg`}
                       >
                         <p
-                          className={`text-gray-500 text-sm ${currentCategory?.name == category?.name ? `text-blue-500` : `text-gray-600`}`}
+                          className={`text-gray-500 text-sm ${
+                            currentCategory?.name == category?.name
+                              ? `text-blue-500`
+                              : `text-gray-600`
+                          }`}
                         >
                           {category?.name}
                         </p>

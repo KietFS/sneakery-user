@@ -27,6 +27,8 @@ import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import { setAuth, setUser, setUserBalance } from '@/redux/slices/auth'
 import { useAuth } from '@/hooks/useAuth'
+import { IProductDetail } from '@/types'
+import RawInput from '@/components/atoms/RawInput'
 
 export interface IOrderShippingInfoDialog {
   open: boolean
@@ -488,13 +490,13 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
                         />
                       </div>
                       <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
-                        <RichTextInput
+                        <RawInput
                           name="addressDetail"
                           value={initialValues?.addressDetail}
                           label="Số nhà,tên đường"
                           placeholder="Nhập địa chỉ cụ thể của bạn"
                         />
-                        <RichTextInput
+                        <RawInput
                           name="phoneNumber"
                           value={initialValues?.phoneNumber}
                           label="Số điện thoại"

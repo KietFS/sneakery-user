@@ -17,6 +17,7 @@ import { setKeyWord } from '@/redux/slices/filter'
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { Config } from '@/config/api'
+import { IProductDetail } from '@/types'
 
 interface IInputSearchProps {}
 

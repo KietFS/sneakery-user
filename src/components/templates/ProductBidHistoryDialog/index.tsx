@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import ConfirmDialog from '../../organisms/ConfirmDialog'
 import { toast } from 'react-toastify'
+import { IProductDetail } from '@/types'
 
 interface IProductBidHistoryDialogProps {
   onClose: () => void

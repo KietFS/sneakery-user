@@ -12,6 +12,7 @@ import { IRootState } from '@/redux'
 import { setCategory, setKeyWord } from '@/redux/slices/filter'
 import axios from 'axios'
 import { Config } from '@/config/api'
+import { IProductCategory } from '@/types'
 
 interface IFilterCategoryProps {}
 

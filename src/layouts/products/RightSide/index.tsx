@@ -13,6 +13,7 @@ import BidHistorySection from './BidHistorySection'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import CountDownTimer from '@/components/atoms/CountDownTimer'
+import { IProductDetail } from '@/types'
 
 interface IRightSideProps {
   product: IProductDetail
@@ -76,7 +77,9 @@ const RightSide: React.FC<IRightSideProps> = props => {
             }
             onPlaceBid()
           }}
-          className={`items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg ${isDisable ? 'opacity-20' : ''}`}
+          className={`items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-blue-500 text-white font-semibold text-lg ${
+            isDisable ? 'opacity-20' : ''
+          }`}
         >
           Đấu giá ngay
         </button>

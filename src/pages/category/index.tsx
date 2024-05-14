@@ -24,6 +24,7 @@ import { Config } from '@/config/api'
 import useDebounce from '@/hooks/useDebounce'
 import { useDispatch } from 'react-redux'
 import { DEFAULT_PAGE_SIZE } from '@/config/constant'
+import { IProductHomePageResponse } from '@/types'
 
 interface IProductProps {}
 

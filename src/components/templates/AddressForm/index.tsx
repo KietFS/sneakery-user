@@ -22,6 +22,7 @@ import { configResponse } from '@/utils/request'
 import { Config } from '@/config/api'
 import Spinner from '../../atoms/Spinner'
 import { useAuth } from '@/hooks/useAuth'
+import RawInput from '@/components/atoms/RawInput'
 
 interface IFormValue {
   ward?: IWard | null
@@ -350,7 +351,7 @@ function AddressForm(props: IAddressFormProps) {
                     />
                   </div>
                   <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-2 gap-y-5 items-center justify-between">
-                    <RichTextInput
+                    <RawInput
                       name="addressDetail"
                       value={initialValues?.addressDetail}
                       label="Số nhà,tên đường"

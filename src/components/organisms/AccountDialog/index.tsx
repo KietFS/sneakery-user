@@ -13,6 +13,7 @@ import { useAppSelector } from '@/hooks/useRedux'
 import * as yup from 'yup'
 import { IRootState } from '@/redux'
 import { Formik } from 'formik'
+import { IProductDetail } from '@/types'
 
 interface IFormValue {
   name: string

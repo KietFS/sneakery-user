@@ -3,6 +3,7 @@ import { IProductBidHistoryItem } from '.'
 import ProductBidHistoryDialog from '@/components/templates/ProductBidHistoryDialog'
 import axios from 'axios'
 import { Config } from '@/config/api'
+import { IProductDetail } from '@/types'
 
 interface IBidHistorySectionProps {
   product: IProductDetail
