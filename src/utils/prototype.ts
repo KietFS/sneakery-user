@@ -15,6 +15,14 @@ String.prototype.prettyMoney = function () {
 String.prototype.prettyDate = function () {
   return dayjs(String(this)).format('DD/MM/YYYY')
 }
+
+String.prototype.formatPhoneNumber = function () {
+  // Thêm tiền tố "+84" và loại bỏ mọi ký tự không phải là số
+  let formattedNumber = '+84' + this.replace(/\D/g, '')
+
+  return `${formattedNumber}` as any
+}
+
 String.prototype.prettyDateTime = function () {
   return dayjs(String(this)).format('DD/MM/YYYY - hh:mm:ss')
 }

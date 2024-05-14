@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CircularProgress,
   Dialog,
@@ -19,6 +19,7 @@ import BaseInput from '@/components/atoms/BaseInput'
 import { XCircleIcon } from '@heroicons/react/20/solid'
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { auth } from '@/common/config/firebase'
+import Spinner from '@/components/atoms/Spinner'
 
 interface IRegisterDialogProps {
   onClickClose: () => void
@@ -70,6 +71,7 @@ const RegisterDialog: React.FC<IRegisterDialogProps> = props => {
     password: '',
     confirmPassword: '',
   })
+  const [loading, setLoading] = useState<boolean>(false)
 
   //redux
   const { openEmailSentDialog } = useAppSelector(
@@ -77,19 +79,24 @@ const RegisterDialog: React.FC<IRegisterDialogProps> = props => {
   )
 
   const handleSubmit = async (values: IRegisterFormValue) => {
+    setLoading(true)
     try {
       const recapcha = new RecaptchaVerifier('recaptcha', {}, auth)
       const confirmination = await signInWithPhoneNumber(
         auth,
-        values.phoneNumber,
+        values.phoneNumber?.toString().formatPhoneNumber(),
         recapcha,
       )
       if (!!confirmination) {
         onSubmitRegisterValues(values)
         onSubmitConfirminationValues(confirmination)
+        setLoading(false)
       }
     } catch (error) {
       console.log('send otp error', error)
+      setLoading(false)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -172,7 +179,11 @@ const RegisterDialog: React.FC<IRegisterDialogProps> = props => {
                         onClick={submitForm}
                         className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
                       >
-                        Đăng ký
+                        {loading ? (
+                          <CircularProgress sx={{ color: 'white' }} size={20} />
+                        ) : (
+                          'Đăng ký'
+                        )}
                       </button>
                       <div id="recaptcha"></div>
                       {/* <div className="space-y-3">

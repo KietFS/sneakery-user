@@ -17,7 +17,7 @@ import { IRootState } from '@/redux'
 import { useRouter } from 'next/router'
 import { useAppSelector } from '@/hooks/useRedux'
 import { useDispatch } from 'react-redux'
-import LoginDialog from '../../templates/LoginDialog'
+import ForgotPasswordDialog from '../../templates/LoginDialog'
 import RegisterDialog, {
   IRegisterFormValue,
 } from '../../templates/RegisterDialog'
@@ -36,13 +36,13 @@ import { useAuth } from '@/hooks/useAuth'
 import { toast } from 'react-toastify'
 import { setCategory } from '@/redux/slices/filter'
 import { setListCategory } from '@/redux/slices/category'
+import LoginDialog from '../../templates/LoginDialog'
 
 interface IHeaderV2Props {}
 
 const HeaderV2: React.FC<IHeaderV2Props> = props => {
-  const { user, openVerifyPhoneNumberDialog } = useAppSelector(
-    (state: IRootState) => state.auth,
-  )
+  const { user, openVerifyPhoneNumberDialog, openForgotPasswordDialog } =
+    useAppSelector((state: IRootState) => state.auth)
   const { listCategory } = useAppSelector((state: IRootState) => state.category)
   const { isAuthenticated, accessToken } = useAuth()
   const { register, regsiterLoading } = useAuth()
@@ -170,6 +170,13 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
         <LoginDialog
           isOpen={openLogin}
           onclickClose={() => setOpenLogin(false)}
+        />
+      ) : null}
+
+      {openForgotPasswordDialog ? (
+        <ForgotPasswordDialog
+          isOpen={openForgotPasswordDialog}
+          onclickClose={() => setOpenRegister(false)}
         />
       ) : null}
 

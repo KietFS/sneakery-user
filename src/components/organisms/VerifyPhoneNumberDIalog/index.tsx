@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 //styles
 import { CircularProgress, Dialog, DialogContent, Tooltip } from '@mui/material'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import OtpInput from '@/components/atoms/OTPInput'
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+import { auth } from '@/common/config/firebase'
 
 interface IVerfiyPhoneNumberDialogProps {
   open: boolean
@@ -17,9 +19,44 @@ const VerifyPhoneNumberDialog: React.FC<
 > = props => {
   const { open, onClose, onSubmitOTP, buttonLoading } = props
   const [otpValues, setOtpValues] = useState<string>('')
+  const [second, setSecond] = useState<number>(0)
 
   const handleRegister = () => {
     onSubmitOTP(otpValues)
+  }
+
+  useEffect(() => {
+    setInterval(() => {
+      if (second < 60) {
+        let newValue = second + 1
+        setSecond(newValue)
+      }
+    }, 1000)
+  }, [])
+
+  const handleResendOTP = async () => {
+    // if (second == 60) {
+    //   //on resend otp here
+    //   setSecond(0)
+    //   try {
+    //     const recapcha = new RecaptchaVerifier('recaptcha', {}, auth)
+    //     const confirmination = await signInWithPhoneNumber(
+    //       auth,
+    //       values.phoneNumber?.toString().formatPhoneNumber(),
+    //       recapcha,
+    //     )
+    //     if (!!confirmination) {
+    //       onSubmitRegisterValues(values)
+    //       onSubmitConfirminationValues(confirmination)
+    //       setLoading(false)
+    //     }
+    //   } catch (error) {
+    //     console.log('send otp error', error)
+    //     setLoading(false)
+    //   } finally {
+    //     setLoading(false)
+    //   }
+    // }
   }
 
   return (
@@ -53,13 +90,16 @@ const VerifyPhoneNumberDialog: React.FC<
             <p className="text-gray-500 text-md italic ">
               Không nhận được mã ?
             </p>
-            <button>
+            <button onClick={handleResendOTP}>
               <p className="text-blue-500 font-bold italic text-md ml-1 underline">
                 Gửi lại mã
               </p>
             </button>
             <button>
-              <p className="text-gray-500 italic text-md ml-1"> sau 60 giây</p>
+              <p className="text-gray-500 italic text-md ml-1">
+                {' '}
+                sau {60 - second} giây
+              </p>
             </button>
           </div>
 

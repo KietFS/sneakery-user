@@ -8,6 +8,7 @@ declare interface String {
   prettyMoney: () => string
   prettyDate: () => string
   prettyDateTime: () => string
+  formatPhoneNumber: () => string
 }
 
 declare interface Array<T> {

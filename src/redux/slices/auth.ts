@@ -10,6 +10,7 @@ interface IInitialState {
   accessToken: string
   openEmailSentDialog: boolean
   openVerifyPhoneNumberDialog: boolean
+  openForgotPasswordDialog: boolean
   balance: number
 }
 
@@ -19,6 +20,7 @@ const initialState: IInitialState = {
   accessToken: '',
   openEmailSentDialog: false,
   openVerifyPhoneNumberDialog: false,
+  openForgotPasswordDialog: false,
   balance: 0,
 }
 
@@ -44,6 +46,9 @@ const authSlice = createSlice({
     ) => {
       state.openVerifyPhoneNumberDialog = actions.payload
     },
+    setOpenForgotPasswordDialog: (state, actions: PayloadAction<boolean>) => {
+      state.openForgotPasswordDialog = actions.payload
+    },
     setUserBalance: (state, actions: PayloadAction<number>) => {
       state.balance = actions.payload
     },
@@ -55,6 +60,7 @@ export const {
   setUser,
   setOpenEmailSentDialog,
   setOpenVerifyPhoneNumberDialog,
+  setOpenForgotPasswordDialog,
   setUserBalance,
   setAccessToken,
 } = authSlice.actions

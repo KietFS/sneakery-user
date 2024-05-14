@@ -78,7 +78,7 @@ const BaseInput: React.FC<IBaseInputProps> = props => {
     },
     phoneNumber: {
       icon: <PhoneIcon width={20} height={20} color="gray" />,
-      placeholder: '+84 809 211 211',
+      placeholder: '0809211211',
     },
     text: {
       icon: <PencilIcon width={20} height={20} color="gray" />,
@@ -115,16 +115,6 @@ const BaseInput: React.FC<IBaseInputProps> = props => {
           <p className="text-md font-bold text-gray-700 mr-1">{label}</p>
           {isRequired && <p className="text-blue-500 font-bold">*</p>}
         </div>
-        {hasEvent && (
-          <div
-            className="duration-300 cursor-default text-base hover:text-gray-500 text-blue-500"
-            onClick={() => {
-              onClickEvent && onClickEvent()
-            }}
-          >
-            Change
-          </div>
-        )}
       </div>
       <div
         className={`flex w-80 ${
