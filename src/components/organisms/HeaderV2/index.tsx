@@ -3,12 +3,10 @@ import React, { useState } from 'react'
 //design
 import InputSearch from '@/components/atoms/InputSearch'
 import { Bars4Icon, UserIcon, UserPlusIcon } from '@heroicons/react/20/solid'
-import {
-  Bars3Icon,
-  ShoppingBagIcon,
-  ShoppingCartIcon,
-} from '@heroicons/react/24/outline'
+import { Bars3Icon } from '@heroicons/react/24/outline'
 import UserCard from '../UserCard'
+import LoginDialog from '../../templates/LoginDialog'
+import EmailSentDialog from '../EmailSentDialog'
 
 //store
 import { IRootState } from '@/redux'
@@ -17,26 +15,21 @@ import { IRootState } from '@/redux'
 import { useRouter } from 'next/router'
 import { useAppSelector } from '@/hooks/useRedux'
 import { useDispatch } from 'react-redux'
-import ForgotPasswordDialog from '../../templates/LoginDialog'
+import ForgotPasswordDialog from '../../templates/ForgotPasswordDialog'
 import RegisterDialog, {
   IRegisterFormValue,
 } from '../../templates/RegisterDialog'
-import EmailSentDialog from '../EmailSentDialog'
+
 import {
-  setAuth,
   setOpenVerifyPhoneNumberDialog,
-  setUser,
-  setUserBalance,
+  setOpenForgotPasswordDialog,
 } from '@/redux/slices/auth'
 import axios from 'axios'
 import { Config } from '@/config/api'
-import { CategoryOutlined } from '@mui/icons-material'
 import VerifyPhoneNumberDialog from '../VerifyPhoneNumberDIalog'
 import { useAuth } from '@/hooks/useAuth'
-import { toast } from 'react-toastify'
 import { setCategory } from '@/redux/slices/filter'
 import { setListCategory } from '@/redux/slices/category'
-import LoginDialog from '../../templates/LoginDialog'
 
 interface IHeaderV2Props {}
 
@@ -176,7 +169,9 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
       {openForgotPasswordDialog ? (
         <ForgotPasswordDialog
           isOpen={openForgotPasswordDialog}
-          onclickClose={() => setOpenRegister(false)}
+          onclickClose={() => {
+            dispatch(setOpenForgotPasswordDialog(false))
+          }}
         />
       ) : null}
 

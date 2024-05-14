@@ -17,11 +17,12 @@ import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/router'
 import { IRootState } from '@/redux'
 
-import LoginBackground from '@/assets/images/LoginBackground.png'
+import ForgotPassword from '@/assets/images/ForgotPassword.png'
 import { XCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { auth } from '@/common/config/firebase'
 import { useForm } from 'react-hook-form'
+import InputHookForm from '@/components/atoms/InputHookForm'
 
 interface IFormValue {
   email: string
@@ -52,29 +53,36 @@ const ForgotPasswordDialog: React.FC<IForgotPasswordDialogProps> = props => {
         <div>
           <div className="w-full flex justify-between">
             <div></div>
-            <IconButton onClick={onclickClose}>
+            <IconButton onClick={onclickClose}> 
               <XCircleIcon width={30} height={30} className="text-gray-700" />
             </IconButton>
           </div>
           <div className="flex flex-col laptop:flex laptop:flex-row justify-between items-center px-4 py-10">
             <div className="flex items-center justify-center px-20">
               <Image
-                src={LoginBackground}
+                src={ForgotPassword}
                 width={400}
                 height={400}
-                className="my-auto"
+                className="my-auto border border-gray-300"
               />
             </div>
 
             <>
               <div className="space-y-7">
+                <div className="gap-y-1">
+                  <h1 className="text-gray-600 font-semibold text-xl text-center">
+                    Quên mật khẩu
+                  </h1>
+                  <p className="text-gray-500 text-sm text-center">
+                    Điền sô điện thoại của bạn vào đây để lấy lại mật khẩu
+                  </p>
+                </div>
                 <div className="space-y-5">
-                  <BaseInput name="email" label="Email" required mode="email" />
-                  <BaseInput
-                    name="password"
-                    label="Mật khẩu"
-                    required
-                    mode="password"
+                  <InputHookForm
+                    control={control}
+                    name="phoneNumber"
+                    label="Số điện thoại"
+                    mode="phoneNumber"
                   />
                 </div>
                 <button

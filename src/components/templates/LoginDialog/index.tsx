@@ -112,6 +112,14 @@ const LoginDialog: React.FC<ILoginDialogProps> = props => {
               {({ handleSubmit, submitForm, errors }) => {
                 return (
                   <div className="space-y-7">
+                    <div className="gap-y-1">
+                      <h1 className="text-gray-600 font-semibold text-xl text-center">
+                        Đăng nhập
+                      </h1>
+                      <p className="text-gray-500 text-sm text-center">
+                        Đăng nhập vào hệ thống đấu giá Sneakery
+                      </p>
+                    </div>
                     <div className="space-y-5">
                       {loginError && (
                         <p className="text-blue-500">Đã có lỗi xảy ra</p>
