@@ -8,13 +8,16 @@ import {
 } from '@heroicons/react/20/solid'
 import { IconButton, Tooltip } from '@mui/material'
 import React from 'react'
+import { UseFormReturn } from 'react-hook-form'
 
 interface IStepThreeProps {
+  formTool: UseFormReturn<any>
   setThumbnailSelected: (listImage: any[]) => void
   setImagesSelected: (listImage: any[]) => void
   imagesSelected: any | null
   thumbnailSelected: any | null
   onPressOpenCategory: () => void
+  onPressCreateBid: (values: any) => void
   onPressNext: () => void
   onPressBack: () => void
 }
@@ -23,17 +26,22 @@ const StepThree: React.FC<IStepThreeProps> = props => {
   const {
     setThumbnailSelected,
     setImagesSelected,
-    onPressOpenCategory,
+    onPressCreateBid,
     onPressNext,
     onPressBack,
+    formTool,
     imagesSelected,
     thumbnailSelected,
   } = props
+  const { handleSubmit } = formTool
 
   const isDisabled = !thumbnailSelected || !imagesSelected
 
   return (
-    <div className="bg-white border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">
+    <div
+      className="bg-white border-gray-
+    200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between"
+    >
       <div>
         <div className="flex justify-between items-center">
           <h1 className="text-gray-600 font-bold text-2xl mb-2">
@@ -69,9 +77,14 @@ const StepThree: React.FC<IStepThreeProps> = props => {
             </IconButton>
           </Tooltip>
           <Tooltip title="Qua bước tiếp theo">
-            <IconButton onClick={onPressNext} disabled={isDisabled}>
+            <IconButton
+              onClick={handleSubmit(onPressCreateBid)}
+              disabled={isDisabled}
+            >
               <ArrowSmallRightIcon
-                className={`w-10 h-10 text-gray-600 hover:text-blue-500 ${isDisabled ? 'opacity-30' : ''}`}
+                className={`w-10 h-10 text-gray-600 hover:text-blue-500 ${
+                  isDisabled ? 'opacity-30' : ''
+                }`}
               />
             </IconButton>
           </Tooltip>

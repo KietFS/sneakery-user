@@ -23,6 +23,8 @@ import { configResponse } from '@/utils/request'
 import { useRouter } from 'next/router'
 import dayjs from 'dayjs'
 import { IProductCategory } from '@/types'
+import { Dialog, DialogContent, Tooltip } from '@mui/material'
+import { XMarkIcon } from '@heroicons/react/20/solid'
 
 interface ILeftSideProps {}
 
@@ -61,12 +63,13 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
     getFieldState,
     watch,
   } = useForm()
+
   const formTool = {
     control,
     register,
     handleSubmit,
     getValues,
-
+    getFieldState,
     setValue,
     watch,
   }
@@ -93,8 +96,6 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const [thumbnailSelected, setThumbnailSelected] = useState<any[] | null>(null)
   const [imagesSelected, setImagesSelected] = useState<any[] | null>(null)
   const [createLoading, setCreateLoading] = useState<boolean>(false)
-  const [verfiyPaymentLoading, setVerifyPaymentLoading] =
-    useState<boolean>(false)
   const router = useRouter()
 
   const sliderRef = useRef<any>(null)
@@ -127,17 +128,16 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
         },
         data: payload,
       })
-
       const { isSuccess, error, data } = configResponse(response)
-
       if (isSuccess) {
         setCreateLoading(false)
         router?.push('/')
-        toast.success('Tạo sản phẩm đấu giá thành công')
+        ;(sliderRef as any)?.current?.slickGoTo(3)
+        // toast.success('Tạo sản phẩm đấu giá thành công')
       } else {
         setCreateLoading(false)
         router?.push('/')
-        toast.success('Tạo sản phẩm đấu giá thất bại, vui lòng thử lại sau')
+        // toast.success('Tạo sản phẩm đấu giá thất bại, vui lòng thử lại sau')
       }
     } catch (error) {
       setCreateLoading(false)
@@ -207,6 +207,8 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           onPressOpenCategory={() => setOpenSelectCategory(true)}
           imagesSelected={imagesSelected}
           thumbnailSelected={thumbnailSelected}
+          formTool={formTool as any}
+          onPressCreateBid={values => handlePressPost(values)}
         />
 
         <StepFour
@@ -229,3 +231,20 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
 }
 
 export default LeftSide
+
+const CreateLoadingDialog: React.FC<{
+  open: boolean
+  onClose: () => void
+}> = props => {
+  return (
+    <Dialog
+      onClose={props.onClose}
+      open={props.open}
+      className="rounded-lg"
+      maxWidth="xs"
+      fullWidth={true}
+    >
+      <DialogContent className="max-h-[600px]"></DialogContent>
+    </Dialog>
+  )
+}
