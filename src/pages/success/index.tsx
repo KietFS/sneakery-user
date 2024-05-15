@@ -21,6 +21,10 @@ const Success: React.FC = props => {
   const { paymentId: hehe, methodSelected } = useAppSelector(
     (state: IRootState) => state.payment,
   )
+  const { createdProduct } = useAppSelector((state: IRootState) => state.user)
+  const { wonProductSelected } = useAppSelector(
+    (state: IRootState) => state.payment,
+  )
   const { paymentId, token, PayerID, paymentType, sessionId } = router.query
   const [loading, setLoading] = useState<boolean>(true)
   const { accessToken } = useAuth()
@@ -31,7 +35,7 @@ const Success: React.FC = props => {
       await localStorage.setItem('isPaidPreSaleFee', JSON.stringify(null))
       setLoading(true)
       const response = await axios.get(
-        `${Config.API_URL}/transactions/paypal/success?paymentId=${paymentPayload.paymentId}&payerId=${paymentPayload?.payerId}&paymentType=${paymentPayload?.paymentType}`,
+        `${Config.API_URL}/transactions/paypal/success?paymentId=${paymentPayload.paymentId}&payerId=${paymentPayload?.payerId}&paymentType=${paymentPayload?.paymentType}&productId=${createdProduct}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -63,7 +67,7 @@ const Success: React.FC = props => {
       setLoading(true)
       await localStorage.setItem('isPaidPreSaleFee', JSON.stringify(null))
       const response = await axios.get(
-        `${Config.API_URL}/transactions/stripe/success?sessionId=${payload?.sessionId}&paymentType=${payload?.paymentType}`,
+        `${Config.API_URL}/transactions/stripe/success?sessionId=${payload?.sessionId}&paymentType=${payload?.paymentType}&productId=${createdProduct}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

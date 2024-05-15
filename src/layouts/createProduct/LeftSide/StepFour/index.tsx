@@ -40,7 +40,6 @@ const StepFour: React.FC<IStepFourProps> = ({
   buttonLoading = false,
 }) => {
   const { control, register, handleSubmit, getValues, watch } = formTool
-  const { user } = useAppSelector((state: IRootState) => state.auth)
   const [isPayingPreFee, setIsPayingPreFee] = useState<boolean>(false)
   const [isPaySuccess, setIsPaySuccess] = useState<boolean>(false)
   const { accessToken } = useAuth()

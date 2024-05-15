@@ -32,7 +32,7 @@ interface IPostSaleFeeRightSideProps {
 }
 
 const PayPostSaleFeeLeftSide: React.FC<IPostSaleFeeRightSideProps> = props => {
-  const { isPaySuccess, setIsPaySuccess, wonProduct } = props
+  const { isPaySuccess, setIsPaySuccess } = props
   const [isPayingPreFee, setIsPayingPreFee] = useState<boolean>(false)
   const { methodSelected } = useAppSelector(
     (state: IRootState) => state.payment,
@@ -46,7 +46,6 @@ const PayPostSaleFeeLeftSide: React.FC<IPostSaleFeeRightSideProps> = props => {
       const payload: IPayForProductPayload = {
         amount: 1,
         purpose: 'Phí đăng sản phẩm',
-        productId: wonProduct?.bidId,
       }
       setIsPayingPreFee(true)
       const response = await axios.post(
@@ -162,7 +161,7 @@ const PayPostSaleFeeLeftSide: React.FC<IPostSaleFeeRightSideProps> = props => {
               Số tiền bạn cần thanh toán:{' '}
             </p>
             <p className="text-lg italic font-semibold text-blue-500 ml-1">
-              {wonProduct?.priceWin?.toString()?.prettyMoney()} VND
+              {/* {wonProduct?.priceWin?.toString()?.prettyMoney()} VND */}
             </p>
           </div>
 

@@ -8,7 +8,6 @@ import { useAppSelector } from '@/hooks/useRedux'
 //utils
 import { IRootState } from '@/redux'
 import SelectCategoryDialog from '@/components/atoms/SelectCategoryDialog'
-import InputHookForm from '@/components/atoms/InputHookForm'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { Config } from '@/config/api'
@@ -21,10 +20,10 @@ import StepThree from './StepThree'
 import StepFour from './StepFour'
 import { configResponse } from '@/utils/request'
 import { useRouter } from 'next/router'
-import dayjs from 'dayjs'
 import { IProductCategory } from '@/types'
-import { Dialog, DialogContent, Tooltip } from '@mui/material'
-import { XMarkIcon } from '@heroicons/react/20/solid'
+import { CircularProgress, Dialog, DialogContent } from '@mui/material'
+import { useDispatch } from 'react-redux'
+import { setCreatedProduct } from '@/redux/slices/auth'
 
 interface ILeftSideProps {}
 
@@ -49,31 +48,9 @@ export interface IAddressResponse {
 
 const LeftSide: React.FC<ILeftSideProps> = props => {
   //hooks
-  const { user } = useAppSelector((state: IRootState) => state.auth)
   const { currentCategory } = useAppSelector(
     (state: IRootState) => state.category,
   )
-
-  const {
-    control,
-    register,
-    handleSubmit,
-    getValues,
-    setValue,
-    getFieldState,
-    watch,
-  } = useForm()
-
-  const formTool = {
-    control,
-    register,
-    handleSubmit,
-    getValues,
-    getFieldState,
-    setValue,
-    watch,
-  }
-  const { accessToken } = useAuth()
 
   const settings = {
     dots: false,
@@ -96,8 +73,29 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const [thumbnailSelected, setThumbnailSelected] = useState<any[] | null>(null)
   const [imagesSelected, setImagesSelected] = useState<any[] | null>(null)
   const [createLoading, setCreateLoading] = useState<boolean>(false)
-  const router = useRouter()
 
+  //hooks
+  const { accessToken } = useAuth()
+  const {
+    control,
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+    getFieldState,
+    watch,
+  } = useForm()
+  const formTool = {
+    control,
+    register,
+    handleSubmit,
+    getValues,
+    getFieldState,
+    setValue,
+    watch,
+  }
+  const dispatch = useDispatch()
+  const router = useRouter()
   const sliderRef = useRef<any>(null)
 
   //functions
@@ -131,17 +129,15 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       const { isSuccess, error, data } = configResponse(response)
       if (isSuccess) {
         setCreateLoading(false)
-        router?.push('/')
+        dispatch(setCreatedProduct(data?.data?.bidId))
         ;(sliderRef as any)?.current?.slickGoTo(3)
-        // toast.success('Tạo sản phẩm đấu giá thành công')
       } else {
         setCreateLoading(false)
-        router?.push('/')
-        // toast.success('Tạo sản phẩm đấu giá thất bại, vui lòng thử lại sau')
       }
     } catch (error) {
       setCreateLoading(false)
       console.log('Create bid item error', error)
+      dispatch(setCreatedProduct(null))
     }
   }
 
@@ -226,6 +222,13 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           onClose={() => setOpenSelectCategory(false)}
         />
       ) : null}
+
+      {createLoading ? (
+        <CreateLoadingDialog
+          open={createLoading}
+          onClose={() => setCreateLoading(false)}
+        />
+      ) : null}
     </>
   )
 }
@@ -244,7 +247,11 @@ const CreateLoadingDialog: React.FC<{
       maxWidth="xs"
       fullWidth={true}
     >
-      <DialogContent className="max-h-[600px]"></DialogContent>
+      <DialogContent className="max-h-[600px]">
+        <div className="w-full h-full flex justify-center items-center py-20">
+          <CircularProgress size={50} />
+        </div>
+      </DialogContent>
     </Dialog>
   )
 }

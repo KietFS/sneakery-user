@@ -47,11 +47,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
     useState<boolean>(false)
   const [displayMenu, setDisplayMenu] = useState<boolean>(false)
   const [openRegister, setOpenRegister] = useState<boolean>(false)
-  const [registerValue, setRegisterValue] = useState<IRegisterFormValue | null>(
-    null,
-  )
-  const [confirmination, setConfirmination] = useState<any | null>(null)
-  const [verifyOTPLoading, setVerifyOTPLoading] = useState<boolean>(false)
+
   const dispatch = useDispatch()
 
   React.useEffect(() => {
@@ -72,22 +68,6 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
       }
     } catch (error) {
       setIsGettingProductCategory(false)
-    }
-  }
-
-  const onSubmitOTP = async (otp: string) => {
-    try {
-      setVerifyOTPLoading(true)
-      const response = await confirmination?.confirm(otp)
-      //condition to register user
-      if (!!response?.user?.accessToken && registerValue) {
-        setVerifyOTPLoading(false)
-        const { email, fullName, password, phoneNumber } = registerValue
-        register(password, fullName, email, phoneNumber)
-      }
-    } catch (error) {
-      setVerifyOTPLoading(false)
-      console.log('CONFIRM OTP ERROR', error)
     }
   }
 
@@ -177,25 +157,8 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
 
       {openRegister ? (
         <RegisterDialog
-          onSubmitRegisterValues={values => {
-            setOpenRegister(false)
-            dispatch(setOpenVerifyPhoneNumberDialog(true))
-            setRegisterValue(values)
-          }}
-          onSubmitConfirminationValues={values => {
-            setConfirmination(values)
-          }}
           isOpen={openRegister}
           onClickClose={() => setOpenRegister(false)}
-        />
-      ) : null}
-
-      {openVerifyPhoneNumberDialog && !!registerValue ? (
-        <VerifyPhoneNumberDialog
-          onSubmitOTP={onSubmitOTP}
-          open={openVerifyPhoneNumberDialog}
-          onClose={() => setOpenVerifyPhoneNumberDialog(false)}
-          buttonLoading={verifyOTPLoading || regsiterLoading}
         />
       ) : null}
 

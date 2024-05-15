@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
-import Image from 'next/image'
-import PaySuccess from '@/assets/images/PaySuccess.png'
-import { useAppSelector } from '@/hooks/useRedux'
-import { IRootState } from '@/redux'
-import axios from 'axios'
-import { useAuth } from '@/hooks/useAuth'
-import { Config } from '@/config/api'
-import { configResponse } from '@/utils/request'
-import { CheckBadgeIcon } from '@heroicons/react/24/outline'
-import PaypalLogo from '@/assets/images/PayPalLogo.png'
-import StripeLogo from '@/assets/images/StripeLogo.png'
-import { IPaymentMethod } from '@/types/user'
-import { Radio } from '@mui/material'
+
+//components
 import Button from '@/components/atoms/Button'
+import { Radio } from '@mui/material'
+import Image from 'next/image'
+
+//hooks
+import { useAuth } from '@/hooks/useAuth'
+import { useAppSelector } from '@/hooks/useRedux'
 import { useDispatch } from 'react-redux'
 import { setMethodSelected } from '@/redux/slices/payment'
+
+//assets
+import PaypalLogo from '@/assets/images/PayPalLogo.png'
+import StripeLogo from '@/assets/images/StripeLogo.png'
+import { CheckBadgeIcon } from '@heroicons/react/24/outline'
+import PaySuccess from '@/assets/images/PaySuccess.png'
+
+//utils
+import { IRootState } from '@/redux'
+import axios from 'axios'
+import { Config } from '@/config/api'
+import { configResponse } from '@/utils/request'
 
 interface IStepFourLeftSideProps {
   isPaySuccess: boolean
@@ -25,7 +32,7 @@ interface IStepFourLeftSideProps {
 const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
   const { isPaySuccess, setIsPaySuccess } = props
   const [isPayingPreFee, setIsPayingPreFee] = useState<boolean>(false)
-  const { user } = useAppSelector((state: IRootState) => state.auth)
+  const { selectedProduct } = useAppSelector((state: IRootState) => state.auth)
   const { methodSelected } = useAppSelector(
     (state: IRootState) => state.payment,
   )
@@ -37,6 +44,7 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
       const payload = {
         amount: 1,
         purpose: 'Phí đăng sản phẩm',
+        productId: selectedProduct,
       }
       setIsPayingPreFee(true)
       const response = await axios.post(
@@ -67,11 +75,6 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
         <h1 className="text-gray-600 font-bold text-2xl mb-2">
           Thanh toán phí đăng sản phẩm
         </h1>
-        {/* <Tooltip title="Thay đổi danh mục">
-            <IconButton onClick={() => onPressOpenCategory()}>
-              <TagIcon className="w-6 h-6 text-gray-500 font-semibold" />
-            </IconButton>
-          </Tooltip> */}
       </div>
       <p className="text-sm italic text-gray-500">
         *Bạn cần thanh toán trước phí để có thể đăng sản phẩm. Tham khảo mục
@@ -79,8 +82,6 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
         Khi nhấn vào nút thanh toán, bạn đã đồng ý với chính sách và điều khoản
         sử dụng của chúng tôi
       </p>
-
-      {/* Main content go here */}
 
       {isPaySuccess ? (
         <>

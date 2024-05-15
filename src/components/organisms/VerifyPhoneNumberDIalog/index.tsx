@@ -11,52 +11,68 @@ interface IVerfiyPhoneNumberDialogProps {
   open: boolean
   onClose: () => void
   onSubmitOTP: (values: string) => void
+  registerValue: any
   buttonLoading: boolean
+  confirmination: any
+  setConfirmination: (payload: any) => void
 }
 
 const VerifyPhoneNumberDialog: React.FC<
   IVerfiyPhoneNumberDialogProps
 > = props => {
-  const { open, onClose, onSubmitOTP, buttonLoading } = props
+  const {
+    open,
+    onClose,
+    onSubmitOTP,
+    buttonLoading,
+    registerValue,
+    confirmination,
+    setConfirmination,
+  } = props
   const [otpValues, setOtpValues] = useState<string>('')
   const [second, setSecond] = useState<number>(0)
+  const [isResending, setIsResending] = useState<boolean>(false)
 
   const handleRegister = () => {
     onSubmitOTP(otpValues)
   }
 
   useEffect(() => {
-    setInterval(() => {
+    const countDown = () => {
       if (second < 60) {
-        let newValue = second + 1
-        setSecond(newValue)
+        setSecond(newValue => newValue + 1)
       }
-    }, 1000)
-  }, [])
+    }
+    const intervalId = setInterval(countDown, 1000)
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [second])
 
   const handleResendOTP = async () => {
-    // if (second == 60) {
-    //   //on resend otp here
-    //   setSecond(0)
-    //   try {
-    //     const recapcha = new RecaptchaVerifier('recaptcha', {}, auth)
-    //     const confirmination = await signInWithPhoneNumber(
-    //       auth,
-    //       values.phoneNumber?.toString().formatPhoneNumber(),
-    //       recapcha,
-    //     )
-    //     if (!!confirmination) {
-    //       onSubmitRegisterValues(values)
-    //       onSubmitConfirminationValues(confirmination)
-    //       setLoading(false)
-    //     }
-    //   } catch (error) {
-    //     console.log('send otp error', error)
-    //     setLoading(false)
-    //   } finally {
-    //     setLoading(false)
-    //   }
-    // }
+    if (second >= 60) {
+      setIsResending(true)
+      try {
+        const recapcha = new RecaptchaVerifier('recaptcha', {}, auth)
+        const confirmination = await signInWithPhoneNumber(
+          auth,
+          registerValue?.phoneNumber?.toString().formatPhoneNumber(),
+          recapcha,
+        )
+        if (!!confirmination) {
+          setSecond(0)
+          setIsResending(false)
+          setConfirmination(confirmination)
+        }
+      } catch (error) {
+        console.log('send otp error', error)
+        setIsResending(false)
+      } finally {
+        setIsResending(false)
+      }
+    } else {
+    }
   }
 
   return (
@@ -91,17 +107,19 @@ const VerifyPhoneNumberDialog: React.FC<
               Không nhận được mã ?
             </p>
             <button onClick={handleResendOTP}>
-              <p className="text-blue-500 font-bold italic text-md ml-1 underline">
+              <p
+                className={`${second >= 60 ? 'text-blue-500' : 'text-gray-500'}  font-bold italic text-md ml-1 underline`}
+              >
                 Gửi lại mã
               </p>
             </button>
             <button>
               <p className="text-gray-500 italic text-md ml-1">
-                {' '}
-                sau {60 - second} giây
+                {60 - second > 0 ? `sau ${60 - second} giây` : ``}
               </p>
             </button>
           </div>
+          <div id="recaptcha"></div>
 
           <div className="flex justify-between mt-8">
             <button></button>

@@ -5,6 +5,4 @@ export interface IPayPreeSaleFeePayload {
   amount: number
 }
 
-export interface IPayForProductPayload extends IPayPreeSaleFeePayload {
-  productId: TypeId
-}
+export interface IPayForProductPayload extends IPayPreeSaleFeePayload {}

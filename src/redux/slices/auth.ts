@@ -2,6 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { IUser } from '@/types/user'
 import { boolean } from 'yup'
+import { IWonProduct, TypeId } from '@/types'
 
 export type IInputMode = 'INPUT_OTP' | 'INPUT_PHONE_NUMBER'
 interface IInitialState {
@@ -12,6 +13,7 @@ interface IInitialState {
   openVerifyPhoneNumberDialog: boolean
   openForgotPasswordDialog: boolean
   balance: number
+  createdProduct: TypeId | null
 }
 
 const initialState: IInitialState = {
@@ -22,6 +24,7 @@ const initialState: IInitialState = {
   openVerifyPhoneNumberDialog: false,
   openForgotPasswordDialog: false,
   balance: 0,
+  createdProduct: null,
 }
 
 const authSlice = createSlice({
@@ -52,6 +55,9 @@ const authSlice = createSlice({
     setUserBalance: (state, actions: PayloadAction<number>) => {
       state.balance = actions.payload
     },
+    setCreatedProduct: (state, actions: PayloadAction<TypeId | null>) => {
+      state.createdProduct = actions.payload
+    },
   },
 })
 
@@ -63,5 +69,6 @@ export const {
   setOpenForgotPasswordDialog,
   setUserBalance,
   setAccessToken,
+  setCreatedProduct,
 } = authSlice.actions
 export default authSlice.reducer

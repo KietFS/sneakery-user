@@ -20,12 +20,12 @@ import { XCircleIcon } from '@heroicons/react/20/solid'
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { auth } from '@/common/config/firebase'
 import Spinner from '@/components/atoms/Spinner'
+import VerifyPhoneNumberDialog from '@/components/organisms/VerifyPhoneNumberDIalog'
+import { setOpenVerifyPhoneNumberDialog } from '@/redux/slices/auth'
 
 interface IRegisterDialogProps {
   onClickClose: () => void
   isOpen: boolean
-  onSubmitRegisterValues: (values: IRegisterFormValue) => void
-  onSubmitConfirminationValues: (values: any) => void
 }
 
 export interface IRegisterFormValue {
@@ -38,12 +38,7 @@ export interface IRegisterFormValue {
 
 const RegisterDialog: React.FC<IRegisterDialogProps> = props => {
   //props
-  const {
-    onClickClose,
-    isOpen,
-    onSubmitRegisterValues,
-    onSubmitConfirminationValues,
-  } = props
+  const { onClickClose, isOpen } = props
   const validationSchema = yup
     .object()
     .shape<{ [k in keyof IRegisterFormValue]: any }>({
@@ -72,15 +67,23 @@ const RegisterDialog: React.FC<IRegisterDialogProps> = props => {
     confirmPassword: '',
   })
   const [loading, setLoading] = useState<boolean>(false)
+  const [confirmination, setConfirmination] = useState<any | null>(null)
+  const [verifyOTPLoading, setVerifyOTPLoading] = useState<boolean>(false)
+  const [registeValue, setRegisterValue] = useState<any | null>()
+
+  //hooks
+  const { register } = useAuth()
+  const dispatch = useDispatch()
 
   //redux
-  const { openEmailSentDialog } = useAppSelector(
+  const { openEmailSentDialog, openVerifyPhoneNumberDialog } = useAppSelector(
     (state: IRootState) => state.auth,
   )
 
   const handleSubmit = async (values: IRegisterFormValue) => {
     setLoading(true)
     try {
+      setRegisterValue(values)
       const recapcha = new RecaptchaVerifier('recaptcha', {}, auth)
       const confirmination = await signInWithPhoneNumber(
         auth,
@@ -88,9 +91,9 @@ const RegisterDialog: React.FC<IRegisterDialogProps> = props => {
         recapcha,
       )
       if (!!confirmination) {
-        onSubmitRegisterValues(values)
-        onSubmitConfirminationValues(confirmination)
         setLoading(false)
+        dispatch(setOpenVerifyPhoneNumberDialog(true))
+        setConfirmination(confirmination)
       }
     } catch (error) {
       console.log('send otp error', error)
@@ -106,87 +109,113 @@ const RegisterDialog: React.FC<IRegisterDialogProps> = props => {
     }
   }, [openEmailSentDialog])
 
+  const onSubmitOTP = async (otp: string) => {
+    try {
+      setVerifyOTPLoading(true)
+      const response = await confirmination?.confirm(otp)
+      if (!!response?.user?.accessToken && registeValue) {
+        setVerifyOTPLoading(false)
+        const { email, fullName, password, phoneNumber } = registeValue
+        console.log('final values is', registeValue)
+        // register(password, fullName, email, phoneNumber)
+      }
+    } catch (error) {
+      setVerifyOTPLoading(false)
+      console.log('CONFIRM OTP ERROR', error)
+    }
+  }
+
+  console.log('OPEN', openVerifyPhoneNumberDialog)
+
   return (
     <>
-      <Dialog
-        onClose={onClickClose}
-        open={isOpen}
-        className="rounded-3xl"
-        maxWidth="md"
-        fullWidth={true}
-      >
-        <DialogContent>
-          <div>
-            <div className="w-full flex justify-between">
-              <div></div>
-              <IconButton onClick={onClickClose}>
-                <XCircleIcon width={30} height={30} className="text-gray-700" />
-              </IconButton>
-            </div>
-            <div className="flex flex-col laptop:flex laptop:flex-row justify-between items-center px-4 py-10">
-              <div className="flex items-center justify-center px-20">
-                <Image
-                  src={LoginBackground}
-                  width={400}
-                  height={400}
-                  className="my-auto"
-                />
+      {!openVerifyPhoneNumberDialog && (
+        <Dialog
+          onClose={onClickClose}
+          open={isOpen}
+          className="rounded-3xl"
+          maxWidth="md"
+          fullWidth={true}
+        >
+          <DialogContent>
+            <div>
+              <div className="w-full flex justify-between">
+                <div></div>
+                <IconButton onClick={onClickClose}>
+                  <XCircleIcon
+                    width={30}
+                    height={30}
+                    className="text-gray-700"
+                  />
+                </IconButton>
               </div>
+              <div className="flex flex-col laptop:flex laptop:flex-row justify-between items-center px-4 py-10">
+                <div className="flex items-center justify-center px-20">
+                  <Image
+                    src={LoginBackground}
+                    width={400}
+                    height={400}
+                    className="my-auto"
+                  />
+                </div>
 
-              <Formik
-                enableReinitialize
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-              >
-                {({ handleSubmit, submitForm, errors }) => {
-                  return (
-                    <div className="space-y-7">
-                      <div className="space-y-5">
-                        <BaseInput
-                          mode="text"
-                          name="fullName"
-                          label="Tên đầy đủ"
-                          required
-                        />
-                        <BaseInput
-                          mode="phoneNumber"
-                          name="phoneNumber"
-                          label="Số điện thoại"
-                          required
-                        />
-                        <BaseInput
-                          mode="email"
-                          name="email"
-                          label="Email"
-                          required
-                        />
-                        <BaseInput
-                          mode="password"
-                          name="password"
-                          label="Mật khẩu"
-                          required
-                        />
-                        <BaseInput
-                          mode="confirmPassword"
-                          name="confirmPassword"
-                          label="Xác nhận mật khẩu"
-                          required
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        onClick={submitForm}
-                        className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
-                      >
-                        {loading ? (
-                          <CircularProgress sx={{ color: 'white' }} size={20} />
-                        ) : (
-                          'Đăng ký'
-                        )}
-                      </button>
-                      <div id="recaptcha"></div>
-                      {/* <div className="space-y-3">
+                <Formik
+                  enableReinitialize
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={handleSubmit}
+                >
+                  {({ handleSubmit, submitForm, errors }) => {
+                    return (
+                      <div className="space-y-7">
+                        <div className="space-y-5">
+                          <BaseInput
+                            mode="text"
+                            name="fullName"
+                            label="Tên đầy đủ"
+                            required
+                          />
+                          <BaseInput
+                            mode="phoneNumber"
+                            name="phoneNumber"
+                            label="Số điện thoại"
+                            required
+                          />
+                          <BaseInput
+                            mode="email"
+                            name="email"
+                            label="Email"
+                            required
+                          />
+                          <BaseInput
+                            mode="password"
+                            name="password"
+                            label="Mật khẩu"
+                            required
+                          />
+                          <BaseInput
+                            mode="confirmPassword"
+                            name="confirmPassword"
+                            label="Xác nhận mật khẩu"
+                            required
+                          />
+                        </div>
+                        <button
+                          type="submit"
+                          onClick={submitForm}
+                          className="bg-blue-500 font-bold text-white  rounded-lg w-80 h-10"
+                        >
+                          {loading ? (
+                            <CircularProgress
+                              sx={{ color: 'white' }}
+                              size={20}
+                            />
+                          ) : (
+                            'Đăng ký'
+                          )}
+                        </button>
+                        <div id="recaptcha"></div>
+                        {/* <div className="space-y-3">
                         <p className="text-gray-700 text-xs">
                           Hoặc đăng nhập với
                         </p>
@@ -207,14 +236,27 @@ const RegisterDialog: React.FC<IRegisterDialogProps> = props => {
                           </div>
                         </div>
                       </div> */}
-                    </div>
-                  )
-                }}
-              </Formik>
+                      </div>
+                    )
+                  }}
+                </Formik>
+              </div>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {openVerifyPhoneNumberDialog ? (
+        <VerifyPhoneNumberDialog
+          onSubmitOTP={onSubmitOTP}
+          confirmination={confirmination}
+          registerValue={registeValue}
+          setConfirmination={setConfirmination}
+          open={openVerifyPhoneNumberDialog}
+          onClose={() => dispatch(setOpenVerifyPhoneNumberDialog(false))}
+          buttonLoading={false}
+        />
+      ) : null}
     </>
   )
 }
