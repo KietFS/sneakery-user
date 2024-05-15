@@ -35,7 +35,7 @@ const Success: React.FC = props => {
       await localStorage.setItem('isPaidPreSaleFee', JSON.stringify(null))
       setLoading(true)
       const response = await axios.get(
-        `${Config.API_URL}/transactions/paypal/success?paymentId=${paymentPayload.paymentId}&payerId=${paymentPayload?.payerId}&paymentType=${paymentPayload?.paymentType}&productId=${createdProduct}`,
+        `${Config.API_URL}/transactions/paypal/success?paymentId=${paymentPayload.paymentId}&payerId=${paymentPayload?.payerId}&paymentType=${paymentPayload?.paymentType}&productId=${createdProduct || wonProductSelected?.id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -67,7 +67,7 @@ const Success: React.FC = props => {
       setLoading(true)
       await localStorage.setItem('isPaidPreSaleFee', JSON.stringify(null))
       const response = await axios.get(
-        `${Config.API_URL}/transactions/stripe/success?sessionId=${payload?.sessionId}&paymentType=${payload?.paymentType}&productId=${createdProduct}`,
+        `${Config.API_URL}/transactions/stripe/success?sessionId=${payload?.sessionId}&paymentType=${payload?.paymentType}&productId=${createdProduct || wonProductSelected?.id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
