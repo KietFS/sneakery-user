@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { ClockIcon, PencilIcon } from '@heroicons/react/24/outline'
 import { IconButton } from '@mui/material'
+import { PaymentSharp } from '@mui/icons-material'
 
 interface IPostedCardProps {
   id: string
@@ -43,16 +44,26 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
             )}
           </div>
         </div>
-        <IconButton
-          title="Chỉnh sửa sản phẩm"
-          onClick={() => onNavigateToEdit(id)}
-        >
-          <PencilIcon
-            width={15}
-            height={15}
-            className="w-[10] h-[10] text-gray-600"
-          />
-        </IconButton>
+        {status == 'pending' && (
+          <IconButton
+            title="Chỉnh sửa sản phẩm"
+            onClick={() => onNavigateToEdit(id)}
+          >
+            <PencilIcon
+              width={15}
+              height={15}
+              className="w-[10] h-[10] text-gray-600"
+            />
+          </IconButton>
+        )}
+        {status == 'success' && (
+          <IconButton
+            title="Thanh toán phí đấu giá"
+            onClick={() => onNavigateToEdit(id)}
+          >
+            <PaymentSharp width={20} height={20} className="text-green-500" />
+          </IconButton>
+        )}
       </div>
     </div>
   )

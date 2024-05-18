@@ -22,21 +22,25 @@ import { IRootState } from '@/redux'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
+import { useRouter } from 'next/router'
+import { TypeId } from '@/types'
 
 interface IStepFourLeftSideProps {
   isPaySuccess: boolean
   setIsPaySuccess: (p: boolean) => void
   handleGoBack: () => void
+  productId: TypeId
 }
 
 const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
-  const { isPaySuccess, setIsPaySuccess } = props
+  const { isPaySuccess, setIsPaySuccess, productId } = props
   const [isPayingPreFee, setIsPayingPreFee] = useState<boolean>(false)
   const { selectedProduct } = useAppSelector((state: IRootState) => state.auth)
   const { methodSelected } = useAppSelector(
     (state: IRootState) => state.payment,
   )
   const { accessToken } = useAuth()
+  const router = useRouter()
   const dispatch = useDispatch()
 
   const handlePressPay = async () => {
@@ -69,6 +73,10 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
 
   const handleSelectStripe = () => dispatch(setMethodSelected('stripe'))
 
+  const handleNavigateToProduct = () => {
+    router.replace(`/products/${productId}`)
+  }
+
   return (
     <div className="border-gray-200 border p-6  h-full min-h-[500px] w-3/4 rounded-lg">
       <div className="flex justify-between items-center">
@@ -96,9 +104,17 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
           <div className="mt-4 flex items-center justify-center">
             <CheckBadgeIcon className="text-green-500 font-bold w-5 h-5" />
             <p className="font-semibold text-green-500 ml-2">
-              Bạn đã thanh toán thành công, bấm nút đăng để đăng sản phẩm
+              Bạn đã thanh toán thành công, sản phẩm của bạn đã có mặt trên sàn
+              của chúng tôi
             </p>
           </div>
+
+          <button
+            className="text-blue-500 text-sm font-bold text-underline w-full text-center mt-2"
+            onClick={handleNavigateToProduct}
+          >
+            Chi tiết sản phẩm
+          </button>
         </>
       ) : (
         <div>
@@ -153,7 +169,7 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
               Phí đăng bạn cần trả:{' '}
             </p>
             <p className="text-lg italic font-semibold text-blue-500 ml-1">
-              {(1)?.toFixed(2)?.toString()?.prettyMoney()}$
+              {1?.toFixed(2)?.toString()?.prettyMoney()}$
             </p>
           </div>
 

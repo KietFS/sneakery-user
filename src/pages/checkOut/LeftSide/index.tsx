@@ -25,13 +25,15 @@ import PaypalLogo from '@/assets/images/PayPalLogo.png'
 import { CheckBadgeIcon } from '@heroicons/react/24/outline'
 import { IWonProduct } from '@/types/product'
 
-interface IPostSaleFeeRightSideProps {
+interface ICheckOutProductLeftSideProps {
   isPaySuccess: boolean
   setIsPaySuccess: (payload: boolean) => void
   wonProduct: IWonProduct
 }
 
-const PayPostSaleFeeLeftSide: React.FC<IPostSaleFeeRightSideProps> = props => {
+const CheckoutProductLeftSide: React.FC<
+  ICheckOutProductLeftSideProps
+> = props => {
   const { isPaySuccess, setIsPaySuccess } = props
   const [isPayingPreFee, setIsPayingPreFee] = useState<boolean>(false)
   const { methodSelected } = useAppSelector(
@@ -45,7 +47,7 @@ const PayPostSaleFeeLeftSide: React.FC<IPostSaleFeeRightSideProps> = props => {
     try {
       const payload: IPayForProductPayload = {
         amount: 1,
-        purpose: 'Phí đăng sản phẩm',
+        purpose: `Thanh toán cho sản phẩm ${props.wonProduct.product.name}`,
       }
       setIsPayingPreFee(true)
       const response = await axios.post(
@@ -104,7 +106,8 @@ const PayPostSaleFeeLeftSide: React.FC<IPostSaleFeeRightSideProps> = props => {
           <div className="mt-4 flex items-center justify-center">
             <CheckBadgeIcon className="text-green-500 font-bold w-5 h-5" />
             <p className="font-semibold text-green-500 ml-2">
-              Bạn đã thanh toán thành công
+              Bạn đã thanh toán thành công cho sản phẩm{' '}
+              {props.wonProduct.product.name}
             </p>
           </div>
         </>
@@ -181,4 +184,4 @@ const PayPostSaleFeeLeftSide: React.FC<IPostSaleFeeRightSideProps> = props => {
   )
 }
 
-export default PayPostSaleFeeLeftSide
+export default CheckoutProductLeftSide

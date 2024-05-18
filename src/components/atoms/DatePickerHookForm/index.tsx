@@ -31,7 +31,7 @@ const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
     <Controller
       control={control}
       name={name}
-      defaultValue={Date.now() + 60 * 1000 * 60}
+      defaultValue={Date.now() + 60 * 1000 * 60 * 24}
       render={({
         field: { value, onChange: onFieldChange },
         fieldState: { error },

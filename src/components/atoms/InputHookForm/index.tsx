@@ -76,9 +76,9 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
       name={name}
       control={control}
       render={({
-        field: { onChange, value },
+        field: { onChange, value, name },
         fieldState: { error },
-        formState: {},
+        formState: { errors },
       }) => {
         return (
           <div
@@ -97,18 +97,19 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
                 focus && !error
                   ? 'border-2 border-blue-500'
                   : !!error
-                    ? 'border-2 border-red-500'
-                    : 'border border-gray-300'
+                  ? 'border-2 border-red-500'
+                  : 'border border-gray-300'
               } items-center ${
                 focus && !error
                   ? 'bg-blue-50'
                   : error
-                    ? 'bg-red-50'
-                    : 'bg-gray-100'
+                  ? 'bg-red-50'
+                  : 'bg-gray-100'
               } px-2 py-1 rounded-lg h-10  ${className}`}
             >
               <input
                 autoComplete="off"
+                name={name}
                 placeholder={
                   props.placeholder ||
                   (objectTypes as any)?.[mode]?.placeholder ||
@@ -127,8 +128,8 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
                   focus && !error
                     ? 'bg-blue-50'
                     : error
-                      ? 'bg-red-50'
-                      : 'bg-gray-100'
+                    ? 'bg-red-50'
+                    : 'bg-gray-100'
                 } text-gray-700 rounded-lg w-80 h-8 text-sm  outline-none ring-0 border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent`}
               />
             </div>

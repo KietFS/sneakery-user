@@ -2,10 +2,11 @@ import FooterSection from '@/components/molecules/FooterSection'
 import HeaderV2 from '@/components/organisms/HeaderV2'
 import React, { useEffect, useState } from 'react'
 import PayPostSaleFeeRightSide from './RightSide'
-import PayPostSaleFeeLeftSide from './LeftSide'
+import CheckoutProductLeftSide from './LeftSide'
 import { IRootState } from '@/redux'
 import { useAppSelector } from '@/hooks/useRedux'
 import Head from 'next/head'
+import { PAYMENT_SUCCESS_KEY } from '@/constants'
 
 interface IPayPostSaleFeeProps {}
 
@@ -17,22 +18,28 @@ const PayPostSaleFee: React.FC<IPayPostSaleFeeProps> = props => {
   //Check if the paid is complete
   useEffect(() => {
     const handleStorageChange = async (event: any) => {
-      if (event.key === 'isPaidPreSaleFee') {
+      if (event.key === PAYMENT_SUCCESS_KEY['PAID']) {
         const listedPaymentPayload = JSON.parse(event.newValue as string)
         setIsPaySuccess(listedPaymentPayload)
       }
     }
     window.addEventListener('storage', handleStorageChange)
     return () => {
-      localStorage.removeItem('isPaidPreSaleFee')
+      localStorage.removeItem(PAYMENT_SUCCESS_KEY['PAID'])
     }
   }, [])
 
   return (
-    <>
-      <HeaderV2 />
-      <div className="bg-white flex justify-between gap-x-5 py-8 px-16">
-        <PayPostSaleFeeLeftSide
+    <div className="bg-white">
+      <Head>
+        <title>Sneakery - Thanh toán cho sản phẩm</title>
+        <link rel="icon" />
+      </Head>
+      <div className="pb-16 bg-white">
+        <HeaderV2 />
+      </div>
+      <div className="bg-white flex laptop:flex-row flex-col justify-between gap-x-5 gap-y-5 px-20">
+        <CheckoutProductLeftSide
           wonProduct={wonProductSelected}
           isPaySuccess={isPaySuccess}
           setIsPaySuccess={payload => setIsPaySuccess(payload)}
@@ -41,7 +48,7 @@ const PayPostSaleFee: React.FC<IPayPostSaleFeeProps> = props => {
       </div>
 
       <FooterSection />
-    </>
+    </div>
   )
 }
 

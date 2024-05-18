@@ -1,28 +1,10 @@
-import { Config } from '@/config/api'
-import Button from '@/components/atoms/Button'
-import { useAppSelector } from '@/hooks/useRedux'
-import { IRootState } from '@/redux'
-import {
-  ArrowSmallLeftIcon,
-  CheckBadgeIcon,
-  CheckCircleIcon,
-  CheckIcon,
-  TagIcon,
-} from '@heroicons/react/20/solid'
-import {} from '@heroicons/react/24/outline'
-import { IconButton, Tooltip } from '@mui/material'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Control, UseFormReturn } from 'react-hook-form'
-import Image from 'next/image'
-import PaypalLogo from '@/assets/images/PayPalLogo.png'
-import { configResponse } from '@/utils/request'
+import { UseFormReturn } from 'react-hook-form'
 import { useAuth } from '@/hooks/useAuth'
-import { toast } from 'react-toastify'
-import PaySuccess from '@/assets/images/PaySuccess.png'
 import StepFourLeftSide from './LeftSide'
 import StepFourRightSide from './RightSide'
-import { PAY_PREE_SALE_FEE_SUCCESS } from '@/constants'
+import { PAYMENT_SUCCESS_KEY } from '@/constants'
+import { TypeId } from '@/types'
 
 interface IStepFourProps {
   formTool: UseFormReturn<any>
@@ -30,6 +12,7 @@ interface IStepFourProps {
   onPressCreateBid: (values: any) => void
   buttonLoading?: boolean
   onPressBack: () => void
+  createdProductId: TypeId
 }
 
 const StepFour: React.FC<IStepFourProps> = ({
@@ -38,6 +21,7 @@ const StepFour: React.FC<IStepFourProps> = ({
   onPressOpenCategory,
   onPressBack,
   buttonLoading = false,
+  createdProductId,
 }) => {
   const { control, register, handleSubmit, getValues, watch } = formTool
   const [isPayingPreFee, setIsPayingPreFee] = useState<boolean>(false)
@@ -47,14 +31,14 @@ const StepFour: React.FC<IStepFourProps> = ({
   //Check if the paid is complete
   useEffect(() => {
     const handleStorageChange = async (event: any) => {
-      if (event.key === 'isPaidPreSaleFee') {
+      if (event.key === PAYMENT_SUCCESS_KEY['PRE_SALE_FEE']) {
         const listedPaymentPayload = JSON.parse(event.newValue as string)
         setIsPaySuccess(listedPaymentPayload)
       }
     }
     window.addEventListener('storage', handleStorageChange)
     return () => {
-      localStorage.removeItem('isPaidPreSaleFee')
+      localStorage.removeItem(PAYMENT_SUCCESS_KEY['PRE_SALE_FEE'])
     }
   }, [])
 
@@ -62,6 +46,7 @@ const StepFour: React.FC<IStepFourProps> = ({
     <>
       <div className="bg-white flex justify-between gap-x-5">
         <StepFourLeftSide
+        productId={createdProductId}
           handleGoBack={onPressBack}
           isPaySuccess={isPaySuccess}
           setIsPaySuccess={setIsPaySuccess}

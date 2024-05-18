@@ -20,7 +20,7 @@ import StepThree from './StepThree'
 import StepFour from './StepFour'
 import { configResponse } from '@/utils/request'
 import { useRouter } from 'next/router'
-import { IProductCategory } from '@/types'
+import { IProductCategory, TypeId } from '@/types'
 import { CircularProgress, Dialog, DialogContent } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { setCreatedProduct } from '@/redux/slices/auth'
@@ -73,6 +73,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
   const [thumbnailSelected, setThumbnailSelected] = useState<any[] | null>(null)
   const [imagesSelected, setImagesSelected] = useState<any[] | null>(null)
   const [createLoading, setCreateLoading] = useState<boolean>(false)
+  const [createdId, setCreatedId] = useState<TypeId | null>(null)
 
   //hooks
   const { accessToken } = useAuth()
@@ -128,8 +129,13 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
       })
       const { isSuccess, error, data } = configResponse(response)
       if (isSuccess) {
+        await localStorage.setItem(
+          'productId',
+          JSON.stringify(data?.data?.bidId),
+        )
+        setCreatedId(data?.data?.bidId)
+        await localStorage.setItem('paymentType', 'PRE_SALE_FEE')
         setCreateLoading(false)
-        dispatch(setCreatedProduct(data?.data?.bidId))
         ;(sliderRef as any)?.current?.slickGoTo(3)
       } else {
         setCreateLoading(false)
@@ -208,6 +214,7 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
         />
 
         <StepFour
+          createdProductId={createdId as TypeId}
           formTool={formTool as any}
           buttonLoading={createLoading}
           onPressOpenCategory={() => setOpenSelectCategory(true)}
@@ -248,7 +255,13 @@ const CreateLoadingDialog: React.FC<{
       fullWidth={true}
     >
       <DialogContent className="max-h-[600px]">
-        <div className="w-full h-full flex justify-center items-center py-20">
+        <p className="text-lg text-gray-600 font-semibold text-center mb-1">
+          Chúng tôi đang xử lý sản phẩm
+        </p>
+        <p className="text-sm text-gray-500 font-normal text-center mb-4">
+          Vui lòng đợi trong giây lát
+        </p>
+        <div className="w-full h-full flex justify-center items-center py-10">
           <CircularProgress size={50} />
         </div>
       </DialogContent>

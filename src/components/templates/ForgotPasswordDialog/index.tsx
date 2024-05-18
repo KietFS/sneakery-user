@@ -5,17 +5,8 @@ import {
   IconButton,
 } from '@mui/material'
 
-//form validation
-import { Formik } from 'formik'
-import * as yup from 'yup'
-
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import BaseInput from '@/components/atoms/BaseInput'
-import { useAppSelector } from '@/hooks/useRedux'
-import { useAuth } from '@/hooks/useAuth'
-import { useRouter } from 'next/router'
-import { IRootState } from '@/redux'
 
 import ForgotPassword from '@/assets/images/ForgotPassword.png'
 import { XCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
@@ -23,6 +14,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { auth } from '@/common/config/firebase'
 import { useForm } from 'react-hook-form'
 import InputHookForm from '@/components/atoms/InputHookForm'
+import { regexes } from '@/utils/regex'
 
 interface IFormValue {
   email: string
@@ -36,10 +28,19 @@ interface IForgotPasswordDialogProps {
 
 const ForgotPasswordDialog: React.FC<IForgotPasswordDialogProps> = props => {
   const { isOpen, onclickClose } = props
-  const { control, handleSubmit } = useForm()
+  const {
+    control,
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm()
   const [loading, setLoading] = useState<boolean>(false)
 
   const handleConfirm = (values: any) => {}
+
+  console.log('ERRORS IS', errors)
+
+  console.log('HAAH')
 
   return (
     <Dialog
@@ -53,7 +54,7 @@ const ForgotPasswordDialog: React.FC<IForgotPasswordDialogProps> = props => {
         <div>
           <div className="w-full flex justify-between">
             <div></div>
-            <IconButton onClick={onclickClose}> 
+            <IconButton onClick={onclickClose}>
               <XCircleIcon width={30} height={30} className="text-gray-700" />
             </IconButton>
           </div>
@@ -80,9 +81,15 @@ const ForgotPasswordDialog: React.FC<IForgotPasswordDialogProps> = props => {
                 <div className="space-y-5">
                   <InputHookForm
                     control={control}
-                    name="phoneNumber"
+                    {...register('phoneNumber', {
+                      pattern: {
+                        value: regexes.phoneNumber,
+                        message: 'Số điện thoại không hợp lệ',
+                      },
+                    })}
                     label="Số điện thoại"
                     mode="phoneNumber"
+                    placeholder="0*********"
                   />
                 </div>
                 <button

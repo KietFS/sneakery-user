@@ -108,7 +108,9 @@ const VerifyPhoneNumberDialog: React.FC<
             </p>
             <button onClick={handleResendOTP}>
               <p
-                className={`${second >= 60 ? 'text-blue-500' : 'text-gray-500'}  font-bold italic text-md ml-1 underline`}
+                className={`${
+                  second >= 60 ? 'text-blue-500' : 'text-gray-500'
+                }  font-bold italic text-md ml-1 underline`}
               >
                 Gửi lại mã
               </p>
@@ -119,7 +121,7 @@ const VerifyPhoneNumberDialog: React.FC<
               </p>
             </button>
           </div>
-          <div id="recaptcha"></div>
+          {second >= 60 && <div id="recaptcha"></div>}
 
           <div className="flex justify-between mt-8">
             <button></button>

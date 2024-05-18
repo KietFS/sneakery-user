@@ -95,9 +95,9 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             {...register('bidClosingDateTime', {
               required: 'Vui lòng chọn ngày kết thúc đấu giá',
             })}
-            defaultValue={formatDate(currentDate.toString())}
             label="Chọn thời điểm kết thúc đấu giá"
             control={control}
+            defaultValue={new Date(Date.now() + 60 * 1000 * 60 * 24).toString()}
           />
           <RadioButtonHookForm
             control={control}
@@ -133,7 +133,9 @@ const StepTwo: React.FC<IStepTwoProps> = ({
               }}
             >
               <ArrowSmallRightIcon
-                className={`w-10 h-10  text-gray-600 hover:text-blue-500 ${isDisable ? 'opacity-30' : ''}`}
+                className={`w-10 h-10  text-gray-600 hover:text-blue-500 ${
+                  isDisable ? 'opacity-30' : ''
+                }`}
               />
             </IconButton>
           </Tooltip>

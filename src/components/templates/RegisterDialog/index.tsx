@@ -114,18 +114,15 @@ const RegisterDialog: React.FC<IRegisterDialogProps> = props => {
       setVerifyOTPLoading(true)
       const response = await confirmination?.confirm(otp)
       if (!!response?.user?.accessToken && registeValue) {
-        setVerifyOTPLoading(false)
         const { email, fullName, password, phoneNumber } = registeValue
-        console.log('final values is', registeValue)
-        // register(password, fullName, email, phoneNumber)
+        register(password, fullName, email, phoneNumber)
+        setVerifyOTPLoading(false)
       }
     } catch (error) {
       setVerifyOTPLoading(false)
       console.log('CONFIRM OTP ERROR', error)
     }
   }
-
-  console.log('OPEN', openVerifyPhoneNumberDialog)
 
   return (
     <>
@@ -254,7 +251,7 @@ const RegisterDialog: React.FC<IRegisterDialogProps> = props => {
           setConfirmination={setConfirmination}
           open={openVerifyPhoneNumberDialog}
           onClose={() => dispatch(setOpenVerifyPhoneNumberDialog(false))}
-          buttonLoading={false}
+          buttonLoading={verifyOTPLoading}
         />
       ) : null}
     </>

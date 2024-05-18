@@ -6,3 +6,6 @@ export interface IPayPreeSaleFeePayload {
 }
 
 export interface IPayForProductPayload extends IPayPreeSaleFeePayload {}
+
+export type IPaymentType = 'PAID' | 'PRE_SALE_FEE' | 'AUCTION_FEE'
+

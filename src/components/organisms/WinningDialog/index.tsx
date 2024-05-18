@@ -17,11 +17,9 @@ import { useAppSelector } from '@/hooks/useRedux'
 import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
-import { CheckBadgeIcon } from '@heroicons/react/24/outline'
-import ConfirmDialog from '../ConfirmDialog'
 import { toast } from 'react-toastify'
 import { useAuth } from '@/hooks/useAuth'
-import { PaymentOutlined } from '@mui/icons-material'
+import { PaymentOutlined, PaymentsSharp } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
 import { setWonProductSelected } from '@/redux/slices/payment'
@@ -51,7 +49,6 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
   const [items, setItems] = useState<IWonProduct[]>([])
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
   const [actionLoading, setActionLoading] = useState<boolean>(false)
   const [orderSelected, setOrderSelected] = useState<string | number>('')
   const { accessToken } = useAuth()
@@ -99,33 +96,14 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
     }
   }
 
-  const approveWinningItem = async () => {
+  const handlePressCheckout = async (item: IWonProduct) => {
     try {
-      setActionLoading(true)
-      //THIS NEED TO FIX
-      const response = await axios.put(
-        `${Config.API_URL}/orders/${orderSelected}/`,
-        {
-          status: 'APPROVED',
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      )
-      const { isSuccess, data, error } = configResponse(response)
-      if (isSuccess) {
-        setActionLoading(false)
-        setOpenConfirmDialog(false)
-        resetWinningItems()
-        toast.success('Thêm sản phẩm vào giỏ hàng thành công')
-      } else {
-        console.log('Error', error)
-      }
+      await localStorage.setItem('productId', String(item.bidId))
+      await localStorage.setItem('paymentType', 'PAID')
+      dispatch(setWonProductSelected(item))
+      router.replace('/checkOut')
     } catch (error) {
-      setActionLoading(false)
-      console.log('Client Error', error)
+      toast.error('Không thể thanh toán sản phẩm này. Vui lòng thử lại sau!')
     }
   }
 
@@ -180,25 +158,37 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
                           </div>
 
                           <div className="flex gap-x-1 items-center">
-                            <p className="text-xs text-gray-600">
+                            <p className="text-xs text-gray-500 font-semibold">
                               Giá cuối cùng:{' '}
+                            </p>
+                            <p className="text-green-500 font-semibold text-xs">
+                              {' '}
                               {item.priceWin?.toString().prettyMoney()}$
                             </p>
                           </div>
                           <div className="flex gap-x-1 items-center">
-                            <p className="text-xs text-gray-600">
+                            <p className="text-xs text-gray-500 font-semibold">
                               Số lượt đấu giá: {item?.product?.numberOfBids}
+                            </p>
+                          </div>
+                          <div className="flex gap-x-1 items-center">
+                            <p className="text-xs text-gray-500 font-semibold">
+                              Trạng thái:
+                            </p>
+                          </div>
+                          <div className="flex gap-x-1 items-center">
+                            <p className="text-xs text-gray-500 font-semibold">
+                              Thời gian còn lại để thanh toán:
                             </p>
                           </div>
                         </div>
                         <Tooltip title="Thanh toán">
-                          <IconButton
-                            onClick={() => {
-                              dispatch(setWonProductSelected(item))
-                              router.replace('/checkOut')
-                            }}
-                          >
-                            <PaymentOutlined width={20} height={20} />
+                          <IconButton onClick={() => handlePressCheckout(item)}>
+                            <PaymentsSharp
+                              width={20}
+                              height={20}
+                              className="text-green-500"
+                            />
                           </IconButton>
                         </Tooltip>
                       </div>
@@ -221,15 +211,6 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
           </div>
         </DialogContent>
       </Dialog>
-
-      <ConfirmDialog
-        open={openConfirmDialog}
-        title="Bạn có chắc muốn hủy lượt đấu giá cho sản phẩm này"
-        description="Hành động này không thể quay lại"
-        onClose={() => setOpenConfirmDialog(false)}
-        onConfirm={approveWinningItem}
-        isConfirmLoadingButton={actionLoading}
-      />
     </>
   )
 }
