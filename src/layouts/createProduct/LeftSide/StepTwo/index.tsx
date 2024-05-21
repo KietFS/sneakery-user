@@ -9,7 +9,7 @@ import {
   TagIcon,
 } from '@heroicons/react/20/solid'
 import { IconButton, Tooltip } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
 interface IStepTwoProps {
@@ -23,38 +23,20 @@ const StepTwo: React.FC<IStepTwoProps> = ({
   onPressNext,
   onPressBack,
 }) => {
-  const { control, register, getValues, watch } = formTool
-  const currentDate = new Date()
-
-  const formatDate = (dateString: string) => {
-    var originalDate = new Date(dateString)
-    originalDate.setDate(originalDate.getDate())
-    originalDate.setHours(12)
-    originalDate.setMinutes(0)
-    originalDate.setSeconds(0)
-
-    var newYear = originalDate.getFullYear()
-    var newMonth = originalDate.getMonth() + 1
-    var newDay = originalDate.getDate()
-
-    var newDateString =
-      newYear +
-      '-' +
-      (newMonth < 10 ? '0' : '') +
-      newMonth +
-      '-' +
-      (newDay < 10 ? '0' : '') +
-      newDay +
-      'T12:00:00'
-
-    return newDateString
-  }
+  const { control, register, getValues, watch, setValue } = formTool
 
   const isDisable =
     !watch('priceStart') ||
     !watch('stepBid') ||
     !watch('bidClosingDateTime') ||
     Number(watch('priceStart')) >= Number(watch('reservePrice'))
+
+  useEffect(() => {
+    setValue(
+      'bidClosingDateTime',
+      new Date(Date.now() + 60 * 1000 * 60 * 24).toString(),
+    )
+  }, [])
 
   return (
     <div className="bg-white border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">
@@ -97,7 +79,6 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             })}
             label="Chọn thời điểm kết thúc đấu giá"
             control={control}
-            defaultValue={new Date(Date.now() + 60 * 1000 * 60 * 24).toString()}
           />
           <RadioButtonHookForm
             control={control}

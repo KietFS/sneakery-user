@@ -8,10 +8,8 @@ import { DateTimePicker } from '@mui/x-date-pickers'
 import dayjs, { Dayjs } from 'dayjs'
 
 //hooks
-import { useField, useFormikContext } from 'formik'
-import { useEffect } from 'react'
 import { useState } from 'react'
-import { Control, Controller, UseFormReturn } from 'react-hook-form'
+import { Control, Controller } from 'react-hook-form'
 
 interface IDatePicketHookFormProps {
   defaultValue?: string
@@ -59,16 +57,9 @@ const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
                 onChange={changedValue => {
                   // Remove time from current date
                   const currentDay = new Date()
-                  currentDay.setHours(0, 0, 0, 0)
 
                   // Remove time from changed date
                   const changedDay = new Date(changedValue)
-                  changedDay.setHours(0, 0, 0, 0)
-
-                  console.log('1', changedDay.getTime())
-                  console.log('2', currentDay.getTime())
-                  console.log('3', changedDay)
-                  console.log('4', currentDay)
 
                   if (changedDay.getTime() < currentDay.getTime()) {
                     console.log('ERROR')
