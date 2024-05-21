@@ -2,10 +2,20 @@ import React, { useState } from 'react'
 
 interface IOTPInputProps {
   onChangeValue: (values: string) => void
+  size?: 'small' | 'medium' | 'large'
 }
 
-const OtpInput: React.FC<IOTPInputProps> = ({ onChangeValue }) => {
+const OtpInput: React.FC<IOTPInputProps> = ({ onChangeValue, size }) => {
   const [otp, setOtp] = useState(new Array(6).fill(''))
+
+  const sizes = {
+    small:
+      'w-[40px] h-[40px] text-center mr-2 text-lg border-gray-300 text-gray-600 rounded-lg',
+    medium:
+      'w-[60px] h-[60px] text-center mr-2 text-xl border-gray-300 text-gray-600 rounded-lg',
+    large:
+      'w-[80px] h-[80px] text-center mr-2 text-2xl border-gray-300 text-gray-600 rounded-lg',
+  }
 
   const handleChange = (element: any, index: any) => {
     const value = element.value
@@ -47,7 +57,7 @@ const OtpInput: React.FC<IOTPInputProps> = ({ onChangeValue }) => {
             onChange={e => handleChange(e.target, index)}
             onFocus={e => e.target.select()}
             maxLength={1}
-            className="w-[60px] h-[60px] text-center mr-2 text-xl border-gray-300 text-gray-600 rounded-lg"
+            className={sizes[size || 'medium']}
             autoComplete="off"
           />
         )

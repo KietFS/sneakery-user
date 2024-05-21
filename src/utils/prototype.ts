@@ -17,10 +17,10 @@ String.prototype.prettyDate = function () {
 }
 
 String.prototype.formatPhoneNumber = function () {
-  // Thêm tiền tố "+84" và loại bỏ mọi ký tự không phải là số
-  let formattedNumber = '+84' + this.replace(/\D/g, '')
+  // Replace the first character (0) with the country code (+84)
+  let formattedNumber = '+84' + this.slice(1)
 
-  return `${formattedNumber}` as any
+  return formattedNumber as any
 }
 
 String.prototype.prettyDateTime = function () {
