@@ -25,22 +25,15 @@ const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
   const { label, name, control, defaultValue, required = false } = props
   const [localError, setLocalError] = useState<boolean>(false)
 
-  const currentDate = new Date(Date.now())
-
   return (
     <Controller
       control={control}
       name={name}
-      defaultValue={Date.now() + 60 * 1000 * 60 * 24}
+      defaultValue={defaultValue}
       render={({
         field: { value, onChange: onFieldChange },
         fieldState: { error },
       }) => {
-        useEffect(() => {
-          if (defaultValue) {
-            onFieldChange(defaultValue)
-          }
-        }, [defaultValue])
         return (
           <div className="mt-1">
             <div className="flex items-center">
@@ -64,12 +57,25 @@ const DatePickerHookForm: React.FC<IDatePicketHookFormProps> = props => {
                   },
                 }}
                 onChange={changedValue => {
-                  if (changedValue < currentDate) {
-                    onFieldChange(changedValue) // Sử dụng giá trị changedValue trực tiếp
+                  // Remove time from current date
+                  const currentDay = new Date()
+                  currentDay.setHours(0, 0, 0, 0)
+
+                  // Remove time from changed date
+                  const changedDay = new Date(changedValue)
+                  changedDay.setHours(0, 0, 0, 0)
+
+                  console.log('1', changedDay.getTime())
+                  console.log('2', currentDay.getTime())
+                  console.log('3', changedDay)
+                  console.log('4', currentDay)
+
+                  if (changedDay.getTime() < currentDay.getTime()) {
+                    console.log('ERROR')
                     setLocalError(true)
                   } else {
                     setLocalError(false)
-                    onFieldChange(changedValue) // Sử dụng giá trị changedValue trực tiếp
+                    onFieldChange(changedValue) // Use the changedValue directly
                   }
                 }}
                 renderInput={params => (
