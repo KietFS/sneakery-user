@@ -113,6 +113,7 @@ const ForgotPasswordDialog: React.FC<IForgotPasswordDialogProps> = props => {
 
   const handleVerifyPhoneNumber = async (values: any) => {
     try {
+      setLoading(true)
       const response = await axios.get(
         `${Config.API_URL}/auth/phone-number/verify?phoneNumber=${values.phoneNumber}`,
         {
@@ -123,12 +124,16 @@ const ForgotPasswordDialog: React.FC<IForgotPasswordDialogProps> = props => {
       )
       if (response?.data?.success) {
         handleSendOTP(values)
+        setLoading(false)
       } else {
         toast.error('Số điện thoại này chưa được đăng ký, vui lòng thử lại')
       }
     } catch (error) {
       toast.error('Có lỗi xảy ra, vui lòng thử lại sau')
       console.log('Verify phone number error', error)
+      setLoading(false)
+    } finally {
+      setLoading(false)
     }
   }
 

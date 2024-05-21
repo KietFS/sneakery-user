@@ -19,11 +19,11 @@ const OtpInput: React.FC<IOTPInputProps> = ({ onChangeValue, size }) => {
 
   const handleChange = (element: any, index: any) => {
     const value = element.value
-    // Cập nhật giá trị cho ô hiện tại
+    // Update the current input value
     const newOtp = [...otp]
     newOtp[index] = value.substring(value.length - 1, value.length)
 
-    // Chuyển focus đến ô tiếp theo nếu giá trị được nhập và không phải là ô cuối cùng
+    // Move focus to the next input if value is entered and it's not the last input
     if (value && index < otp.length - 1) {
       const nextSibling = document.getElementById(`otp-${index + 1}`)
       if (nextSibling) {
@@ -32,8 +32,20 @@ const OtpInput: React.FC<IOTPInputProps> = ({ onChangeValue, size }) => {
     }
 
     setOtp(newOtp)
-    // Gọi prop onChangeValue và truyền giá trị OTP hiện tại
+    // Call prop onChangeValue with the current OTP value
     onChangeValue(newOtp.join(''))
+  }
+
+  const handleKeyDown = (element: any, index: any) => {
+    if (element.key === 'Backspace') {
+      // Check if the current input is empty and move focus to the previous input
+      if (otp[index] === '' && index > 0) {
+        const prevSibling = document.getElementById(`otp-${index - 1}`)
+        if (prevSibling) {
+          prevSibling.focus()
+        }
+      }
+    }
   }
 
   const handlePaste = (e: any) => {
@@ -55,6 +67,7 @@ const OtpInput: React.FC<IOTPInputProps> = ({ onChangeValue, size }) => {
             id={`otp-${index}`}
             value={data}
             onChange={e => handleChange(e.target, index)}
+            onKeyDown={e => handleKeyDown(e, index)}
             onFocus={e => e.target.select()}
             maxLength={1}
             className={sizes[size || 'medium']}
