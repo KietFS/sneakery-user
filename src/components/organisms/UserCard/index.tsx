@@ -2,21 +2,18 @@ import * as React from 'react'
 
 //styles
 import {
-  ArrowsRightLeftIcon,
   ChevronRightIcon,
   ClipboardDocumentListIcon,
   ClockIcon,
   CurrencyDollarIcon,
   MapPinIcon,
   UserIcon,
-  WalletIcon,
 } from '@heroicons/react/24/outline'
 import AddressDialog from '@/components/organisms/AddressDialog'
 import AccountDialog from '@/components/organisms/AccountDialog'
 import OrderHistoryDialog from '@/components/organisms/OrderHistoryDialog'
 import LogoutConfirmDialog from '@/components/organisms/LogoutConfirmDialog'
 import PostedDialog from '@/components/templates/PostedDialog'
-import WithDrawDialog from '@/components/organisms/WithDrawDialog'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import OutlinedInput from '@mui/material/OutlinedInput'
 
@@ -31,6 +28,7 @@ import { IRootState } from '@/redux'
 import WinningDialog from '../WinningDialog'
 import { useDispatch } from 'react-redux'
 import { setAccessToken, setUser } from '@/redux/slices/auth'
+import HistoryDialog from '../HistoryDialog'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -43,7 +41,7 @@ const MenuProps = {
   },
 }
 
-export default function MultipleSelectPlaceholder() {
+export default function UserCard() {
   //state
   const { user } = useAppSelector((state: IRootState) => state.auth)
   const [personName, setPersonName] = React.useState<string[]>([])
@@ -56,8 +54,9 @@ export default function MultipleSelectPlaceholder() {
   const [openPostedDialog, setOpenPostedDialog] = React.useState<boolean>(false)
   const [openWinningDialog, setOpenWinningDialog] =
     React.useState<boolean>(false)
-  const [walletDialog, setWalletDialo] = React.useState<boolean>(false)
-  const [openWithDraw, setOpenWithDraw] = React.useState<boolean>(false)
+  const [openHistoryDialog, setOpenHistoryDialog] =
+    React.useState<boolean>(false)
+
   const dispatch = useDispatch()
 
   //functions
@@ -163,6 +162,15 @@ export default function MultipleSelectPlaceholder() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
+              setOpenHistoryDialog(true)
+            }}
+          >
+            <p className="text-gray-500 text-sm ">Lịch sử giao dịch</p>
+            <ClockIcon className="h-5 w-5 text-gray-500" />
+          </div>
+          <div
+            className="py-2 px-4 cursor-pointer flex justify-between items-center"
+            onClick={() => {
               setOpenLogoutDialog(true)
             }}
           >
@@ -200,10 +208,12 @@ export default function MultipleSelectPlaceholder() {
         />
       ) : null}
 
-      <PostedDialog
-        open={openPostedDialog}
-        onClose={() => setOpenPostedDialog(false)}
-      />
+      {openPostedDialog ? (
+        <PostedDialog
+          open={openPostedDialog}
+          onClose={() => setOpenPostedDialog(false)}
+        />
+      ) : null}
 
       {openWinningDialog ? (
         <WinningDialog
@@ -212,10 +222,10 @@ export default function MultipleSelectPlaceholder() {
         />
       ) : null}
 
-      {openWithDraw ? (
-        <WithDrawDialog
-          open={openWithDraw}
-          onClose={() => setOpenWithDraw(false)}
+      {openHistoryDialog ? (
+        <HistoryDialog
+          open={openHistoryDialog}
+          onClose={() => setOpenHistoryDialog(false)}
         />
       ) : null}
     </div>
