@@ -9,6 +9,7 @@ import { ITransactionHistoryItem } from '@/types'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { useAuth } from '@/hooks/useAuth'
+import TransactionHistoryCard from '@/components/molecules/TransactionHistoryCard'
 
 interface IHistoryDialogProps {
   open: boolean
@@ -35,7 +36,7 @@ const HistoryDialog: React.FC<IHistoryDialogProps> = props => {
       )
       if (response?.data?.success) {
         setLoading(false)
-        setTransactionHistoryItem(response?.data?.results)
+        setTransactionHistoryItem(response?.data?.data)
       } else {
         setTransactionHistoryItem([])
         setLoading(false)
@@ -56,7 +57,7 @@ const HistoryDialog: React.FC<IHistoryDialogProps> = props => {
       onClose={onClose}
       open={open}
       className="rounded-lg"
-      maxWidth="xs"
+      maxWidth="sm"
       fullWidth={true}
     >
       <DialogContent className="max-h-[600px]">
@@ -66,20 +67,13 @@ const HistoryDialog: React.FC<IHistoryDialogProps> = props => {
               Lịch sử giao dịch của bạn
             </h1>
             <Tooltip onClick={() => onClose()} title="Đóng">
-              <XMarkIcon className="w-8    h-8 p-1 hover:bg-gray-200 rounded-full cursor-pointer" />
+              <XMarkIcon className="w-8 h-8 p-1 hover:bg-gray-200 rounded-full cursor-pointer" />
             </Tooltip>
           </div>
           <div className="flex flex-col gap-y-5 justify-center items-center">
-            <Image
-              src={EmailSent}
-              width={450}
-              height={450}
-              className="my-auto"
-            />
-            <p className="text-gray-600 text-sm  text-center">
-              Chúng tôi vừa gửi một đường link tới email của bạn, hãy nhấn vào
-              đường link để hoàn thành thủ tục đăng ký của chúng tôi
-            </p>
+            {tractionHistoryItem?.map((item, index) => (
+              <TransactionHistoryCard {...item} />
+            ))}
           </div>
         </div>
       </DialogContent>

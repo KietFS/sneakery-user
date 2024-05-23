@@ -28,7 +28,7 @@ import { IRootState } from '@/redux'
 import WinningDialog from '../WinningDialog'
 import { useDispatch } from 'react-redux'
 import { setAccessToken, setUser } from '@/redux/slices/auth'
-import HistoryDialog from '../HistoryDialog'
+import HistoryDialog from '../TransactionHisotryDialog'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
