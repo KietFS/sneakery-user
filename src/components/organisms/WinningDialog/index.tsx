@@ -24,33 +24,18 @@ import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
 import { setWonProductSelected } from '@/redux/slices/payment'
 import { IWonProduct } from '@/types/product'
+import PaymentStatusBadge from '@/components/atoms/PaymentStatusBadge'
+import WinningProductCard from '@/components/molecules/WinningProductCard'
 
 interface IWinningDialogProps {
   open: boolean
   onClose: () => void
 }
 
-interface ICartItem {
-  id: number
-  product: {
-    id: number
-    name: string
-    startPrice: 126
-    imagePath: string
-    userName: string
-    bidClosingDate: string
-  }
-  priceWin: number
-  status: 'PENDING' | 'APPROVED'
-}
-
 const WinningDialog: React.FC<IWinningDialogProps> = props => {
   const { open, onClose } = props
   const [items, setItems] = useState<IWonProduct[]>([])
-  const { user } = useAppSelector((state: IRootState) => state.auth)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [actionLoading, setActionLoading] = useState<boolean>(false)
-  const [orderSelected, setOrderSelected] = useState<string | number>('')
   const { accessToken } = useAuth()
   const router = useRouter()
   const dispatch = useDispatch()
@@ -58,7 +43,6 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
   const getWinningItems = async () => {
     try {
       setIsLoading(true)
-      //THIS NEED TO FIX
       const response = await axios.get(`${Config.API_URL}/bids/win`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -144,54 +128,11 @@ const WinningDialog: React.FC<IWinningDialogProps> = props => {
                 {items.length > 0 ? (
                   <div className="flex flex-col gap-y-5">
                     {items.map((item, index) => (
-                      <div className="flex w-full gap-x-3 items-center">
-                        <img
-                          src={item.product.imagePath as string}
-                          width={120}
-                          height={80}
-                        />
-                        <div className="flex flex-col gap-y-2 w-2/3">
-                          <div className="flex gap-x-1 items-center">
-                            <p className="text-sm text-gray-600 font-semibold">
-                              {item.product.name}
-                            </p>
-                          </div>
-
-                          <div className="flex gap-x-1 items-center">
-                            <p className="text-xs text-gray-500 font-semibold">
-                              Giá cuối cùng:{' '}
-                            </p>
-                            <p className="text-green-500 font-semibold text-xs">
-                              {' '}
-                              {item.priceWin?.toString().prettyMoney()}$
-                            </p>
-                          </div>
-                          <div className="flex gap-x-1 items-center">
-                            <p className="text-xs text-gray-500 font-semibold">
-                              Số lượt đấu giá: {item?.product?.numberOfBids}
-                            </p>
-                          </div>
-                          <div className="flex gap-x-1 items-center">
-                            <p className="text-xs text-gray-500 font-semibold">
-                              Trạng thái:
-                            </p>
-                          </div>
-                          <div className="flex gap-x-1 items-center">
-                            <p className="text-xs text-gray-500 font-semibold">
-                              Thời gian còn lại để thanh toán:
-                            </p>
-                          </div>
-                        </div>
-                        <Tooltip title="Thanh toán">
-                          <IconButton onClick={() => handlePressCheckout(item)}>
-                            <PaymentsSharp
-                              width={20}
-                              height={20}
-                              className="text-green-500"
-                            />
-                          </IconButton>
-                        </Tooltip>
-                      </div>
+                      <WinningProductCard
+                        key={index}
+                        item={item}
+                        handlePressCheckout={handlePressCheckout}
+                      />
                     ))}
                   </div>
                 ) : (

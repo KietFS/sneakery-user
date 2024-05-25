@@ -9,3 +9,4 @@ export interface IPayForProductPayload extends IPayPreeSaleFeePayload {}
 
 export type IPaymentType = 'PAID' | 'PRE_SALE_FEE' | 'AUCTION_FEE'
 
+export type IPaymentStatus = 'PENDING' | 'OVERDUE' | 'COMPLETED'

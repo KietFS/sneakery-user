@@ -37,3 +37,12 @@
   -ms-transform: rotate(3deg) translate(0px, -4px);
   transform: rotate(3deg) translate(0px, -4px);
 }
+
+.toast-success-style {
+  border-color: #3b82f6 !important;
+}
+
+.toast-failed-style {
+  border-color: #4b5563 !important;
+}
+

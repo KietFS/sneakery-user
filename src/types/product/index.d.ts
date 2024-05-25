@@ -1,4 +1,5 @@
 import { TypeId } from '../common'
+import { IPaymentStatus } from '../payment'
 
 interface IProductProperties {
   [key: string]: string
@@ -57,4 +58,24 @@ export interface IWonProduct {
     bidClosingDate: string
     numberOfBids: number
   }
+  sellerPaymentStatus?: IPaymentStatus
+  winnerPaymentStatus?: IPaymentStatus
+}
+
+export interface IPostedProduct {
+  bidId: string
+  bidStartingDate: string
+  priceStart: number
+  stepBid: number
+  priceWin: number | null
+  product: {
+    id: number
+    name: string
+    startPrice: number
+    imagePath: string
+    username: string
+    bidClosingDate: string
+  }
+  sellerPaymentStatus?: IPaymentStatus
+  winnerPaymentStatus?: IPaymentStatus
 }

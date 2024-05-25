@@ -81,7 +81,6 @@ export default function UserCard() {
       toast.success('Đăng xuất thành công', {
         position: 'top-right',
         hideProgressBar: true,
-        theme: 'colored',
       })
       router.reload()
     } catch (error) {

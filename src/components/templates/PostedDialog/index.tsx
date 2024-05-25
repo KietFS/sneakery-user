@@ -15,26 +15,11 @@ import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/router'
+import { IPostedProduct } from '@/types'
 
 interface IPostedDialogProps {
   open: boolean
   onClose: () => void
-}
-
-interface IPostedProduct {
-  bidId: string
-  bidStartingDate: string
-  priceStart: number
-  stepBid: number
-  priceWin: number | null
-  product: {
-    id: number
-    name: string
-    startPrice: number
-    imagePath: string
-    username: string
-    bidClosingDate: string
-  }
 }
 
 const PostedDialog: React.FC<IPostedDialogProps> = props => {
@@ -83,7 +68,7 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
           onClose={onClose}
           open={open}
           className="rounded-lg"
-          maxWidth="xs"
+          maxWidth="sm"
           fullWidth={true}
         >
           <DialogContent className="max-h-[600px]">
@@ -111,6 +96,7 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
                     <div className="flex flex-col gap-y-5">
                       {items.map((item, index) => (
                         <PostedCard
+                          {...item}
                           key={index.toString()}
                           id={item?.bidId}
                           title={item.product.name}

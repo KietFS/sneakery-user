@@ -1,30 +1,20 @@
 //hooks
 import { useAppSelector } from '@/hooks/useRedux'
-import {
-  useSignInWithGoogle,
-  useSignInWithFacebook,
-} from 'react-firebase-hooks/auth'
 import { useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 //utils and types
 import {
   setAccessToken,
   setAuth,
-  setOpenEmailSentDialog,
   setOpenVerifyPhoneNumberDialog,
   setUser,
-  setUserBalance,
 } from '@/redux/slices/auth'
-import { isExistedEmail, loginService, registerService } from '@/services/api'
+import { loginService, registerService } from '@/services/api'
 import { IUser } from '@/types/user'
 import { IRootState } from '@/redux'
 import { toast } from 'react-toastify'
-import { auth } from '@/common/config/firebase'
 import { configResponse } from '@/utils/request'
-import React from 'react'
-import axios from 'axios'
-import { Config } from '@/config/api'
 
 export const useAuth = () => {
   //local state
@@ -52,7 +42,7 @@ export const useAuth = () => {
           toast.success('Đăng nhập thành công', {
             position: 'top-right',
             autoClose: 0,
-            theme: 'colored',
+            theme: 'light',
             hideProgressBar: true,
           })
           dispatch(setUser(response?.data?.data as IUser))
