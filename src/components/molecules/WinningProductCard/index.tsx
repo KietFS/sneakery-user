@@ -1,7 +1,8 @@
 import PaymentStatusBadge from '@/components/atoms/PaymentStatusBadge'
 import SmallCountdownTimer from '@/components/atoms/SmallCountdownTimer'
 import { IWonProduct } from '@/types'
-import { PaymentsSharp } from '@mui/icons-material'
+import { ClockIcon } from '@heroicons/react/20/solid'
+import { PaymentSharp, PaymentsSharp } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
 import React from 'react'
 
@@ -18,51 +19,62 @@ const WinningProductCard: React.FC<IWinningProductCardProps> = props => {
   paymentRemainTimeDeadline.setHours(bidClosingDate.getHours() + 24)
 
   return (
-    <div className="flex w-full gap-x-4 items-center">
-      <img
-        src={item.product.imagePath as string}
-        width={80}
-        height={60}
-        className="max-h-[60px] max-w-[80px]"
-      />
-      <div className="flex flex-col gap-y-2 w-2/3">
-        <div className="flex gap-x-1 items-center">
-          <p className="text-sm text-gray-600 font-semibold">
-            {item.product.name}
-          </p>
-        </div>
+    <div className="rounded-lg border border-gray-200 px-4 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-x-4">
+          <img
+            src={item.product.imagePath}
+            width={80}
+            height={60}
+            className="max-h-[80px] max-w-[80px]"
+          />
+          <div className="flex flex-col gap-y-2">
+            <div className="flex items-center">
+              <p className="text-xs text-gray-600 font-regular">
+                Tên sản phẩm: {item?.product?.name}
+              </p>
+            </div>
+            <div className="flex gap-x-1 items-center">
+              <div className="flex items-center">
+                <ClockIcon className="w-4 h-4 text-gray-600 mr-1" />
+                <p className="text-gray-500 font-regular text-xs">
+                  Thời điểm kết thúc đấu giá:
+                </p>
+              </div>
+              <p className="text-xs font-regular text-gray-600">
+                {item?.product?.bidClosingDate?.toString()?.prettyDateTime()}
+              </p>
+            </div>
+            <div className="flex items-center">
+              <p className="text-gray-500 font-regular text-xs mr-1">
+                Giá chiến thắng:
+              </p>
+              <p className="text-xs font-regular text-green-600">
+                {item?.priceWin?.toString().prettyMoney()}$
+              </p>
+            </div>
 
-        <div className="flex gap-x-1 items-center">
-          <p className="text-xs text-gray-500 font-semibold">Giá cuối cùng: </p>
-          <p className="text-green-500 font-semibold text-xs">
-            {item.priceWin?.toString().prettyMoney()}$
-          </p>
+            <div className="flex items-center">
+              <p className="text-xs text-gray-500 font-regular mr-1">
+                Trạng thái thanh toán:
+              </p>
+              {item.winnerPaymentStatus !== undefined ? (
+                <PaymentStatusBadge status={item.winnerPaymentStatus} />
+              ) : (
+                <p className="text-gray-600 font-regular text-xs">Không rõ</p>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="flex gap-x-1 items-center">
-          <p className="text-xs text-gray-500 font-semibold">
-            Số lượt đấu giá: {item?.product?.numberOfBids}
-          </p>
-        </div>
-        <div className="flex gap-x-1 items-center">
-          <p className="text-xs text-gray-500 font-semibold">Trạng thái:</p>
-        </div>
-        <div className="flex gap-x-1 items-center">
-          <p className="text-xs text-gray-500 font-semibold">
-            Thời gian còn lại để thanh toán:
-          </p>
-          <SmallCountdownTimer bidClosingDate={paymentRemainTimeDeadline.toString()} />
-        </div>
-        {item.winnerPaymentStatus && (
-          <PaymentStatusBadge status={item.winnerPaymentStatus} />
+        {item.winnerPaymentStatus == 'PENDING' && (
+          <IconButton
+            title="Thanh toán sản phẩm"
+            onClick={() => handlePressCheckout(item)}
+          >
+            <PaymentSharp width={20} height={20} className="text-green-500" />
+          </IconButton>
         )}
       </div>
-      {item.winnerPaymentStatus === 'PENDING' && (
-        <Tooltip title="Thanh toán">
-          <IconButton onClick={() => handlePressCheckout(item)}>
-            <PaymentsSharp width={20} height={20} className="text-green-500" />
-          </IconButton>
-        </Tooltip>
-      )}
     </div>
   )
 }

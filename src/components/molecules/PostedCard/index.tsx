@@ -41,7 +41,7 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
           />
           <div className="flex flex-col gap-y-2">
             <div className="flex items-center">
-              <p className="text-sm text-gray-600 font-regular">
+              <p className="text-xs text-gray-600 font-regular">
                 Tên sản phẩm: {title}
               </p>
             </div>
@@ -52,7 +52,9 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
                   Thời điểm kết thúc đấu giá:
                 </p>
               </div>
-              <p className="text-xs font-regular text-gray-600">{createdAt}</p>
+              <p className="text-xs font-regular text-gray-600">
+                {props.product.bidClosingDate?.toString().prettyDateTime()}
+              </p>
             </div>
             <div className="flex items-center">
               <p className="text-gray-500 font-regular text-xs mr-1">
