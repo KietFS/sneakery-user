@@ -25,7 +25,7 @@ const ProductDescription: React.FC<IProductDescriptionProps> = props => {
         <p className="text-blue-500 text-xl laptop:text-2xl font-semibold">
           Các thông tin của sản phẩm
         </p>
-        {Object.entries(properties).map(([key, value]) => (
+        {Object.entries(properties)?.map(([key, value]) => (
           <div className="flex items-center mt-2">
             <p className="font-bold text-gray-500 text-sm">
               {capitalizeFirstLetter(key.toLowerCase())}:
@@ -34,8 +34,8 @@ const ProductDescription: React.FC<IProductDescriptionProps> = props => {
               {value == 'True'
                 ? 'Có'
                 : value == 'False'
-                  ? 'Sai'
-                  : `${capitalizeFirstLetter(value.toLowerCase())}`}
+                ? 'Sai'
+                : `${capitalizeFirstLetter(value.toLowerCase())}`}
             </p>
           </div>
         ))}

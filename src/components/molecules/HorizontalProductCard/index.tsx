@@ -19,7 +19,12 @@ const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = props => {
       onClick={() => router.replace(`/products/${product.id}`)}
     >
       <div className="flex gap-x-3 items-center">
-        <img src={product.imagePath} width={80} height={80} />
+        <img
+          src={product.imagePath}
+          width={80}
+          height={60}
+          className="max-w-[80px] max-h-[60px]"
+        />
         <div className="flex flex-col gap-y-2">
           <p className="text-sm text-gray-600 font-semibold">{product.name}</p>
 

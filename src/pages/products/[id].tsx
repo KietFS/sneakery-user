@@ -58,7 +58,7 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
   return (
     <>
-      {!!productDetail ? (
+      {/* {!!productDetail ? (
         <BidDialog
           onSuccess={() => {
             getProductBidHistory(props.product.id)
@@ -76,7 +76,7 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           open={openProblemWithBid}
           onClose={() => setOpenProblemWithBid(false)}
         />
-      ) : null}
+      ) : null} */}
 
       <div className="bg-white">
         <Head>
@@ -101,7 +101,9 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </div>
         </div>
         <div className="w-5/6 mx-auto flex">
-          <ProductDescription productDetail={props?.product} />
+          {!!productDetail && (
+            <ProductDescription productDetail={productDetail} />
+          )}
         </div>
         <div className="w-5/6 mx-auto flex">
           {/* <SimilarProduct
@@ -135,18 +137,20 @@ export const getStaticPaths: GetStaticPaths<{}> = async () => {
 }
 
 export const getStaticProps: GetStaticProps<{
-  product: IProductDetail
+  product: any
 }> = async ({ params }: any) => {
   try {
     // Use Promise.all to fetch both product and bid history concurrently
-    const productResponse = await axios.get(
-      `${Config.API_URL}/products/${params.id}`,
-    )
+    // const productResponse = await axios.get(
+    //   `${Config.API_URL}/products/${params.id}`,
+    // )
 
-    const product = productResponse.data.data
+    // const product = productResponse.data.data
     return {
       props: {
-        product: product,
+        product: {
+          id: params?.id,
+        },
       },
       revalidate: 20,
     }
