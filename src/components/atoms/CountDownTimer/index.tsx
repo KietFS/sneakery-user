@@ -41,10 +41,16 @@ const CountDownTimer: React.FC<ICountDownTimer> = props => {
 
   return (
     <>
-      <h3 className="text-gray-400 text-lg">Ngày hết hạn : </h3>
-      <h3 className="text-red-500 ml-1 text-lg  cursor-pointer">
-        {`${textDay} ngày : ${textHour} giờ : ${textMinute} phút : ${textSecond} giây`}
-      </h3>
+      {Number(textDay) < 0 ? (
+        <p className="text-gray-600 text-md">Sản phẩm đã hết phiên đấu giá</p>
+      ) : (
+        <>
+          <h3 className="text-gray-400 text-lg">Ngày hết hạn : </h3>
+          <h3 className="text-red-500 ml-1 text-lg  cursor-pointer">
+            {`${textDay} ngày : ${textHour} giờ : ${textMinute} phút : ${textSecond} giây`}
+          </h3>
+        </>
+      )}
     </>
   )
 }

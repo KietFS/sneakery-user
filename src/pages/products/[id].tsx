@@ -10,24 +10,24 @@ import BidDialog from '@/components/templates/BidDialog'
 import Head from 'next/head'
 
 //utils
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import ProductDescription from '@/layouts/products/Description'
 import { IProductDetail } from '@/types'
 import ProblemWithBidDialog from '@/components/organisms/ProblemWithBidDialog'
-import { useParams } from 'react-router-dom'
+import { useRouter } from 'next/router'
 
 const Product = (props: any) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [bidHistory, setBidHistory] = useState<IProductBidHistoryItem[]>([])
   const [productDetail, setProductDetail] = useState<IProductDetail>()
   const [openProblemWithBid, setOpenProblemWithBid] = useState<boolean>(false)
-  const route = useParams()
+  const route = useRouter()
+  const productID = route.query.id
 
   const getProductBidHistory = async (productId: string | number) => {
     try {
-      const response = await axios.get(
+    const response = await axios.get(
         `${Config.API_URL}/bid-history/product/${productId}`,
       )
       if (response?.data?.success) {
@@ -42,7 +42,7 @@ const Product = (props: any) => {
   const getProductDetail = async () => {
     try {
       const productResponse = await axios.get(
-        `${Config.API_URL}/products/${props.product?.id}`,
+        `${Config.API_URL}/products/${route.query?.id}`,
       )
 
       if (productResponse?.data?.success) {
@@ -54,16 +54,18 @@ const Product = (props: any) => {
   }
 
   useEffect(() => {
-    getProductBidHistory(props.product.id)
-    getProductDetail()
-  }, [])
+    if (!!productID) {
+      getProductBidHistory(productID as string)
+      getProductDetail()
+    }
+  }, [productID])
 
   return (
     <>
       {!!productDetail ? (
         <BidDialog
           onSuccess={() => {
-            getProductBidHistory(props.product.id)
+            getProductBidHistory(productID as string)
             getProductDetail()
           }}
           onProblemWithBid={() => setOpenProblemWithBid(true)}
@@ -82,7 +84,7 @@ const Product = (props: any) => {
 
       <div className="bg-white">
         <Head>
-          <title>Sneakery - {props.product?.name}</title>
+          <title>Sneakery - {productDetail?.name}</title>
           <link rel="icon" />
         </Head>
         <div className="pb-10 bg-white">
@@ -119,50 +121,50 @@ const Product = (props: any) => {
   )
 }
 
-export const getStaticPaths: GetStaticPaths<{}> = async () => {
-  const response = await axios.get(`${Config.API_URL}/products/allid`)
+// export const getStaticPaths: GetStaticPaths<{}> = async () => {
+//   const response = await axios.get(`${Config.API_URL}/products/allid`)
 
-  const products = response.data?.data || []
+//   const products = response.data?.data || []
 
-  const paths = products.map((item: number) => ({
-    params: {
-      id: `${item.toString()}`,
-    },
-  }))
+//   const paths = products.map((item: number) => ({
+//     params: {
+//       id: `${item.toString()}`,
+//     },
+//   }))
 
-  return {
-    paths,
-    fallback: 'blocking',
-  }
-}
+//   return {
+//     paths,
+//     fallback: 'blocking',
+//   }
+// }
 
-export const getStaticProps: GetStaticProps<{
-  product: any
-}> = async ({ params }: any) => {
-  try {
-    // Use Promise.all to fetch both product and bid history concurrently
-    const productResponse = await axios.get(
-      `${Config.API_URL}/products/${params.id}`,
-    )
+// export const getStaticProps: GetStaticProps<{
+//   product: any
+// }> = async ({ params }: any) => {
+//   try {
+//     // Use Promise.all to fetch both product and bid history concurrently
+//     const productResponse = await axios.get(
+//       `${Config.API_URL}/products/${params.id}`,
+//     )
 
-    const product = productResponse.data.data
-    return {
-      props: {
-        product: {
-          id: params?.id,
-        },
-      },
-      revalidate: 10,
-    }
-  } catch (error) {
-    console.error('Error fetching data:', error)
-    return {
-      props: {
-        product: null,
-      },
-      revalidate: 10,
-    }
-  }
-}
+//     const product = productResponse.data.data
+//     return {
+//       props: {
+//         product: {
+//           id: params?.id,
+//         },
+//       },
+//       revalidate: 10,
+//     }
+//   } catch (error) {
+//     console.error('Error fetching data:', error)
+//     return {
+//       props: {
+//         product: null,
+//       },
+//       revalidate: 10,
+//     }
+//   }
+// }
 
 export default Product

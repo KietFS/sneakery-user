@@ -6,12 +6,12 @@ import PaypalLogo from '@/assets/images/PayPalLogo.png'
 import ZaloPayLogo from '@/assets/images/ZaloPayLogo.png'
 import MomoLogo from '@/assets/images/MomoLogo.png'
 import Image from 'next/image'
+import VisaLogo from '@/assets/images/VisaLogo.png'
+import MasterCardLogo from '@/assets/images/MasterCardLogo.png'
 
 //hooks
-import { useRouter } from 'next/router'
+
 import BidHistorySection from './BidHistorySection'
-import axios from 'axios'
-import { Config } from '@/config/api'
 import CountDownTimer from '@/components/atoms/CountDownTimer'
 import { IProductDetail } from '@/types'
 
@@ -63,11 +63,7 @@ const RightSide: React.FC<IRightSideProps> = props => {
         </h3>
       </div>
       <div className="mt-2 flex items-center">
-        {isDisable ? (
-          'Sản phẩm đã hết phiên đấu giá'
-        ) : (
-          <CountDownTimer bidClosingDate={product.bidClosingDate} />
-        )}
+        <CountDownTimer bidClosingDate={product.bidClosingDate} />
       </div>
       <div className="flex items-center">
         <button
@@ -99,17 +95,17 @@ const RightSide: React.FC<IRightSideProps> = props => {
             </div>
             <div className="w-[120px] h-[70px] border border-gray-200 justify-center items-center flex rounded-lg cursor-pointer hover:opacity-70 p-[5px] ">
               <Image
-                src={ZaloPayLogo}
+                src={VisaLogo}
                 className="rounded-lg my-auto"
                 width={90}
                 height={30}
               />
             </div>
-            <div className="w-[120px] h-[70px] border border-gray-200 justify-center items-center flex rounded-lg cursor-pointer hover:opacity-70 p-[5px] ">
+            <div className="w-[140px] h-[70px] border border-gray-200 justify-center items-center flex rounded-lg cursor-pointer hover:opacity-70 p-[5px] ">
               <Image
-                src={MomoLogo}
+                src={MasterCardLogo}
                 className="rounded-lg my-auto"
-                width={50}
+                width={70}
                 height={50}
               />
             </div>
