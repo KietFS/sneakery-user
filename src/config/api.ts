@@ -5,6 +5,5 @@ const apiURl: Object = {
 
 export const Config = {
   isDev: true,
-  // @ts-ignore
-  API_URL: apiURl.production,
+  API_URL: 'https://sneakery-develop-4ba9beca2712.herokuapp.com',
 }

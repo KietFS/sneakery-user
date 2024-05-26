@@ -148,7 +148,7 @@ export const getStaticProps: GetStaticProps<{
       props: {
         product: product,
       },
-      revalidate: 10,
+      revalidate: 20,
     }
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -156,7 +156,7 @@ export const getStaticProps: GetStaticProps<{
       props: {
         product: null,
       },
-      revalidate: 10,
+      revalidate: 20,
     }
   }
 }
