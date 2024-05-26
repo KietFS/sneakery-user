@@ -6,5 +6,5 @@ const apiURl: Object = {
 export const Config = {
   isDev: true,
   // @ts-ignore
-  API_URL: apiURl[process.env.NODE_ENV],
+  API_URL: apiURl.production,
 }

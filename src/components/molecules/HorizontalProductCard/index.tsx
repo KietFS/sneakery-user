@@ -13,8 +13,6 @@ const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = props => {
   const { product } = props
   const router = useRouter()
 
-  console.log('NODE ENV', process.env.NODE_ENV)
-
   return (
     <div
       className=" border-b border-gray-200 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80"
