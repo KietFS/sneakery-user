@@ -16,12 +16,14 @@ import { Config } from '@/config/api'
 import ProductDescription from '@/layouts/products/Description'
 import { IProductDetail } from '@/types'
 import ProblemWithBidDialog from '@/components/organisms/ProblemWithBidDialog'
+import { useParams } from 'react-router-dom'
 
-const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Product = (props: any) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [bidHistory, setBidHistory] = useState<IProductBidHistoryItem[]>([])
   const [productDetail, setProductDetail] = useState<IProductDetail>()
   const [openProblemWithBid, setOpenProblemWithBid] = useState<boolean>(false)
+  const route = useParams()
 
   const getProductBidHistory = async (productId: string | number) => {
     try {
@@ -58,7 +60,7 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
   return (
     <>
-      {/* {!!productDetail ? (
+      {!!productDetail ? (
         <BidDialog
           onSuccess={() => {
             getProductBidHistory(props.product.id)
@@ -76,7 +78,7 @@ const Product = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           open={openProblemWithBid}
           onClose={() => setOpenProblemWithBid(false)}
         />
-      ) : null} */}
+      ) : null}
 
       <div className="bg-white">
         <Head>
@@ -130,9 +132,7 @@ export const getStaticPaths: GetStaticPaths<{}> = async () => {
 
   return {
     paths,
-    fallback: 'blocking', // bat ki path nao k returned boi getStaticPaths se toi trang 404
-    // fallback: 'blocking', // path nao k returned ngay lap tuc se show trang "tam thoi" => doi getStaticProps chay
-    // // => getStaticProps chay xong => return trang hoan chinh
+    fallback: 'blocking',
   }
 }
 
@@ -141,18 +141,18 @@ export const getStaticProps: GetStaticProps<{
 }> = async ({ params }: any) => {
   try {
     // Use Promise.all to fetch both product and bid history concurrently
-    // const productResponse = await axios.get(
-    //   `${Config.API_URL}/products/${params.id}`,
-    // )
+    const productResponse = await axios.get(
+      `${Config.API_URL}/products/${params.id}`,
+    )
 
-    // const product = productResponse.data.data
+    const product = productResponse.data.data
     return {
       props: {
         product: {
           id: params?.id,
         },
       },
-      revalidate: 20,
+      revalidate: 10,
     }
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -160,7 +160,7 @@ export const getStaticProps: GetStaticProps<{
       props: {
         product: null,
       },
-      revalidate: 20,
+      revalidate: 10,
     }
   }
 }
