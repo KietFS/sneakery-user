@@ -164,7 +164,7 @@ const CheckoutProductLeftSide: React.FC<
               Số tiền bạn cần thanh toán:{' '}
             </p>
             <p className="text-lg italic font-semibold text-blue-500 ml-1">
-              {/* {wonProduct?.priceWin?.toString()?.prettyMoney()} VND */}
+              {props?.wonProduct?.priceWin?.toString()?.prettyMoney()}$
             </p>
           </div>
 
