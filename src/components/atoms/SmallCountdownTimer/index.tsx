@@ -49,7 +49,7 @@ const SmallCountdownTimer: React.FC<ISmallCountTimerProps> = props => {
         </p>
       )}
       {isDisable ? (
-        <p className="text-gray-500 ml-1 text-xs  cursor-pointer">
+        <p className="text-red-500 ml-1 text-xs cursor-pointer">
           Sản phẩm đã hết phiên đấu giá
         </p>
       ) : (

@@ -20,7 +20,7 @@ const ProductDescription: React.FC<IProductDescriptionProps> = props => {
   }
 
   return (
-    <div className="h-fit rounded-lg shadow-lg bg-white mt-10 border border-gray-200 w-full px-8 pt-4 pb-8">
+    <div className="border-t border-gray-100 px-8 pt-4 pb-8">
       <div>
         <p className="text-blue-500 text-xl laptop:text-2xl font-semibold">
           Các thông tin của sản phẩm

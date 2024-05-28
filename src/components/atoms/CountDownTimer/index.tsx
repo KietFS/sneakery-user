@@ -1,3 +1,4 @@
+import { InformationCircleIcon } from '@heroicons/react/20/solid'
 import React, { useEffect, useState } from 'react'
 
 interface ICountDownTimer {
@@ -42,7 +43,12 @@ const CountDownTimer: React.FC<ICountDownTimer> = props => {
   return (
     <>
       {Number(textDay) < 0 ? (
-        <p className="text-gray-600 text-md">Sản phẩm đã hết phiên đấu giá</p>
+        <div className="flex items-center">
+          <InformationCircleIcon className="text-red-600 text-sm w-5 h-5 mr-1" />
+          <p className="text-red-500 text-md font-semibold">
+            Sản phẩm đã hết phiên đấu giá
+          </p>
+        </div>
       ) : (
         <>
           <h3 className="text-gray-400 text-lg">Ngày hết hạn : </h3>

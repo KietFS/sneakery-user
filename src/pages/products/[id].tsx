@@ -16,6 +16,7 @@ import ProductDescription from '@/layouts/products/Description'
 import { IProductDetail } from '@/types'
 import ProblemWithBidDialog from '@/components/organisms/ProblemWithBidDialog'
 import { useRouter } from 'next/router'
+import ProductComment from '@/layouts/products/Comments'
 
 const Product = (props: any) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
@@ -27,7 +28,7 @@ const Product = (props: any) => {
 
   const getProductBidHistory = async (productId: string | number) => {
     try {
-    const response = await axios.get(
+      const response = await axios.get(
         `${Config.API_URL}/bid-history/product/${productId}`,
       )
       if (response?.data?.success) {
@@ -89,25 +90,29 @@ const Product = (props: any) => {
         </Head>
         <div className="pb-10 bg-white">
           <HeaderV2 />
-          <div className="flex flex-col laptop:flex-row  rounded-lg bg-white border border-gray-100 shadow-lg mt-10 w-5/6 mx-auto min-h-[650px]">
-            <div className="w-full laptop:w-3/5 desktop:w-1/2">
-              <LeftSide product={productDetail} />
+          <div className="rounded-lg bg-white border border-gray-100 shadow-lg mt-10  w-5/6 mx-auto ">
+            <div className="flex flex-col laptop:flex-row">
+              <div className="w-full laptop:w-3/5 desktop:w-1/2">
+                <LeftSide product={productDetail} />
+              </div>
+              <div className=" w-full laptop:w-2/5 desktop:w-1/2">
+                {!!productDetail ? (
+                  <RightSide
+                    bidHistory={bidHistory}
+                    product={productDetail}
+                    onPlaceBid={() => setOpenDialog(true)}
+                  />
+                ) : null}
+              </div>
             </div>
-            <div className=" w-full laptop:w-2/5 desktop:w-1/2">
-              {!!productDetail ? (
-                <RightSide
-                  bidHistory={bidHistory}
-                  product={productDetail}
-                  onPlaceBid={() => setOpenDialog(true)}
-                />
-              ) : null}
-            </div>
+            {!!productDetail && (
+              <ProductDescription productDetail={productDetail} />
+            )}
           </div>
         </div>
+
         <div className="w-5/6 mx-auto flex">
-          {!!productDetail && (
-            <ProductDescription productDetail={productDetail} />
-          )}
+          <ProductComment />
         </div>
         <div className="w-5/6 mx-auto flex">
           {/* <SimilarProduct
