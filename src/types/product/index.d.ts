@@ -16,7 +16,7 @@ export interface IProductDetail {
   bidIncrement: number
   bidClosingDate: string
   holder: string
-  seller?: string;
+  seller?: string
   description: string
 }
 

@@ -103,6 +103,9 @@ const ProductComment: React.FC<IProductCommentProps> = props => {
             key={index}
             {...item}
             productDetail={props.productDetail}
+            onReplyingSuccess={() =>
+              getProductComments(productDetail?.id as TypeId)
+            }
           />
         ))}
       </div>

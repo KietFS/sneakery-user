@@ -1,7 +1,7 @@
 import { Avatar } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, CardContent, Typography } from '@mui/material'
-import { IProductComment, IProductDetail } from '@/types'
+import { IProductComment, IProductDetail, TypeId } from '@/types'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { useAuth } from '@/hooks/useAuth'
@@ -10,19 +10,57 @@ import { useForm } from 'react-hook-form'
 
 interface IProductCommentCardProps extends IProductComment {
   productDetail: IProductDetail
+  onReplyingSuccess?: () => void
 }
 
 const ProductCommentCard: React.FC<IProductCommentCardProps> = props => {
-  const { commentText, parentCommentId, replies, userName } = props
+  const {
+    commentText,
+    parentCommentId,
+    replies,
+    userName,
+    onReplyingSuccess,
+    id,
+  } = props
   const { productDetail } = props
   const { seller } = productDetail
-  const { register, control, handleSubmit } = useForm()
+  const { register, control, handleSubmit, watch } = useForm()
   const [isReplying, setIsReplying] = React.useState<boolean>(false)
   const [isTurningOnReply, setIsTurningOnReply] = React.useState<boolean>(false)
+  const { accessToken } = useAuth()
 
-  const handlePostReply = async () => {}
+  const handlePostReply = async () => {
+    try {
+      console.log('parent comment id', id)
+      setIsReplying(true)
+      if (watch('reply')?.length > 0) {
+        const response = await axios.post(
+          `${Config.API_URL}/comments`,
+          {
+            commentText: watch('reply') || '',
+            parentCommentId: id || null,
+            productId: productDetail.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
+        )
+        if (response?.data?.success) {
+          setIsTurningOnReply(false)
+          onReplyingSuccess?.()
+        }
+      }
+    } catch (error) {
+    } finally {
+      setIsReplying(false)
+    }
+  }
 
-  const handleTurnOnReply = () => setIsTurningOnReply(!isTurningOnReply)
+  const handleTurnOnReply = () => {
+    setIsTurningOnReply(true)
+  }
 
   return (
     <div className="my-2 py-3 pl-4 rounded-xl bg-gray-50 h-fit">
@@ -47,20 +85,42 @@ const ProductCommentCard: React.FC<IProductCommentCardProps> = props => {
       </div>
 
       <div>
-        {replies?.map((reply, replyIndex) => (
-          <div className="ml-8 mt-2 border-t border-gray-200">
-            <ProductCommentCard productDetail={productDetail} {...reply} />
-          </div>
-        ))}
+        {replies?.map((reply, replyIndex) => {
+          return (
+            <div className="relative ml-2">
+              <svg
+                className="absolute left-0 top-0 h-full"
+                width="40"
+                height="100%"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 0 v50 M10 50 h30"
+                  stroke="#cbd5e0"
+                  strokeWidth="0.5"
+                />
+              </svg>
+              <div className="ml-8 mt-2 border-t border-gray-200 pl-4">
+                <ProductCommentCard
+                  key={replyIndex}
+                  productDetail={productDetail}
+                  {...reply}
+                  onReplyingSuccess={() => onReplyingSuccess?.()}
+                />
+              </div>
+            </div>
+          )
+        })}
       </div>
 
       {isTurningOnReply ? (
         <div className="mt-4 ease-in duration-300">
           <CommentInput
-            {...register('comment', {
+            key={id}
+            {...register('reply', {
               required: {
                 value: true,
-                message: 'Không được để trống phần comment',
+                message: 'Không được để trống phần trả lời',
               },
             })}
             control={control}
