@@ -16,7 +16,17 @@ export interface IProductDetail {
   bidIncrement: number
   bidClosingDate: string
   holder: string
+  seller?: string;
   description: string
+}
+
+export interface IProductComment {
+  commentText: string
+  createdAt: string
+  id: TypeId
+  parentCommentId: TypeId | null
+  replies?: IProductComment[]
+  userName: string
 }
 
 export interface IProductCategory {

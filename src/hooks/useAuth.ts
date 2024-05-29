@@ -31,6 +31,8 @@ export const useAuth = () => {
   //hooks
   const dispatch = useDispatch()
 
+  console.log('access token is', accessToken)
+
   //functions
   const login = async (email: string, password: string) => {
     try {

@@ -17,6 +17,7 @@ import { IProductDetail } from '@/types'
 import ProblemWithBidDialog from '@/components/organisms/ProblemWithBidDialog'
 import { useRouter } from 'next/router'
 import ProductComment from '@/layouts/products/Comments'
+import CommentInput from '@/components/atoms/CommentInput'
 
 const Product = (props: any) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
@@ -112,13 +113,7 @@ const Product = (props: any) => {
         </div>
 
         <div className="w-5/6 mx-auto flex">
-          <ProductComment />
-        </div>
-        <div className="w-5/6 mx-auto flex">
-          {/* <SimilarProduct
-            category={props.product.category}
-            currentProductId={Number(props.product.id)}
-          /> */}
+          {!!productDetail && <ProductComment productDetail={productDetail} />}
         </div>
         <FooterSection />
       </div>
