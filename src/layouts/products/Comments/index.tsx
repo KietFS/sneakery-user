@@ -97,33 +97,46 @@ const ProductComment: React.FC<IProductCommentProps> = props => {
         </p>
       </div>
 
-      <div className="mt-2">
-        {comments?.map((item, index) => (
-          <ProductCommentCard
-            key={index}
-            {...item}
-            productDetail={props.productDetail}
-            onReplyingSuccess={() =>
-              getProductComments(productDetail?.id as TypeId)
-            }
-          />
-        ))}
-      </div>
+      {loading ? (
+        <div className="flex flex-col gap-y-5 mt-4">
+          <div className="w-full h-[80px] rounded-xl bg-gray-100 animate-pulse"></div>
+          <div className="w-full h-[80px] rounded-xl bg-gray-100 animate-pulse"></div>
+          <div className="w-full h-[80px] rounded-xl bg-gray-100 animate-pulse"></div>
+          <div className="w-full h-[80px] rounded-xl bg-gray-100 animate-pulse"></div>
+          <div className="w-full h-[80px] rounded-xl bg-gray-100 animate-pulse"></div>
+          <div className="w-full h-[80px] rounded-xl bg-gray-100 animate-pulse"></div>
+        </div>
+      ) : (
+        <>
+          <div className="mt-2">
+            {comments?.map((item, index) => (
+              <ProductCommentCard
+                key={index}
+                {...item}
+                productDetail={props.productDetail}
+                onReplyingSuccess={() =>
+                  getProductComments(productDetail?.id as TypeId)
+                }
+              />
+            ))}
+          </div>
 
-      <div>
-        <CommentInput
-          {...register('comment', {
-            required: {
-              value: true,
-              message: 'Không được để trống phần comment',
-            },
-          })}
-          control={control}
-          label="Đăng bình luận"
-          onPostComment={handleSubmit(handlePostComment)}
-          isPosting={isPosting}
-        />
-      </div>
+          <div>
+            <CommentInput
+              {...register('comment', {
+                required: {
+                  value: true,
+                  message: 'Không được để trống phần comment',
+                },
+              })}
+              control={control}
+              label="Đăng bình luận"
+              onPostComment={handleSubmit(handlePostComment)}
+              isPosting={isPosting}
+            />
+          </div>
+        </>
+      )}
     </div>
   )
 }
