@@ -56,12 +56,19 @@ const RightSide: React.FC<IRightSideProps> = props => {
           {(product?.currentPrice as number).toString().prettyMoney()}$
         </h3>
       </div>
-      <div className="mt-2 flex items-center">
-        <h3 className="text-gray-400 text-lg">Người đang giữ giá: </h3>
-        <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
-          {product?.holder as string}
+      {!!product?.holder ? (
+        <div className="mt-2 flex items-center">
+          <h3 className="text-gray-400 text-lg">Người đang giữ giá: </h3>
+          <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
+            {product?.holder as string}
+          </h3>
+        </div>
+      ) : (
+        <h3 className="text-gray-400 text-lg">
+          Chưa có ai đấu giá cho sản phẩm này
         </h3>
-      </div>
+      )}
+
       <div className="mt-2 flex items-center">
         <CountDownTimer bidClosingDate={product.bidClosingDate} />
       </div>
