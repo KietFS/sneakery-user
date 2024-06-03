@@ -64,7 +64,7 @@ const RightSide: React.FC<IRightSideProps> = props => {
           </h3>
         </div>
       ) : (
-        <h3 className="text-gray-400 text-lg">
+        <h3 className="text-gray-400 text-lg mt-2">
           Chưa có ai đấu giá cho sản phẩm này
         </h3>
       )}

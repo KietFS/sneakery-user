@@ -160,6 +160,11 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           (image: any, imageIndex: number) => image?.id,
         )
         await handleUpdateBidValue(values, returnedIds)
+      } else {
+        toast.error(
+          'Đăng ảnh không thành công' ||
+            uploadMediaResponse?.data?.data?.message,
+        )
       }
     } catch (error) {
       setCreateLoading(false)

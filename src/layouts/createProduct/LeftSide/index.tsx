@@ -170,10 +170,14 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
           (image: any, imageIndex: number) => image?.id,
         )
         await handleCreateBidValue(values, returnedIds)
+      } else {
+        toast.error(
+          'Đăng ảnh không thành công' ||
+            uploadMediaResponse?.data?.data?.message,
+        )
       }
     } catch (error) {
       setCreateLoading(false)
-      console.log('UPLOAD MEDIA ERROR', error)
       toast.error('Đăng ảnh không thành công')
     }
   }
