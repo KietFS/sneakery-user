@@ -12,8 +12,10 @@ interface IInitialState {
   openEmailSentDialog: boolean
   openVerifyPhoneNumberDialog: boolean
   openForgotPasswordDialog: boolean
+  openForceLogOutDialog: boolean
   balance: number
   createdProduct: TypeId | null
+  tokenExpiredTime: number | null
 }
 
 const initialState: IInitialState = {
@@ -23,8 +25,10 @@ const initialState: IInitialState = {
   openEmailSentDialog: false,
   openVerifyPhoneNumberDialog: false,
   openForgotPasswordDialog: false,
+  openForceLogOutDialog: false,
   balance: 0,
   createdProduct: null,
+  tokenExpiredTime: null,
 }
 
 const authSlice = createSlice({
@@ -58,6 +62,12 @@ const authSlice = createSlice({
     setCreatedProduct: (state, actions: PayloadAction<TypeId | null>) => {
       state.createdProduct = actions.payload
     },
+    setTokenExpiredTime: (state, actions: PayloadAction<number | null>) => {
+      state.tokenExpiredTime = actions.payload
+    },
+    setOpenForceLogOutDialog: (state, actions: PayloadAction<boolean>) => {
+      state.openForceLogOutDialog = actions.payload
+    },
   },
 })
 
@@ -70,5 +80,7 @@ export const {
   setUserBalance,
   setAccessToken,
   setCreatedProduct,
+  setTokenExpiredTime,
+  setOpenForceLogOutDialog,
 } = authSlice.actions
 export default authSlice.reducer

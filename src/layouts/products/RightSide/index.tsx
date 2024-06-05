@@ -14,6 +14,7 @@ import MasterCardLogo from '@/assets/images/MasterCardLogo.png'
 import BidHistorySection from './BidHistorySection'
 import CountDownTimer from '@/components/atoms/CountDownTimer'
 import { IProductDetail } from '@/types'
+import { useAuth } from '@/hooks/useAuth'
 
 interface IRightSideProps {
   product: IProductDetail
@@ -31,8 +32,10 @@ export interface IProductBidHistoryItem {
 
 const RightSide: React.FC<IRightSideProps> = props => {
   const { product, onPlaceBid, bidHistory } = props
+  const { isAuthenticated } = useAuth()
 
-  const isDisable = Date.now() > new Date(product.bidClosingDate)?.getTime()
+  const isDisable =
+    Date.now() > new Date(product.bidClosingDate)?.getTime() || !isAuthenticated
 
   return (
     <div className="px-8 py-4">
@@ -86,9 +89,9 @@ const RightSide: React.FC<IRightSideProps> = props => {
         >
           Đấu giá ngay
         </button>
-        <button className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-white text-blue-500 border border-blue-500 font-semibold text-lg ml-2">
+        {/* <button className="items-center rounded-lg px-4 py-2 text-center mt-4 w-fit flex hover:opacity-50 bg-white text-blue-500 border border-blue-500 font-semibold text-lg ml-2">
           Yêu thích
-        </button>
+        </button> */}
       </div>
       <div className="mt-5">
         <div className="mt-2">

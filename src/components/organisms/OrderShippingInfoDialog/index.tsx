@@ -1,11 +1,8 @@
 import * as React from 'react'
 
 //style
-import InputText from '@/components/atoms/InputText'
 import Button from '@/components/atoms/Button'
 import SelectComponent from '../../atoms/Select'
-import Image from 'next/image'
-import RichTextInput from '@/components/atoms/RichTextInput'
 import GHNLogo from '@/assets/images/GHNLogo.png'
 import Dialog from '@mui/material/Dialog'
 import { DialogContent } from '@mui/material'
@@ -121,67 +118,6 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
     }
     return false
   }
-
-  // const handleSubmit = async (values: IFormValue) => {
-  //   if (checkSelectionErrors()) return
-  //   setLoading(true)
-
-  //   const payload = {
-  //     homeNumber: values.addressDetail,
-  //     cityCode: 202,
-  //     districtCode: districtSelected?.DistrictID,
-  //     wardCode: Number(wardSelected?.WardCode),
-  //     phoneNumber: values.phoneNumber,
-  //   }
-
-  //   if (isExistedAddress == false) {
-  //     try {
-  //       const response = await axios.post(
-  //         `${Config.API_URL}/addresses`,
-  //         payload,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${user?.token}`,
-  //           },
-  //         },
-  //       )
-  //       const { isSuccess, data, error } = configResponse(response)
-  //       if (isSuccess) {
-  //         toast.success('Cập nhật địa chỉ thành công')
-  //       } else {
-  //         toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     } finally {
-  //       setLoading(false)
-  //       onClose()
-  //     }
-  //   } else {
-  //     try {
-  //       const response = await axios.put(
-  //         `${Config.API_URL}/addresses/${user?.id}/`,
-  //         payload,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${user?.token}`,
-  //           },
-  //         },
-  //       )
-  //       const { isSuccess, data, error } = configResponse(response)
-  //       if (isSuccess) {
-  //         toast.success('Cập nhật địa chỉ thành công')
-  //       } else {
-  //         toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     } finally {
-  //       setLoading(false)
-  //       onClose()
-  //     }
-  //   }
-  // }
 
   const handleSubmit = async (values: IFormValue) => {
     try {

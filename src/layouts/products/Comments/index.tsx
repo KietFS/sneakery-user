@@ -11,6 +11,8 @@ import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { useAuth } from '@/hooks/useAuth'
+import { configResponse } from '@/utils/request'
+import { toast } from 'react-toastify'
 
 interface IProductCommentProps {
   productDetail: IProductDetail
@@ -27,6 +29,7 @@ const ProductComment: React.FC<IProductCommentProps> = props => {
     control,
     watch,
     register,
+    setValue,
     formState: { errors },
     handleSubmit,
   } = useForm()
@@ -49,11 +52,15 @@ const ProductComment: React.FC<IProductCommentProps> = props => {
             },
           },
         )
-        if (response?.data?.success) {
+        const { isSuccess } = configResponse(response)
+        if (isSuccess) {
+          setValue('comment', '')
           getProductComments(productDetail?.id as TypeId)
+          toast.success('Đăng bình luận thành công')
         }
       }
     } catch (error) {
+      console.log('ERROR IS', error)
     } finally {
       setIsPosting(false)
     }

@@ -29,12 +29,12 @@ interface IFormValue {
   password: string
 }
 
-interface ILoginDialogProps {
+interface IDialogProps {
   isOpen: boolean
   onclickClose: () => void
 }
 
-const LoginDialog: React.FC<ILoginDialogProps> = props => {
+const LoginDialog: React.FC<IDialogProps> = props => {
   const { isOpen, onclickClose } = props
   //state
   const [initialValues, setInitialValues] = useState<IFormValue>({

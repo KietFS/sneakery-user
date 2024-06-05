@@ -10,12 +10,10 @@ export interface RequestResponse {
   }
 }
 
-export function configResponse(
-  response: AxiosResponse<any>,
-  token?: string,
-): RequestResponse {
+export function configResponse(response: AxiosResponse<any>): RequestResponse {
   try {
     if (!response) {
+      console.log('HERE')
       throw new Error(
         'Cannot read properties of undefined (response: AxiosResponse)',
       )
@@ -27,10 +25,10 @@ export function configResponse(
     if (success) {
       return { isSuccess: success, data: responseData, error: undefined }
     } else {
-      if (token && responseStatus === 401) {
-        alert('Session Expire')
+      console.log('response data', response)
+      if (responseStatus === 401) {
+        alert('Session Expire Sir')
       }
-
       return {
         isSuccess: success,
         data: responseData,
@@ -38,6 +36,7 @@ export function configResponse(
       }
     }
   } catch (error: any) {
+    console.log('ERROR IS', error)
     return {
       isSuccess: false,
       data: '',

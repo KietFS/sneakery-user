@@ -10,6 +10,7 @@ import Head from 'next/head'
 
 //hooks
 import { useRouter } from 'next/router'
+import { withAuthorization } from '@/common/config/HOC/withAuth'
 
 const OrderStatus: React.FC = props => {
   const router = useRouter()
@@ -55,4 +56,4 @@ const OrderStatus: React.FC = props => {
   )
 }
 
-export default OrderStatus
+export default withAuthorization(OrderStatus)

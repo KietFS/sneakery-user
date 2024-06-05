@@ -15,7 +15,11 @@ import {
   REGISTER,
 } from 'redux-persist'
 
-const saveSubsetAuthReducer = createFilter('auth', ['accessToken', 'user'])
+const saveSubsetAuthReducer = createFilter('auth', [
+  'accessToken',
+  'user',
+  'tokenExpiredTime',
+])
 // const saveSubsetCategoryReducer = createFilter('category', [
 //   'currentCategory',
 //   'listCategory',

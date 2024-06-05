@@ -15,6 +15,7 @@ import CommentInput from '@/components/atoms/CommentInput'
 import { useForm } from 'react-hook-form'
 import ConfirmDialog from '@/components/organisms/ConfirmDialog'
 import { toast } from 'react-toastify'
+import { configResponse } from '@/utils/request'
 
 interface IProductCommentCardProps extends IProductComment {
   productDetail: IProductDetail
@@ -60,7 +61,8 @@ const ProductCommentCard: React.FC<IProductCommentCardProps> = props => {
             },
           },
         )
-        if (response?.data?.success) {
+        const { isSuccess } = configResponse(response)
+        if (isSuccess) {
           setIsTurningOnReply(false)
           onReplyingSuccess?.()
           toast.success('Đăng bình luận thành công')
@@ -168,7 +170,7 @@ const ProductCommentCard: React.FC<IProductCommentCardProps> = props => {
                     >
                       Trả lời
                     </button>
-                    {props.userName == user.username && (
+                    {props.userName == user?.username && (
                       <button
                         className="text-gray-500 hover:text-red-500 font-regular text-xs ml-2"
                         onClick={() => setOpenConfirmDialog(true)}
@@ -176,7 +178,7 @@ const ProductCommentCard: React.FC<IProductCommentCardProps> = props => {
                         Xóa bình luận
                       </button>
                     )}
-                    {props.userName == user.username && (
+                    {props.userName == user?.username && (
                       <button
                         className="text-gray-500 hover:text-red-500 font-regular text-xs ml-2"
                         onClick={handleTurnOnEdit}

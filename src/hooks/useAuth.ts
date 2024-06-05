@@ -8,6 +8,7 @@ import {
   setAccessToken,
   setAuth,
   setOpenVerifyPhoneNumberDialog,
+  setTokenExpiredTime,
   setUser,
 } from '@/redux/slices/auth'
 import { loginService, registerService } from '@/services/api'
@@ -15,6 +16,7 @@ import { IUser } from '@/types/user'
 import { IRootState } from '@/redux'
 import { toast } from 'react-toastify'
 import { configResponse } from '@/utils/request'
+import { useRouter } from 'next/router'
 
 export const useAuth = () => {
   //local state
@@ -22,6 +24,7 @@ export const useAuth = () => {
   const [loginLoading, setLoginLoading] = useState<boolean>(false)
   const [registerError, setRegisterError] = useState<any>()
   const [regsiterLoading, setRegisterLoading] = useState<boolean>(false)
+  const router = useRouter()
 
   //store
   const { user, accessToken } = useAppSelector(
@@ -39,6 +42,8 @@ export const useAuth = () => {
       if (response) {
         const { data, isSuccess, error } = configResponse(response)
         if (isSuccess) {
+          const currentTime = Date.now()
+          const configTime = 1000 * 60 * 2
           toast.success('Đăng nhập thành công', {
             position: 'top-right',
             autoClose: 0,
@@ -48,6 +53,7 @@ export const useAuth = () => {
           dispatch(setUser(response?.data?.data as IUser))
           dispatch(setAccessToken(response?.data?.data?.token))
           dispatch(setAuth(true))
+          dispatch(setTokenExpiredTime(currentTime + configTime))
         } else {
           console.log(error)
           setLoginError(error?.message as string)
@@ -84,6 +90,22 @@ export const useAuth = () => {
     }
   }
 
+  const logOut = () => {
+    try {
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
+      dispatch(setAccessToken(''))
+      dispatch(setUser(null))
+      toast.success('Đăng xuất thành công', {
+        position: 'top-right',
+        hideProgressBar: true,
+      })
+      router.reload()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     user,
     login,
@@ -94,5 +116,6 @@ export const useAuth = () => {
     regsiterLoading,
     isAuthenticated: !!accessToken,
     accessToken,
+    logOut,
   }
 }

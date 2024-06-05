@@ -10,6 +10,7 @@ import Head from 'next/head'
 //utils
 import { withAuthorization } from '@/common/config/HOC/withAuth'
 import { useAuth } from '@/hooks/useAuth'
+import { withValidToken } from '@/common/config/HOC/withValidToken'
 
 interface ICreateProductProps {}
 

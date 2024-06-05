@@ -7,6 +7,7 @@ import { IRootState } from '@/redux'
 import { useAppSelector } from '@/hooks/useRedux'
 import Head from 'next/head'
 import { PAYMENT_SUCCESS_KEY } from '@/constants'
+import { withValidToken } from '@/common/config/HOC/withValidToken'
 
 interface IPayPostSaleFeeProps {}
 
@@ -52,4 +53,4 @@ const PayPostSaleFee: React.FC<IPayPostSaleFeeProps> = props => {
   )
 }
 
-export default PayPostSaleFee
+export default withValidToken(PayPostSaleFee)

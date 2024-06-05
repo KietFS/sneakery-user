@@ -12,8 +12,6 @@ import { useAppSelector } from '@/hooks/useRedux'
 //store
 import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
-import { configResponse } from '@/utils/request'
-import SelectComponent from '../Select'
 import Button from '@/components/atoms/Button'
 import { useDispatch } from 'react-redux'
 import {

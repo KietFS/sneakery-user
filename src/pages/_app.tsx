@@ -14,7 +14,6 @@ import '../utils/prototype'
 import NProgress from 'nprogress'
 import Router from 'next/router'
 
-
 import type {} from '@mui/x-date-pickers/themeAugmentation'
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'

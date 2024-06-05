@@ -25,6 +25,7 @@ import useDebounce from '@/hooks/useDebounce'
 import { useDispatch } from 'react-redux'
 import { DEFAULT_PAGE_SIZE } from '@/config/constant'
 import { IProductHomePageResponse } from '@/types'
+import { withValidToken } from '@/common/config/HOC/withValidToken'
 
 interface IProductProps {}
 
@@ -158,4 +159,4 @@ const Category = (props: IProductProps) => {
   )
 }
 
-export default Category
+export default withValidToken(Category)

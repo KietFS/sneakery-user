@@ -68,7 +68,7 @@ const Success: React.FC = props => {
           JSON.stringify(isSuccess),
         )
         setLoading(false)
-        // window?.close()
+        window?.close()
       }
     } catch (error) {
       setLoading(false)
@@ -99,6 +99,7 @@ const Success: React.FC = props => {
           JSON.stringify(isSuccess),
         )
         setLoading(false)
+        window?.close()
       }
     } catch (error) {
       setLoading(false)
@@ -135,12 +136,6 @@ const Success: React.FC = props => {
       }
     }
   }, [sessionId, paymentType, productId, paymentType])
-
-  // useEffect(() => {
-  //   if (loading == false) {
-  //     setTimeout(() => window.close(), 2500)
-  //   }
-  // }, [loading])
 
   useEffect(() => {
     getInitialInfo()

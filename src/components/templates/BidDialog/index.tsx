@@ -77,8 +77,9 @@ function BidDialog(props: IBidDialogProps) {
             },
           },
         )
-        const data = response?.data as IActionResponseData
-        if (data?.success) {
+        // const data = response?.data as IActionResponseData
+        const { isSuccess, data } = configResponse(response)
+        if (isSuccess) {
           toast.success('Bid sản phẩm thành công', {
             position: 'top-right',
             autoClose: 5000,
@@ -91,7 +92,7 @@ function BidDialog(props: IBidDialogProps) {
           })
           onSuccess()
           onClose()
-        } else if (data?.success == false) {
+        } else {
           //handle if this is a ghost bid
           if (data?.status == 'ghost') {
           } else {

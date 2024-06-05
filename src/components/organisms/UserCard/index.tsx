@@ -29,6 +29,7 @@ import WinningDialog from '../WinningDialog'
 import { useDispatch } from 'react-redux'
 import { setAccessToken, setUser } from '@/redux/slices/auth'
 import HistoryDialog from '../TransactionHisotryDialog'
+import { useAuth } from '@/hooks/useAuth'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -44,6 +45,7 @@ const MenuProps = {
 export default function UserCard() {
   //state
   const { user } = useAppSelector((state: IRootState) => state.auth)
+  const { logOut } = useAuth()
   const [personName, setPersonName] = React.useState<string[]>([])
   const [openAddressDialog, setOpenAddressDialog] =
     React.useState<boolean>(false)
@@ -57,8 +59,6 @@ export default function UserCard() {
   const [openHistoryDialog, setOpenHistoryDialog] =
     React.useState<boolean>(false)
 
-  const dispatch = useDispatch()
-
   //functions
   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
     const {
@@ -68,24 +68,6 @@ export default function UserCard() {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     )
-  }
-
-  const router = useRouter()
-
-  const logOut = () => {
-    try {
-      localStorage.removeItem('user')
-      localStorage.removeItem('token')
-      dispatch(setAccessToken(''))
-      dispatch(setUser(null))
-      toast.success('Đăng xuất thành công', {
-        position: 'top-right',
-        hideProgressBar: true,
-      })
-      router.reload()
-    } catch (error) {
-      console.log(error)
-    }
   }
 
   return (

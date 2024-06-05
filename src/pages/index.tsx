@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 //styles
 import HeaderV2 from '@/components/organisms/HeaderV2'
@@ -11,10 +11,9 @@ import PartnerSection from '@/layouts/home/PartnerSection'
 import ContactSection from '@/layouts/home/ContactSection'
 import FooterSection from '@/components/molecules/FooterSection'
 import Head from 'next/head'
+import { withValidToken } from '@/common/config/HOC/withValidToken'
 
 const Home = (props: any) => {
-  //function
-
   return (
     <>
       <Head>
@@ -38,4 +37,4 @@ const Home = (props: any) => {
   )
 }
 
-export default Home
+export default withValidToken(Home)

@@ -34,8 +34,8 @@ const ProductDescription: React.FC<IProductDescriptionProps> = props => {
               {value == 'True'
                 ? 'Có'
                 : value == 'False'
-                ? 'Sai'
-                : `${capitalizeFirstLetter(value.toLowerCase())}`}
+                  ? 'Sai'
+                  : `${capitalizeFirstLetter(value.toLowerCase())}`}
             </p>
           </div>
         ))}
@@ -43,16 +43,19 @@ const ProductDescription: React.FC<IProductDescriptionProps> = props => {
 
       <div className="mt-4">
         <h2 className="text-xl laptop:text-2xl text-gray-600 font-bold">
-          Mô tả sản phẩm
+          {!!props?.productDetail?.description
+            ? 'Mô tả của sản phẩm'
+            : 'Sản phẩm này không có mô tả'}
         </h2>
 
         <p className="text-gray-500 text-sm italic">
-          *Lưu ý: Thông tin mô tả dưới đây là do người đăng cung cấp
+          {!!props?.productDetail?.description
+            ? '*Lưu ý: Thông tin mô tả dưới đây là do người đăng cung cấp'
+            : ''}
         </p>
 
         <p className="text-gray-500 text-sm mt-2">
-          {props?.productDetail?.description ||
-            'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non minima dicta, culpa quas deserunt reprehenderit voluptatum eos sunt officiis harum. Tenetur magnam, facilis voluptatem deleniti expedita nobis! Optio, fugiat commodi'}
+          {props?.productDetail?.description || ''}
         </p>
       </div>
     </div>

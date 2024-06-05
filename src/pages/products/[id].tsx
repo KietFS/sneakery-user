@@ -18,6 +18,7 @@ import ProblemWithBidDialog from '@/components/organisms/ProblemWithBidDialog'
 import { useRouter } from 'next/router'
 import ProductComment from '@/layouts/products/Comments'
 import CommentInput from '@/components/atoms/CommentInput'
+import { withValidToken } from '@/common/config/HOC/withValidToken'
 
 const Product = (props: any) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
@@ -121,50 +122,4 @@ const Product = (props: any) => {
   )
 }
 
-// export const getStaticPaths: GetStaticPaths<{}> = async () => {
-//   const response = await axios.get(`${Config.API_URL}/products/allid`)
-
-//   const products = response.data?.data || []
-
-//   const paths = products.map((item: number) => ({
-//     params: {
-//       id: `${item.toString()}`,
-//     },
-//   }))
-
-//   return {
-//     paths,
-//     fallback: 'blocking',
-//   }
-// }
-
-// export const getStaticProps: GetStaticProps<{
-//   product: any
-// }> = async ({ params }: any) => {
-//   try {
-//     // Use Promise.all to fetch both product and bid history concurrently
-//     const productResponse = await axios.get(
-//       `${Config.API_URL}/products/${params.id}`,
-//     )
-
-//     const product = productResponse.data.data
-//     return {
-//       props: {
-//         product: {
-//           id: params?.id,
-//         },
-//       },
-//       revalidate: 10,
-//     }
-//   } catch (error) {
-//     console.error('Error fetching data:', error)
-//     return {
-//       props: {
-//         product: null,
-//       },
-//       revalidate: 10,
-//     }
-//   }
-// }
-
-export default Product
+export default withValidToken(Product)
