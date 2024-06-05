@@ -96,6 +96,7 @@ export const useAuth = () => {
       localStorage.removeItem('token')
       dispatch(setAccessToken(''))
       dispatch(setUser(null))
+      dispatch(setTokenExpiredTime(null))
       toast.success('Đăng xuất thành công', {
         position: 'top-right',
         hideProgressBar: true,
