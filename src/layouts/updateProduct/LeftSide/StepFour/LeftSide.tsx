@@ -6,7 +6,7 @@ import { IRootState } from '@/redux'
 import axios from 'axios'
 import { useAuth } from '@/hooks/useAuth'
 import { Config } from '@/config/api'
-import { configResponse } from '@/utils/request'
+import { configResponse, forceLogOut } from '@/utils/request'
 import { CheckBadgeIcon } from '@heroicons/react/24/outline'
 import PaypalLogo from '@/assets/images/PayPalLogo.png'
 import StripeLogo from '@/assets/images/StripeLogo.png'
@@ -15,6 +15,7 @@ import { Radio } from '@mui/material'
 import Button from '@/components/atoms/Button'
 import { useDispatch } from 'react-redux'
 import { setMethodSelected } from '@/redux/slices/payment'
+import { toast } from 'react-toastify'
 
 interface IStepFourLeftSideProps {
   isPaySuccess: boolean
@@ -52,7 +53,11 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
       if (response?.data?.success) {
         window.open(data.message)
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status == 401) {
+        toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại')
+        forceLogOut()
+      }
       setIsPayingPreFee(false)
     }
   }
@@ -152,7 +157,7 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
               Phí đăng bạn cần trả:{' '}
             </p>
             <p className="text-lg italic font-semibold text-blue-500 ml-1">
-              {(1)?.toFixed(2)?.toString()?.prettyMoney()}$
+              {1?.toFixed(2)?.toString()?.prettyMoney()}$
             </p>
           </div>
 

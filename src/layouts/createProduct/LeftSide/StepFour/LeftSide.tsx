@@ -21,9 +21,10 @@ import PaySuccess from '@/assets/images/PaySuccess.png'
 import { IRootState } from '@/redux'
 import axios from 'axios'
 import { Config } from '@/config/api'
-import { configResponse } from '@/utils/request'
+import { configResponse, forceLogOut } from '@/utils/request'
 import { useRouter } from 'next/router'
 import { TypeId } from '@/types'
+import { toast } from 'react-toastify'
 
 interface IStepFourLeftSideProps {
   isPaySuccess: boolean
@@ -64,7 +65,11 @@ const StepFourLeftSide: React.FC<IStepFourLeftSideProps> = props => {
       if (response?.data?.success) {
         window.open(data.message)
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status == 401) {
+        toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại')
+        forceLogOut()
+      }
       setIsPayingPreFee(false)
     }
   }

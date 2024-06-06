@@ -1,11 +1,9 @@
 import * as React from 'react'
 
 //styles
-import RichTextInput from '@/components/atoms/RichTextInput'
+
 import Button from '@/components/atoms/Button'
 import SelectComponent from '@/components/atoms/Select'
-import Dialog from '@mui/material/Dialog'
-import { DialogContent } from '@mui/material'
 
 //store
 import { IRootState } from '@/redux'
@@ -18,7 +16,7 @@ import axios from 'axios'
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { toast } from 'react-toastify'
-import { configResponse } from '@/utils/request'
+import { configResponse, forceLogOut } from '@/utils/request'
 import { Config } from '@/config/api'
 import Spinner from '../../atoms/Spinner'
 import { useAuth } from '@/hooks/useAuth'
@@ -199,8 +197,11 @@ function AddressForm(props: IAddressFormProps) {
         } else {
           toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
         }
-      } catch (error) {
-        console.log(error)
+      } catch (error: any) {
+        if (error?.response?.status == 401) {
+          toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại')
+          forceLogOut()
+        }
       } finally {
         setLoading(false)
         onCloseButton?.()
@@ -222,8 +223,12 @@ function AddressForm(props: IAddressFormProps) {
         } else {
           toast.error(`Cập nhật địa chỉ thất bại, ${error?.message || ''}`)
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log(error)
+        if (error?.response?.status == 401) {
+          toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại')
+          forceLogOut()
+        }
       } finally {
         setLoading(false)
         onCloseButton?.()

@@ -43,7 +43,8 @@ export const useAuth = () => {
         const { data, isSuccess, error } = configResponse(response)
         if (isSuccess) {
           const currentTime = Date.now()
-          const configTime = 1000 * 60 * 2
+          //1 day expired time for token
+          const configTime = 1000 * 60 * 60 * 24
           toast.success('Đăng nhập thành công', {
             position: 'top-right',
             autoClose: 0,

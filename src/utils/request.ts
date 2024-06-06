@@ -18,13 +18,10 @@ export interface RequestResponse {
 }
 
 export const forceLogOut = () => {
-  const dispatch = useDispatch()
   try {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
-    dispatch(setAccessToken(''))
-    dispatch(setUser(null))
-    dispatch(setTokenExpiredTime(null))
+    localStorage.clear()
     window.location.reload()
   } catch (error) {
     console.log(error)

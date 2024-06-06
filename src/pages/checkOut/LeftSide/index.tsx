@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 
 //utils
 import axios from 'axios'
-import { configResponse } from '@/utils/request'
+import { configResponse, forceLogOut } from '@/utils/request'
 import { setMethodSelected } from '@/redux/slices/payment'
 import { Config } from '@/config/api'
 import { IRootState } from '@/redux'
@@ -24,6 +24,7 @@ import StripeLogo from '@/assets/images/StripeLogo.png'
 import PaypalLogo from '@/assets/images/PayPalLogo.png'
 import { CheckBadgeIcon } from '@heroicons/react/24/outline'
 import { IWonProduct } from '@/types/product'
+import { toast } from 'react-toastify'
 
 interface ICheckOutProductLeftSideProps {
   isPaySuccess: boolean
@@ -63,8 +64,12 @@ const CheckoutProductLeftSide: React.FC<
       if (response?.data?.success) {
         window.open(data.message)
       }
-    } catch (error) {
+    } catch (error: any) {
       setIsPayingPreFee(false)
+      if (error?.response?.status == 401) {
+        toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại')
+        forceLogOut()
+      }
     }
   }
 

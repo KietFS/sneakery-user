@@ -15,7 +15,7 @@ import CommentInput from '@/components/atoms/CommentInput'
 import { useForm } from 'react-hook-form'
 import ConfirmDialog from '@/components/organisms/ConfirmDialog'
 import { toast } from 'react-toastify'
-import { configResponse } from '@/utils/request'
+import { configResponse, forceLogOut } from '@/utils/request'
 
 interface IProductCommentCardProps extends IProductComment {
   productDetail: IProductDetail
@@ -68,7 +68,11 @@ const ProductCommentCard: React.FC<IProductCommentCardProps> = props => {
           toast.success('Đăng bình luận thành công')
         }
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status == 401) {
+        toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại')
+        forceLogOut()
+      }
     } finally {
       setIsReplying(false)
     }
@@ -120,8 +124,12 @@ const ProductCommentCard: React.FC<IProductCommentCardProps> = props => {
         onReplyingSuccess?.()
         toast.success('Chỉnh sửa bình luận thành công')
       }
-    } catch (error) {
+    } catch (error: any) {
       setIsCommenting(false)
+      if (error?.response?.status == 401) {
+        toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại')
+        forceLogOut()
+      }
     } finally {
       setIsCommenting(false)
     }

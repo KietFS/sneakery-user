@@ -19,7 +19,7 @@ import StepTwo from './StepTwo'
 import Slider from 'react-slick'
 import StepThree from './StepThree'
 import StepFour from './StepFour'
-import { configResponse } from '@/utils/request'
+import { configResponse, forceLogOut } from '@/utils/request'
 import { useRouter } from 'next/router'
 import dayjs from 'dayjs'
 import { IProductCategory } from '@/types'
@@ -166,10 +166,15 @@ const LeftSide: React.FC<ILeftSideProps> = props => {
             uploadMediaResponse?.data?.data?.message,
         )
       }
-    } catch (error) {
+    } catch (error: any) {
       setCreateLoading(false)
       console.log('UPLOAD MEDIA ERROR', error)
-      toast.error('Đăng ảnh không thành công')
+      if (error?.response?.status == 401) {
+        toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại')
+        forceLogOut()
+      } else {
+        toast.error('Đăng ảnh không thành công, vui lòng thử lại sau')
+      }
     }
   }
 

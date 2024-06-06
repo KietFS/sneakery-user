@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { Config } from '@/config/api'
-import { configResponse } from '@/utils/request'
+import { configResponse, forceLogOut } from '@/utils/request'
 import { useDispatch } from 'react-redux'
 import { setUserBalance } from '@/redux/slices/auth'
 import { useAuth } from '@/hooks/useAuth'
@@ -112,17 +112,23 @@ function BidDialog(props: IBidDialogProps) {
           }
           onClose()
         }
-      } catch (error) {
-        toast.error((error as any)?.response?.data?.message, {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-        })
+      } catch (error: any) {
+        if (error?.response?.status == 401) {
+          toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại')
+          forceLogOut()
+        } else {
+          toast.error((error as any)?.response?.data?.message, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          })
+        }
+
         console.log(error)
       } finally {
         setLoading(false)
