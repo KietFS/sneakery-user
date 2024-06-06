@@ -1,4 +1,11 @@
+import {
+  setAccessToken,
+  setTokenExpiredTime,
+  setUser,
+} from '@/redux/slices/auth'
 import { AxiosResponse } from 'axios'
+import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 
 export interface RequestResponse {
   isSuccess: boolean
@@ -10,10 +17,23 @@ export interface RequestResponse {
   }
 }
 
+export const forceLogOut = () => {
+  const dispatch = useDispatch()
+  try {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    dispatch(setAccessToken(''))
+    dispatch(setUser(null))
+    dispatch(setTokenExpiredTime(null))
+    window.location.reload()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export function configResponse(response: AxiosResponse<any>): RequestResponse {
   try {
     if (!response) {
-      console.log('HERE')
       throw new Error(
         'Cannot read properties of undefined (response: AxiosResponse)',
       )
@@ -26,8 +46,11 @@ export function configResponse(response: AxiosResponse<any>): RequestResponse {
       return { isSuccess: success, data: responseData, error: undefined }
     } else {
       console.log('response data', response)
-      if (responseStatus === 401) {
-        alert('Session Expire Sir')
+      if (responseData?.exceptionType == 'AuthenticationException') {
+        toast.error(
+          responseData?.message || 'Session expired, please login again',
+        )
+        forceLogOut()
       }
       return {
         isSuccess: success,
@@ -36,7 +59,6 @@ export function configResponse(response: AxiosResponse<any>): RequestResponse {
       }
     }
   } catch (error: any) {
-    console.log('ERROR IS', error)
     return {
       isSuccess: false,
       data: '',
