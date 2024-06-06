@@ -160,7 +160,7 @@ const ProductCommentCard: React.FC<IProductCommentCardProps> = props => {
                 <div>
                   <div className="flex items-center">
                     <p className="text-lg font-semibold text-gray-800">
-                      {seller == userName
+                      {seller?.username == userName
                         ? `${userName} ( Người đăng )`
                         : userName}
                     </p>

@@ -5,6 +5,12 @@ interface IProductProperties {
   [key: string]: string
 }
 
+interface ISimpleUser {
+  username: string
+  id: string
+  email: string
+}
+
 export interface IProductDetail {
   id: string
   name: string
@@ -16,7 +22,7 @@ export interface IProductDetail {
   bidIncrement: number
   bidClosingDate: string
   holder: string
-  seller?: string
+  seller?: ISimpleUser
   description: string
 }
 
@@ -88,4 +94,14 @@ export interface IPostedProduct {
   }
   sellerPaymentStatus?: IPaymentStatus
   winnerPaymentStatus?: IPaymentStatus
+}
+
+export interface ISellerFeedBacks {
+  createdAt?: string
+  feedbackText: string
+  id: TypeId
+  product: IProductDetail
+  raring: number
+  seller?: ISimpleUser
+  winner?: ISimpleUser
 }

@@ -17,8 +17,8 @@ import { IProductDetail } from '@/types'
 import ProblemWithBidDialog from '@/components/organisms/ProblemWithBidDialog'
 import { useRouter } from 'next/router'
 import ProductComment from '@/layouts/products/Comments'
-import CommentInput from '@/components/atoms/CommentInput'
 import { withValidToken } from '@/common/config/HOC/withValidToken'
+import SellerFeedBacks from '@/layouts/products/SellerFeedBacks'
 
 const Product = (props: any) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
@@ -115,6 +115,10 @@ const Product = (props: any) => {
 
         <div className="w-5/6 mx-auto flex">
           {!!productDetail && <ProductComment productDetail={productDetail} />}
+        </div>
+
+        <div className="w-5/6 mx-auto mt-10">
+          {!!productDetail && <SellerFeedBacks productDetail={productDetail} />}
         </div>
         <FooterSection />
       </div>
