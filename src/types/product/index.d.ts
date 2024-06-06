@@ -70,6 +70,7 @@ export interface IWonProduct {
     imagePath: string
     currentPrice: number
     holder: string
+    seller?: ISimpleUser
     bidCreatedDate: string
     bidClosingDate: string
     numberOfBids: number
