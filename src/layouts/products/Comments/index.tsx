@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { useAuth } from '@/hooks/useAuth'
-import { configResponse } from '@/utils/request'
+import { configResponse, forceLogOut } from '@/utils/request'
 import { toast } from 'react-toastify'
 
 interface IProductCommentProps {
@@ -59,8 +59,11 @@ const ProductComment: React.FC<IProductCommentProps> = props => {
           toast.success('Đăng bình luận thành công')
         }
       }
-    } catch (error) {
-      console.log('ERROR IS', error)
+    } catch (error: any) {
+      if (error?.response?.status == 401) {
+        toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại')
+        forceLogOut()
+      }
     } finally {
       setIsPosting(false)
     }
