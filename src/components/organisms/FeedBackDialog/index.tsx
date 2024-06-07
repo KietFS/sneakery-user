@@ -53,7 +53,7 @@ const FeedBackDialog: React.FC<IFeedBackDialog> = props => {
       const response = await axios.post(
         `${Config.API_URL}/feedbacks`,
         {
-          feedBackText: values.feedBackText,
+          feedbackText: values.feedbackText,
           productId: productId,
           rating: rateSelected,
         },
@@ -123,7 +123,7 @@ const FeedBackDialog: React.FC<IFeedBackDialog> = props => {
 
             <RichTextInput
               control={control}
-              name="feedBackText"
+              name="feedbackText"
               label="Đánh giá chi tiết"
               placeholder="Ghi vào đây đánh giá chi tiết của bạn"
             />
