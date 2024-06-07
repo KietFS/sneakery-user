@@ -74,7 +74,7 @@ const SellerFeedBacks: React.FC<ISellerFeedBackProps> = props => {
           {productDetail?.seller?.username}
         </button>
         <p className="text-gray-500 text-xl laptop:text-2xl font-semibold">
-          ( {feedBacks?.length > 0 && feedBacks?.length} )
+          {feedBacks?.length > 0 && `( ${feedBacks?.length} )`}
         </p>
       </div>
 
