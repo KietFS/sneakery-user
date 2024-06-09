@@ -2,7 +2,7 @@ import PaymentStatusBadge from '@/components/atoms/PaymentStatusBadge'
 import SmallCountdownTimer from '@/components/atoms/SmallCountdownTimer'
 import FeedBackDialog from '@/components/organisms/FeedBackDialog'
 import { IWonProduct } from '@/types'
-import { ClockIcon, PlusCircleIcon } from '@heroicons/react/20/solid'
+import { ClockIcon, PlusCircleIcon, StarIcon } from '@heroicons/react/20/solid'
 import { PaymentSharp, PaymentsSharp } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
 import React from 'react'
@@ -86,10 +86,10 @@ const WinningProductCard: React.FC<IWinningProductCardProps> = props => {
               title="Đánh giá sản phẩm"
               onClick={() => setOpenFeedBackDialog(true)}
             >
-              <PlusCircleIcon
-                width={20}
-                height={20}
-                className="text-gray-600"
+              <StarIcon
+                width={25}
+                height={25}
+                className="text-gray-500 hover:text-yellow-500"
               />
             </IconButton>
           )}

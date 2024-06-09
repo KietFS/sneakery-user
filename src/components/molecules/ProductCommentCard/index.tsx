@@ -158,13 +158,13 @@ const ProductCommentCard: React.FC<IProductCommentCardProps> = props => {
               <div className="flex items-center gap-x-2">
                 <Avatar sx={{ bgcolor: '#3b82f6' }}>{userName?.[0]}</Avatar>
                 <div>
-                  <div className="flex items-center">
-                    <p className="text-lg font-semibold text-gray-800">
+                  <div className="flex flex-col tablet:flex-row tablet:items-center">
+                    <p className="text-sm tablet:text-lg font-semibold text-gray-800">
                       {seller?.username == userName
                         ? `${userName} ( Người đăng )`
                         : userName}
                     </p>
-                    <p className="text-gray-500 text-xs text-sm ml-1">
+                    <p className="text-gray-500 text-[10px] tablet:text-xs text-sm tablet:ml-1">
                       vào ngày{' '}
                       {props.createdAt?.toString().prettyDateTime() || ''}
                     </p>

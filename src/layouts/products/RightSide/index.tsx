@@ -20,6 +20,7 @@ interface IRightSideProps {
   product: IProductDetail
   bidHistory: IProductBidHistoryItem[]
   onPlaceBid: () => void
+  onClickSeller: () => void
 }
 
 export interface IProductBidHistoryItem {
@@ -31,7 +32,7 @@ export interface IProductBidHistoryItem {
 }
 
 const RightSide: React.FC<IRightSideProps> = props => {
-  const { product, onPlaceBid, bidHistory } = props
+  const { product, onPlaceBid, bidHistory, onClickSeller } = props
   const { isAuthenticated } = useAuth()
 
   const isDisable =
@@ -74,6 +75,15 @@ const RightSide: React.FC<IRightSideProps> = props => {
 
       <div className="mt-2 flex items-center">
         <CountDownTimer bidClosingDate={product.bidClosingDate} />
+      </div>
+      <div className="mt-2 flex items-center">
+        <h3 className="text-gray-400 text-lg">Người đăng : </h3>
+        <button
+          className="text-blue-500 font-bold ml-1 text-lg cursor-pointer hover:opacity-80"
+          onClick={() => onClickSeller()}
+        >
+          {product?.seller?.username}
+        </button>
       </div>
       <div className="flex items-center">
         <button

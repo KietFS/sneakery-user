@@ -12,6 +12,9 @@ import InboxIcon from '@mui/icons-material/MoveToInbox'
 import MailIcon from '@mui/icons-material/Mail'
 import { useAppSelector } from '@/hooks/useRedux'
 import { IRootState } from '@/redux'
+import { useDispatch } from 'react-redux'
+import { setCategory } from '@/redux/slices/filter'
+import { useRouter } from 'next/router'
 
 interface IMobileDrawerProps {
   open: boolean
@@ -23,36 +26,30 @@ const MobileDrawer: React.FC<IMobileDrawerProps> = props => {
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen)
   }
-  const { currentCategory, listCategory } = useAppSelector(
-    (state: IRootState) => state.category,
-  )
+  const { listCategory } = useAppSelector((state: IRootState) => state.category)
+  const dispatch = useDispatch()
+  const router = useRouter()
 
   React.useEffect(() => {
     window.addEventListener('resize', () => {
-      toggleDrawer(false)
+      console.log('KAKAKA')
+      props.setOpen(false)
     })
   }, [])
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
-        {['Đăng nhập, Đăng ký'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
       <Divider />
       <p className="text-gray-600 font-bold text-xl px-4 py-2">Các danh mục</p>
       <List>
         {listCategory?.map((item: any, index: number) => (
           <ListItem key={index.toString()} disablePadding>
-            <ListItemButton>
+            <ListItemButton
+              onClick={() => {
+                dispatch(setCategory(item))
+                router.push('/category')
+              }}
+            >
               <ListItemText primary={item?.name} />
             </ListItemButton>
           </ListItem>

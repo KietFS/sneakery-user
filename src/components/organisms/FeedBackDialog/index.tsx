@@ -103,17 +103,36 @@ const FeedBackDialog: React.FC<IFeedBackDialog> = props => {
               {ratesPoints.map(rate => (
                 <button
                   onClick={() => setRateSelected(rate.id)}
-                  className={` flex items-center hover:opacity-60 gap-x-2 bg-white px-4 py-2 min-w-[180px] rounded-xl ${
-                    rateSelected == rate.id ? 'border-2' : 'border'
-                  } ${rate.borderColor} ${rate.textColor} `}
+                  className={` flex border items-center hover:opacity-60 gap-x-2 bg-white px-4 py-2 min-w-[180px] rounded-xl ${
+                    rateSelected == rate.id
+                      ? `${rate.borderColor} border-2`
+                      : 'border-gray-300'
+                  }  `}
                 >
                   {rate.id == 1 ? (
-                    <FaceSmileIcon className="w-6 h-6 text-green-500" />
+                    <FaceSmileIcon
+                      className={`w-6 h-6 ${
+                        rateSelected == rate.id
+                          ? `${rate.textColor}`
+                          : 'text-gray-500'
+                      }`}
+                    />
                   ) : (
-                    <FaceFrownIcon className="w-6 h-6 text-red-500" />
+                    <FaceFrownIcon
+                      className={`w-6 h-6 ${
+                        rateSelected == rate.id
+                          ? `${rate.textColor}`
+                          : 'text-gray-500'
+                      }`}
+                    />
                   )}
                   <div
-                    className={`${rate.textColor} text-md text-center w-full`}
+                    key={`rate-text-${rate.id}`}
+                    className={`${
+                      rateSelected == rate.id
+                        ? `${rate.borderColor}  ${rate.textColor}`
+                        : 'text-gray-500'
+                    } text-md text-center w-full`}
                   >
                     {rate.label}
                   </div>

@@ -96,12 +96,18 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
               <UserCard />
             ) : (
               <div className="flex flex-row-reverse laptop:hidden  w-1/3 laptop:w-0">
-                <div className="p-2 rounded-full bg-gray-100 active:bg-gray-300 justify-center items-center flex">
+                <button
+                  onClick={() => setOpenLogin(true)}
+                  className="p-2 rounded-full bg-gray-100 active:bg-gray-300 justify-center items-center flex"
+                >
                   <UserIcon className="w-5 h-5 text-gray-600" />
-                </div>
-                <div className="p-2 rounded-full bg-gray-100 active:bg-gray-300 justify-center items-center flex mr-2">
+                </button>
+                <button
+                  onClick={() => setOpenRegister(true)}
+                  className="p-2 rounded-full bg-gray-100 active:bg-gray-300 justify-center items-center flex mr-2"
+                >
                   <UserPlusIcon className="w-5 h-5 text-gray-600 mx-auto" />
-                </div>
+                </button>
               </div>
             )}
           </div>
