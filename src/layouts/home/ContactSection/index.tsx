@@ -31,11 +31,11 @@ const ContactSection: React.FC<IContactSectionProps> = props => {
       <div className="space-y-10 rounded-xl shadow-lg bg-white relative bottom-[800px] laptop:bottom-[600px] mx-10 border border-gray-200 py-5">
         <div className="space-y-2 px-5">
           <h2 className="text-gray-500 font-bold text-3xl text-center">
-            Hợp tác với chúng tôi
+            Thông tin liên hệ
           </h2>
           <p className="text-lg text-gray-500 font-normal text-center">
-            Sneakery luôn luôn tìm những người bạn đồng hành có cùng chí hướng
-            và đam mê với lĩnh vực đấu giá này
+            Để lại số điện thoại và email để chúng tôi có thể tư vấn cho bạn
+            ngay
           </p>
         </div>
         <div className="flex justify-center items-center">
@@ -67,7 +67,7 @@ const ContactSection: React.FC<IContactSectionProps> = props => {
                 </div>
               </div>
               <button className="px-6 py-2 bg-blue-500 text-white font-semibold text-lg rounded-lg active:opacity-80 mx-auto">
-                Kết nối ngay
+                Xác nhận
               </button>
             </div>
           </Formik>

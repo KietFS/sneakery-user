@@ -127,6 +127,10 @@ const Product = (props: any) => {
           {!!productDetail && <ProductComment productDetail={productDetail} />}
         </div>
 
+        <div className="w-5/6 mx-auto flex">
+          {!!productDetail && <SimilarProduct productDetail={productDetail} />}
+        </div>
+
         <FooterSection />
       </div>
     </>

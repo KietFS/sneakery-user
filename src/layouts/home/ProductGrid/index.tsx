@@ -5,7 +5,12 @@ import Image from 'next/image'
 
 //hook
 import { useRouter } from 'next/router'
-import { ClockIcon, FireIcon, TagIcon } from '@heroicons/react/20/solid'
+import {
+  ClockIcon,
+  FireIcon,
+  StarIcon,
+  TagIcon,
+} from '@heroicons/react/20/solid'
 import axios from 'axios'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
@@ -13,7 +18,11 @@ import CountDownTimer from '@/components/atoms/CountDownTimer'
 import SmallCountdownTimer from '@/components/atoms/SmallCountdownTimer'
 import { IProductHomePageResponse } from '@/types'
 
-interface IProductGridProps {}
+type IFilterType = 'hot' | 'new'
+
+interface IProductGridProps {
+  filerType: IFilterType
+}
 
 const ProductGrid: React.FC<IProductGridProps> = props => {
   //state
@@ -28,10 +37,12 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
 
   const getData = async () => {
     try {
+      let queryURL =
+        props.filerType == 'hot'
+          ? '/products/homepage?page=0&size=5&sort=bid.numberOfBids,desc'
+          : '/products/homepage?page=0&sort=id,desc'
       setLoadingProduct(true)
-      const response = await axios.get(
-        `${Config.API_URL}/products/homepage/?page=0&size=12  `,
-      )
+      const response = await axios.get(`${Config.API_URL}${queryURL}`)
       const { isSuccess, data } = configResponse(response)
       if (isSuccess) {
         setLoadingProduct(false)
@@ -54,10 +65,14 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
     <div className="flex flex-col space-y-10 items-center justify-center">
       <div className="space-y-2">
         <h2 className="text-gray-500 font-bold text-3xl text-center">
-          Những deal đấu giá đang hot tại sàn của chúng tôi
+          {props.filerType == 'hot'
+            ? 'Những deal đấu giá đang hot tại sàn của chúng tôi'
+            : 'Những deal đấu giá mới nhất tại sàn của chúng tôi'}
         </h2>
         <p className="text-lg text-gray-500 font-normal text-center">
-          Những sản phẩm cực hiếm, cực đẹp
+          {props.filerType == 'hot'
+            ? 'Các sản phẩm đang được đấu giá sôi nổi nhất'
+            : 'Các sản phẩm vừa mới được đăng lên'}
         </p>
         <p
           className="text-lg font-semibold text-center underline text-blue-500 hover:opacity-70 cursor-pointer"
@@ -89,18 +104,25 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
                 key={index.toString()}
                 onClick={() => router.push(`/products/${item.id}`)}
               >
-                {index <= 3 ? (
-                  <div className="w-full flex-initial mb-2 pl-3">
-                    <div className="bg-red-500 rounded-lg px-2 py-1 w-fit animate-pulse flex items-center">
-                      <FireIcon className="w-5 h-5 font-bold text-white mr-1" />
-                      <p className="text-white text-xs font-bold">
-                        Sản phẩm đang hot
-                      </p>
-                    </div>
+                <div className="w-full flex-initial mb-2 pl-3">
+                  <div className="bg-red-500 rounded-lg px-2 py-1 w-fit animate-pulse flex items-center">
+                    {props.filerType == 'hot' ? (
+                      <>
+                        <FireIcon className="w-5 h-5 font-bold text-white mr-1" />
+                        <p className="text-white text-xs font-bold">
+                          Sản phẩm đang hot
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <StarIcon className="w-5 h-5 font-bold text-white mr-1" />
+                        <p className="text-white text-xs font-bold">
+                          Sản phẩm mới
+                        </p>
+                      </>
+                    )}
                   </div>
-                ) : (
-                  <div className="rounded-lg px-2 py-1 w-fit animate-pulse flex items-center h-[30px]"></div>
-                )}
+                </div>
                 <img
                   src={item.imagePath}
                   width={200}

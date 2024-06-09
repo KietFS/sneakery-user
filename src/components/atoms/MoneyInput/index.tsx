@@ -8,9 +8,7 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline'
 import React, { useState } from 'react'
-import CurrencyInput from 'react-currency-input-field'
 import { Control, Controller } from 'react-hook-form'
-import InputMask from 'react-input-mask'
 
 type IInputMode =
   | 'email'
@@ -90,14 +88,17 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
       }) => {
         const onValueChange = (value: string) => {
           const numberValue = parseFloat(value)
-          const formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          })
-          const formattedValue = formatter.format(numberValue)
-          onChange(formattedValue)
+          if (!isNaN(numberValue)) {
+            const formatter = new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+            })
+            const formattedValue = formatter.format(numberValue)
+            onChange(name, formattedValue)
+          } else {
+            onChange(name, value)
+          }
         }
-
         return (
           <div
             className={`w-full rounded-sm ${
@@ -125,54 +126,35 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
                   : 'bg-gray-100'
               } px-2 py-1 rounded-lg h-10  ${className}`}
             >
-              {mode === 'money' ? (
-                <CurrencyInput
-                  autoComplete="off"
-                  name={name}
-                  placeholder={
-                    props.placeholder ||
-                    (objectTypes as any)?.[mode]?.placeholder ||
-                    ''
-                  }
-                  value={value}
-                  onBlur={() => setFocus(false)}
-                  onFocus={() => setFocus(true)}
-                  onValueChange={e => onChange(e)}
-                  className={`px-2 py-1 w-[90%]  ${
-                    focus && !error
-                      ? 'bg-blue-50'
-                      : error
-                      ? 'bg-red-50'
-                      : 'bg-gray-100'
-                  } text-gray-700 rounded-lg w-80 h-8 text-sm  outline-none ring-0 border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent`}
-                />
-              ) : (
-                <input
-                  autoComplete="off"
-                  name={name}
-                  placeholder={
-                    props.placeholder ||
-                    (objectTypes as any)?.[mode]?.placeholder ||
-                    ''
-                  }
-                  value={value}
-                  onBlur={() => setFocus(false)}
-                  type={
-                    mode === 'password' || mode == 'confirmPassword'
-                      ? 'password'
-                      : 'text'
-                  }
-                  onFocus={() => setFocus(true)}
-                  onChange={e => onChange(e.target.value)}
-                  className={`px-2 py-1 w-[90%]  ${
-                    focus && !error
-                      ? 'bg-blue-50'
-                      : error
-                      ? 'bg-red-50'
-                      : 'bg-gray-100'
-                  } text-gray-700 rounded-lg w-80 h-8 text-sm  outline-none ring-0 border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent`}
-                />
-              )}
+              <input
+                autoComplete="off"
+                name={name}
+                placeholder={
+                  props.placeholder ||
+                  (objectTypes as any)?.[mode]?.placeholder ||
+                  ''
+                }
+                value={value}
+                onBlur={() => setFocus(false)}
+                type={
+                  mode === 'password' || mode == 'confirmPassword'
+                    ? 'password'
+                    : 'text'
+                }
+                onFocus={() => setFocus(true)}
+                onChange={e =>
+                  mode == 'money'
+                    ? onValueChange(e.target.value)
+                    : onChange(e.target.value)
+                }
+                className={`px-2 py-1 w-[90%]  ${
+                  focus && !error
+                    ? 'bg-blue-50'
+                    : error
+                    ? 'bg-red-50'
+                    : 'bg-gray-100'
+                } text-gray-700 rounded-lg w-80 h-8 text-sm  outline-none ring-0 border-transparent focus:border-transparent focus:ring-0 focus:outline-transparent`}
+              />
             </div>
             {error && (
               <p className="text-red-500 text-xs font-semibold mt-1">

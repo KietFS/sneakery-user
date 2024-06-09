@@ -54,7 +54,7 @@ const StepTwo: React.FC<IStepTwoProps> = ({
         <div className="grid grid-cols-1 tablet:grid-cols-2 gap-x-10 gap-y-5 mt-5">
           <InputHookForm
             required
-            mode="text"
+            mode="money"
             control={control}
             label={`Giá khởi điểm`}
             placeholder={`Nhập giá khởi điểm của sản phẩm`}
@@ -64,7 +64,7 @@ const StepTwo: React.FC<IStepTwoProps> = ({
           />
           <InputHookForm
             required
-            mode="text"
+            mode="money"
             control={control}
             label={`Bước giá`}
             placeholder={`Nhập bước giá của sản phẩm`}
