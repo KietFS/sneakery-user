@@ -2,6 +2,7 @@ import * as React from 'react'
 
 //styles
 import {
+  BuildingLibraryIcon,
   ChevronRightIcon,
   ClipboardDocumentListIcon,
   ClockIcon,
@@ -11,7 +12,6 @@ import {
 } from '@heroicons/react/24/outline'
 import AddressDialog from '@/components/organisms/AddressDialog'
 import AccountDialog from '@/components/organisms/AccountDialog'
-import OrderHistoryDialog from '@/components/organisms/OrderHistoryDialog'
 import LogoutConfirmDialog from '@/components/organisms/LogoutConfirmDialog'
 import PostedDialog from '@/components/templates/PostedDialog'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
@@ -22,14 +22,12 @@ import { useRouter } from 'next/router'
 import { useAppSelector } from '@/hooks/useRedux'
 
 //utils
-import { toast } from 'react-toastify'
 import FormControl from '@mui/material/FormControl'
 import { IRootState } from '@/redux'
 import WinningDialog from '../WinningDialog'
-import { useDispatch } from 'react-redux'
-import { setAccessToken, setUser } from '@/redux/slices/auth'
 import HistoryDialog from '../TransactionHisotryDialog'
 import { useAuth } from '@/hooks/useAuth'
+import UserBidHistoryDialog from '@/components/organisms/UserBidHistoryDialog'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -57,6 +55,8 @@ export default function UserCard() {
   const [openWinningDialog, setOpenWinningDialog] =
     React.useState<boolean>(false)
   const [openHistoryDialog, setOpenHistoryDialog] =
+    React.useState<boolean>(false)
+  const [openUserBidDialog, setOpenUserBidDialog] =
     React.useState<boolean>(false)
 
   //functions
@@ -152,6 +152,15 @@ export default function UserCard() {
           <div
             className="py-2 px-4 cursor-pointer flex justify-between items-center"
             onClick={() => {
+              setOpenUserBidDialog(true)
+            }}
+          >
+            <p className="text-gray-500 text-sm ">Lịch sử đấu giá của bạn</p>
+            <BuildingLibraryIcon className="h-5 w-5 text-gray-500" />
+          </div>
+          <div
+            className="py-2 px-4 cursor-pointer flex justify-between items-center"
+            onClick={() => {
               setOpenLogoutDialog(true)
             }}
           >
@@ -171,13 +180,6 @@ export default function UserCard() {
         <AccountDialog
           open={openAccountDialog}
           onClose={() => setOpenAccountDialog(false)}
-        />
-      ) : null}
-
-      {openOrderHistory ? (
-        <OrderHistoryDialog
-          open={openOrderHistory}
-          onClose={() => setOpenOrderHistory(false)}
         />
       ) : null}
 
@@ -207,6 +209,13 @@ export default function UserCard() {
         <HistoryDialog
           open={openHistoryDialog}
           onClose={() => setOpenHistoryDialog(false)}
+        />
+      ) : null}
+
+      {openUserBidDialog ? (
+        <UserBidHistoryDialog
+          open={openUserBidDialog}
+          onClose={() => setOpenUserBidDialog(false)}
         />
       ) : null}
     </div>

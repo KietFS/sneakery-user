@@ -5,24 +5,16 @@ import OrderCard from '@/components/molecules/OrderCard'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import { Dialog, DialogContent, Tooltip } from '@mui/material'
 
-//hooks
-import { useAppSelector } from '@/hooks/useRedux'
-
 //utils
 import axios from 'axios'
-import { IRootState } from '@/redux'
 import { Config } from '@/config/api'
 import { configResponse } from '@/utils/request'
-import ConfirmDialog from '../ConfirmDialog'
-import { toast } from 'react-toastify'
 import { useAuth } from '@/hooks/useAuth'
 
-interface IOrderHistoryDialogProps {
+interface IUserBidHistoryDialog {
   open: boolean
   onClose: () => void
 }
-
-type IOrderStatus = 'success' | 'pending' | 'failed'
 
 export interface ICart {
   orderId: number
@@ -45,41 +37,23 @@ interface IProductInCart {
   startPrice: number
   currentPrice: number
   imagePath: string
-  username: string
+  seller: {
+    username: string
+    id: string
+  }
   bidIncrement: number
   bidClosingDate: string
 }
 
-const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
+const UserBidHistoryDialog: React.FC<IUserBidHistoryDialog> = props => {
   const { open, onClose } = props
   const [loading, setLoading] = useState<boolean>(false)
   const [items, setItems] = useState<IUserBidHistoryItem[]>([])
-  const { user } = useAppSelector((state: IRootState) => state.auth)
   const { accessToken } = useAuth()
 
   const [actionLoading, setActionLoading] = useState<boolean>(false)
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
   const [orderSelected, setOrderSelected] = useState<number | string>('')
-  const [actionSuccess, setActionSuccess] = useState<boolean>(false)
-
-  const cancelBid = async () => {
-    try {
-      setActionLoading(true)
-      const response = await axios.delete(
-        `${Config.API_URL}/bid-history/${orderSelected}`,
-      )
-
-      if (response?.data?.success == true) {
-        toast.success(response?.data?.message)
-        setLoading(false)
-        setOpenConfirmDialog(false)
-        await resetAllItems()
-      }
-    } catch (error) {
-      setActionLoading(false)
-      console.log('ERROR', error)
-    }
-  }
 
   const getAllItems = async () => {
     try {
@@ -172,16 +146,8 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = props => {
           </div>
         </DialogContent>
       </Dialog>
-      <ConfirmDialog
-        open={openConfirmDialog}
-        title="Bạn có chắc muốn hủy lượt đấu giá cho sản phẩm này"
-        description="Hành động này không thể quay lại"
-        onClose={() => setOpenConfirmDialog(false)}
-        onConfirm={cancelBid}
-        isConfirmLoadingButton={actionLoading}
-      />
     </>
   )
 }
 
-export default OrderHistoryDialog
+export default UserBidHistoryDialog

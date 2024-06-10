@@ -49,13 +49,13 @@ const OrderCard: React.FC<IOrderCardProps> = props => {
               </p>
             </div>
             <div className="flex gap-x-1 items-center">
-              <p className="text-xs text-gray-600">Bán bởi: </p>
-              <div className="rounded-full bg-blue-200 text-blue-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
-                {order.product.username}
+              <p className="text-xs text-gray-600">Vào ngày: </p>
+              <div className="rounded-full bg-blue-200 text-blue-800 font-semibold px-[5px] py-[2px] text-[10px] w-fit">
+                {order.product.bidClosingDate?.toString().prettyDateTime()}
               </div>
             </div>
             {order.status == 'SUCCESS' && (
-              <div className="rounded-full bg-green-200 text-green-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
+              <div className="rounded-full bg-green-200 text-green-800 font-semibold px-[5px] py-[4px] text-[10px] w-fit">
                 Thành công
               </div>
             )}
@@ -69,17 +69,6 @@ const OrderCard: React.FC<IOrderCardProps> = props => {
                 Thất bại
               </div>
             )} */}
-          </div>
-          <div>
-            {order.status == 'SUCCESS' ? (
-              <Tooltip title="Hủy lượt đấu giá">
-                <IconButton
-                  onClick={() => props.handlePressCancel(order.bidHistoryId)}
-                >
-                  <XMarkIcon width={20} height={20} />
-                </IconButton>
-              </Tooltip>
-            ) : null}
           </div>
         </div>
       </button>
