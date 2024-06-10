@@ -26,6 +26,7 @@ const HistoryDialog: React.FC<IHistoryDialogProps> = props => {
 
   const getTransactionHistoryItems = async () => {
     try {
+      setLoading(true)
       const response = await axios.get(
         `${Config.API_URL}/transactions/user-history`,
         {
@@ -70,11 +71,22 @@ const HistoryDialog: React.FC<IHistoryDialogProps> = props => {
               <XMarkIcon className="w-8 h-8 p-1 hover:bg-gray-200 rounded-full cursor-pointer" />
             </Tooltip>
           </div>
-          <div className="flex flex-col gap-y-5 justify-center items-center">
-            {tractionHistoryItem?.map((item, index) => (
-              <TransactionHistoryCard {...item} />
-            ))}
-          </div>
+          {loading ? (
+            <div>
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>{' '}
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+              <div className="mt-4 animate-pulse bg-gray-300 w-full h-[100px] rounded-md"></div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-y-5 justify-center items-center">
+              {tractionHistoryItem?.map((item, index) => (
+                <TransactionHistoryCard {...item} />
+              ))}
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

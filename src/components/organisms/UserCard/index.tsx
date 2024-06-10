@@ -18,7 +18,6 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import OutlinedInput from '@mui/material/OutlinedInput'
 
 //hooks
-import { useRouter } from 'next/router'
 import { useAppSelector } from '@/hooks/useRedux'
 
 //utils
@@ -168,56 +167,42 @@ export default function UserCard() {
             <ChevronRightIcon className="h-5 w-5 text-gray-500" />
           </div>
         </Select>
-      </FormControl>
-      {openAddressDialog ? (
         <AddressDialog
           open={openAddressDialog}
           onClose={() => setOpenAddressDialog(false)}
         />
-      ) : null}
 
-      {openAccountDialog ? (
         <AccountDialog
           open={openAccountDialog}
           onClose={() => setOpenAccountDialog(false)}
         />
-      ) : null}
 
-      {openLogoutDialog ? (
         <LogoutConfirmDialog
           open={openLogoutDialog}
           onConfirm={() => logOut()}
           onClose={() => setOpenLogoutDialog(false)}
         />
-      ) : null}
 
-      {openPostedDialog ? (
         <PostedDialog
           open={openPostedDialog}
           onClose={() => setOpenPostedDialog(false)}
         />
-      ) : null}
 
-      {openWinningDialog ? (
         <WinningDialog
           open={openWinningDialog}
           onClose={() => setOpenWinningDialog(false)}
         />
-      ) : null}
 
-      {openHistoryDialog ? (
         <HistoryDialog
           open={openHistoryDialog}
           onClose={() => setOpenHistoryDialog(false)}
         />
-      ) : null}
 
-      {openUserBidDialog ? (
         <UserBidHistoryDialog
           open={openUserBidDialog}
           onClose={() => setOpenUserBidDialog(false)}
         />
-      ) : null}
+      </FormControl>
     </div>
   )
 }

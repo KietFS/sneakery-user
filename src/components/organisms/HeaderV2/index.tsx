@@ -6,7 +6,6 @@ import { Bars4Icon, UserIcon, UserPlusIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon } from '@heroicons/react/24/outline'
 import UserCard from '../UserCard'
 import LoginDialog from '../../templates/LoginDialog'
-import EmailSentDialog from '../EmailSentDialog'
 
 //store
 import { IRootState } from '@/redux'
@@ -93,7 +92,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
           </p>
           <div className="flex w-1/3 laptop:hidden laptop:w-0 flex-row-reverse">
             {isAuthenticated ? (
-              <UserCard />
+              <></>
             ) : (
               <div className="flex flex-row-reverse laptop:hidden  w-1/3 laptop:w-0">
                 <button

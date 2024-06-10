@@ -135,4 +135,4 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
   )
 }
 
-export default memo(PostedDialog)
+export default PostedDialog

@@ -5,7 +5,6 @@ import HeaderV2 from '@/components/organisms/HeaderV2'
 import FooterSection from '@/components/molecules/FooterSection'
 import ProductGridV2 from '@/layouts/category/ProductGridV2'
 import FilterSideBar from '@/layouts/category/FilterSideBar'
-import Spinner from '@/components/atoms/Spinner'
 import NotFound from '@/assets/images/NotFound.png'
 import Image from 'next/image'
 

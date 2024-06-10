@@ -94,6 +94,7 @@ const UserBidHistoryDialog: React.FC<IUserBidHistoryDialog> = props => {
   }
 
   useEffect(() => {
+    console.log('BEING CALLED')
     getAllItems()
   }, [])
 

@@ -16,24 +16,24 @@ const PayPostSaleFee: React.FC<IPayPostSaleFeeProps> = props => {
   const { wonProductSelected } = useAppSelector(
     (state: IRootState) => state.payment,
   )
-  //Check if the paid is complete
+
   useEffect(() => {
     const handleStorageChange = async (event: any) => {
-      if (event.key === PAYMENT_SUCCESS_KEY['PAID']) {
+      if (event.key === PAYMENT_SUCCESS_KEY['AUCTION_FEE']) {
         const listedPaymentPayload = JSON.parse(event.newValue as string)
         setIsPaySuccess(listedPaymentPayload)
       }
     }
     window.addEventListener('storage', handleStorageChange)
     return () => {
-      localStorage.removeItem(PAYMENT_SUCCESS_KEY['PAID'])
+      localStorage.removeItem(PAYMENT_SUCCESS_KEY['AUCTION_FEE'])
     }
   }, [])
 
   return (
     <div className="bg-white">
       <Head>
-        <title>Sneakery - Thanh toán cho sản phẩm</title>
+        <title>Sneakery - Thanh toán phí đấu giá cho sản phẩm</title>
         <link rel="icon" />
       </Head>
       <div className="pb-16 bg-white">

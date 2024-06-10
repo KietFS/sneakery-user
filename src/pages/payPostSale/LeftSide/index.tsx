@@ -48,7 +48,7 @@ const CheckoutProductLeftSide: React.FC<
     try {
       const payload: IPayForProductPayload = {
         amount: props?.wonProduct?.priceWin,
-        purpose: `Thanh toán cho sản phẩm ${props.wonProduct.product.name}`,
+        purpose: `Thanh toán phí đấu giá cho sản phẩm đã có người chiến thắng ${props.wonProduct.product.name}`,
       }
       setIsPayingPreFee(true)
       const response = await axios.post(

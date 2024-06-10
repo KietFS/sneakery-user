@@ -113,7 +113,7 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
   return (
     <div className="h-fit rounded-lg shadow-lg bg-white mt-10 border border-gray-200 w-full px-8 pt-4 pb-8">
       <h2 className="text-xl laptop:text-2xl text-blue-500 font-bold">
-        Sản phẩm tương tựs
+        Sản phẩm tương tự
       </h2>
       {/* <div className="mt-10 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-4 gap-x-5 gap-y-5">
         {listProduct.map((item, index) => {
