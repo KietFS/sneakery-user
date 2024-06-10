@@ -124,22 +124,6 @@ const ProductBidHistoryDialog: React.FC<
                       </div>
                     )}
                   </div>
-                  {/* <div className="w-1/5 flex justify-between">
-                    <div></div>
-                    {item?.userName == user?.username &&
-                    item?.status == 'SUCCESS' ? (
-                      <Tooltip title="Hủy lượt đấu giá">
-                        <IconButton
-                          onClick={() => {
-                            setOpenConfirmDialog(true)
-                            setOrderSelected(item.bidHistoryId)
-                          }}
-                        >
-                          <XMarkIcon width={20} height={20} />
-                        </IconButton>
-                      </Tooltip>
-                    ) : null}
-                  </div> */}
                 </div>
               ))}
             </div>

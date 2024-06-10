@@ -47,7 +47,7 @@ const CheckoutProductLeftSide: React.FC<
   const handlePressPay = async () => {
     try {
       const payload: IPayForProductPayload = {
-        amount: 1,
+        amount: props?.wonProduct?.priceWin,
         purpose: `Thanh toán cho sản phẩm ${props.wonProduct.product.name}`,
       }
       setIsPayingPreFee(true)

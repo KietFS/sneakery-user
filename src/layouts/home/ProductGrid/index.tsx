@@ -39,8 +39,8 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
     try {
       let queryURL =
         props.filerType == 'hot'
-          ? '/products/homepage?page=0&size=5&sort=bid.numberOfBids,desc'
-          : '/products/homepage?page=0&sort=id,desc'
+          ? '/products/homepage?page=0&size=12&sort=bid.numberOfBids,desc'
+          : '/products/homepage?page=0&size=12&sort=id,desc'
       setLoadingProduct(true)
       const response = await axios.get(`${Config.API_URL}${queryURL}`)
       const { isSuccess, data } = configResponse(response)
