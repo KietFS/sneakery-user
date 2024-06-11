@@ -1,10 +1,8 @@
 import React from 'react'
 import { ClockIcon, PencilIcon } from '@heroicons/react/24/outline'
-import { IconButton } from '@mui/material'
-import { PaymentSharp } from '@mui/icons-material'
 import { IPostedProduct } from '@/types'
-import PaymentStatusBadge from '@/components/atoms/PaymentStatusBadge'
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
+import SellerPaymentStatusBadge from '@/components/atoms/SellerPaymentStatusBadge'
 
 interface IPostedCardProps extends IPostedProduct {
   id: string
@@ -72,51 +70,33 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
               )}
             </div>
 
-            {bidOutCome == 'CLOSED' && sellerPaymentStatus == 'PENDING' && (
-              <div className="flex items-center">
-                <InformationCircleIcon
-                  width={15}
-                  height={15}
-                  className="text-yellow-400 mr-1"
-                />
-                <p className="text-yellow-400 text-xs font-regular">
-                  Bạn cần thanh toán phí đấu giá cho sản phẩm này
-                </p>
-              </div>
-            )}
+            {bidOutCome == 'CLOSED' &&
+              winnerPaymentStatus == 'COMPLETED' &&
+              sellerPaymentStatus == 'PENDING' && (
+                <div className="flex items-center">
+                  <InformationCircleIcon
+                    width={15}
+                    height={15}
+                    className="text-yellow-400 mr-1"
+                  />
+                  <p className="text-yellow-400 text-xs font-regular">
+                    Chúng tôi đang xử lý để hoàn tiền cho bạn
+                  </p>
+                </div>
+              )}
 
             <div className="flex items-center">
               <p className="text-xs text-gray-500 font-regular mr-1">
-                Trạng thái thanh toán:
+                Trạng thái hoàn tiền:
               </p>
               {sellerPaymentStatus !== undefined ? (
-                <PaymentStatusBadge status={sellerPaymentStatus} />
+                <SellerPaymentStatusBadge status={sellerPaymentStatus} />
               ) : (
                 <p className="text-gray-600 font-regular text-xs">Không rõ</p>
               )}
             </div>
           </div>
         </div>
-        {sellerPaymentStatus == 'COMPLETED' && (
-          <IconButton
-            title="Chỉnh sửa sản phẩm"
-            onClick={() => onNavigateToPayment(id)}
-          >
-            <PencilIcon
-              width={15}
-              height={15}
-              className="w-[10] h-[10] text-gray-600"
-            />
-          </IconButton>
-        )}
-        {sellerPaymentStatus == 'PENDING' && (
-          <IconButton
-            title="Thanh toán phí đấu giá"
-            onClick={() => onNavigateToPayment(id)}
-          >
-            <PaymentSharp width={20} height={20} className="text-green-500" />
-          </IconButton>
-        )}
       </div>
     </div>
   )

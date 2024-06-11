@@ -25,6 +25,7 @@ import PaypalLogo from '@/assets/images/PayPalLogo.png'
 import { CheckBadgeIcon } from '@heroicons/react/24/outline'
 import { IWonProduct } from '@/types/product'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 
 interface ICheckOutProductLeftSideProps {
   isPaySuccess: boolean
@@ -40,6 +41,7 @@ const CheckoutProductLeftSide: React.FC<
   const { methodSelected } = useAppSelector(
     (state: IRootState) => state.payment,
   )
+  const router = useRouter()
   const { accessToken } = useAuth()
   const dispatch = useDispatch()
 
@@ -111,10 +113,17 @@ const CheckoutProductLeftSide: React.FC<
           <div className="mt-4 flex items-center justify-center">
             <CheckBadgeIcon className="text-green-500 font-bold w-5 h-5" />
             <p className="font-semibold text-green-500 ml-2">
-              Bạn đã thanh toán thành công cho sản phẩm{' '}
+              Bạn đã thanh toán phí đấu giá thành công cho sản phẩm{' '}
               {props.postedProduct.product.name}
             </p>
           </div>
+
+          <button
+            className="text-blue-500 justify-center w-full text-center text-sm underline font-semibold"
+            onClick={() => router.replace('/')}
+          >
+            Quay về trang chủ
+          </button>
         </>
       ) : (
         <div>

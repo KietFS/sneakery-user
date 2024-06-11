@@ -64,7 +64,6 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
     }
   }, [open])
 
-  console.log('posted item is', items)
 
   return (
     <>
@@ -105,11 +104,15 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
                           key={index.toString()}
                           id={item?.bidId}
                           title={item.product.name}
-                          onNavigateToPayment={() => {
-                            router.replace(`/payPostSale/id=${item?.bidId}`)
-                            localStorage.setItem(
+                          onNavigateToPayment={async () => {
+                            router.replace(`/payPostSale`)
+                            await localStorage.setItem(
                               'paymentType',
-                              PAYMENT_SUCCESS_KEY['AUCTION_FEE'],
+                              'AUCTION_FEE',
+                            )
+                            await localStorage.setItem(
+                              'productId',
+                              `${item?.bidId}`,
                             )
                             dispatch(setPostedProductSelected(item as any))
                           }}

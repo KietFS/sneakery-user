@@ -35,6 +35,7 @@ const Success: React.FC = props => {
       if (productId) {
         setProductId(productId)
       }
+      console.log('paymentType', paymentType)
       if (paymentType) {
         setPaymentType(paymentType as IPaymentType)
       }
