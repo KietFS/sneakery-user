@@ -1,5 +1,5 @@
 //utils and types
-import { IWonProduct } from '@/types/product'
+import { IProductDetail, IWonProduct } from '@/types/product'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type IPaymentType = 'PRE_SALE_FEE' | 'AUCTION_FEE'
@@ -11,6 +11,7 @@ interface IInitialState {
   paymentType: IPaymentType | null
   methodSelected: IMethodSelected
   wonProductSelected: IWonProduct | null
+  postedProductSelected: IProductDetail | null
 }
 
 const initialState: IInitialState = {
@@ -19,6 +20,7 @@ const initialState: IInitialState = {
   paymentType: null,
   methodSelected: 'paypal',
   wonProductSelected: null,
+  postedProductSelected: null,
 }
 
 const paymentSlice = createSlice({
@@ -43,6 +45,12 @@ const paymentSlice = createSlice({
     ) => {
       state.wonProductSelected = actions.payload
     },
+    setPostedProductSelected: (
+      state,
+      actions: PayloadAction<IProductDetail | null>,
+    ) => {
+      state.postedProductSelected = actions.payload
+    },
   },
 })
 
@@ -52,5 +60,6 @@ export const {
   setPaymentType,
   setMethodSelected,
   setWonProductSelected,
+  setPostedProductSelected,
 } = paymentSlice.actions
 export default paymentSlice.reducer

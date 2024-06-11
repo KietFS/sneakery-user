@@ -29,7 +29,7 @@ import { toast } from 'react-toastify'
 interface ICheckOutProductLeftSideProps {
   isPaySuccess: boolean
   setIsPaySuccess: (payload: boolean) => void
-  wonProduct: IWonProduct
+  postedProduct: any
 }
 
 const CheckoutProductLeftSide: React.FC<
@@ -47,8 +47,8 @@ const CheckoutProductLeftSide: React.FC<
   const handlePressPay = async () => {
     try {
       const payload: IPayForProductPayload = {
-        amount: props?.wonProduct?.priceWin,
-        purpose: `Thanh toán phí đấu giá cho sản phẩm đã có người chiến thắng ${props.wonProduct.product.name}`,
+        amount: props?.postedProduct?.priceWin,
+        purpose: `Thanh toán phí đấu giá cho sản phẩm đã có người chiến thắng ${props.postedProduct.product.name}`,
       }
       setIsPayingPreFee(true)
       const response = await axios.post(
@@ -90,8 +90,8 @@ const CheckoutProductLeftSide: React.FC<
           </Tooltip> */}
       </div>
       <p className="text-sm italic text-gray-500">
-        *Bạn đã chiến thắng sản phẩm này trong phiên đấu giá. Vui lòng thanh
-        toán để nhận được sản phẩm<br></br>
+        *Phiên đấu giá này đã có người chiến thắng, vui lòng thanh toán phí
+        chiết khấu đấu giá<br></br>
         Khi nhấn vào nút thanh toán, bạn đã đồng ý với chính sách và điều khoản
         sử dụng của chúng tôi
       </p>
@@ -112,7 +112,7 @@ const CheckoutProductLeftSide: React.FC<
             <CheckBadgeIcon className="text-green-500 font-bold w-5 h-5" />
             <p className="font-semibold text-green-500 ml-2">
               Bạn đã thanh toán thành công cho sản phẩm{' '}
-              {props.wonProduct.product.name}
+              {props.postedProduct.product.name}
             </p>
           </div>
         </>
@@ -169,7 +169,7 @@ const CheckoutProductLeftSide: React.FC<
               Số tiền bạn cần thanh toán:{' '}
             </p>
             <p className="text-lg italic font-semibold text-blue-500 ml-1">
-              {props?.wonProduct?.priceWin?.toString()?.prettyMoney()}$
+              {props?.postedProduct?.priceWin?.toString()?.prettyMoney()}$
             </p>
           </div>
 

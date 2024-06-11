@@ -13,7 +13,7 @@ interface IPayPostSaleFeeProps {}
 
 const PayPostSaleFee: React.FC<IPayPostSaleFeeProps> = props => {
   const [isPaySuccess, setIsPaySuccess] = useState<boolean>(false)
-  const { wonProductSelected } = useAppSelector(
+  const { postedProductSelected } = useAppSelector(
     (state: IRootState) => state.payment,
   )
 
@@ -41,11 +41,11 @@ const PayPostSaleFee: React.FC<IPayPostSaleFeeProps> = props => {
       </div>
       <div className="bg-white flex laptop:flex-row flex-col justify-between gap-x-5 gap-y-5 px-20">
         <CheckoutProductLeftSide
-          wonProduct={wonProductSelected}
+          postedProduct={postedProductSelected}
           isPaySuccess={isPaySuccess}
           setIsPaySuccess={payload => setIsPaySuccess(payload)}
         />
-        <PayPostSaleFeeRightSide wonProduct={wonProductSelected} />
+        <PayPostSaleFeeRightSide postedProduct={postedProductSelected} />
       </div>
 
       <FooterSection />

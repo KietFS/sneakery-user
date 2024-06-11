@@ -14,13 +14,10 @@ import Image from 'next/image'
 import BaseInput from '@/components/atoms/BaseInput'
 import { useAppSelector } from '@/hooks/useRedux'
 import { useAuth } from '@/hooks/useAuth'
-import { useRouter } from 'next/router'
 import { IRootState } from '@/redux'
 
 import LoginBackground from '@/assets/images/LoginBackground.png'
-import { XCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
-import { auth } from '@/common/config/firebase'
+import { XCircleIcon } from '@heroicons/react/20/solid'
 import { useDispatch } from 'react-redux'
 import { setOpenForgotPasswordDialog } from '@/redux/slices/auth'
 
@@ -60,7 +57,7 @@ const LoginDialog: React.FC<IDialogProps> = props => {
   const { login, loginLoading, loginError } = useAuth()
 
   //store
-  const { user, isAuth } = useAppSelector((state: IRootState) => state.auth)
+  const { user } = useAppSelector((state: IRootState) => state.auth)
 
   const handlePresslogin = (values: IFormValue) => {
     login(values.email, values.password)

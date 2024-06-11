@@ -20,7 +20,7 @@ const Home = (props: any) => {
         <title>Trang chủ - Sneakery</title>
         <link rel="icon" />
       </Head>
-      <div className="pb-32">
+      <div className="">
         <HeaderV2 />
         <HeroSection />
         <div className="w-5/6 mx-auto space-y-20">
@@ -30,7 +30,6 @@ const Home = (props: any) => {
           <VideoSection />
           <StepSection />
           <PartnerSection />
-          <ContactSection />
         </div>
         <FooterSection />
       </div>

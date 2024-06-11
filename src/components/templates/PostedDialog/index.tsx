@@ -16,6 +16,9 @@ import { configResponse } from '@/utils/request'
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/router'
 import { IPostedProduct } from '@/types'
+import { PAYMENT_SUCCESS_KEY } from '@/constants'
+import { useDispatch } from 'react-redux'
+import { setPostedProductSelected } from '@/redux/slices/payment'
 
 interface IPostedDialogProps {
   open: boolean
@@ -25,10 +28,10 @@ interface IPostedDialogProps {
 const PostedDialog: React.FC<IPostedDialogProps> = props => {
   const { open, onClose } = props
   const [items, setItems] = useState<IPostedProduct[]>([])
-  const { user } = useAppSelector((state: IRootState) => state.auth)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { accessToken } = useAuth()
   const router = useRouter()
+  const dispatch = useDispatch()
 
   const getPostedItems = async () => {
     try {
@@ -60,6 +63,8 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
       getPostedItems()
     }
   }, [open])
+
+  console.log('posted item is', items)
 
   return (
     <>
@@ -100,8 +105,13 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
                           key={index.toString()}
                           id={item?.bidId}
                           title={item.product.name}
-                          onNavigateToEdit={() => {
-                            router.replace(`/updateProduct/id=${item?.bidId}`)
+                          onNavigateToPayment={() => {
+                            router.replace(`/payPostSale/id=${item?.bidId}`)
+                            localStorage.setItem(
+                              'paymentType',
+                              PAYMENT_SUCCESS_KEY['AUCTION_FEE'],
+                            )
+                            dispatch(setPostedProductSelected(item as any))
                           }}
                           status={
                             item.priceWin === null ? 'pending' : 'success'

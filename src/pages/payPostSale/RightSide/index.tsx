@@ -4,11 +4,11 @@ import Image from 'next/image'
 import React from 'react'
 
 interface IPostSaleFeeRightSideProps {
-  wonProduct: IWonProduct
+  postedProduct: any
 }
 
 const PayPostSaleFeeRightSide: React.FC<IPostSaleFeeRightSideProps> = props => {
-  const { wonProduct } = props
+  const { postedProduct } = props
   return (
     <div className="border-gray-200 border p-6  h-full min-h-[500px] w-1/4 rounded-lg flex flex-col justify-between">
       <div>
@@ -20,7 +20,7 @@ const PayPostSaleFeeRightSide: React.FC<IPostSaleFeeRightSideProps> = props => {
 
         <div className="mt-4">
           <Image
-            src={wonProduct?.product?.imagePath}
+            src={postedProduct?.product?.imagePath}
             width={200}
             height={150}
           />
@@ -29,39 +29,39 @@ const PayPostSaleFeeRightSide: React.FC<IPostSaleFeeRightSideProps> = props => {
           <div className="flex items-center">
             <h3 className="text-gray-400 text-sm">Tên sản phẩm : </h3>
             <h3 className="text-gray-500 text-sm ml-1  cursor-pointer">
-              {wonProduct?.product?.name}
+              {postedProduct?.product?.name}
             </h3>
           </div>
           <div className="flex items-center">
             <h3 className="text-gray-400 text-sm">Giá chiến thắng : </h3>
             <h3 className="text-gray-500 text-sm ml-1  cursor-pointer">
-              {wonProduct?.priceWin?.toString()?.prettyMoney()}$
+              {postedProduct?.priceWin?.toString()?.prettyMoney()}$
             </h3>
           </div>
           <div className="flex items-center">
             <h3 className="text-gray-400 text-sm">Số lượt đấu giá: </h3>
             <h3 className="text-blue-500 ml-1 text-sm cursor-pointer">
-              {wonProduct?.product?.numberOfBids}
+              {postedProduct?.product?.numberOfBids}
             </h3>
           </div>
           <div className="flex items-center">
             <h3 className="text-gray-400 text-sm">Bước giá : </h3>
             <h3 className="text-blue-500 ml-1 text-sm cursor-pointer">
-              {wonProduct?.stepBid?.toString()?.prettyMoney()}$
+              {postedProduct?.stepBid?.toString()?.prettyMoney()}$
             </h3>
           </div>
 
           <div className="flex items-center">
             <h3 className="text-gray-400 text-sm">Ngày bắt đầu: </h3>
             <h3 className="text-blue-500 ml-1 text-sm cursor-pointer">
-              {wonProduct?.product?.bidCreatedDate?.toString()?.prettyDate()}
+              {postedProduct?.product?.bidCreatedDate?.toString()?.prettyDate()}
             </h3>
           </div>
 
           <div className="flex items-center">
             <h3 className="text-gray-400 text-sm">Ngày kết thúc: </h3>
             <h3 className="text-blue-500 ml-1 text-sm cursor-pointer">
-              {wonProduct?.product?.bidClosingDate?.toString()?.prettyDate()}
+              {postedProduct?.product?.bidClosingDate?.toString()?.prettyDate()}
             </h3>
           </div>
         </div>

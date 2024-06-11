@@ -4,6 +4,7 @@ import { IconButton } from '@mui/material'
 import { PaymentSharp } from '@mui/icons-material'
 import { IPostedProduct } from '@/types'
 import PaymentStatusBadge from '@/components/atoms/PaymentStatusBadge'
+import { InformationCircleIcon } from '@heroicons/react/20/solid'
 
 interface IPostedCardProps extends IPostedProduct {
   id: string
@@ -11,7 +12,7 @@ interface IPostedCardProps extends IPostedProduct {
   status: IPostedStatus
   imagePath: string
   createdAt: string
-  onNavigateToEdit: (productId: string) => void
+  onNavigateToPayment: (productId: string) => void
 }
 
 type IPostedStatus = 'success' | 'pending'
@@ -20,12 +21,12 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
   const {
     id,
     title,
-    status,
+    bidOutCome,
     sellerPaymentStatus,
     winnerPaymentStatus,
     imagePath,
     createdAt,
-    onNavigateToEdit,
+    onNavigateToPayment,
   } = props
 
   return (
@@ -40,7 +41,7 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
           />
           <div className="flex flex-col gap-y-2">
             <div className="flex items-center">
-              <p className="text-xs text-gray-600 font-regular">
+              <p className="text-xs text-gray-600 font-semibold">
                 Tên sản phẩm: {title}
               </p>
             </div>
@@ -59,17 +60,30 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
               <p className="text-gray-500 font-regular text-xs mr-1">
                 Trạng thái:{' '}
               </p>
-              {status === 'success' && (
-                <p className="text-xs font-regular text-gray-500">
-                  Phiên đấu giá đã kết thúc
+              {bidOutCome == 'CLOSED_WITHOUT_WINNER' && (
+                <p className="text-xs font-regular text-red-500 font-regular">
+                  Phiên đấu giá đã kết thúc, không có người chiến thắng
                 </p>
               )}
-              {status === 'pending' && (
-                <p className="text-xs font-regular text-blue-500">
-                  Phiên đấu giá đang diễn ra
+              {bidOutCome == 'CLOSED' && (
+                <p className="text-xs font-regular text-green-500 font-regular">
+                  Phiên đấu giá đã kết thúc, có người chiến thắng
                 </p>
               )}
             </div>
+
+            {bidOutCome == 'CLOSED' && sellerPaymentStatus == 'PENDING' && (
+              <div className="flex items-center">
+                <InformationCircleIcon
+                  width={15}
+                  height={15}
+                  className="text-yellow-400 mr-1"
+                />
+                <p className="text-yellow-400 text-xs font-regular">
+                  Bạn cần thanh toán phí đấu giá cho sản phẩm này
+                </p>
+              </div>
+            )}
 
             <div className="flex items-center">
               <p className="text-xs text-gray-500 font-regular mr-1">
@@ -86,7 +100,7 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
         {sellerPaymentStatus == 'COMPLETED' && (
           <IconButton
             title="Chỉnh sửa sản phẩm"
-            onClick={() => onNavigateToEdit(id)}
+            onClick={() => onNavigateToPayment(id)}
           >
             <PencilIcon
               width={15}
@@ -98,7 +112,7 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
         {sellerPaymentStatus == 'PENDING' && (
           <IconButton
             title="Thanh toán phí đấu giá"
-            onClick={() => onNavigateToEdit(id)}
+            onClick={() => onNavigateToPayment(id)}
           >
             <PaymentSharp width={20} height={20} className="text-green-500" />
           </IconButton>

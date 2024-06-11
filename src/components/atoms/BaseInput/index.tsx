@@ -137,7 +137,7 @@ const BaseInput: React.FC<IBaseInputProps> = props => {
         <input
           autoComplete="off"
           placeholder={(objectTypes as any)?.[mode]?.placeholder || ''}
-          {...field}
+          value={field.value}
           onBlur={handleOnBlur}
           type={
             mode === 'password' || mode == 'confirmPassword'
