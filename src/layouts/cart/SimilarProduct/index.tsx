@@ -10,6 +10,7 @@ import { configResponse } from '@/utils/request'
 import { IProductDetail, IProductHomePageResponse } from '@/types'
 import Slider from 'react-slick'
 import { useRouter } from 'next/router'
+import BaseImage from '@/components/atoms/Image'
 
 interface ISimilarProduct {
   productDetail: IProductDetail
@@ -158,7 +159,7 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
               onClick={() => router.push(`/products/${item.id}`)}
             >
               <div className="w-full flex justify-center">
-                <img
+                <BaseImage
                   src={item.imagePath}
                   width={200}
                   height={150}

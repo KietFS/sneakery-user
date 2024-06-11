@@ -3,6 +3,7 @@ import { ClockIcon, CurrencyDollarIcon } from '@heroicons/react/20/solid'
 import React from 'react'
 import ImagePlaceHolder from '@/assets/images/ImagePlaceholder.jpeg'
 import Image from 'next/image'
+import BaseImage from '@/components/atoms/Image'
 
 interface ITransactionHistoryCardProps extends ITransactionHistoryItem {}
 
@@ -22,8 +23,8 @@ const TransactionHistoryCard: React.FC<
       <div className="flex items-center justify-between">
         <div className="flex gap-x-4">
           {!!(bid?.product?.imagePath as any) ? (
-            <img
-              src={(bid?.product?.imagePath as any) || ImagePlaceHolder}
+            <BaseImage
+              src={bid?.product?.imagePath as any}
               width={60}
               height={60}
               className="max-w-[60px] max-h-[60px]"
