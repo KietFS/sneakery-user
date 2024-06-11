@@ -1,18 +1,8 @@
 import React, { useState } from 'react'
-import Image from 'next/image'
 
 //utils
-import {
-  ICart,
-  IUserBidHistoryItem,
-} from '@/components/organisms/OrderHistoryDialog'
+import { IUserBidHistoryItem } from '@/components/organisms/UserBidHistoryDialog'
 import Link from 'next/link'
-import { Config } from '@/config/api'
-import { IconButton, Tooltip } from '@mui/material'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import ConfirmDialog from '@/components/organisms/ConfirmDialog'
 
 interface IOrderCardProps {
   order: IUserBidHistoryItem
