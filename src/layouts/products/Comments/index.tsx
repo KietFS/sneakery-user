@@ -153,12 +153,30 @@ const ProductComment: React.FC<IProductCommentProps> = props => {
               </div>
             </>
           ) : (
-            <div className="flex items-center gap-x-1  mt-4">
-              <InformationCircleIcon className="text-gray-500 w-[20px] h-[20px]" />
-              <p className="text-gray-500 font-bold italic text-sm">
-                Sản phẩm chưa có bình luận nào
-              </p>
-            </div>
+            <>
+              <div className="flex items-center gap-x-1  mt-4">
+                <InformationCircleIcon className="text-gray-500 w-[20px] h-[20px]" />
+                <p className="text-gray-500 font-bold italic text-sm">
+                  Sản phẩm chưa có bình luận nào
+                </p>
+              </div>
+              <div className="mt-8">
+                {isAuthenticated ? (
+                  <CommentInput
+                    {...register('comment', {
+                      required: {
+                        value: true,
+                        message: 'Không được để trống phần comment',
+                      },
+                    })}
+                    control={control}
+                    label="Đăng bình luận"
+                    onPostComment={handleSubmit(handlePostComment)}
+                    isPosting={isPosting}
+                  />
+                ) : null}
+              </div>
+            </>
           )}
         </>
       )}
