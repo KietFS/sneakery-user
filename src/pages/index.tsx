@@ -29,7 +29,6 @@ const Home = (props: any) => {
           <ProductGrid filerType="new" />
           <VideoSection />
           <StepSection />
-          <PartnerSection />
         </div>
         <FooterSection />
       </div>

@@ -9,10 +9,18 @@ interface IReservePriceInputProps<T = any> {
   label: string
   placeholder?: string
   error?: boolean
+  errorMessage?: string
 }
 
 const ReservePriceInput: React.FC<IReservePriceInputProps> = props => {
-  const { name, control, label, placeholder, error = false } = props
+  const {
+    name,
+    control,
+    label,
+    placeholder,
+    error = false,
+    errorMessage,
+  } = props
   const [enable, setEnable] = useState<boolean>(false)
 
   return (
@@ -51,7 +59,7 @@ const ReservePriceInput: React.FC<IReservePriceInputProps> = props => {
           </button>
           {!!error && enable ? (
             <p className="text-xs text-red-500 font-semibold">
-              Reserve price phải lớn hơn giá khởi điểm
+              {errorMessage || 'Reserve price phải lớn hơn giá khởi điểm'}
             </p>
           ) : null}
         </div>

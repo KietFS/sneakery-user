@@ -27,6 +27,8 @@ const StepTwo: React.FC<IStepTwoProps> = ({
 
   const isDisable =
     !watch('priceStart') ||
+    Number(watch('priceStart')) < 0 ||
+    Number(watch('stepBid')) < 0 ||
     !watch('stepBid') ||
     !watch('bidClosingDateTime') ||
     Number(watch('priceStart')) >= Number(watch('reservePrice'))
@@ -61,6 +63,8 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             {...register('priceStart', {
               required: 'Bạn chưa nhập giá khởi điểm của sản phẩm',
             })}
+            requiredPositiveNumber
+            requiredPositiveNumberMessage="Giá khởi điểm không được nhỏ hơn 0"
           />
           <InputHookForm
             required
@@ -70,7 +74,13 @@ const StepTwo: React.FC<IStepTwoProps> = ({
             placeholder={`Nhập bước giá của sản phẩm`}
             {...register('stepBid', {
               required: 'Bạn chưa nhập bước giá của sản phẩm',
+              min: {
+                value: 0,
+                message: 'Bước giá không được nhỏ hơn 0',
+              },
             })}
+            requiredPositiveNumber
+            requiredPositiveNumberMessage="Bước giá không được nhỏ hơn 0"
           />
           <DatePickerHookForm
             required
@@ -88,10 +98,11 @@ const StepTwo: React.FC<IStepTwoProps> = ({
           />
           <ReservePriceInput
             control={control}
-            name="reservePrice"
+            {...register('reservePrice')}
             error={Number(watch('priceStart')) >= Number(watch('reservePrice'))}
             placeholder="Đặt ngưỡng giá tối thiểu"
             label="Đặt ngưỡng giá tối thiểu"
+            errorMessage="Ngưỡng giá tối thiểu phải lớn hơn giá khởi điểm"
           />
         </div>
       </div>

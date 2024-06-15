@@ -9,7 +9,7 @@ import {
 } from '@heroicons/react/24/outline'
 import React, { useState } from 'react'
 import CurrencyInput from 'react-currency-input-field'
-import { Control, Controller } from 'react-hook-form'
+import { Control, Controller, useForm } from 'react-hook-form'
 import InputMask from 'react-input-mask'
 
 type IInputMode =
@@ -31,6 +31,8 @@ interface IInputHookFormProps {
   defaultValue?: string | number
   className?: string
   mode: IInputMode
+  requiredPositiveNumber?: boolean
+  requiredPositiveNumberMessage?: string
 }
 
 const InputHookForm: React.FC<IInputHookFormProps> = props => {
@@ -44,8 +46,11 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
     defaultValue = '',
     className = '',
     mode,
+    requiredPositiveNumber = false,
+    requiredPositiveNumberMessage,
   } = props
   const [focus, setFocus] = useState<boolean>(false)
+  const { setError } = useForm()
 
   const objectTypes = {
     email: {
@@ -88,16 +93,24 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
         fieldState: { error },
         formState: { errors },
       }) => {
-        const onValueChange = (value: string) => {
-          const numberValue = parseFloat(value)
-          const formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          })
-          const formattedValue = formatter.format(numberValue)
-          onChange(formattedValue)
-        }
-
+        // const onValueChange = (value: string) => {
+        //   const numberValue = parseFloat(value)
+        //   const formatter = new Intl.NumberFormat('en-US', {
+        //     style: 'currency',
+        //     currency: 'USD',
+        //   })
+        //   const formattedValue = formatter.format(numberValue)
+        //   onChange(formattedValue)
+        // }
+        //This is for manual set the error
+        // if (requiredPositiveNumber && Number(value) < 0) {
+        //   setError(name, {
+        //     type: 'manual',
+        //     message:
+        //       requiredPositiveNumberMessage ||
+        //       'Trường này không được nhỏ hơn 0',
+        //   })
+        // }
         return (
           <div
             className={`w-full rounded-sm ${
@@ -177,6 +190,12 @@ const InputHookForm: React.FC<IInputHookFormProps> = props => {
             {error && (
               <p className="text-red-500 text-xs font-semibold mt-1">
                 {error?.message}
+              </p>
+            )}
+            {requiredPositiveNumber && Number(value) < 0 && (
+              <p className="text-red-500 text-xs font-semibold mt-1">
+                {requiredPositiveNumberMessage ||
+                  'Trường này không được nhỏ hơn 0'}
               </p>
             )}
           </div>

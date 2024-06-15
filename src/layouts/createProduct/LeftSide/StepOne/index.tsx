@@ -160,7 +160,9 @@ const StepOne: React.FC<IStepOneProps> = ({
           <Tooltip title="Qua bước tiếp theo">
             <IconButton onClick={onPressNext} disabled={disableButton}>
               <ArrowSmallRightIcon
-                className={`w-10 h-10 ${disableButton && 'opacity-30'} text-gray-600 hover:text-blue-500`}
+                className={`w-10 h-10 ${
+                  disableButton && 'opacity-30'
+                } text-gray-600 hover:text-blue-500`}
               />
             </IconButton>
           </Tooltip>

@@ -65,7 +65,7 @@ const UploadImage: React.FC<IUploadImageProps> = props => {
         onChange={e => uploadImage(e)}
         className="w-full  border-gray-200 border bg-gray-100 rounded-lg mt-1 h-10"
       />
-      <div className="grid grid-cols-3 gap-x-2 w-full">
+      <div className="grid grid-cols-2 gap-x-6 w-fit">
         {imgShow.map((img, index) => (
           <div
             className="my-4 flex  flex-col border border-gray-200 shadow-lg w-[220px] h-[220px] p-1 rounded-lg cursor-pointer hover:opacity-80 items-center"
