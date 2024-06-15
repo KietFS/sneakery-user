@@ -78,7 +78,7 @@ export interface IWonProduct {
   sellerPaymentStatus?: IPaymentStatus
   winnerPaymentStatus?: IPaymentStatus
 }
-export type IBidOutCome = 'CLOSED' | 'CLOSED_WITHOUT_WINNER'
+export type IBidOutCome = 'CLOSED' | 'CLOSED_WITHOUT_WINNER' | 'OPEN'
 export interface IPostedProduct {
   bidId: string
   bidStartingDate: string

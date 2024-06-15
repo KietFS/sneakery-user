@@ -3,6 +3,8 @@ import { ClockIcon, PencilIcon } from '@heroicons/react/24/outline'
 import { IPostedProduct } from '@/types'
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
 import SellerPaymentStatusBadge from '@/components/atoms/SellerPaymentStatusBadge'
+import { IconButton } from '@mui/material'
+import { PaymentSharp } from '@mui/icons-material'
 
 interface IPostedCardProps extends IPostedProduct {
   id: string
@@ -68,26 +70,16 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
                   Phiên đấu giá đã kết thúc, có người chiến thắng
                 </p>
               )}
-            </div>
-
-            {bidOutCome == 'CLOSED' &&
-              winnerPaymentStatus == 'COMPLETED' &&
-              sellerPaymentStatus == 'PENDING' && (
-                <div className="flex items-center">
-                  <InformationCircleIcon
-                    width={15}
-                    height={15}
-                    className="text-yellow-400 mr-1"
-                  />
-                  <p className="text-yellow-400 text-xs font-regular">
-                    Chúng tôi đang xử lý để hoàn tiền cho bạn
-                  </p>
-                </div>
+              {bidOutCome == 'OPEN' && (
+                <p className="text-xs font-regular text-gray-700 font-regular">
+                  Phiên đấu giá đang diễn ra
+                </p>
               )}
+            </div>
 
             <div className="flex items-center">
               <p className="text-xs text-gray-500 font-regular mr-1">
-                Trạng thái hoàn tiền:
+                Trạng thái thanh toán:
               </p>
               {sellerPaymentStatus !== undefined ? (
                 <SellerPaymentStatusBadge status={sellerPaymentStatus} />
@@ -97,6 +89,14 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
             </div>
           </div>
         </div>
+        {sellerPaymentStatus == 'PENDING' && (
+          <IconButton
+            title="Thanh toán phí đấu giá"
+            onClick={() => onNavigateToPayment(id)}
+          >
+            <PaymentSharp width={20} height={20} className="text-green-500" />
+          </IconButton>
+        )}
       </div>
     </div>
   )

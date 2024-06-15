@@ -16,12 +16,12 @@ const SellerPaymentStatusBadge: React.FC<IPaymentStatusBadgeProps> = props => {
       )}
       {status == 'PENDING' && (
         <p className="rounded-full bg-yellow-100 text-yellow-800 font-semibold px-[8px] py-[2px] text-[10px] w-fit text-sm">
-          Đang xử lý
+          Đang đợi bạn xử lý
         </p>
       )}
       {status == 'COMPLETED' && (
         <p className="rounded-full bg-green-100 text-green-800 font-semibold px-[8px] py-[2px] text-[10px] w-fit text-sm">
-          Đã hoàn trả
+          Đã thanh toán
         </p>
       )}
       {status == 'OVERDUE' && (

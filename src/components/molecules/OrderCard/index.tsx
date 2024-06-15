@@ -4,13 +4,13 @@ import React, { useState } from 'react'
 import { IUserBidHistoryItem } from '@/components/organisms/UserBidHistoryDialog'
 import Link from 'next/link'
 
-interface IOrderCardProps {
+interface IBidHistoryCardProps {
   order: IUserBidHistoryItem
   handleCloseDialog: () => void
   handlePressCancel: (id: number) => void
 }
 
-const OrderCard: React.FC<IOrderCardProps> = props => {
+const BidHistoryCard: React.FC<IBidHistoryCardProps> = props => {
   const { order, handleCloseDialog: handleClostDialog } = props
 
   return (
@@ -29,7 +29,7 @@ const OrderCard: React.FC<IOrderCardProps> = props => {
             >
               <div className="flex gap-x-1 items-center">
                 <p className="text-sm text-gray-600 font-semibold">
-                  {order.product.name}
+                  Tên sản phẩm: {order.product.name}
                 </p>
               </div>
             </Link>
@@ -54,11 +54,6 @@ const OrderCard: React.FC<IOrderCardProps> = props => {
                 Đã bị hủy
               </div>
             )}
-            {/* {!!order.status && (
-              <div className="rounded-full bg-red-200 text-red-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
-                Thất bại
-              </div>
-            )} */}
           </div>
         </div>
       </button>
@@ -66,4 +61,4 @@ const OrderCard: React.FC<IOrderCardProps> = props => {
   )
 }
 
-export default OrderCard
+export default BidHistoryCard

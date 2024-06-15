@@ -2,7 +2,12 @@ import PaymentStatusBadge from '@/components/atoms/PaymentStatusBadge'
 import SmallCountdownTimer from '@/components/atoms/SmallCountdownTimer'
 import FeedBackDialog from '@/components/organisms/FeedBackDialog'
 import { IWonProduct } from '@/types'
-import { ClockIcon, PlusCircleIcon, StarIcon } from '@heroicons/react/20/solid'
+import {
+  ClockIcon,
+  InformationCircleIcon,
+  PlusCircleIcon,
+  StarIcon,
+} from '@heroicons/react/20/solid'
 import { PaymentSharp, PaymentsSharp } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
 import React from 'react'
@@ -23,6 +28,8 @@ const WinningProductCard: React.FC<IWinningProductCardProps> = props => {
   const paymentRemainTimeDeadline = new Date(bidClosingDate)
   paymentRemainTimeDeadline.setHours(bidClosingDate.getHours() + 24)
 
+  console.log('item is', item)
+
   return (
     <>
       <div className="rounded-lg border border-gray-200 px-4 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80">
@@ -36,7 +43,7 @@ const WinningProductCard: React.FC<IWinningProductCardProps> = props => {
             />
             <div className="flex flex-col gap-y-2">
               <div className="flex items-center">
-                <p className="text-xs text-gray-600 font-regular">
+                <p className="text-smtext-gray-600 font-semibold">
                   Tên sản phẩm: {item?.product?.name}
                 </p>
               </div>
@@ -53,33 +60,32 @@ const WinningProductCard: React.FC<IWinningProductCardProps> = props => {
               </div>
               <div className="flex items-center">
                 <p className="text-gray-500 font-regular text-xs mr-1">
+                  Giá khởi điểm của sản phẩm:
+                </p>
+                <p className="text-xs font-semibold text-gray-600">
+                  {item?.priceStart?.toString().prettyMoney()}$
+                </p>
+              </div>
+              <div className="flex items-center">
+                <p className="text-gray-500 font-regular text-xs mr-1">
                   Giá chiến thắng:
                 </p>
                 <p className="text-xs font-regular text-green-600">
                   {item?.priceWin?.toString().prettyMoney()}$
                 </p>
               </div>
-
               <div className="flex items-center">
-                <p className="text-xs text-gray-500 font-regular mr-1">
-                  Trạng thái thanh toán:
+                <InformationCircleIcon
+                  width={15}
+                  height={15}
+                  className="text-yellow-600 font-semibold mr-2"
+                />
+                <p className="text-xs font-regular text-yellow-600">
+                  Người đăng sẽ liên lạc với bạn để hoàn tất giao dịch
                 </p>
-                {item.winnerPaymentStatus !== undefined ? (
-                  <PaymentStatusBadge status={item.winnerPaymentStatus} />
-                ) : (
-                  <p className="text-gray-600 font-regular text-xs">Không rõ</p>
-                )}
               </div>
             </div>
           </div>
-          {item.winnerPaymentStatus == 'PENDING' && (
-            <IconButton
-              title="Thanh toán sản phẩm"
-              onClick={() => handlePressCheckout(item)}
-            >
-              <PaymentSharp width={20} height={20} className="text-green-500" />
-            </IconButton>
-          )}
 
           {item?.winnerPaymentStatus == 'COMPLETED' && (
             <IconButton

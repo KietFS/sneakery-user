@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 //styles
-import OrderCard from '@/components/molecules/OrderCard'
+import BidHistoryCard from '@/components/molecules/OrderCard'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import { Dialog, DialogContent, Tooltip } from '@mui/material'
 
@@ -94,7 +94,6 @@ const UserBidHistoryDialog: React.FC<IUserBidHistoryDialog> = props => {
   }
 
   useEffect(() => {
-    console.log('BEING CALLED')
     getAllItems()
   }, [])
 
@@ -131,7 +130,7 @@ const UserBidHistoryDialog: React.FC<IUserBidHistoryDialog> = props => {
               ) : (
                 <>
                   {items.map((item, index) => (
-                    <OrderCard
+                    <BidHistoryCard
                       order={item}
                       key={index.toString()}
                       handleCloseDialog={onClose}
