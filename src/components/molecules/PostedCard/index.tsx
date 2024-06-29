@@ -1,7 +1,15 @@
 import React from 'react'
-import { ClockIcon, PencilIcon } from '@heroicons/react/24/outline'
+import {
+  ClockIcon,
+  EyeDropperIcon,
+  PencilIcon,
+} from '@heroicons/react/24/outline'
 import { IPostedProduct } from '@/types'
-import { InformationCircleIcon } from '@heroicons/react/20/solid'
+import {
+  EyeSlashIcon,
+  InformationCircleIcon,
+  EyeIcon,
+} from '@heroicons/react/20/solid'
 import SellerPaymentStatusBadge from '@/components/atoms/SellerPaymentStatusBadge'
 import { IconButton } from '@mui/material'
 import { PaymentSharp } from '@mui/icons-material'
@@ -28,6 +36,9 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
     createdAt,
     onNavigateToPayment,
   } = props
+  const [isShowWinnerInfo, setIsShowWinnerInfo] = React.useState<boolean>(false)
+
+  console.log('PROPS IS', props)
 
   return (
     <div className="rounded-lg border border-gray-200 px-4 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80">
@@ -87,8 +98,74 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
                 <p className="text-gray-600 font-regular text-xs">Không rõ</p>
               )}
             </div>
+            {sellerPaymentStatus == 'COMPLETED' && (
+              <>
+                <button
+                  className="flex items-center"
+                  onClick={() => setIsShowWinnerInfo(!isShowWinnerInfo)}
+                >
+                  {isShowWinnerInfo ? (
+                    <EyeSlashIcon
+                      className="text-gray-500 mr-2"
+                      width={20}
+                      height={20}
+                    ></EyeSlashIcon>
+                  ) : (
+                    <EyeIcon
+                      className="text-gray-500 mr-2"
+                      width={20}
+                      height={20}
+                    />
+                  )}
+
+                  <p className="text-gray-600 font-regular text-xs">
+                    {isShowWinnerInfo
+                      ? 'Ẩn thông tin người chiến thắng'
+                      : 'Xem thông tin người chiến thắng'}
+                  </p>
+                </button>
+
+                {isShowWinnerInfo && (
+                  <div className="grid grid-cols-2 gap-x-1 gap-y-2 w-[300px]">
+                    <p className="text-gray-600 font-semibold text-xs">
+                      Tên người chiến thắng:
+                    </p>
+                    <p className="text-gray-500 font-semibold text-xs">
+                      Đoàn Chấn Hưng
+                    </p>
+                    <p className="text-gray-600 font-semibold text-xs">
+                      Số điện thoại:
+                    </p>
+                    <p className="text-gray-500 font-semibold text-xs">
+                      0818 123 456
+                    </p>
+                    <p className="text-gray-600 font-semibold text-xs">
+                      Email:
+                    </p>
+                    <p className="text-gray-500 font-semibold text-xs">
+                      hungdoan@gmail.com
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+
+            {sellerPaymentStatus == 'PENDING' && (
+              <div className="flex items-center">
+                <InformationCircleIcon
+                  width={15}
+                  height={15}
+                  className="text-yellow-600 font-semibold mr-2"
+                />
+                <p className="text-xs font-regular text-yellow-600">
+                  Vui lòng thanh toán phí đấu giá để xem thông tin đầy đủ về
+                  người chiến thắng
+                </p>
+              </div>
+            )}
           </div>
         </div>
+
         {sellerPaymentStatus == 'PENDING' && (
           <IconButton
             title="Thanh toán phí đấu giá"
