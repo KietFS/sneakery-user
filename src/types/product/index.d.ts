@@ -96,6 +96,12 @@ export interface IPostedProduct {
   bidOutCome?: IBidOutCome
   sellerPaymentStatus?: IPaymentStatus
   winnerPaymentStatus?: IPaymentStatus
+  winner?: {
+    id: number
+    username: string
+    email: string
+    phoneNumber: string
+  }
 }
 
 export interface ISellerFeedBacks {

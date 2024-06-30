@@ -38,8 +38,6 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
   } = props
   const [isShowWinnerInfo, setIsShowWinnerInfo] = React.useState<boolean>(false)
 
-  console.log('PROPS IS', props)
-
   return (
     <div className="rounded-lg border border-gray-200 px-4 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80">
       <div className="flex items-center justify-between">
@@ -131,19 +129,19 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
                       Tên người chiến thắng:
                     </p>
                     <p className="text-gray-500 font-semibold text-xs">
-                      Đoàn Chấn Hưng
+                      {props.winner?.username || ''}
                     </p>
                     <p className="text-gray-600 font-semibold text-xs">
                       Số điện thoại:
                     </p>
                     <p className="text-gray-500 font-semibold text-xs">
-                      0818 123 456
+                      {props.winner?.phoneNumber || ''}
                     </p>
                     <p className="text-gray-600 font-semibold text-xs">
                       Email:
                     </p>
                     <p className="text-gray-500 font-semibold text-xs">
-                      hungdoan@gmail.com
+                      {props.winner?.email || ''}
                     </p>
                   </div>
                 )}
