@@ -19,6 +19,19 @@ const LeftSide: React.FC<ILeftSideProps> = ({ product }) => {
     adaptiveHeight: true, // This makes the slider adapt to the image height
   }
 
+  const imageStyle = {
+    width: '100%',
+    maxHeight: '400px',
+    objectFit: 'contain',
+  }
+
+  // Thêm style cho thumbnail
+  const thumbnailStyle = {
+    width: '120px',
+    height: '90px',
+    objectFit: 'contain',
+  }
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 700)
     window.addEventListener('resize', handleResize)
@@ -27,18 +40,30 @@ const LeftSide: React.FC<ILeftSideProps> = ({ product }) => {
   }, [])
 
   return (
-    <div className="border-r border-gray-200 h-full py-8 px-4">
+    <div className="border-r border-gray-200 h-full py-8 px-4 ">
       <Slider ref={sliderRef} {...settings} className="rounded-lg mx-auto">
         {product?.imagePath?.map((item, index) => (
           <div
             key={index}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+            }}
             className="rounded-lg cursor-pointer hover:opacity-80 w-full justify-center flex"
           >
-            <img
-              src={item}
-              alt={`Product image ${index + 1}`}
-              className="w-full max-w-[400px] max-h-[400px] h-auto rounded-lg mx-auto"
-            />
+            <div className="flex min-h-[270px] max-h-[360px] w-auto justify-center">
+              <img
+                src={item}
+                alt={`Product image ${index + 1}`}
+                style={{
+                  width: '100%',
+                  maxHeight: '400px',
+                  objectFit: 'contain',
+                }} // Áp dụng style cho hình ảnh chính
+              />
+            </div>
           </div>
         ))}
       </Slider>
@@ -52,8 +77,7 @@ const LeftSide: React.FC<ILeftSideProps> = ({ product }) => {
             <img
               src={item}
               alt={`Thumbnail ${index + 1}`}
-              width={120}
-              height={90}
+              style={{ width: '120px', height: '90px', objectFit: 'contain' }} // Áp dụng style cho thumbnail
             />
           </div>
         ))}
