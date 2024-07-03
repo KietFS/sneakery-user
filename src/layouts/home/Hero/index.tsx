@@ -22,8 +22,9 @@ const HeroSection: React.FC<IHeroSectionProps> = props => {
             Sneakery - Trang đấu giá hàng đầu Việt Nam
           </h2>
           <p className="text-gray-400 text-lg">
-            Chúng tôi có những sản phẩm cực hiếm và cực đẹp, việc của bạn đưa ra
-            mức giá hợp lý nhất để mang nó về nhà.
+            Nơi đấu giá đa dạng ngành hàng từ tác phẩm nghệ thuật, sneaker độc
+            lạ đến phụ kiện đồng hồ. Khám phá, đấu giá và sở hữu những món đồ
+            độc đáo với mức giá của bạn.
           </p>
           <div className="flex w-fit space-x-4 mt-5">
             <button className="px-6 py-2 bg-white text-blue-500 font-semibold text-lg rounded-lg active:opacity-60">
