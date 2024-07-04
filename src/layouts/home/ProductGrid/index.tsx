@@ -66,13 +66,13 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
       <div className="space-y-2">
         <h2 className="text-gray-500 font-bold text-3xl text-center">
           {props.filerType == 'hot'
-            ? 'Những deal đấu giá đang hot tại sàn của chúng tôi'
-            : 'Những deal đấu giá mới nhất tại sàn của chúng tôi'}
+            ? 'Những deal đấu giá đang hot tại sàn'
+            : 'Những deal đấu giá mới nhất tại sàn'}
         </h2>
         <p className="text-lg text-gray-500 font-normal text-center">
           {props.filerType == 'hot'
-            ? 'Các sản phẩm đang được đấu giá sôi nổi nhất'
-            : 'Các sản phẩm vừa mới được đăng lên'}
+            ? 'Sản phẩm đang được đấu giá sôi nổi nhất'
+            : 'Sản phẩm vừa mới được đăng lên'}
         </p>
         <p
           className="text-lg font-semibold text-center underline text-blue-500 hover:opacity-70 cursor-pointer"
