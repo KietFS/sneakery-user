@@ -23,19 +23,23 @@ const TransactionHistoryCard: React.FC<
       <div className="flex items-center justify-between">
         <div className="flex gap-x-4">
           {!!(bid?.product?.imagePath as any) ? (
-            <BaseImage
-              src={bid?.product?.imagePath as any}
-              width={60}
-              height={60}
-              className="max-w-[60px] max-h-[60px]"
-            />
+            <div className="flex items-center">
+              <img
+                src={bid?.product?.imagePath as any}
+                width={80}
+                height={60}
+                className="max-h-[80px] max-w-[80px]"
+              />
+            </div>
           ) : (
-            <Image
-              src={ImagePlaceHolder}
-              width={60}
-              height={60}
-              className="max-w-[60px] max-h-[60px]"
-            />
+            <div className="flex items-center">
+              <Image
+                src={ImagePlaceHolder}
+                width={80}
+                height={60}
+                className="max-h-[80px] max-w-[80px]"
+              />
+            </div>
           )}
           <div className="flex flex-col gap-y-2">
             <div className="flex items-center">
