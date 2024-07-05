@@ -53,7 +53,7 @@ const SmallCountdownTimer: React.FC<ISmallCountTimerProps> = props => {
           Sản phẩm đã hết phiên đấu giá
         </p>
       ) : (
-        <p className="text-red-500 ml-1 text-xs text-center  cursor-pointer">
+        <p className="text-red-500 ml-1 text-[11px] text-center  cursor-pointer">
           {`${textDay} ngày : ${textHour} giờ : ${textMinute} phút : ${textSecond} giây`}
         </p>
       )}

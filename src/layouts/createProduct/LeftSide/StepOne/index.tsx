@@ -64,6 +64,8 @@ const StepOne: React.FC<IStepOneProps> = ({
   const disableButton =
     !watch('name') || !checkUndefinedOrNull(watch('properties'))
 
+  console.log('NAME IS', watch('name'))
+
   return (
     <div className="bg-white shadow-sm border-gray-200 border rounded-xl h-full p-6 min-h-[500px] flex flex-col justify-between">
       <div>
@@ -158,7 +160,12 @@ const StepOne: React.FC<IStepOneProps> = ({
             </IconButton>
           </Tooltip> */}
           <Tooltip title="Qua bước tiếp theo">
-            <IconButton onClick={onPressNext} disabled={disableButton}>
+            <IconButton
+              onClick={onPressNext}
+              disabled={
+                !watch('name') || !checkUndefinedOrNull(watch('properties'))
+              }
+            >
               <ArrowSmallRightIcon
                 className={`w-10 h-10 ${
                   disableButton && 'opacity-30'

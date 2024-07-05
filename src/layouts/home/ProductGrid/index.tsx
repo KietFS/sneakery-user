@@ -100,11 +100,11 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
           {listProducts?.map((item, index) => {
             return (
               <div
-                className="max-h-[350px] shadow-lg drop-shadow-sm h-[350px] py-4 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
+                className="max-h-[350px] shadow-lg drop-shadow-sm h-[350px] py-4 border border-gray-200 flex justify-between flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
                 key={index.toString()}
                 onClick={() => router.push(`/products/${item.id}`)}
               >
-                <div className="w-full flex-initial mb-2 pl-3">
+                {/* <div className="w-full flex-initial mb-2 pl-3">
                   <div className="bg-red-500 rounded-lg px-2 py-1 w-fit animate-pulse flex items-center">
                     {props.filerType == 'hot' ? (
                       <>
@@ -122,13 +122,15 @@ const ProductGrid: React.FC<IProductGridProps> = props => {
                       </>
                     )}
                   </div>
+                </div> */}
+                <div className="flex h-full max-h-[180px] items-center ">
+                  <img
+                    src={item.imagePath}
+                    width={200}
+                    height={150}
+                    className="max-h-[150px]"
+                  />
                 </div>
-                <img
-                  src={item.imagePath}
-                  width={200}
-                  height={150}
-                  className="min-h-[150px]"
-                />
                 <div className="justify-center px-4 space-y-1 mx-auto mt-4">
                   <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
                     {item.name.truncate(30)}

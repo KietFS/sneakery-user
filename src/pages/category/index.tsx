@@ -119,7 +119,7 @@ const Category = (props: IProductProps) => {
               <SelectSortType />
             </div>
             {loading ? (
-              <div className="grid grid-flow-row grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 w-full gap-x-5 gap-y-10 mt-[30px]">
+              <div className="grid grid-flow-row grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3   w-full gap-x-5 gap-y-10 mt-[30px]">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]?.map(
                   (item, index) => (
                     <div className="max-h-[300px] h-[300px] py-4 border border-gray-200 bg-gray-300 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer animate-pulse"></div>

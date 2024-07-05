@@ -26,7 +26,7 @@ const HeroSection: React.FC<IHeroSectionProps> = props => {
             lạ đến phụ kiện đồng hồ. Khám phá, đấu giá và sở hữu những món đồ
             độc đáo với mức giá của bạn.
           </p>
-          <div className="flex w-fit space-x-4 mt-5">
+          <div className="flex w-fit gap-x-4 mt-5">
             <button className="px-6 py-2 bg-white text-blue-500 font-semibold text-lg rounded-lg active:opacity-60">
               Mua sản phẩm
             </button>
@@ -40,7 +40,7 @@ const HeroSection: React.FC<IHeroSectionProps> = props => {
               Đăng sản phẩm
             </button>
           </div>
-          <div className="mt-10">
+          {/* <div className="mt-10">
             <p className="text-gray-600 font-semibold text-lg">
               Nay đã có mặt tại
             </p>
@@ -60,10 +60,10 @@ const HeroSection: React.FC<IHeroSectionProps> = props => {
                 <p className="text-sm text-gray-500 font-semibold">Đà Nẵng</p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="hidden laptop:flex">
-          <Image src={HeroImage} alt="hero-img" width={400} height={400} />
+          <Image src={HeroImage} alt="hero-img" width={300} height={300} />
         </div>
       </div>
       {openSelectCategory ? (
