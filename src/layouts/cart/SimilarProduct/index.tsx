@@ -112,110 +112,80 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
   }
 
   return (
-    <div className="h-fit rounded-lg shadow-lg bg-white mt-10 border border-gray-200 w-full px-8 pt-4 pb-8">
-      <h2 className="text-xl laptop:text-2xl text-blue-500 font-bold">
-        Sản phẩm tương tự
-      </h2>
-      {/* <div className="mt-10 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-4 gap-x-5 gap-y-5">
-        {listProduct.map((item, index) => {
-          return (
-            <div
-              className="h-fit py-10 border border-gray-200 flex flex-col items-center rounded-lg hover:opacity-70 cursor-pointer"
-              key={index.toString()}
-            >
-              <img src={item.imagePath} width={200} height={150} />
-              <div className="justify-center px-4 space-y-1 mx-auto">
-                <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
-                  {item.name.truncate(30)}
-                </h1>
-                <div className="flex items-center justify-center">
-                  <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                    Người đang giữ giá:{' '}
-                  </p>
-                  <p className="text-xs font-semibold text-blue-500">
-                    {item?.holder}
-                  </p>
-                </div>
-                <div className="flex items-center justify-center">
-                  <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                    Giá hiện tại:{' '}
-                  </p>
-                  <p className="text-xs font-bold text-gray-500">
-                    {item.currentPrice?.toString().prettyMoney()}$
-                  </p>
-                </div>
-              </div>
-            </div>
-          )
-        })}
-      </div> */}
-
-      <Slider {...settings}>
-        {listProduct.map((item, index) => {
-          return (
-            <div
-              className="max-h-[350px] my-4 mr-2  h-[300px] py-4 border-r border-gray-300  flex flex-col items-center  hover:opacity-70 cursor-pointer"
-              key={index.toString()}
-              onClick={() => router.push(`/products/${item.id}`)}
-            >
-              <div className="w-full flex justify-center">
-                <BaseImage
-                  src={item.imagePath}
-                  width={200}
-                  height={150}
-                  className="min-h-[150px] max-h-[150px]"
-                />
-              </div>
-              <div className="justify-center px-4 space-y-1 mx-auto mt-4">
-                <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
-                  {item.name.truncate(30)}
-                </h1>
-                {!!item?.holder ? (
-                  <div className="flex items-center justify-center">
-                    <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                      Người đang giữ giá:{' '}
-                    </p>
-                    <p className="text-xs font-semibold text-blue-500">
-                      {item?.holder}
-                    </p>
+    <>
+      {listProduct?.length > 4 ? (
+        <div className="h-fit rounded-lg shadow-lg bg-white mt-10 border border-gray-200 w-full px-8 pt-4 pb-8">
+          <h2 className="text-xl laptop:text-2xl text-blue-500 font-bold">
+            Sản phẩm tương tự
+          </h2>
+          <Slider {...settings}>
+            {listProduct.map((item, index) => {
+              return (
+                <div
+                  className="max-h-[350px] my-4 mr-2  h-[300px] py-4 border-r border-gray-300  flex flex-col items-center  hover:opacity-70 cursor-pointer"
+                  key={index.toString()}
+                  onClick={() => router.push(`/products/${item.id}`)}
+                >
+                  <div className="w-full flex justify-center">
+                    <BaseImage
+                      src={item.imagePath}
+                      width={200}
+                      height={150}
+                      className="min-h-[150px] max-h-[150px]"
+                    />
                   </div>
-                ) : (
-                  <div className="flex items-center justify-center">
-                    <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                      Chưa có ai đâu giá sản phẩm này
-                    </p>
-                    <p className="text-xs font-semibold text-blue-500"></p>
-                  </div>
-                )}
-                <div className="flex items-center justify-center">
-                  <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                    Số lượt đấu giá:{' '}
-                  </p>
-                  <p className="text-xs font-bold text-gray-500">
-                    {item?.numberOfBids}
-                  </p>
-                </div>
-                <div className="flex items-center justify-center">
-                  <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                    Giá hiện tại:{' '}
-                  </p>
-                  <p className="text-xs font-bold text-gray-500">
-                    {item.currentPrice?.toString().prettyMoney()}$
-                  </p>
-                </div>
-                {/* <div className="flex items-center justify-center">
+                  <div className="justify-center px-4 space-y-1 mx-auto mt-4">
+                    <h1 className="text-sm text-gray-600 font-bold text-center my-auto ">
+                      {item.name.truncate(30)}
+                    </h1>
+                    {!!item?.holder ? (
+                      <div className="flex items-center justify-center">
+                        <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                          Người đang giữ giá:{' '}
+                        </p>
+                        <p className="text-xs font-semibold text-blue-500">
+                          {item?.holder}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center">
+                        <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                          Chưa có ai đâu giá sản phẩm này
+                        </p>
+                        <p className="text-xs font-semibold text-blue-500"></p>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-center">
+                      <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                        Số lượt đấu giá:{' '}
+                      </p>
+                      <p className="text-xs font-bold text-gray-500">
+                        {item?.numberOfBids}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <p className="text-xs text-gray-500 font-normal text-center mr-1">
+                        Giá hiện tại:{' '}
+                      </p>
+                      <p className="text-xs font-bold text-gray-500">
+                        {item.currentPrice?.toString().prettyMoney()}$
+                      </p>
+                    </div>
+                    {/* <div className="flex items-center justify-center">
                   <p className="text-xs font-bold text-gray-500">
                     <SmallCountdownTimer
                       bidClosingDate={item?.bidClosingDate as any}
                     />
                   </p>
                 </div> */}
-              </div>
-            </div>
-          )
-        })}
-      </Slider>
-    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </Slider>
+        </div>
+      ) : null}
+    </>
   )
 }
 

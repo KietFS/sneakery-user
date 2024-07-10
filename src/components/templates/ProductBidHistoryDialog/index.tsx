@@ -68,7 +68,7 @@ const ProductBidHistoryDialog: React.FC<
         onClose={props.onClose}
         open={props.open}
         className="rounded-lg"
-        maxWidth="md"
+        maxWidth="sm"
         fullWidth={true}
       >
         <DialogContent className="max-h-[600px]">
@@ -83,17 +83,14 @@ const ProductBidHistoryDialog: React.FC<
             </div>
             <div className="flex flex-col gap-y-5">
               <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200  justify-between">
-                <p className="text-gray-600 text-sm cursor-pointer w-1/5">
+                <p className="text-gray-600 text-sm cursor-pointer w-2/5">
                   Người ra giá
                 </p>
-                <p className="text-gray-600 text-sm cursor-pointer w-1/5">
+                <p className="text-gray-600 text-sm cursor-pointer w-1/4 text-right">
                   Mức ra giá
                 </p>
-                <p className="text-gray-600 text-sm cursor-pointer w-1/5">
-                  Ngày
-                </p>
-                <p className="text-gray-600 text-sm cursor-pointer w-1/5">
-                  Trạng thái
+                <p className="text-gray-600 col-span-2 text-sm cursor-pointer w-1/2 text-right">
+                  Thời gian
                 </p>
               </div>
             </div>
@@ -103,27 +100,15 @@ const ProductBidHistoryDialog: React.FC<
                   className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between"
                   key={index.toString()}
                 >
-                  <p className="text-lg text-gray-500 font-bold w-1/5">
+                  <p className="text-lg text-gray-500 font-bold w-2/5">
                     {item?.userName}
                   </p>
-                  <p className="text-blue-500 font-bold text-sm cursor-pointer mr-1 w-1/5">
+                  <p className="text-blue-500 font-bold text-sm cursor-pointer mr-1 w-1/4  text-right">
                     {item?.bidAmount.toString().prettyMoney()}$
                   </p>
-                  <p className="text-gray-600 text-sm cursor-pointer w-1/5">
+                  <p className="text-gray-600 col-span-2  text-sm cursor-pointer w-1/2 text-right">
                     {item?.createdAt.toString()?.prettyDateTime()}
                   </p>
-                  <div className=" w-1/5">
-                    {item?.status == 'SUCCESS' && (
-                      <div className="rounded-full bg-green-200 text-green-800 font-semibold px-[10px] py-[4px] text-[12px] w-fit">
-                        Thành công
-                      </div>
-                    )}
-                    {item?.status == 'REMOVE' && (
-                      <div className="rounded-full bg-red-100 text-red-800 font-semibold px-[10px] py-[4px] text-[12px] w-fit">
-                        Đã bị hủy
-                      </div>
-                    )}
-                  </div>
                 </div>
               ))}
             </div>

@@ -172,12 +172,14 @@ const ProductCommentCard: React.FC<IProductCommentCardProps> = props => {
 
                   <p className="text-gray-600 text-sm">{commentText}</p>
                   <div className="items-center flex mt-1">
-                    <button
-                      className="text-gray-500 hover:text-blue-500 font-regular text-xs"
-                      onClick={handleTurnOnReply}
-                    >
-                      Trả lời
-                    </button>
+                    {!!accessToken && (
+                      <button
+                        className="text-gray-500 hover:text-blue-500 font-regular text-xs"
+                        onClick={handleTurnOnReply}
+                      >
+                        Trả lời
+                      </button>
+                    )}
                     {props.userName == user?.username && (
                       <button
                         className="text-gray-500 hover:text-red-500 font-regular text-xs ml-2"
