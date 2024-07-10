@@ -174,11 +174,12 @@ const CheckoutProductLeftSide: React.FC<
             </div>
           </div>
           <div className="mt-4 flex items-center">
-            <p className="text-lg italic  text-gray-600 font-bold">
-              Số tiền bạn cần thanh toán:{' '}
-            </p>
+            <p className="text-lg   text-gray-600 font-bold">Phí giao dịch: </p>
             <p className="text-lg italic font-semibold text-blue-500 ml-1">
-              {props?.postedProduct?.priceWin?.toString()?.prettyMoney()}$
+              {Number((props?.postedProduct?.priceWin / 10).toFixed(1))
+                .toString()
+                ?.prettyMoney()}
+              $
             </p>
           </div>
 
