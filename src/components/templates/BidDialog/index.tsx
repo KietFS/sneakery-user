@@ -101,6 +101,7 @@ function BidDialog(props: IBidDialogProps) {
               progress: undefined,
               theme: 'colored',
             })
+            onSuccess()
           } else {
             toast.error(
               data?.message || 'Đã có lỗi xảy ra, vui lòng thử lại sau',

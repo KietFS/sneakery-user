@@ -13,6 +13,8 @@ const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = props => {
   const { product } = props
   const router = useRouter()
 
+  console.log('product')
+
   return (
     <div
       className=" border-b border-gray-200 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80"
@@ -32,9 +34,9 @@ const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = props => {
             {product.startPrice?.toString().prettyMoney()}
           </p>
           <div className="flex items-center gap-x-1">
-            <p className="text-xs text-gray-600">Bán bởi:</p>
+            <p className="text-xs text-gray-600">Giá hiện tại</p>
             <div className="rounded-full bg-blue-200 text-blue-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
-              {product.userName}
+              {product.currentPrice?.toString().prettyMoney()}
             </div>
           </div>
         </div>
