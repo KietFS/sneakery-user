@@ -7,10 +7,8 @@ import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 
 //hooks
-import { useAppSelector } from '@/hooks/useRedux'
 
 //store
-import { IRootState } from '@/redux'
 
 //utils
 import axios from 'axios'
@@ -19,8 +17,6 @@ import * as yup from 'yup'
 import { Formik } from 'formik'
 import { Config } from '@/config/api'
 import { configResponse, forceLogOut } from '@/utils/request'
-import { useDispatch } from 'react-redux'
-import { setUserBalance } from '@/redux/slices/auth'
 import { useAuth } from '@/hooks/useAuth'
 import { IActionResponseData, IProductDetail } from '@/types'
 
@@ -80,7 +76,7 @@ function BidDialog(props: IBidDialogProps) {
         // const data = response?.data as IActionResponseData
         const { isSuccess, data } = configResponse(response)
         if (isSuccess) {
-          toast.success('Bid sản phẩm thành công', {
+          toast.success('Đấu giá sản phẩm thành công', {
             position: 'top-right',
             autoClose: 5000,
             hideProgressBar: false,
@@ -94,7 +90,17 @@ function BidDialog(props: IBidDialogProps) {
           onClose()
         } else {
           //handle if this is a ghost bid
-          if (data?.status == 'ghost') {
+          if (!data?.exceptionType) {
+            toast.warning(data?.message, {
+              position: 'top-right',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'colored',
+            })
           } else {
             toast.error(
               data?.message || 'Đã có lỗi xảy ra, vui lòng thử lại sau',
