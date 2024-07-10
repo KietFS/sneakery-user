@@ -57,14 +57,7 @@ const ProductGridV2: React.FC<IProductGridV2Props> = props => {
                         {item?.holder}
                       </p>
                     </div>
-                  ) : (
-                    <div className="flex items-center justify-center">
-                      <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                        Chưa có ai đấu giá sản phẩm này
-                      </p>
-                      <p className="text-xs font-semibold text-blue-500"></p>
-                    </div>
-                  )}
+                  ) : null}
 
                   <div className="flex items-center justify-center">
                     <p className="text-xs text-gray-500 font-normal text-center mr-1">

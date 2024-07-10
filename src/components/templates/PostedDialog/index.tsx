@@ -38,7 +38,7 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
       setIsLoading(true)
       //THIS NEED TO FIX
       const response = await axios.get(
-        `${Config.API_URL}/bids/uploaded-products/`,
+        `${Config.API_URL}/bids/uploaded-products`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -63,7 +63,6 @@ const PostedDialog: React.FC<IPostedDialogProps> = props => {
       getPostedItems()
     }
   }, [open])
-
 
   return (
     <>

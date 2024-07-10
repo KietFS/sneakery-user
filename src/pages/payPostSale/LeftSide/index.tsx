@@ -49,7 +49,7 @@ const CheckoutProductLeftSide: React.FC<
   const handlePressPay = async () => {
     try {
       const payload: IPayForProductPayload = {
-        amount: props?.postedProduct?.priceWin,
+        amount: Number((props?.postedProduct?.priceWin / 10).toFixed(1)),
         purpose: `Thanh toán phí đấu giá cho sản phẩm đã có người chiến thắng ${props.postedProduct.product.name}`,
       }
       setIsPayingPreFee(true)
