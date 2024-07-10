@@ -35,9 +35,9 @@ const HorizontalProductCard: React.FC<IHorizontalProductCardProps> = props => {
           </p>
           <div className="flex items-center gap-x-1">
             <p className="text-xs text-gray-600">Giá hiện tại</p>
-            <div className="rounded-full bg-blue-200 text-blue-800 font-semibold px-[5px] py-[2px] text-[8px] w-fit">
+            <p className="text-sm text-green-500 font-semibold">
               {product.currentPrice?.toString().prettyMoney()}
-            </div>
+            </p>
           </div>
         </div>
       </div>
