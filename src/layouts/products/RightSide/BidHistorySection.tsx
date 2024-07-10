@@ -23,7 +23,7 @@ const BidHistorySection: React.FC<IBidHistorySectionProps> = ({
         <>
           <div className="mt-4 max-w-[90%]">
             <h3 className="text-gray-400 text-lg leading-0">
-              Các lượt bid gần đây :{' '}
+              Các lượt đấu giá gần đây :{' '}
             </h3>
             <div className="flex flex-col gap-y-2 mt-2 w-fit">
               {bidHistory.map((item, index) => {

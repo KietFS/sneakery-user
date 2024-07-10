@@ -23,7 +23,7 @@ const ProductDescription: React.FC<IProductDescriptionProps> = props => {
     <div className="border-t border-gray-100 px-8 pt-4 pb-8">
       <div>
         <p className="text-blue-500 text-xl laptop:text-2xl font-semibold">
-          Các thông tin của sản phẩm
+          Thông tin của sản phẩm
         </p>
         {Object.entries(properties)?.map(([key, value]) => (
           <div className="flex items-center mt-2">
@@ -40,7 +40,7 @@ const ProductDescription: React.FC<IProductDescriptionProps> = props => {
       </div>
 
       <div className="mt-4">
-        <h2 className="text-xl laptop:text-2xl text-gray-600 font-bold">
+        <h2 className="text-xl laptop:text-2xl text-blue-500 font-bold">
           {!!props?.productDetail?.description
             ? 'Mô tả của sản phẩm'
             : 'Sản phẩm này không có mô tả'}

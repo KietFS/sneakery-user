@@ -86,16 +86,19 @@ const PostedCard: React.FC<IPostedCardProps> = props => {
               )}
             </div>
 
-            <div className="flex items-center">
-              <p className="text-xs text-gray-500 font-regular mr-1">
-                Trạng thái thanh toán:
-              </p>
-              {sellerPaymentStatus !== undefined ? (
-                <SellerPaymentStatusBadge status={sellerPaymentStatus} />
-              ) : (
-                <p className="text-gray-600 font-regular text-xs">Không rõ</p>
-              )}
-            </div>
+            {sellerPaymentStatus !== null && (
+              <div className="flex items-center">
+                <p className="text-xs text-gray-500 font-regular mr-1">
+                  Trạng thái thanh toán:
+                </p>
+                {sellerPaymentStatus !== undefined ? (
+                  <SellerPaymentStatusBadge status={sellerPaymentStatus} />
+                ) : (
+                  <p className="text-gray-600 font-regular text-xs">Không rõ</p>
+                )}
+              </div>
+            )}
+
             {sellerPaymentStatus == 'COMPLETED' && (
               <>
                 <button

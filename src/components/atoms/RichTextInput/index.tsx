@@ -48,18 +48,16 @@ const RichTextInput: React.FC<IRichTextInputProps> = props => {
                   : error
                     ? 'bg-red-50'
                     : 'bg-gray-100'
-              } px-2 py-1 rounded-lg h-20  ${className}`}
+              } px-2 py-1 rounded-lg  ${className}`}
             >
-              <input
+              <textarea
                 autoComplete="off"
                 placeholder={props.placeholder || ''}
                 value={value}
-                multiple
                 onBlur={() => setFocus(false)}
-                type="text"
                 onFocus={() => setFocus(true)}
                 onChange={e => onChange(e.target.value)}
-                className={`px-2 py-1 w-[100%]  ${
+                className={`px-2 py-1 w-[100%] min-h-[100px]  ${
                   focus && !error
                     ? 'bg-blue-50'
                     : error
