@@ -49,7 +49,7 @@ const CheckoutProductLeftSide: React.FC<
   const handlePressPay = async () => {
     try {
       const payload: IPayForProductPayload = {
-        amount: Number((props?.postedProduct?.priceWin / 10).toFixed(1)),
+        amount: Number((props?.postedProduct?.priceWin / 10).toFixed(0)),
         purpose: `Thanh toán phí đấu giá cho sản phẩm đã có người chiến thắng ${props.postedProduct.product.name}`,
       }
       setIsPayingPreFee(true)
@@ -176,7 +176,7 @@ const CheckoutProductLeftSide: React.FC<
           <div className="mt-4 flex items-center">
             <p className="text-lg   text-gray-600 font-bold">Phí giao dịch: </p>
             <p className="text-lg italic font-semibold text-blue-500 ml-1">
-              {Number((props?.postedProduct?.priceWin / 10).toFixed(1))
+              {Number((props?.postedProduct?.priceWin / 10).toFixed(0))
                 .toString()
                 ?.prettyMoney()}
               $
