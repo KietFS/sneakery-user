@@ -100,7 +100,7 @@ const Category = (props: IProductProps) => {
         </div>
         <div className="w-5/6 mx-auto flex tablet:flex-row flex-col gap-x-10">
           <div className=" w-full tablet:w-1/4">
-            <FilterSideBar />
+            <FilterSideBar onChangeCategory={() => setCurrentPage(1)} />
           </div>
           <div className="w-full mt-8 tablet:mt-0 tablet:w-3/4">
             <div className="w-full justify-between flex mb-4 items-center">

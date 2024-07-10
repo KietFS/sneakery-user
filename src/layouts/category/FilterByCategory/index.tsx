@@ -14,9 +14,12 @@ import axios from 'axios'
 import { Config } from '@/config/api'
 import { IProductCategory } from '@/types'
 
-interface IFilterCategoryProps {}
+interface IFilterCategoryProps {
+  onChangeCategory: () => void
+}
 
 const FilterByCategory: React.FC<IFilterCategoryProps> = props => {
+  const { onChangeCategory } = props
   const [categoryList, setCategoryList] = useState<IProductCategory[]>([])
   const [isGettingProductCategory, setIsGettingProductCategory] =
     useState<boolean>(false)
@@ -49,6 +52,7 @@ const FilterByCategory: React.FC<IFilterCategoryProps> = props => {
       onSelect={category => {
         dispatch(setCategory(category))
         dispatch(setKeyWord(null))
+        onChangeCategory()
       }}
       label="Theo danh mục"
       keyValue="id"
