@@ -1,8 +1,10 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 
 interface IFooterSectionProps {}
 
 const FooterSection: React.FC<IFooterSectionProps> = props => {
+  const router = useRouter()
   return (
     <div className="py-10 px-8 laptop:px-28 bg-gray-50 h-fit mt-40 laptop:mt-20">
       <div className="space-y-5">
@@ -25,8 +27,11 @@ const FooterSection: React.FC<IFooterSectionProps> = props => {
             <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
               Thông tin chi phí
             </p>
-            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Career
+            <p
+              className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer"
+              onClick={() => router?.replace('/guides')}
+            >
+              Hướng dẫn sử dụng
             </p>
           </div>
           <div className="space-y-2">
@@ -39,8 +44,11 @@ const FooterSection: React.FC<IFooterSectionProps> = props => {
             <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
               Thông tin chi phí
             </p>
-            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Career
+            <p
+              className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer"
+              onClick={() => router?.replace('/guides')}
+            >
+              Hướng dẫn sử dụng
             </p>
           </div>
           <div className="space-y-2">
@@ -53,8 +61,11 @@ const FooterSection: React.FC<IFooterSectionProps> = props => {
             <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
               Thông tin chi phí
             </p>
-            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Career
+            <p
+              className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer"
+              onClick={() => router?.replace('/guides')}
+            >
+              Hướng dẫn sử dụng
             </p>
           </div>
           <div className="space-y-2">
@@ -67,8 +78,11 @@ const FooterSection: React.FC<IFooterSectionProps> = props => {
             <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
               Thông tin chi phí
             </p>
-            <p className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer">
-              Career
+            <p
+              className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer"
+              onClick={() => router?.replace('/guides')}
+            >
+              Hướng dẫn sử dụng
             </p>
           </div>
         </div>

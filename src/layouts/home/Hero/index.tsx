@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 //styles
 import HeroImage from '@/assets/images/HeroImage.png'
-import { MapPinIcon } from '@heroicons/react/20/solid'
+import { InformationCircleIcon, MapPinIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
 import SelectCategoryDialog from '@/components/atoms/SelectCategoryDialog'
 
@@ -26,6 +26,15 @@ const HeroSection: React.FC<IHeroSectionProps> = props => {
             lạ đến phụ kiện đồng hồ. Khám phá, đấu giá và sở hữu những món đồ
             độc đáo với mức giá của bạn.
           </p>
+          <button
+            className="flex items-center mt-2"
+            onClick={() => router.push('/guides')}
+          >
+            <p className="text-blue-500 font-semibold underline text-sm">
+              Hướng dẫn sử dụng
+            </p>
+            <InformationCircleIcon className="w-4 h-4 text-blue-500 ml-1" />
+          </button>
           <div className="flex w-fit gap-x-4 mt-5">
             <button className="px-6 py-2 bg-white text-blue-500 font-semibold text-lg rounded-lg active:opacity-60">
               Mua sản phẩm

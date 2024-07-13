@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hướng dẫn đấu giá</title>
+    <style>
+      .accordion {
+        cursor: pointer;
+        border: none;
+        outline: none;
+        transition: 0.4s;
+      }
+
+      .active,
+      .accordion:hover {
+        background-color: #ddd;
+      }
+
+      .panel {
+        display: none;
+        padding: 0 18px;
+        background-color: white;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <h2 class="accordion">&#9660; Đấu giá là gì</h2>
+    <div class="panel">
+      <p>
+        Đấu giá là hình thức mua bán trong đó người bán đưa ra món hàng và những
+        người có nhu cầu mua sẽ cạnh tranh với nhau bằng cách ra giá tăng dần.
+        Khi kết thúc phiên đấu giá, người tham gia có mức giá cao nhất sẽ chiến
+        thắng và sở hữu món hàng.
+      </p>
+    </div>
+
+    <h2 class="accordion">&#9660; Giá khởi điểm - Bước giá là gì</h2>
+    <div class="panel">
+      <p>Đây là 2 thuật ngữ cơ bản trong đấu giá:</p>
+      <ul>
+        <li>
+          <strong>Giá khởi điểm</strong> là giá ban đầu thấp nhất của sản phẩm
+          đấu giá.
+        </li>
+        <li>
+          <strong>Bước giá</strong> là mức chênh lệch tối thiểu của lần trả giá
+          sau so với lần trả giá trước liền kề.
+        </li>
+      </ul>
+    </div>
+
+    <h2 class="accordion">&#9660; Đấu giá tự động là gì</h2>
+    <div class="panel">
+      <p>
+        Đấu giá tự động là hình thức đấu giá trực tuyến tại nhiều website lớn
+        như eBay, Yahoo Auctions và được áp dụng tại Sneakery. Đấu giá tự động
+        cho phép bạn đặt mức giá tối đa có thể trả và hệ thống sẽ tự động tăng
+        giá để giữ cho bạn vừa-đủ-thắng những người chơi khác mà không cần ra
+        giá liên tục.
+      </p>
+      <p>Cách thức:</p>
+      <ol>
+        <li>
+          Đầu tiên, bạn ra <strong>giá tối đa</strong> mà mình có thể trả cho
+          sản phẩm.
+        </li>
+        <li>
+          Nếu không ai có mức giá tối đa cao hơn bạn, bạn sẽ giành chiến thắng
+          sản phẩm ở mức giá thấp nhất mà hệ thống tự động đặt cho bạn.
+        </li>
+        <li>
+          Nếu những người chơi ra cùng mức giá, người chơi
+          <strong>ra giá trước</strong> được ghi nhận là người ra giá cao nhất.
+        </li>
+      </ol>
+    </div>
+
+    <h2 class="accordion">&#9660; Minh họa phiên đấu giá tự động</h2>
+    <div class="panel">
+      <p>Một phiên đấu giá tự động sẽ diễn ra như sau:</p>
+      <ul>
+        <li>Thông tin sản phẩm đấu giá:</li>
+        <ul>
+          <li>Tên sản phẩm: <strong>Diamond bracelet</strong></li>
+          <li>Giá khởi điểm: 1500$</li>
+          <li>Bước giá: 100$</li>
+        </ul>
+        <li>
+          <table>
+            <thead>
+              <tr>
+                <th>Người chơi</th>
+                <th>Giá đặt</th>
+                <th>Giá hiện tại sản phẩm</th>
+                <th>Người giữ giá</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#1</td>
+                <td>2000$</td>
+                <td>1500$</td>
+                <td>#1</td>
+              </tr>
+              <tr>
+                <td>#2</td>
+                <td>1800$</td>
+                <td>1900$</td>
+                <td>#1</td>
+              </tr>
+              <tr>
+                <td>#3</td>
+                <td>2700$</td>
+                <td>2100$</td>
+                <td>#3</td>
+              </tr>
+              <tr>
+                <td>#4</td>
+                <td>2700$</td>
+                <td>2700$</td>
+                <td>#3</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+    </div>
+
+    <h2 class="accordion">
+      &#9660; Làm cách nào để tôi biết tôi bị người chơi khác ra giá cao hơn giá
+      của tôi
+    </h2>
+    <div class="panel">
+      <p>
+        Khi bạn đang giữ giá và bị người chơi khác ra giá cao hơn, bạn sẽ nhận
+        được Email nhắc nhở về phiên đấu giá để có thể tiếp tục đặt giá.
+      </p>
+    </div>
+
+    <script>
+      var acc = document.getElementsByClassName('accordion')
+      var i
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener('click', function () {
+          this.classList.toggle('active')
+          var panel = this.nextElementSibling
+          if (panel.style.display === 'block') {
+            panel.style.display = 'none'
+          } else {
+            panel.style.display = 'block'
+          }
+        })
+      }
+    </script>
+  </body>
+</html>

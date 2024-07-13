@@ -15,6 +15,8 @@ import BidHistorySection from './BidHistorySection'
 import CountDownTimer from '@/components/atoms/CountDownTimer'
 import { IProductDetail } from '@/types'
 import { useAuth } from '@/hooks/useAuth'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { useRouter } from 'next/router'
 
 interface IRightSideProps {
   product: IProductDetail
@@ -34,6 +36,7 @@ export interface IProductBidHistoryItem {
 const RightSide: React.FC<IRightSideProps> = props => {
   const { product, onPlaceBid, bidHistory, onClickSeller } = props
   const { isAuthenticated } = useAuth()
+  const router = useRouter()
 
   const isDisable =
     Date.now() > new Date(product.bidClosingDate)?.getTime() || !isAuthenticated
@@ -78,13 +81,22 @@ const RightSide: React.FC<IRightSideProps> = props => {
       </div>
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Người đăng : </h3>
-        <button
+      <button
           className="text-blue-500 font-bold ml-1 text-lg cursor-pointer hover:opacity-80"
           onClick={() => onClickSeller()}
         >
           {product?.seller?.username}
         </button>
       </div>
+      {/* <button
+        className="flex items-center mt-2"
+        onClick={() => router.push('/guides')}
+      >
+        <p className="text-blue-500 font-semibold underline text-sm">
+          Hướng dẫn đấu giá
+        </p>
+        <InformationCircleIcon className="w-4 h-4 text-blue-500 ml-1" />
+      </button> */}
       <div className="flex items-center">
         <button
           disabled={isDisable}

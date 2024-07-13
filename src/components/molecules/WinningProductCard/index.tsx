@@ -87,18 +87,16 @@ const WinningProductCard: React.FC<IWinningProductCardProps> = props => {
             </div>
           </div>
 
-          {item?.winnerPaymentStatus == 'COMPLETED' && (
-            <IconButton
-              title="Đánh giá sản phẩm"
-              onClick={() => setOpenFeedBackDialog(true)}
-            >
-              <StarIcon
-                width={25}
-                height={25}
-                className="text-gray-500 hover:text-yellow-500"
-              />
-            </IconButton>
-          )}
+          <IconButton
+            title="Đánh giá sản phẩm"
+            onClick={() => setOpenFeedBackDialog(true)}
+          >
+            <StarIcon
+              width={25}
+              height={25}
+              className="text-gray-500 hover:text-yellow-500"
+            />
+          </IconButton>
         </div>
       </div>
 
