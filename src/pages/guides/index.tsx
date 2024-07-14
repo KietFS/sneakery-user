@@ -25,11 +25,11 @@ export default function AccordionUsage() {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1-content"
                 id="panel1-header"
-                sx={{ color: '#3b82f6', fontWeight: 800 }}
+                sx={{ color: '#3b82f6', fontWeight: 500 }}
               >
                 Đấu giá là gì ?
               </AccordionSummary>
-              <AccordionDetails sx={{ color: '', fontWeight: 500 }}>
+              <AccordionDetails sx={{ color: '', fontWeight: 300 }}>
                 Đấu giá là hình thức mua bán trong đó người bán đưa ra món hàng
                 và những người có nhu cầu mua sẽ cạnh tranh với nhau bằng cách
                 ra giá tăng dần. Khi kết thúc phiên đấu giá, người tham gia có
@@ -179,7 +179,7 @@ export default function AccordionUsage() {
                 id="panel3-header"
                 sx={{ color: '#3b82f6', fontWeight: 800 }}
               >
-                Đấu giá tự động là gì ?Làm cách nào để tôi biết tôi bị người
+                Làm cách nào để tôi biết tôi bị người
                 chơi khác ra giá cao hơn giá của tôi?
               </AccordionSummary>
               <AccordionDetails>

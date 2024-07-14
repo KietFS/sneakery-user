@@ -30,8 +30,8 @@ const HeroSection: React.FC<IHeroSectionProps> = props => {
             className="flex items-center mt-2"
             onClick={() => router.push('/guides')}
           >
-            <p className="text-blue-500 font-semibold underline text-sm">
-              Hướng dẫn sử dụng
+            <p className="text-blue-500 font-semibold text-sm">
+              Hướng dẫn đấu giá
             </p>
             <InformationCircleIcon className="w-4 h-4 text-blue-500 ml-1" />
           </button>

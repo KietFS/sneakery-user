@@ -31,7 +31,7 @@ const FooterSection: React.FC<IFooterSectionProps> = props => {
               className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer"
               onClick={() => router?.replace('/guides')}
             >
-              Hướng dẫn sử dụng
+              Hướng dẫn đấu giá
             </p>
           </div>
           <div className="space-y-2">
@@ -48,7 +48,7 @@ const FooterSection: React.FC<IFooterSectionProps> = props => {
               className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer"
               onClick={() => router?.replace('/guides')}
             >
-              Hướng dẫn sử dụng
+              Hướng dẫn đấu giá
             </p>
           </div>
           <div className="space-y-2">
@@ -65,7 +65,7 @@ const FooterSection: React.FC<IFooterSectionProps> = props => {
               className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer"
               onClick={() => router?.replace('/guides')}
             >
-              Hướng dẫn sử dụng
+              Hướng dẫn đấu giá
             </p>
           </div>
           <div className="space-y-2">
@@ -82,7 +82,7 @@ const FooterSection: React.FC<IFooterSectionProps> = props => {
               className="text-sm text-gray-400 font-normal text-left hover:text-gray-700 cursor-pointer"
               onClick={() => router?.replace('/guides')}
             >
-              Hướng dẫn sử dụng
+              Hướng dẫn đấu giá
             </p>
           </div>
         </div>
