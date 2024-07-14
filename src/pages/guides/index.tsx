@@ -41,11 +41,11 @@ export default function AccordionUsage() {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel2-content"
                 id="panel2-header"
-                sx={{ color: '#3b82f6', fontWeight: 800 }}
+                sx={{ color: '#3b82f6', fontWeight: 500 }}
               >
                 Giá khởi điểm - Bước giá là gì ?
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails sx={{ color: '', fontWeight: 300 }}>
                 Đây là 2 thuật ngữ cơ bản trong đấu giá. Trong đó
                 <li>
                   Giá khởi điểm là giá ban đầu thấp nhất của sản phẩm đấu giá
@@ -61,11 +61,11 @@ export default function AccordionUsage() {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel3-content"
                 id="panel3-header"
-                sx={{ color: '#3b82f6', fontWeight: 800 }}
+                sx={{ color: '#3b82f6', fontWeight: 500 }}
               >
                 Đấu giá tự động là gì ?
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails sx={{ color: '', fontWeight: 300 }}>
                 Đấu giá tự động là hình thức đấu giá trực tuyến tại nhiều
                 website lớn như eBay, Yahoo Auctions và được áp dụng tại
                 Sneakery. Đấu giá tự động cho phép bạn đặt mức giá tối đa có thể
@@ -92,11 +92,11 @@ export default function AccordionUsage() {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel4-content"
                 id="panel4-header"
-                sx={{ color: '#3b82f6', fontWeight: 800 }}
+                sx={{ color: '#3b82f6', fontWeight: 500 }}
               >
                 Minh họa phiên đấu giá tự động
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails sx={{ color: '', fontWeight: 300 }}>
                 Một phiên đấu giá tự động sẽ diễn ra như sau
                 <br />
                 Thông tin sản phẩm đấu giá <br />
@@ -177,12 +177,12 @@ export default function AccordionUsage() {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel3-content"
                 id="panel3-header"
-                sx={{ color: '#3b82f6', fontWeight: 800 }}
+                sx={{ color: '#3b82f6', fontWeight: 500 }}
               >
                 Làm cách nào để tôi biết tôi bị người
                 chơi khác ra giá cao hơn giá của tôi?
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails sx={{ color: '', fontWeight: 300 }}>
                 Khi bạn đang giữ giá và bị người chơi khác ra giá cao hơn, bạn
                 sẽ nhận được Email nhắc nhở về phiên đấu giá để có thể tiếp tục
                 đặt giá.
