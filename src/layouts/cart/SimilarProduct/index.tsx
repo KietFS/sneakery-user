@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-//styles
-import Image from 'next/image'
-
 //utils
 import axios from 'axios'
 import { Config } from '@/config/api'
@@ -150,7 +147,7 @@ const SimilarProduct: React.FC<ISimilarProduct> = props => {
                     ) : (
                       <div className="flex items-center justify-center">
                         <p className="text-xs text-gray-500 font-normal text-center mr-1">
-                          Chưa có ai đâu giá sản phẩm này
+                          Chưa có ai đấu giá sản phẩm này
                         </p>
                         <p className="text-xs font-semibold text-blue-500"></p>
                       </div>

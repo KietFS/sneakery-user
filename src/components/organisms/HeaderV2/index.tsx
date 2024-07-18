@@ -92,7 +92,7 @@ const HeaderV2: React.FC<IHeaderV2Props> = props => {
           </p>
           <div className="flex w-1/3 laptop:hidden laptop:w-0 flex-row-reverse">
             {isAuthenticated ? (
-              <></>
+              <UserCard />
             ) : (
               <div className="flex flex-row-reverse laptop:hidden  w-1/3 laptop:w-0">
                 <button

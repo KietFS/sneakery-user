@@ -57,12 +57,15 @@ const RightSide: React.FC<IRightSideProps> = props => {
           {(product?.bidIncrement as number).toString().prettyMoney()}$
         </h3>
       </div>
-      <div className="mt-2 flex items-center">
-        <h3 className="text-gray-400 text-lg">Giá hiện tại : </h3>
-        <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
-          {(product?.currentPrice as number).toString().prettyMoney()}$
-        </h3>
-      </div>
+      {!!product?.holder && (
+        <div className="mt-2 flex items-center">
+          <h3 className="text-gray-400 text-lg">Giá hiện tại : </h3>
+          <h3 className="text-blue-500 ml-1 text-lg cursor-pointer">
+            {(product?.currentPrice as number).toString().prettyMoney()}$
+          </h3>
+        </div>
+      )}
+
       {!!product?.holder ? (
         <div className="mt-2 flex items-center">
           <h3 className="text-gray-400 text-lg">Người đang giữ giá: </h3>
@@ -81,7 +84,7 @@ const RightSide: React.FC<IRightSideProps> = props => {
       </div>
       <div className="mt-2 flex items-center">
         <h3 className="text-gray-400 text-lg">Người đăng : </h3>
-      <button
+        <button
           className="text-blue-500 font-bold ml-1 text-lg cursor-pointer hover:opacity-80"
           onClick={() => onClickSeller()}
         >

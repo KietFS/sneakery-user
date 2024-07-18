@@ -22,7 +22,7 @@ const ProductDescription: React.FC<IProductDescriptionProps> = props => {
   return (
     <div className="border-t border-gray-100 px-8 pt-4 pb-8">
       <div>
-        <p className="text-blue-500 text-xl laptop:text-2xl font-semibold">
+        <p className="text-blue-500 text-xl laptop:text-2xl font-bold">
           Thông tin của sản phẩm
         </p>
         {Object.entries(properties)?.map(([key, value]) => (
