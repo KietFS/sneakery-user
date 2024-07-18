@@ -61,8 +61,7 @@ const StepOne: React.FC<IStepOneProps> = ({
     return true // Nếu không có key nào là undefined hoặc null, trả về true
   }
 
-  const disableButton =
-    !watch('name') || !checkUndefinedOrNull(watch('properties'))
+  const disableButton = !watch('name')
 
   console.log('NAME IS', watch('name'))
 
